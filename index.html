@@ -114,6 +114,7 @@
       box-shadow: var(--shadow);
       transition: transform 0.18s ease, box-shadow 0.18s ease;
       min-width: 0;
+      width: 33%;
     }
 
     .article-card:hover {
@@ -278,7 +279,11 @@
       <div class="articles-grid">
         <article class="article-card featured">
           <div>
-            <div class="article-meta">Week 3 • Matchup Recap</div>
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+              <span
+                style="background:#198754;color:white;padding:6px 10px;border-radius:999px;font-size:0.75rem;font-weight:700;">NEW</span>
+              <div class="article-meta" style="margin:0;">Week 3 • Matchup Recap</div>
+            </div>
             <h3 class="article-title">Week 3 Recap: Blowouts Everywhere</h3>
             <p class="article-summary">
               Big wins, ugly pitching lines, undefeated teams, and a full matchup-by-matchup rundown from the latest
