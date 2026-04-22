@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -18,7 +19,9 @@
       --shadow: 0 14px 36px rgba(16, 24, 40, 0.08);
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
@@ -31,7 +34,7 @@
     .page {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 28px 18px 48px;
+      padding: 20px 14px 36px;
     }
 
     .top-banner {
@@ -46,18 +49,18 @@
     }
 
     .hero {
-      background: linear-gradient(135deg, rgba(8,59,136,0.95), rgba(11,94,215,0.88));
+      background: linear-gradient(135deg, rgba(8, 59, 136, 0.95), rgba(11, 94, 215, 0.88));
       color: white;
       border-radius: 24px;
-      padding: 36px 30px;
+      padding: 32px 24px;
       box-shadow: var(--shadow);
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
     .kicker {
       display: inline-block;
-      background: rgba(255,255,255,0.14);
-      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       padding: 7px 12px;
       border-radius: 999px;
       font-size: 0.8rem;
@@ -85,8 +88,8 @@
       border: 1px solid var(--border);
       border-radius: 22px;
       box-shadow: var(--shadow);
-      padding: 24px;
-      margin-bottom: 24px;
+      padding: 20px;
+      margin-bottom: 20px;
     }
 
     .section-title {
@@ -97,7 +100,7 @@
     .articles-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
+      gap: 16px;
     }
 
     .article-card {
@@ -107,9 +110,10 @@
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 18px;
-      padding: 20px;
+      padding: 18px;
       box-shadow: var(--shadow);
       transition: transform 0.18s ease, box-shadow 0.18s ease;
+      min-width: 0;
     }
 
     .article-card:hover {
@@ -157,7 +161,8 @@
       color: white;
       font-weight: 700;
       border-radius: 12px;
-      padding: 10px 14px;
+      padding: 12px 16px;
+      min-height: 44px;
     }
 
     .article-link:hover {
@@ -176,13 +181,84 @@
       margin-top: 8px;
     }
 
-    @media (max-width: 700px) {
+    @media (max-width: 900px) {
+      .page {
+        padding: 16px 12px 28px;
+      }
+
       .hero {
-        padding: 28px 22px;
+        padding: 26px 20px;
+        border-radius: 20px;
+      }
+
+      .section-card {
+        padding: 16px;
+        border-radius: 18px;
+      }
+
+      .articles-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .article-card {
+        padding: 16px;
+      }
+
+      .article-link {
+        display: block;
+        width: 100%;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .top-banner {
+        padding: 12px 14px;
+        border-radius: 14px;
+        font-size: 0.95rem;
+      }
+
+      .hero {
+        padding: 22px 16px;
+      }
+
+      .kicker {
+        font-size: 0.72rem;
+        padding: 6px 10px;
+      }
+
+      h1 {
+        font-size: clamp(1.8rem, 9vw, 2.4rem);
+      }
+
+      .deck {
+        font-size: 0.98rem;
+      }
+
+      .section-title {
+        font-size: 1.2rem;
+      }
+
+      .article-title {
+        font-size: 1.12rem;
+      }
+
+      .article-summary {
+        font-size: 0.96rem;
+      }
+
+      .tag-row {
+        gap: 6px;
+      }
+
+      .tag {
+        font-size: 0.74rem;
+        padding: 4px 8px;
       }
     }
   </style>
 </head>
+
 <body>
   <div class="page">
     <div class="top-banner">UTI Fantasy Baseball — Weekly Articles Hub</div>
@@ -191,7 +267,8 @@
       <div class="kicker">League Newsroom</div>
       <h1>Fantasy Baseball Recaps, Power Rankings, and Weekly Chaos</h1>
       <p class="deck">
-        This page is your main article hub. Add a new card each week and link it to that week’s HTML file so everyone in the league can browse all recaps in one place.
+        This page is your main article hub. Add a new card each week and link it to that week’s HTML file so everyone in
+        the league can browse all recaps in one place.
       </p>
     </section>
 
@@ -204,7 +281,8 @@
             <div class="article-meta">Week 3 • Matchup Recap</div>
             <h3 class="article-title">Week 3 Recap: Blowouts Everywhere</h3>
             <p class="article-summary">
-              Big wins, ugly pitching lines, undefeated teams, and a full matchup-by-matchup rundown from the latest week in UTI fantasy baseball.
+              Big wins, ugly pitching lines, undefeated teams, and a full matchup-by-matchup rundown from the latest
+              week in UTI fantasy baseball.
             </p>
             <div class="tag-row">
               <span class="tag">Weekly Recap</span>
@@ -222,7 +300,8 @@
             <div class="article-meta">Week 2 • Placeholder</div>
             <h3 class="article-title">Week 2 Recap</h3>
             <p class="article-summary">
-              Drop in your Week 2 summary here. Replace this text with a short teaser so people know what happened that week.
+              Drop in your Week 2 summary here. Replace this text with a short teaser so people know what happened that
+              week.
             </p>
             <div class="tag-row">
               <span class="tag">Archive</span>
@@ -239,7 +318,8 @@
             <div class="article-meta">Week 1 • Placeholder</div>
             <h3 class="article-title">Week 1 Recap</h3>
             <p class="article-summary">
-              Use this card for your opening-week article, season launch notes, or a recap of the first big matchup slate.
+              Use this card for your opening-week article, season launch notes, or a recap of the first big matchup
+              slate.
             </p>
             <div class="tag-row">
               <span class="tag">Archive</span>
@@ -260,7 +340,8 @@
           <div>
             <h3 class="article-title">1. Create a new weekly file</h3>
             <p class="article-summary">
-              Save each recap as its own HTML file, like <strong>week4.html</strong>, <strong>week5.html</strong>, and so on.
+              Save each recap as its own HTML file, like <strong>week4.html</strong>, <strong>week5.html</strong>, and
+              so on.
             </p>
           </div>
         </article>
@@ -269,7 +350,8 @@
           <div>
             <h3 class="article-title">2. Add a new card here</h3>
             <p class="article-summary">
-              Copy one of the article cards above, update the title, summary, and link, then paste it at the top of the list.
+              Copy one of the article cards above, update the title, summary, and link, then paste it at the top of the
+              list.
             </p>
           </div>
         </article>
@@ -288,4 +370,5 @@
     <div class="footer-note">Built as a homepage for multiple UTI fantasy baseball articles.</div>
   </div>
 </body>
+
 </html>
