@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fantasy Baseball Weekly Recap</title>
+    <style>
+        :root {
+            --bg: #eef2f7;
+            --card: #ffffff;
+            --text: #17212b;
+            --muted: #5f6b7a;
+            --accent: #0b5ed7;
+            --accent-dark: #083b88;
+            --border: #d9e1ea;
+            --soft: #f7f9fc;
+            --gold: #f5b301;
+            --green: #198754;
+            --red: #c92a2a;
+            --shadow: 0 14px 36px rgba(16, 24, 40, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(180deg, #f4f7fb 0%, #eef2f7 100%);
+            color: var(--text);
+            line-height: 1.65;
+        }
+
+        .page {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 28px 18px 48px;
+        }
+
+        .top-banner {
+            background: linear-gradient(90deg, var(--accent-dark), var(--accent));
+            color: #fff;
+            border-radius: 18px;
+            padding: 14px 18px;
+            box-shadow: var(--shadow);
+            margin-bottom: 22px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        .hero {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            margin-bottom: 24px;
+        }
+
+        .hero-header {
+            padding: 34px 30px 28px;
+            background:
+                linear-gradient(135deg, rgba(8, 59, 136, 0.95), rgba(11, 94, 215, 0.88)),
+                url('https://images.unsplash.com/photo-1471295253337-3ceaaedca402?auto=format&fit=crop&w=1600&q=80') center/cover;
+            color: white;
+        }
+
+        .kicker {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.14);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 7px 12px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 14px;
+        }
+
+        h1 {
+            margin: 0 0 10px;
+            font-size: clamp(2rem, 4vw, 3.3rem);
+            line-height: 1.05;
+        }
+
+        .deck {
+            max-width: 860px;
+            font-size: 1.08rem;
+            opacity: 0.96;
+            margin: 0;
+        }
+
+        .hero-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            padding: 18px 30px;
+            background: #fff;
+            color: var(--muted);
+            border-top: 1px solid rgba(255, 255, 255, 0.12);
+            font-size: 0.95rem;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: minmax(0, 2.3fr) minmax(290px, 0.95fr);
+            gap: 24px;
+            align-items: start;
+        }
+
+        .main-column {
+            display: grid;
+            gap: 20px;
+        }
+
+        .section-card,
+        .sidebar {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            box-shadow: var(--shadow);
+        }
+
+        .intro-section {
+            padding: 26px;
+        }
+
+        .intro-section p {
+            margin: 0 0 16px;
+            font-size: 1.02rem;
+        }
+
+        .special-callout {
+            background: linear-gradient(135deg, #fff9e8, #fffdf6);
+            border: 1px solid #f1df9b;
+            border-left: 6px solid var(--gold);
+            padding: 18px;
+            border-radius: 16px;
+            margin-top: 18px;
+        }
+
+        .special-callout strong {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.02rem;
+        }
+
+        .matchup-card {
+            padding: 24px;
+        }
+
+        .matchup-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 16px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .matchup-title {
+            margin: 0;
+            font-size: 1.42rem;
+            line-height: 1.2;
+        }
+
+        .score-pill {
+            white-space: nowrap;
+            background: #edf4ff;
+            color: var(--accent-dark);
+            border: 1px solid #cfe0ff;
+            border-radius: 999px;
+            padding: 8px 12px;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        .winner-line {
+            font-size: 0.95rem;
+            color: var(--muted);
+            margin-top: 6px;
+        }
+
+        .matchup-card p {
+            margin: 0 0 14px;
+        }
+
+        .tone-box {
+            background: var(--soft);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 14px 16px;
+            margin-top: 8px;
+            color: #334155;
+        }
+
+        .sidebar {
+            padding: 22px;
+            position: sticky;
+            top: 18px;
+        }
+
+        .sidebar-section {
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-section:last-child {
+            padding-bottom: 0;
+            margin-bottom: 0;
+            border-bottom: none;
+        }
+
+        .sidebar h3 {
+            margin: 0 0 12px;
+            font-size: 1.08rem;
+        }
+
+        .list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .list li {
+            padding: 10px 0;
+            border-bottom: 1px dashed var(--border);
+        }
+
+        .list li:last-child {
+            border-bottom: none;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-right: 8px;
+        }
+
+        .badge-green {
+            background: #dcfce7;
+            color: var(--green);
+        }
+
+        .badge-red {
+            background: #fee2e2;
+            color: var(--red);
+        }
+
+        .footer-note {
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.92rem;
+            margin-top: 22px;
+        }
+
+        @media (max-width: 900px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            .matchup-head {
+                flex-direction: column;
+            }
+
+            .score-pill {
+                white-space: normal;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page">
+        <div class="top-banner">UTI WHAT IS FREAKING COOKIN BABYYYYYYY!!!!!!!!!!!!!!!</div>
+
+        <section class="hero">
+            <div class="hero-header">
+                <div class="kicker">Fantasy Baseball Weekly Recap</div>
+                <h1>Week 5 Recap: Separation Season Begins</h1>
+                <p class="deck">
+                    Blowouts continue everywhere — the top teams are rolling, and the bottom teams are just trying to
+                    survive.
+                </p>
+            </div>
+            <div class="hero-meta">
+                <span><strong>By:</strong> Gunnarrhea</span>
+                <span><strong>Week:</strong> 5</span>
+                <span><strong>Feature:</strong> Matchup-by-matchup recap</span>
+            </div>
+        </section>
+
+        <div class="layout">
+            <div class="main-column">
+
+                <section class="section-card intro-section">
+                    <p>
+                        <b>Week 5</b> This week didn’t just have winners and losers, it had straight-up statements.
+                        From dominant blowouts to historic near-sweeps, the gap between the top teams and the rest of
+                        the league is starting to look massive. If this week proved anything, it’s that some teams are
+                        hitting their stride… and others are getting left behind fast.
+                        Before we get into the
+                        matchup recaps, we have to hand out the weekly hardware.
+                    </p>
+
+                    <div class="special-callout">
+                        <strong>Weekly 5 Weekly Category Winner</strong>
+                        The Week 5 category winner is going to be the undefeated <b>Me So Heorny</b> with <b>7 Quality
+                            Starts</b>. Congrats!! Thats 25 bones
+                        <br /><br />
+                        <strong>New Weekly Category:</strong> WHIP
+                    </div>
+
+
+                </section>
+
+                <section class="section-card matchup-card">
+                    <div class="matchup-head">
+                        <div>
+                            <h2 class="matchup-title">Goodyear Gila Monsters vs Dixon Cider </h2>
+                            <div class="winner-line">Result: Revenge game? Not even close — Goodyear turned a “rivalry”
+                                into a walkthrough.</div>
+                        </div>
+                        <div class="score-pill">Goodyear Gila Monsters 14 – 2 Dixon Cider</div>
+                    </div>
+
+                    <p>
+                        The last time the Goodyear Gila Monsters faced Dixon Cider was in the 2025 Semifinals, where
+                        Dixon escaped with an absolute nail-biter. Coming into this week’s matchup, you’d expect another
+                        clash between two heavyweights. But let’s call it what it was — a public execution.
+                    </p>
+                    <p>
+                        Category by category, it doesn’t even look like a complete blowout at first glance. Dixon Cider
+                        was competitive across the board and hung around in most areas. But somehow, none of it actually
+                        mattered and Goodyear knew it as he didn't even have to break a sweat, cruising to an EASY 14–2
+                        win like they
+                        were playing The Show on rookie mode.
+                    </p>
+
+                    <p>
+                        Dixon Cider must’ve been too busy soaking up that Arizona sun. Out there hunting Gila
+                        Monsters in Phoenix when she should’ve been focused on the one that mattered, the one waiting
+                        in Goodyear. And by the time she realized what was happening, the matchup was already long gone.
+                        This loss had
+                        the rest of the league wondering if Dixon’s
+                        team got left at the airport with the luggage.
+                    </p>
+                    <div class="tone-box">
+                        <strong>League takeaway:</strong> This wasn’t a loss — it was a reality check. Dixon Cider
+                        showed up expecting a fight and left with a reminder that close doesn’t count when you’re still
+                        getting buried 14–2.
+                    </div>
+                </section>
+
+                <section class="section-card matchup-card">
+                    <div class="matchup-head">
+                        <div>
+                            <h2 class="matchup-title">John's Super Team vs You Don't Know Bo</h2>
+                            <div class="winner-line">Result: This wasn’t a win, it was a full-blown humiliation, and Bo
+                                was just there to witness it
+                            </div>
+                        </div>
+                        <div class="score-pill">John's Super Team 15.5 – 0.5 You Don't Know Bo</div>
+                    </div>
+
+                    <p>
+                        You’d think a 14–2 blowout would be the worst of the week, but not even close. We were this
+                        close to witnessing history as John’s Super Penis absolutely embarrassed the 2025 GM of the
+                        Year,
+                        You Don’t Know Bo, with a brutal 15.5–0.5 dismantling. We we're one steal away from a clean
+                        sweep
+                    </p>
+
+                    <p>
+                        John’s Super Penis went insane on both sides of the ball, putting up ridiculous numbers and
+                        leading
+                        the league in nearly every hitting and pitching category this week. Pitching at least showed a
+                        pulse of competition from Bo, but hitting? Total domination.
+                    </p>
+
+                    <p> This stopped being competitive after the first day of the week and started feeling like Bo
+                        accidentally set his lineup on autopilot and walked away. Every category looked like a mismatch,
+                        every stat tilting far left in Johnboys favor, something John's Super Penis is very used to, and
+                        there was never a
+                        moment where it felt remotely in
+                        doubt. When your opponent is one stat away from perfection, that’s
+                        not bad luck, that’s getting completely outclassed in every possible way. And somehow, this
+                        disaster keeps Bo firmly in the winless column — still searching for that first W while the rest
+                        of the league (except This Is Mizerable) laps him.</p>
+                    <div class="tone-box">
+                        <strong>League takeaway:</strong> If there was any doubt about who’s setting the pace, John’s
+                        Super Team just proved it could be him. On the flip side, Bo isn’t just
+                        struggling… he’s becoming the matchup everyone circles when they need a confidence boost.
+                </section>
+
+                <section class="section-card matchup-card">
+                    <div class="matchup-head">
+                        <div>
+                            <h2 class="matchup-title">BB's Bold Team vs This is Mizerable</h2>
+                            <div class="winner-line">Result: Down all week and still walked it off — BB’s Bold Team knew
+                                the ending before Mizerable did.
+                            </div>
+                        </div>
+                        <div class="score-pill">BB's Bold Team 8.5 – 7.5 This is Mizerable</div>
+                    </div>
+
+                    <p>
+                        Holy shit, did anyone actually think This Is Mizerable was finally going to get their first win
+                        of the season?! If you did, you're retarded. At this point, Mizerable
+                        blowing a lead is as predictable as the sun coming up.
+                    </p>
+                    <p>
+                        They held the lead the entire week against the second-place BB’s Bold Team… and somehow it still
+                        felt like it was never really theirs. BB didn’t panic and just sat back knowing
+                        Sunday would come around and the collapse would take care of itself. And right on cue, it did.
+                        The BTA Boys have seen this save movie last week, right Bramboozler?
+                    </p>
+
+                    <p>
+                        At this point, it’s not even a choke — it’s a weekly routine. Mizerable builds just enough hope
+                        to make it interesting, then pulls the rug out in spectacular fashion. Leads don’t feel like
+                        advantages anymore, they feel like countdown timers. And until they prove otherwise, every close
+                        matchup is just another episode of “how are they going to lose this one?”
+                    </p>
+
+                    <div class="tone-box">
+                        <strong>League takeaway:</strong> BB just proved they don’t need a fast start to beat anyone —
+                        they’ll hang around and let you beat yourself. Meanwhile, Mizerable isn’t just winless… they’re
+                        inventing new ways to lose every single week.
+                    </div>
+                </section>
+
+                <section class="section-card matchup-card">
+                    <div class="matchup-head">
+                        <div>
+                            <h2 class="matchup-title">Mactown MacDaddies vs Gunnarrhea</h2>
+                            <div class="winner-line">Result: First win unlocked. MacDaddies finally showed up.</div>
+                        </div>
+                        <div class="score-pill">Mactown MacDaddies 9 – 7 Gunnarrhea</div>
+                    </div>
+
+                    <p>
+                        Stupid Mactown MacDaddies finally decided to pick up some new pitching this week and surprise,
+                        surprise, look what happened. They dodged a nasty case of Gunnarrhea and took down the commish
+                        9–7 to grab their first win of the season. It might sting, but credit where it’s due… they
+                        finally got on the board. Cheers fuckface
+                    </p>
+
+                    <p>
+                        Those pitching pickups paid off immediately. MacDaddies rolled out a solid 3.78 ERA with 6 wins
+                        and 3 losses, while Gunnarrhea’s staff stayed painfully mid, 86 innings, just 3 wins to 8
+                        losses, and a 4.50 ERA. And the struggles don’t stop there. Gunnarrhea’s offense continues to
+                        live at the bottom of the barrel, consistently putting up some of the worst hitting numbers in
+                        the league, especially when it comes to strikeouts, where they manage to lead the
+                        league every single week. Life is misery
+                    </p>
+                    <p>
+                        At this point, Gunnarrhea feels like a weekly slump-buster for
+                        whoever’s on the schedule. Right now, there is no edge, no consistency, and definitely no fear
+                        factor, just
+                        a lineup that finds new ways to fall flat and a pitching staff that can’t hold anything
+                        together. When your opponent makes a couple waiver moves and instantly looks like a contender
+                        against you, that’s not bad timing… that’s a full-on identity crisis. But be warned, the league
+                        will fear the name Gunnarrhea soon!!!
+                    </p>
+                    <div class="tone-box">
+                        <strong>League takeaway:</strong> The pitching moves worked, and if MacDaddies build on this,
+                        they might actually claw back into relevance. As for Gunnarrhea, this is becoming less of a
+                        slump and more of a season-long trend, and right now, they’re exactly the team everyone hopes
+                        to face.
+                    </div>
+                </section>
+
+                <section class="section-card matchup-card">
+                    <div class="matchup-head">
+                        <div>
+                            <h2 class="matchup-title">Me So Heorny vs BTA Boyz</h2>
+                            <div class="winner-line">Result: Undefeated and unbothered — Me So Heorny is running through
+                                the league like it’s practice.</div>
+                        </div>
+                        <div class="score-pill">Me So Heorny 12 – 4 BTA Boyz</div>
+                    </div>
+
+                    <p>
+                        Me So Heorny stays undefeated with another easy rollover, taking down the BTA Boyz 12–4. They
+                        continue to dominate on both sides of the ball, putting up elite numbers across the board as
+                        they post a
+                        .300 AVG (league leading), 13 home runs, 52 runs, and 47 RBIs at the plate, paired with 72
+                        innings
+                        pitched, a 3.13 ERA, 85 strikeouts, a .231 BAA, and a league-best 7 quality starts. Just an
+                        all-around powerhouse performance.
+                    </p>
+                    <p>
+                        And somehow… all of that dominance was wasted on a BTA Boyz team that looks like it’s back in
+                        the good old days of forgetting to set a lineup. There was no resistance, no pushback, just 4
+                        home runs, 30 runs, and 27 RBIs offensively, backed by Gunnarrhea pitching numbers:
+                        74 IP, a lucky 6.66 ERA, 1.64 WHIP, 2 wins, 7 losses, and a .293 BAA.
+
+                    </p>
+
+                    <p>At this point, BTA Boyz aren’t even making teams earn wins, they’re handing them out. When an
+                        undefeated squad rolls in and barely has to try, that’s not just a mismatch, that’s a free week.
+                        If this is the version of BTA we’re getting, the rest of the league might want to start circling
+                        those matchups</p>
+                    <div class="tone-box">
+                        <strong>League takeaway:</strong> Me So Heorny continues to separate from the pack as the clear
+                        team to beat, stacking elite production across every category. Meanwhile, BTA Boyz aren’t just
+                        losing — they’re turning into one of league’s easiest matchup, nnd that is saying A LOT!
+                    </div>
+                </section>
+
+
+            </div>
+
+            <aside class="sidebar">
+                <div class="sidebar-section">
+                    <h3>Week 4 Headlines</h3>
+                    <ul class="list">
+                        <li><span class="badge badge-green">Hot</span>
+                            <div> Me So Heorny <b>(W4)</b></div>
+                            <div> John's Super Team <b>(W4)</b></div>
+                            <div> Goodyear Gila Monsters <b>(W2)</b></div>
+                            <div> Mactown MacDaddies <b>(W1)</b></div>
+                            <div> BB's Bold Team <b>(W1)</b></div>
+                        </li>
+                        <li><span class="badge badge-red">Cold</span>
+                            <div> This is Mizerable <b>(L5)</b></div>
+                            <div> You Don't Know Bo <b>(L4)</b></div>
+                            <div> BTA Boys <b>(L2)</b></div>
+                            <div> Dixon Cider <b>(L1)</b></div>
+                            <div> Gunnarrhea <b>(L1)</b></div>
+                        </li>
+                        <li><span class="badge badge-red">Concern</span><b>You Don't Know Bo</b> Still winless and just
+                            got
+                            obliterated 15.5–0.5. At this point it’s not bad luck — it’s a pattern. Until something
+                            changes, every matchup looks like a guaranteed L.<b>This is Mizerable</b> Blowing a
+                            full-week lead isn’t just a tough loss — it’s becoming their identity. They can compete, but
+                            closing is a completely different story, and right now they just don’t have it.
+                            182 TBs.</li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3>Undefeated Watch</h3>
+                    <ul class="list">
+                        <li><strong>Me So Heorny</strong></li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3>Home Run Leaders</h3>
+                    <ul class="list">
+                        <li>1) BB's Bold Team: 30</li>
+                        <li>2T) Dixon Cider: 29</li>
+                        <li>2T) Me So Heorny: 29</li>
+                        <li>4) Gunnarrhea: 24</li>
+                        <li>5) You Don't Know Bo: 23</li>
+                        <li>6) Mactown MacDaddies: 21</li>
+                        <li>7) BTA Boyz: 20</li>
+                        <li>9T) John's Super Team: 15</li>
+                        <li>9T) This is Mizerablke: 12</li>
+
+                    </ul>
+                </div>
+            </aside>
+        </div>
+
+        <div class="footer-note">UTI Fantasy Baseball is powered by Busch Light, Malort, and weekly shots from your
+            weekly losers.
+        </div>
+    </div>
+</body>
+
+</html>
