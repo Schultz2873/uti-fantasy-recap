@@ -268,6 +268,11 @@
       color: var(--warning);
     }
 
+    .mobile-player-meta,
+    .mobile-owner {
+      display: none;
+    }
+
     .owner-cell {
       min-width: 170px;
       font-weight: 800;
@@ -408,16 +413,21 @@
 
       tbody {
         display: grid;
-        gap: 12px;
+        gap: 10px;
       }
 
       tr {
+        display: grid;
+        grid-template-columns: 28px 52px 1fr;
+        gap: 6px 10px;
+        align-items: start;
         position: relative;
         border: 1px solid var(--border);
-        border-radius: 20px;
+        border-radius: 18px;
         background: rgba(255, 255, 255, .055);
+        padding: 12px;
         overflow: hidden;
-        box-shadow: 0 18px 40px rgba(0, 0, 0, .18);
+        box-shadow: 0 14px 30px rgba(0, 0, 0, .16);
       }
 
       tbody tr:hover {
@@ -425,72 +435,118 @@
       }
 
       td {
-        display: grid;
-        grid-template-columns: 120px 1fr;
-        gap: 12px;
-        align-items: center;
-        padding: 10px 14px;
-        border-bottom: 1px solid rgba(255, 255, 255, .07);
-      }
-
-      td::before {
-        content: attr(data-label);
-        color: var(--muted);
-        font-size: 11px;
-        font-weight: 900;
-        letter-spacing: .08em;
-        text-transform: uppercase;
-      }
-
-      td:last-child {
+        display: block;
+        padding: 0;
         border-bottom: none;
       }
 
-      .owned-toggle-cell {
-        grid-template-columns: 1fr auto;
-        text-align: left;
-        min-width: 0;
-        background: rgba(77, 163, 255, .08);
-      }
-
-      .owned-toggle-cell::before {
-        content: "Owned";
-      }
-
-      .owned-checkbox {
-        width: 22px;
-        height: 22px;
-      }
-
-      .rank {
-        width: auto;
-        font-size: 20px;
-      }
-
-      .player-cell {
-        min-width: 0;
-      }
-
-      .owner-cell {
-        min-width: 0;
-        text-align: left;
-      }
-
-      .available-badge {
-        justify-self: start;
-      }
-
-      .mobile-hide {
+      td::before {
         display: none;
       }
 
+      .owned-toggle-cell {
+        grid-column: 1;
+        grid-row: 1;
+        min-width: 0;
+        text-align: left;
+        background: transparent;
+        align-self: center;
+      }
+
+      .owned-toggle-cell::before {
+        content: "";
+      }
+
+      .owned-checkbox {
+        width: 20px;
+        height: 20px;
+      }
+
+      .rank {
+        grid-column: 2;
+        grid-row: 1;
+        width: auto;
+        font-size: 18px;
+        line-height: 38px;
+      }
+
+      td[data-label="Player"] {
+        grid-column: 3;
+        grid-row: 1;
+        min-width: 0;
+      }
+
       .player-cell {
+        min-width: 0;
         gap: 10px;
+        align-items: flex-start;
       }
 
       .avatar {
         width: 38px;
         height: 38px;
+        font-size: 13px;
+      }
+
+      .name {
+        font-size: 15px;
+        line-height: 1.15;
+      }
+
+      .sub {
+        display: none;
+      }
+
+      .mobile-player-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 800;
+        line-height: 1.2;
+      }
+
+      .mobile-player-meta span {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, .07);
+        border: 1px solid var(--border);
+        padding: 4px 7px;
+        white-space: nowrap;
+      }
+
+      .mobile-owner {
+        display: block;
+        margin-top: 7px;
+        font-size: 12px;
+        font-weight: 900;
+        line-height: 1.2;
+      }
+
+      .mobile-owner .owner-label {
+        color: var(--muted);
+        margin-right: 5px;
+        font-weight: 800;
+      }
+
+      .available-badge {
+        padding: 3px 7px;
+        font-size: 12px;
+      }
+
+      td[data-label="Position"],
+      td[data-label="Team"],
+      td[data-label="Level"],
+      td[data-label="ETA"],
+      td[data-label="Age"],
+      td[data-label="Height / Weight"],
+      td[data-label="Bats"],
+      td[data-label="Throws"],
+      td[data-label="Fantasy Team"] {
+        display: none;
       }
 
       tr.owned-row td:not(.owned-toggle-cell) {
@@ -503,8 +559,24 @@
         grid-template-columns: 1fr;
       }
 
-      td {
-        grid-template-columns: 100px 1fr;
+      tr {
+        grid-template-columns: 26px 48px 1fr;
+        padding: 11px;
+        gap: 6px 8px;
+      }
+
+      .avatar {
+        width: 34px;
+        height: 34px;
+      }
+
+      .rank {
+        font-size: 17px;
+        line-height: 34px;
+      }
+
+      .name {
+        font-size: 14px;
       }
     }
   </style>
@@ -666,6 +738,13 @@
                 <div>
                   <div class="name">${player.player}</div>
                   <div class="sub">${player.team}</div>
+                  <div class="mobile-player-meta">
+                    <span>${player.position}</span>
+                    <span>${player.team}</span>
+                    <span>${player.level}</span>
+                    <span>Age ${player.age}</span>
+                  </div>
+                  <div class="mobile-owner"><span class="owner-label">Fantasy:</span>${ownerContent}</div>
                 </div>
               </div>
             </td>
