@@ -407,6 +407,86 @@
       }
     }
 
+
+    .quick-nav {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+      margin: -4px 0 20px;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, .88);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 26px rgba(16, 24, 40, 0.08);
+    }
+
+    .quick-nav a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 8px 13px;
+      border-radius: 999px;
+      background: #edf4ff;
+      color: var(--accent-dark);
+      text-decoration: none;
+      font-size: 0.84rem;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .quick-nav a:hover {
+      background: var(--accent);
+      color: #ffffff;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .section-heading .section-title {
+      margin-bottom: 4px;
+    }
+
+    .section-subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .last-updated {
+      margin-top: 12px;
+      color: rgba(255, 255, 255, .84);
+      font-size: 0.92rem;
+      font-weight: 700;
+    }
+
+    .featured-recap-card {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 18px;
+      align-items: end;
+    }
+
+    .featured-recap-card .article-title {
+      font-size: clamp(1.45rem, 3vw, 2rem);
+    }
+
+    .featured-recap-card .article-summary {
+      max-width: 760px;
+    }
+
     .footer-note {
       text-align: center;
       color: var(--muted);
@@ -451,6 +531,18 @@
         display: block;
         width: 100%;
         text-align: center;
+      }
+
+      .quick-nav {
+        position: static;
+        justify-content: flex-start;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .featured-recap-card {
+        grid-template-columns: 1fr;
       }
     }
 
@@ -802,13 +894,22 @@
         This page is your main article hub. Add a new card each week and link it to that week’s HTML file so everyone in
         the league can browse all recaps in one place.
       </p>
+      <p class="last-updated">Last updated: Week 11 Recap • MLB weekly leaders update automatically</p>
     </section>
+
+    <nav class="quick-nav" aria-label="Homepage sections">
+      <a href="#mlb-weekly-leaders">MLB Leaders</a>
+      <a href="#fantasy-tools">Fantasy Tools</a>
+      <a href="#featured-recap">Featured Recap</a>
+      <a href="#latest-articles">More Recaps</a>
+    </nav>
+
     <section class="section-card" id="mlb-weekly-leaders">
       <div style="display:flex; justify-content:space-between; gap:12px; align-items:center; flex-wrap:wrap;">
         <div>
           <h2 class="section-title" style="margin-bottom:4px;">MLB Weekly Leaders</h2>
-          <p class="article-summary" style="margin-bottom:0;">
-            Week 12 category leaders.
+          <p class="section-subtitle">
+            Monday-Sunday MLB category leaders.
           </p>
         </div>
         <span class="tag" id="weeklyLeaderRange">Loading...</span>
@@ -821,10 +922,43 @@
       </div>
     </section>
 
-    <section class="section-card">
-      <h2 class="section-title">Latest Articles</h2>
-      <div class="articles-grid">
-        <article class="article-card featured">
+    <section class="section-card" id="fantasy-tools">
+      <div class="section-heading">
+        <div>
+          <h2 class="section-title">Fantasy Tools</h2>
+          <p class="section-subtitle">Dynasty resources and league tools that are actually useful.</p>
+        </div>
+      </div>
+      <div class="tools-grid">
+        <article class="tool-card">
+          <div>
+            <div class="article-meta">Prospect Rankings • Dynasty Resource</div>
+            <h3 class="article-title">MLB Top 100 Prospects</h3>
+            <p class="article-summary">
+              Search, filter, and sort the current Top 100 prospects by team, position, level, age, and ETA.
+            </p>
+            <div class="tag-row">
+              <span class="tag">Prospects</span>
+              <span class="tag">Dynasty</span>
+              <span class="tag">Top 100</span>
+              <span class="tag">Draft Prep</span>
+            </div>
+          </div>
+          <div class="tool-actions">
+            <a class="article-link" href="tools/mlb-top-100.html">View Top 100</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-card" id="featured-recap">
+      <div class="section-heading">
+        <div>
+          <h2 class="section-title">Featured Recap</h2>
+          <p class="section-subtitle">The newest recap gets the spotlight before the archive starts.</p>
+        </div>
+      </div>
+      <article class="article-card featured featured-recap-card">
           <div>
             <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
               <span
@@ -852,6 +986,16 @@
             <a class="article-link" href="2026/week11.html">Read Week 11</a>
           </div>
         </article>
+    </section>
+
+    <section class="section-card" id="latest-articles">
+      <div class="section-heading">
+        <div>
+          <h2 class="section-title">More Recaps</h2>
+          <p class="section-subtitle">Catch up on the latest weekly chaos from around the league.</p>
+        </div>
+      </div>
+      <div class="articles-grid">
         <article class="article-card featured">
           <div>
             <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
@@ -1079,29 +1223,7 @@
       </div>
 
     </section>
-    <section class="section-card">
-      <h2 class="section-title">Fantasy Tools</h2>
-      <div class="tools-grid">
-        <article class="tool-card">
-          <div>
-            <div class="article-meta">Prospect Rankings • Dynasty Resource</div>
-            <h3 class="article-title">MLB Top 100 Prospects</h3>
-            <p class="article-summary">
-              Search, filter, and sort the current Top 100 prospects by team, position, level, age, and ETA.
-            </p>
-            <div class="tag-row">
-              <span class="tag">Prospects</span>
-              <span class="tag">Dynasty</span>
-              <span class="tag">Top 100</span>
-              <span class="tag">Draft Prep</span>
-            </div>
-          </div>
-          <div class="tool-actions">
-            <a class="article-link" href="tools/mlb-top-100.html">View Top 100</a>
-          </div>
-        </article>
-      </div>
-    </section>
+
 
     <!-- <section class="section-card">
       <h2 class="section-title">How to Add a New Week</h2>
