@@ -480,6 +480,19 @@
         justify-self: start;
       }
 
+      .mobile-hide {
+        display: none;
+      }
+
+      .player-cell {
+        gap: 10px;
+      }
+
+      .avatar {
+        width: 38px;
+        height: 38px;
+      }
+
       tr.owned-row td:not(.owned-toggle-cell) {
         opacity: .52;
       }
@@ -659,11 +672,11 @@
             <td data-label="Position"><span class="pill">${player.position}</span></td>
             <td data-label="Team">${player.team}</td>
             <td data-label="Level"><span class="pill">${player.level}</span></td>
-            <td class="eta" data-label="ETA">${player.eta}</td>
+            <td class="eta mobile-hide" data-label="ETA">${player.eta}</td>
             <td data-label="Age">${player.age}</td>
-            <td data-label="Height / Weight">${player.heightWeight}</td>
-            <td data-label="Bats">${player.bats}</td>
-            <td data-label="Throws">${player.throws}</td>
+            <td class="mobile-hide" data-label="Height / Weight">${player.heightWeight}</td>
+            <td class="mobile-hide" data-label="Bats">${player.bats}</td>
+            <td class="mobile-hide" data-label="Throws">${player.throws}</td>
             <td class="owner-cell" data-label="Fantasy Team">${ownerContent}</td>
           </tr>
         `;
