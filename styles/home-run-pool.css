@@ -1,0 +1,118 @@
+.home-run-pool-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.home-run-card {
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: var(--shadow);
+}
+
+.home-run-card-leader {
+  border: 2px solid #cfe0ff;
+}
+
+.home-run-card-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.home-run-rank {
+  color: var(--accent-dark);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+}
+
+.home-run-team {
+  margin: 0;
+  font-size: 1.12rem;
+  line-height: 1.15;
+}
+
+.home-run-total {
+  min-width: 68px;
+  text-align: center;
+  border-radius: 16px;
+  padding: 10px;
+  background: #edf4ff;
+  color: var(--accent-dark);
+  border: 1px solid #cfe0ff;
+}
+
+.home-run-total strong {
+  display: block;
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.home-run-total span {
+  display: block;
+  margin-top: 3px;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+.home-run-player-list {
+  display: grid;
+  gap: 8px;
+}
+
+.home-run-player-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  border-radius: 12px;
+  padding: 9px 10px;
+  background: rgba(11, 94, 215, 0.06);
+  border: 1px solid rgba(11, 94, 215, 0.10);
+}
+
+.home-run-player-name {
+  font-weight: 850;
+  line-height: 1.15;
+}
+
+.home-run-player-team {
+  color: var(--muted);
+  font-size: 0.82rem;
+  margin-top: 2px;
+}
+
+.home-run-player-hr {
+  color: var(--accent-dark);
+  font-weight: 950;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.home-run-player-missing {
+  opacity: .62;
+}
+
+.home-run-player-missing .home-run-player-team {
+  color: #9a3412;
+}
+
+@media (max-width: 520px) {
+  .home-run-pool-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .home-run-card {
+    padding: 14px;
+  }
+}
