@@ -591,15 +591,16 @@
         <div class="kicker">Prospect Rankings</div>
         <h1>MLB Top 100 Players</h1>
         <p class="deck">
-          A searchable, filterable rankings board with ownership tracking. Edit <strong>players-data.js</strong>
-          to update player info or fantasy team ownership.
+          A searchable, filterable rankings board with ownership tracking. Powered by Busch Light, Malort, and weekly
+          shots from your
+          weekly losers.
         </p>
       </div>
 
       <div class="summary-card" aria-label="Summary stats">
         <div class="stat">
-          <strong id="totalPlayers">100</strong>
-          <span>Showing</span>
+          <strong id="availablePlayers">0</strong>
+          <span>Available</span>
         </div>
         <div class="stat">
           <strong id="teamCount">0</strong>
@@ -670,12 +671,21 @@
     const positionFilter = document.getElementById("positionFilter");
     const levelFilter = document.getElementById("levelFilter");
     const availabilityFilter = document.getElementById("availabilityFilter");
+
     function getDefaultOwned(player) {
       return Boolean(player.fantasyTeam && player.fantasyTeam.trim().toLowerCase() !== "available");
     }
 
+    // This keeps checkbox changes live on the page.
+    // Initial values still come from fantasyTeam in players-data.js:
+    // "Available" = unchecked, any team name = checked.
+    const ownedState = new Map(
+      players.map(player => [String(player.rank), getDefaultOwned(player)])
+    );
+
     function isPlayerOwned(player) {
-      return getDefaultOwned(player);
+      const key = String(player.rank);
+      return ownedState.has(key) ? ownedState.get(key) : getDefaultOwned(player);
     }
 
     function initials(name) {
@@ -763,14 +773,18 @@
 
       document.querySelectorAll(".owned-checkbox").forEach(checkbox => {
         checkbox.addEventListener("change", event => {
-          const row = event.target.closest("tr");
+          const rank = event.target.dataset.rank;
           const checked = event.target.checked;
-          row.classList.toggle("owned-row", checked);
+          ownedState.set(String(rank), checked);
+          renderPlayers();
         });
       });
 
       emptyState.style.display = filteredPlayers.length ? "none" : "block";
-      document.getElementById("totalPlayers").textContent = filteredPlayers.length;
+
+      // Available count is based on how many currently filtered players are NOT checked.
+      const availableCount = filteredPlayers.filter(player => !isPlayerOwned(player)).length;
+      document.getElementById("availablePlayers").textContent = availableCount;
     }
 
     fillSelect(teamFilter, uniqueValues("team"));
