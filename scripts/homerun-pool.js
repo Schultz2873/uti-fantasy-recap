@@ -80,13 +80,23 @@ function buildHomeRunPoolStandings(homeRunLookup) {
   }).sort((a, b) => b.totalHomeRuns - a.totalHomeRuns || a.fantasyTeam.localeCompare(b.fantasyTeam));
 }
 
-function renderHomeRunPool(standings) {
-  const grid = document.getElementById("homeRunPoolGrid");
-  const updatedAt = document.getElementById("homeRunPoolUpdatedAt");
+function getHomeRunPoolLimit(grid) {
+  const isPreviewGrid =
+    grid.classList.contains("home-run-pool-grid-preview") ||
+    Boolean(grid.closest(".home-run-pool-preview"));
 
-  if (!grid) return;
+  if (isPreviewGrid) {
+    return Number(grid.dataset.limit || 3);
+  }
 
-  grid.innerHTML = standings.map((team, index) => `
+  return Number(grid.dataset.limit || 0);
+}
+
+function renderHomeRunPoolGrid(grid, standings) {
+  const limit = getHomeRunPoolLimit(grid);
+  const visibleStandings = limit > 0 ? standings.slice(0, limit) : standings;
+
+  grid.innerHTML = visibleStandings.map((team, index) => `
     <article class="home-run-card ${index === 0 ? "home-run-card-leader" : ""}">
       <div class="home-run-card-top">
         <div>
@@ -112,6 +122,15 @@ function renderHomeRunPool(standings) {
       </div>
     </article>
   `).join("");
+}
+
+function renderHomeRunPool(standings) {
+  const grids = document.querySelectorAll("#homeRunPoolGrid, [data-home-run-pool-grid]");
+  const updatedAt = document.getElementById("homeRunPoolUpdatedAt");
+
+  if (!grids.length) return;
+
+  grids.forEach(grid => renderHomeRunPoolGrid(grid, standings));
 
   if (updatedAt) {
     updatedAt.textContent = `Updated ${new Date().toLocaleTimeString("en-US", {
