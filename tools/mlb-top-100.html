@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MLB Top 100 Players</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --card: #121a33;
+      --card-2: #17213d;
+      --text: #f5f7fb;
+      --muted: #9aa7bd;
+      --border: rgba(255, 255, 255, .10);
+      --accent: #4da3ff;
+      --good: #35d399;
+      --warning: #fbbf24;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(77, 163, 255, .22), transparent 32rem),
+        radial-gradient(circle at top right, rgba(53, 211, 153, .12), transparent 26rem),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .page {
+      width: min(1280px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 56px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+      color: var(--text);
+      text-decoration: none;
+      background: rgba(255, 255, 255, .07);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .back-link:hover {
+      border-color: rgba(77, 163, 255, .75);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: end;
+      margin-bottom: 24px;
+    }
+
+    .kicker {
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: .16em;
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(32px, 5vw, 64px);
+      line-height: .95;
+      letter-spacing: -0.05em;
+    }
+
+    .deck {
+      margin: 14px 0 0;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.55;
+    }
+
+    .summary-card {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(100px, 1fr));
+      gap: 12px;
+      min-width: 360px;
+    }
+
+    .stat {
+      background: rgba(255, 255, 255, .06);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 16px;
+      text-align: center;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, .18);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .stat span {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .09em;
+      font-weight: 700;
+    }
+
+    .controls {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: grid;
+      grid-template-columns: 1fr 180px 180px 150px 170px;
+      gap: 12px;
+      padding: 14px;
+      margin-bottom: 18px;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: rgba(11, 16, 32, .88);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, .20);
+    }
+
+    input,
+    select {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      color: var(--text);
+      background: rgba(255, 255, 255, .07);
+      padding: 12px 13px;
+      outline: none;
+      font-size: 14px;
+    }
+
+
+
+    select option {
+      color: #17212b;
+      background: #ffffff;
+    }
+
+    input::placeholder {
+      color: #71809a;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: rgba(77, 163, 255, .75);
+      box-shadow: 0 0 0 4px rgba(77, 163, 255, .12);
+    }
+
+    .table-wrap {
+      max-height: calc(100vh - 170px);
+      overflow: auto;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: rgba(255, 255, 255, .04);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, .22);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1120px;
+    }
+
+    thead {
+      background: #111932;
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+      z-index: 6;
+      text-align: left;
+      color: #c8d4e7;
+      background: #111932;
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 16px 14px;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, .07);
+      color: #e9eef8;
+      vertical-align: middle;
+    }
+
+    tbody tr:hover {
+      background: rgba(77, 163, 255, .08);
+    }
+
+    .rank {
+      width: 74px;
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--accent);
+    }
+
+    .player-cell {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 240px;
+    }
+
+    .avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      font-weight: 900;
+      color: #06111f;
+      background: linear-gradient(135deg, #4da3ff, #35d399);
+      box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .25);
+    }
+
+    .name {
+      font-weight: 850;
+      letter-spacing: -.02em;
+    }
+
+    .sub {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 2px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 46px;
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: rgba(255, 255, 255, .08);
+      border: 1px solid var(--border);
+      font-weight: 800;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .eta {
+      color: var(--warning);
+    }
+
+    .owner-cell {
+      min-width: 170px;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .available-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #35d399;
+      background: rgba(53, 211, 153, .10);
+      border: 1px solid rgba(53, 211, 153, .25);
+      border-radius: 8px;
+      padding: 4px 8px;
+      font-weight: 900;
+      line-height: 1.2;
+    }
+
+    .owned-toggle-cell {
+      text-align: center;
+      min-width: 86px;
+    }
+
+    .owned-checkbox {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      accent-color: var(--accent);
+    }
+
+    tr.owned-row td:not(.owned-toggle-cell) {
+      text-decoration: line-through;
+      text-decoration-thickness: 2px;
+      opacity: .55;
+    }
+
+    tr.owned-row .avatar {
+      opacity: .45;
+      filter: grayscale(1);
+    }
+
+    .empty {
+      display: none;
+      text-align: center;
+      padding: 36px;
+      color: var(--muted);
+      border: 1px dashed var(--border);
+      border-radius: 22px;
+      margin-top: 18px;
+    }
+
+    @media (max-width: 900px) {
+      .page {
+        width: min(100% - 22px, 1280px);
+        padding-top: 22px;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .summary-card {
+        min-width: 0;
+      }
+
+      .controls {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        width: min(100% - 18px, 1280px);
+      }
+
+      .hero {
+        margin-bottom: 18px;
+      }
+
+      h1 {
+        font-size: 38px;
+      }
+
+      .deck {
+        font-size: 14px;
+      }
+
+      .summary-card {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+
+      .stat {
+        padding: 12px 8px;
+        border-radius: 14px;
+      }
+
+      .stat strong {
+        font-size: 22px;
+      }
+
+      .stat span {
+        font-size: 10px;
+      }
+
+      .controls {
+        position: static;
+        grid-template-columns: 1fr;
+        border-radius: 18px;
+      }
+
+      .table-wrap {
+        max-height: none;
+        overflow: visible;
+        border: none;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+      }
+
+      table,
+      thead,
+      tbody,
+      th,
+      td,
+      tr {
+        display: block;
+      }
+
+      table {
+        min-width: 0;
+      }
+
+      thead {
+        display: none;
+      }
+
+      tbody {
+        display: grid;
+        gap: 12px;
+      }
+
+      tr {
+        position: relative;
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        background: rgba(255, 255, 255, .055);
+        overflow: hidden;
+        box-shadow: 0 18px 40px rgba(0, 0, 0, .18);
+      }
+
+      tbody tr:hover {
+        background: rgba(255, 255, 255, .075);
+      }
+
+      td {
+        display: grid;
+        grid-template-columns: 120px 1fr;
+        gap: 12px;
+        align-items: center;
+        padding: 10px 14px;
+        border-bottom: 1px solid rgba(255, 255, 255, .07);
+      }
+
+      td::before {
+        content: attr(data-label);
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 900;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+      }
+
+      td:last-child {
+        border-bottom: none;
+      }
+
+      .owned-toggle-cell {
+        grid-template-columns: 1fr auto;
+        text-align: left;
+        min-width: 0;
+        background: rgba(77, 163, 255, .08);
+      }
+
+      .owned-toggle-cell::before {
+        content: "Owned";
+      }
+
+      .owned-checkbox {
+        width: 22px;
+        height: 22px;
+      }
+
+      .rank {
+        width: auto;
+        font-size: 20px;
+      }
+
+      .player-cell {
+        min-width: 0;
+      }
+
+      .owner-cell {
+        min-width: 0;
+        text-align: left;
+      }
+
+      .available-badge {
+        justify-self: start;
+      }
+
+      tr.owned-row td:not(.owned-toggle-cell) {
+        opacity: .52;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .summary-card {
+        grid-template-columns: 1fr;
+      }
+
+      td {
+        grid-template-columns: 100px 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <a class="back-link" href="../index.html">← Back to UTI Hub</a>
+
+    <section class="hero">
+      <div>
+        <div class="kicker">Prospect Rankings</div>
+        <h1>MLB Top 100 Players</h1>
+        <p class="deck">
+          A searchable, filterable rankings board with ownership tracking. Edit <strong>players-data.js</strong>
+          to update player info or fantasy team ownership.
+        </p>
+      </div>
+
+      <div class="summary-card" aria-label="Summary stats">
+        <div class="stat">
+          <strong id="totalPlayers">100</strong>
+          <span>Showing</span>
+        </div>
+        <div class="stat">
+          <strong id="teamCount">0</strong>
+          <span>MLB Teams</span>
+        </div>
+        <div class="stat">
+          <strong id="youngestAge">0</strong>
+          <span>Youngest</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="controls" aria-label="Filters">
+      <input id="searchInput" type="search" placeholder="Search player, team, position, fantasy team..." />
+      <select id="teamFilter">
+        <option value="">All Teams</option>
+      </select>
+      <select id="positionFilter">
+        <option value="">All Positions</option>
+      </select>
+      <select id="levelFilter">
+        <option value="">All Levels</option>
+      </select>
+      <select id="availabilityFilter">
+        <option value="">All Players</option>
+        <option value="available">Top Available</option>
+        <option value="owned">Owned Players</option>
+      </select>
+    </section>
+
+    <section class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Owned</th>
+            <th>Rank</th>
+            <th>Player</th>
+            <th>Position</th>
+            <th>Team</th>
+            <th>Level</th>
+            <th>ETA</th>
+            <th>Age</th>
+            <th>Height / Weight</th>
+            <th>Bats</th>
+            <th>Throws</th>
+            <th>Fantasy Team</th>
+          </tr>
+        </thead>
+        <tbody id="playersBody"></tbody>
+      </table>
+    </section>
+
+    <div id="emptyState" class="empty">No players match those filters.</div>
+  </main>
+
+  <script src="players-data.js"></script>
+  <script>
+    const players = window.TOP_100_PLAYERS || [];
+
+    if (!players.length) {
+      console.error("No players loaded. Make sure players-data.js is in the same folder as this HTML file.");
+    }
+
+    const playersBody = document.getElementById("playersBody");
+    const emptyState = document.getElementById("emptyState");
+    const searchInput = document.getElementById("searchInput");
+    const teamFilter = document.getElementById("teamFilter");
+    const positionFilter = document.getElementById("positionFilter");
+    const levelFilter = document.getElementById("levelFilter");
+    const availabilityFilter = document.getElementById("availabilityFilter");
+    function getDefaultOwned(player) {
+      return Boolean(player.fantasyTeam && player.fantasyTeam.trim().toLowerCase() !== "available");
+    }
+
+    function isPlayerOwned(player) {
+      return getDefaultOwned(player);
+    }
+
+    function initials(name) {
+      return name.split(" ").filter(Boolean).slice(0, 2).map(part => part[0]).join("").toUpperCase();
+    }
+
+    function uniqueValues(key) {
+      return [...new Set(players.map(player => player[key]).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+    }
+
+    function fillSelect(select, values) {
+      values.forEach(value => {
+        const option = document.createElement("option");
+        option.value = value;
+        option.textContent = value;
+        select.appendChild(option);
+      });
+    }
+
+    function renderPlayers() {
+      const search = searchInput.value.trim().toLowerCase();
+      const selectedTeam = teamFilter.value;
+      const selectedPosition = positionFilter.value;
+      const selectedLevel = levelFilter.value;
+      const selectedAvailability = availabilityFilter.value;
+
+      const filteredPlayers = players.filter(player => {
+        const haystack = [
+          player.player, player.position, player.team, player.level, player.eta,
+          player.age, player.heightWeight, player.bats, player.throws,
+          player.fantasyTeam, isPlayerOwned(player) ? "owned" : "available"
+        ].join(" ").toLowerCase();
+
+        const owned = isPlayerOwned(player);
+
+        return (!search || haystack.includes(search))
+          && (!selectedTeam || player.team === selectedTeam)
+          && (!selectedPosition || player.position === selectedPosition)
+          && (!selectedLevel || player.level === selectedLevel)
+          && (!selectedAvailability
+            || (selectedAvailability === "available" && !owned)
+            || (selectedAvailability === "owned" && owned));
+      });
+
+      playersBody.innerHTML = filteredPlayers.map(player => {
+        const owned = isPlayerOwned(player);
+        const fantasyTeam = player.fantasyTeam || "Available";
+        const ownerContent = fantasyTeam.trim().toLowerCase() === "available"
+          ? `<span class="available-badge">Available</span>`
+          : fantasyTeam;
+        return `
+          <tr class="${owned ? 'owned-row' : ''}">
+            <td class="owned-toggle-cell" data-label="Owned">
+              <input class="owned-checkbox" type="checkbox" aria-label="Mark ${player.player} as owned" data-rank="${player.rank}" ${owned ? 'checked' : ''} />
+            </td>
+            <td class="rank" data-label="Rank">#${player.rank}</td>
+            <td data-label="Player">
+              <div class="player-cell">
+                <div class="avatar" aria-hidden="true">${initials(player.player)}</div>
+                <div>
+                  <div class="name">${player.player}</div>
+                  <div class="sub">${player.team}</div>
+                </div>
+              </div>
+            </td>
+            <td data-label="Position"><span class="pill">${player.position}</span></td>
+            <td data-label="Team">${player.team}</td>
+            <td data-label="Level"><span class="pill">${player.level}</span></td>
+            <td class="eta" data-label="ETA">${player.eta}</td>
+            <td data-label="Age">${player.age}</td>
+            <td data-label="Height / Weight">${player.heightWeight}</td>
+            <td data-label="Bats">${player.bats}</td>
+            <td data-label="Throws">${player.throws}</td>
+            <td class="owner-cell" data-label="Fantasy Team">${ownerContent}</td>
+          </tr>
+        `;
+      }).join("");
+
+      document.querySelectorAll(".owned-checkbox").forEach(checkbox => {
+        checkbox.addEventListener("change", event => {
+          const row = event.target.closest("tr");
+          const checked = event.target.checked;
+          row.classList.toggle("owned-row", checked);
+        });
+      });
+
+      emptyState.style.display = filteredPlayers.length ? "none" : "block";
+      document.getElementById("totalPlayers").textContent = filteredPlayers.length;
+    }
+
+    fillSelect(teamFilter, uniqueValues("team"));
+    fillSelect(positionFilter, uniqueValues("position"));
+    fillSelect(levelFilter, uniqueValues("level"));
+
+    document.getElementById("teamCount").textContent = uniqueValues("team").length;
+    document.getElementById("youngestAge").textContent = players.length ? Math.min(...players.map(player => Number(player.age))) : 0;
+
+    [searchInput, teamFilter, positionFilter, levelFilter, availabilityFilter].forEach(control => {
+      control.addEventListener("input", renderPlayers);
+      control.addEventListener("change", renderPlayers);
+    });
+
+    renderPlayers();
+  </script>
+</body>
+
+</html>
