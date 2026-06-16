@@ -91,10 +91,9 @@
     }
 
     .summary-card {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(100px, 1fr));
-      gap: 12px;
-      min-width: 360px;
+      display: flex;
+      justify-content: flex-end;
+      min-width: 150px;
     }
 
     .stat {
@@ -104,6 +103,7 @@
       padding: 16px;
       text-align: center;
       box-shadow: 0 12px 30px rgba(0, 0, 0, .18);
+      min-width: 150px;
     }
 
     .stat strong {
@@ -362,13 +362,13 @@
       }
 
       .summary-card {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 8px;
+        justify-content: flex-start;
       }
 
       .stat {
-        padding: 12px 8px;
+        padding: 12px 14px;
         border-radius: 14px;
+        min-width: 130px;
       }
 
       .stat strong {
@@ -555,10 +555,6 @@
     }
 
     @media (max-width: 430px) {
-      .summary-card {
-        grid-template-columns: 1fr;
-      }
-
       tr {
         grid-template-columns: 26px 48px 1fr;
         padding: 11px;
@@ -601,14 +597,6 @@
         <div class="stat">
           <strong id="availablePlayers">0</strong>
           <span>Available</span>
-        </div>
-        <div class="stat">
-          <strong id="teamCount">0</strong>
-          <span>MLB Teams</span>
-        </div>
-        <div class="stat">
-          <strong id="youngestAge">0</strong>
-          <span>Youngest</span>
         </div>
       </div>
     </section>
@@ -790,9 +778,6 @@
     fillSelect(teamFilter, uniqueValues("team"));
     fillSelect(positionFilter, uniqueValues("position"));
     fillSelect(levelFilter, uniqueValues("level"));
-
-    document.getElementById("teamCount").textContent = uniqueValues("team").length;
-    document.getElementById("youngestAge").textContent = players.length ? Math.min(...players.map(player => Number(player.age))) : 0;
 
     [searchInput, teamFilter, positionFilter, levelFilter, availabilityFilter].forEach(control => {
       control.addEventListener("input", renderPlayers);
