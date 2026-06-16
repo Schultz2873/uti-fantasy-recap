@@ -116,3 +116,128 @@
     padding: 14px;
   }
 }
+
+
+.home-run-pool-heading {
+  align-items: center;
+}
+
+.home-run-pool-link-wrap {
+  margin-top: 18px;
+}
+
+.home-run-pool-link-wrap .article-link {
+  text-align: center;
+}
+
+@media (max-width: 700px) {
+  .home-run-pool-preview .home-run-pool-grid {
+    gap: 10px;
+  }
+
+  .home-run-pool-preview .home-run-card {
+    padding: 12px;
+    border-radius: 16px;
+  }
+
+  .home-run-pool-preview .home-run-card-top {
+    margin-bottom: 8px;
+    align-items: center;
+  }
+
+  .home-run-pool-preview .home-run-rank {
+    font-size: 0.7rem;
+    margin-bottom: 2px;
+  }
+
+  .home-run-pool-preview .home-run-team {
+    font-size: 1rem;
+  }
+
+  .home-run-pool-preview .home-run-total {
+    min-width: 58px;
+    padding: 8px;
+    border-radius: 14px;
+  }
+
+  .home-run-pool-preview .home-run-total strong {
+    font-size: 1.45rem;
+  }
+
+  .home-run-pool-preview .home-run-total span {
+    font-size: 0.65rem;
+  }
+
+  .home-run-pool-preview .home-run-player-list {
+    gap: 5px;
+  }
+
+  .home-run-pool-preview .home-run-player-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    padding: 6px 8px;
+    border-radius: 10px;
+  }
+
+  .home-run-pool-preview .home-run-player-name {
+    font-size: 0.84rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .home-run-pool-preview .home-run-player-team {
+    display: none;
+  }
+
+  .home-run-pool-preview .home-run-player-hr {
+    font-size: 1rem;
+  }
+
+  .home-run-pool-link-wrap .article-link {
+    display: block;
+    width: 100%;
+  }
+}
+
+.home-run-page-table {
+  display: grid;
+  gap: 14px;
+}
+
+/* Hard fallback: the homepage preview should never show more than 3 teams,
+   even if an older cached script renders the full pool. */
+.home-run-pool-preview .home-run-pool-grid > .home-run-card:nth-of-type(n+4) {
+  display: none !important;
+}
+
+/* Back button for tool pages */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+  color: var(--text);
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  font-weight: 800;
+  box-shadow: 0 10px 24px rgba(16, 24, 40, 0.08);
+}
+
+.back-link:hover {
+  color: #ffffff;
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+@media (max-width: 520px) {
+  .back-link {
+    width: 100%;
+    justify-content: center;
+    min-height: 44px;
+  }
+}
