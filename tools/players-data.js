@@ -535,7 +535,7 @@ window.TOP_100_PLAYERS = [
     "heightWeight": "6' 0\" / 210 lbs",
     "bats": "L",
     "throws": "R",
-    "fantasyTeam": "Available"
+    "fantasyTeam": "Gunnarrhea"
   },
   {
     "rank": 42,
