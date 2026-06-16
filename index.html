@@ -299,6 +299,33 @@
       text-overflow: ellipsis;
     }
 
+
+
+    .leader-owner-line {
+      min-height: 34px;
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .fantasy-owner-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      max-width: 100%;
+      width: fit-content;
+      color: var(--accent-dark);
+      background: #edf4ff;
+      border: 1px solid #cfe0ff;
+      border-radius: 12px;
+      padding: 4px 8px;
+      font-size: 0.7rem;
+      font-weight: 900;
+      line-height: 1.15;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      text-align: center;
+    }
+
     .leader-tie {
       display: inline-flex;
       align-items: center;
@@ -595,6 +622,7 @@
 </head>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
 </script>
+<script src="data/fantasy-owners.js"></script>
 <script>
   const weeklyLeaderCategories = [
     { label: "HR", group: "hitting", stat: "homeRuns", type: "max" },
@@ -768,6 +796,31 @@
     return ((index % total) + total) % total;
   }
 
+
+  function normalizePlayerName(name) {
+    return String(name || "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[.'’]/g, "")
+      .replace(/\s+/g, " ")
+      .toLowerCase()
+      .trim();
+  }
+
+  function getFantasyOwnersLookup() {
+    return Object.fromEntries(
+      Object.entries(window.FANTASY_OWNERS || {}).map(([player, fantasyTeam]) => [
+        normalizePlayerName(player),
+        fantasyTeam
+      ])
+    );
+  }
+
+  function getFantasyOwner(playerName) {
+    const ownersLookup = getFantasyOwnersLookup();
+    return ownersLookup[normalizePlayerName(playerName)] || "";
+  }
+
   function renderLeaderCards(leaders) {
     const grid = document.getElementById("weeklyLeadersGrid");
 
@@ -777,6 +830,7 @@
       const hasTie = leader.tiedLeaders.length > 1;
       const currentIndex = safeIndex(leader.currentIndex || 0, leader.tiedLeaders.length || 1);
       const currentLeader = leader.tiedLeaders[currentIndex] || { name: leader.name, team: leader.team };
+      const fantasyOwner = getFantasyOwner(currentLeader.name);
       const tieText = formatTieCount(leader.tiedLeaders.length);
       const positionText = hasTie ? `${currentIndex + 1}/${leader.tiedLeaders.length}` : "";
 
@@ -788,6 +842,9 @@
           </div>
           <div class="leader-name">${currentLeader.name}</div>
           <div class="leader-team">${currentLeader.team}</div>
+          <div class="leader-owner-line">
+            ${fantasyOwner ? `<span class="fantasy-owner-badge">${fantasyOwner}</span>` : ""}
+          </div>
           <div class="leader-bottom-row">
             <div class="leader-value">${leader.value}</div>
             ${hasTie ? `
