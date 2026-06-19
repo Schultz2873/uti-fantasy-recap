@@ -35,9 +35,28 @@
 }
 
 .home-run-team {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
   margin: 0;
   font-size: 1.12rem;
   line-height: 1.15;
+}
+
+.home-run-team span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.home-run-team-logo {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex: 0 0 auto;
+  border: 2px solid rgba(11, 94, 215, 0.22);
+  background: #ffffff;
 }
 
 .home-run-total {
@@ -154,6 +173,11 @@
     font-size: 1rem;
   }
 
+  .home-run-team-logo {
+    width: 28px;
+    height: 28px;
+  }
+
   .home-run-pool-preview .home-run-total {
     min-width: 58px;
     padding: 8px;
@@ -209,35 +233,4 @@
    even if an older cached script renders the full pool. */
 .home-run-pool-preview .home-run-pool-grid > .home-run-card:nth-of-type(n+4) {
   display: none !important;
-}
-
-/* Back button for tool pages */
-.back-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 18px;
-  color: var(--text);
-  text-decoration: none;
-  background: rgba(255, 255, 255, 0.8);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 10px 14px;
-  font-size: 0.9rem;
-  font-weight: 800;
-  box-shadow: 0 10px 24px rgba(16, 24, 40, 0.08);
-}
-
-.back-link:hover {
-  color: #ffffff;
-  background: var(--accent);
-  border-color: var(--accent);
-}
-
-@media (max-width: 520px) {
-  .back-link {
-    width: 100%;
-    justify-content: center;
-    min-height: 44px;
-  }
 }

@@ -12,10 +12,185 @@
   </style> -->
   <link href="styles/styles.css" rel="stylesheet" />
   <link href="styles/home-run-pool.css" rel="stylesheet" />
+  <link href="styles/baseball-banner.css" rel="stylesheet" />
+  <style>
+    .leader-section-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .leader-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .leader-mode-toggle {
+      display: inline-flex;
+      gap: 6px;
+      padding: 4px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: #f7f9fc;
+    }
+
+    .leader-mode-btn {
+      border: 0;
+      background: transparent;
+      color: var(--accent-dark);
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 0.78rem;
+      font-weight: 900;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .leader-mode-btn.active {
+      background: var(--accent);
+      color: #ffffff;
+      box-shadow: 0 8px 18px rgba(11, 94, 215, 0.20);
+    }
+
+
+
+    .available-studs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .available-stud-card {
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+      min-width: 0;
+    }
+
+    .available-stud-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .available-stud-category {
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .available-stud-rank {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(25, 135, 84, 0.10);
+      border: 1px solid rgba(25, 135, 84, 0.22);
+      color: var(--green);
+      border-radius: 999px;
+      padding: 4px 8px;
+      font-size: 0.72rem;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .available-stud-name {
+      font-size: 1.05rem;
+      font-weight: 900;
+      line-height: 1.15;
+      margin-bottom: 4px;
+    }
+
+    .available-stud-team {
+      color: var(--muted);
+      font-size: 0.86rem;
+      margin-bottom: 12px;
+    }
+
+    .available-stud-bottom {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: end;
+    }
+
+    .available-stud-value {
+      font-size: 1.55rem;
+      font-weight: 900;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .available-stud-label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #198754;
+      background: rgba(25, 135, 84, 0.10);
+      border: 1px solid rgba(25, 135, 84, 0.22);
+      border-radius: 999px;
+      padding: 5px 9px;
+      font-size: 0.72rem;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 520px) {
+
+      .leader-section-header,
+      .leader-header-actions,
+      .leader-mode-toggle {
+        width: 100%;
+      }
+
+      .leader-header-actions {
+        justify-content: stretch;
+      }
+
+      .leader-mode-btn {
+        flex: 1;
+      }
+
+      #weeklyLeaderRange {
+        text-align: center;
+        width: 100%;
+      }
+
+      .available-studs-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .available-stud-card {
+        padding: 13px;
+      }
+
+      .available-stud-name {
+        font-size: 0.98rem;
+      }
+
+      .available-stud-value {
+        font-size: 1.35rem;
+      }
+
+    }
+  </style>
 </head>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
 </script>
 <script src="data/fantasy-owners.js"></script>
+<script src="data/team-logos.js"></script>
 <script src="data/homerun-pool.js"></script>
 <script>
   const weeklyLeaderCategories = [
@@ -23,11 +198,11 @@
     { label: "RBI", group: "hitting", stat: "rbi", type: "max" },
     { label: "Runs", group: "hitting", stat: "runs", type: "max" },
     { label: "Total Bases", group: "hitting", stat: "totalBases", type: "max" },
-    { label: "AVG", group: "hitting", stat: "avg", type: "max", decimals: 3, minStat: "atBats", minValue: 15 },
+    { label: "AVG", group: "hitting", stat: "avg", type: "max", decimals: 3, minStat: "atBats", minValue: 15, seasonMinValue: 100 },
     { label: "NSB", group: "hitting", custom: "nsb", type: "max" },
     { label: "K", group: "pitching", stat: "strikeOuts", type: "max" },
-    { label: "ERA", group: "pitching", stat: "era", type: "min", decimals: 2, minStat: "inningsPitched", minValue: 5 },
-    { label: "WHIP", group: "pitching", stat: "whip", type: "min", decimals: 3, minStat: "inningsPitched", minValue: 5 },
+    { label: "ERA", group: "pitching", stat: "era", type: "min", decimals: 2, minStat: "inningsPitched", minValue: 5, seasonMinValue: 40 },
+    { label: "WHIP", group: "pitching", stat: "whip", type: "min", decimals: 3, minStat: "inningsPitched", minValue: 5, seasonMinValue: 40 },
     { label: "SV+H", group: "pitching", custom: "svh", type: "max" }
   ];
 
@@ -94,6 +269,14 @@
     return Number(stat[category.stat]);
   }
 
+  function getMinimumValue(category) {
+    if (leaderRangeMode === "season" && typeof category.seasonMinValue === "number") {
+      return category.seasonMinValue;
+    }
+
+    return category.minValue;
+  }
+
   function passesMinimum(player, category) {
     if (!category.minStat) return true;
 
@@ -106,7 +289,7 @@
       value = Number(value || 0);
     }
 
-    return value >= category.minValue;
+    return value >= getMinimumValue(category);
   }
 
   function formatLeaderValue(value, category) {
@@ -143,8 +326,36 @@
     return data.stats?.[0]?.splits || [];
   }
 
+
+  function getCurrentSeason() {
+    return new Date().getFullYear();
+  }
+
+  async function fetchSeasonStats(group) {
+    const season = getCurrentSeason();
+    const url =
+      `https://statsapi.mlb.com/api/v1/stats` +
+      `?stats=season` +
+      `&group=${group}` +
+      `&playerPool=all` +
+      `&sportIds=1` +
+      `&gameType=R` +
+      `&season=${season}` +
+      `&limit=1000`;
+
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`Could not load ${group} season stats`);
+    }
+
+    const data = await response.json();
+    return data.stats?.[0]?.splits || [];
+  }
+
   const leaderRotationState = new Map();
   let weeklyLeadersCache = [];
+  let leaderRangeMode = "weekly";
 
   function findLeader(players, category) {
     const eligiblePlayers = players
@@ -191,23 +402,32 @@
   }
 
 
+  let fantasyOwnersLookupCache = null;
+
   function normalizePlayerName(name) {
     return String(name || "")
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "")
       .replace(/[.'’]/g, "")
+      .replace(/\b(jr|sr|ii|iii|iv|v)\b/gi, "")
       .replace(/\s+/g, " ")
       .toLowerCase()
       .trim();
   }
 
   function getFantasyOwnersLookup() {
-    return Object.fromEntries(
+    if (fantasyOwnersLookupCache) {
+      return fantasyOwnersLookupCache;
+    }
+
+    fantasyOwnersLookupCache = Object.fromEntries(
       Object.entries(window.FANTASY_OWNERS || {}).map(([player, fantasyTeam]) => [
         normalizePlayerName(player),
         fantasyTeam
       ])
     );
+
+    return fantasyOwnersLookupCache;
   }
 
   function getFantasyOwner(playerName) {
@@ -237,7 +457,12 @@
           <div class="leader-name">${currentLeader.name}</div>
           <div class="leader-team">${currentLeader.team}</div>
           <div class="leader-owner-line">
-            ${fantasyOwner ? `<span class="fantasy-owner-badge">${fantasyOwner}</span>` : ""}
+            ${fantasyOwner ? `
+              <span class="fantasy-owner-badge fantasy-owner-badge-with-thumb">
+                ${getTeamLogo(fantasyOwner) ? `<img src="${getTeamLogo(fantasyOwner)}" alt="${fantasyOwner}" class="owner-thumb">` : ""}
+                <span>${fantasyOwner}</span>
+              </span>
+            ` : ""}
           </div>
           <div class="leader-bottom-row">
             <div class="leader-value">${leader.value}</div>
@@ -268,6 +493,94 @@
     });
   }
 
+
+
+  function getSortedEligiblePlayers(players, category) {
+    return players
+      .filter(player => passesMinimum(player, category))
+      .map(player => ({
+        player,
+        value: getStatValue(player, category)
+      }))
+      .filter(item => Number.isFinite(item.value))
+      .sort((a, b) => {
+        return category.type === "min"
+          ? a.value - b.value
+          : b.value - a.value;
+      });
+  }
+
+  function renderAvailableStuds(hittingStats, pitchingStats) {
+    const grid = document.getElementById("availableStudsGrid");
+    const tag = document.getElementById("availableStudsModeTag");
+
+    if (!grid) return;
+
+    if (tag) {
+      tag.textContent = leaderRangeMode === "season" ? "Season" : "Weekly";
+    }
+
+    const candidateMap = new Map();
+
+    weeklyLeaderCategories.forEach(category => {
+      const source = category.group === "hitting" ? hittingStats : pitchingStats;
+      const sortedPlayers = getSortedEligiblePlayers(source, category);
+
+      sortedPlayers.slice(0, 10).forEach((item, index) => {
+        const name = item.player.player?.fullName || "N/A";
+        const owner = getFantasyOwner(name);
+
+        // If the player exists in fantasy-owners.js, they are NOT available.
+        if (owner) return;
+
+        const playerKey = normalizePlayerName(name);
+        const candidate = {
+          name,
+          team: item.player.team?.name || "",
+          category: category.label,
+          value: formatLeaderValue(item.value, category),
+          rank: index + 1
+        };
+
+        const existing = candidateMap.get(playerKey);
+        if (!existing || candidate.rank < existing.rank) {
+          candidateMap.set(playerKey, candidate);
+        }
+      });
+    });
+
+    const candidates = [...candidateMap.values()]
+      .sort((a, b) => a.rank - b.rank || a.category.localeCompare(b.category));
+
+    const studs = candidates.slice(0, 6);
+
+    if (!studs.length) {
+      grid.innerHTML = `
+        <article class="article-card">
+          <p class="article-summary">
+            No available top-10 category studs found right now. Apparently the league is actually paying attention for once.
+          </p>
+        </article>
+      `;
+      return;
+    }
+
+    grid.innerHTML = studs.map(stud => `
+      <article class="available-stud-card">
+        <div class="available-stud-top">
+          <div class="available-stud-category">${stud.category}</div>
+          <div class="available-stud-rank">#${stud.rank}</div>
+        </div>
+        <div class="available-stud-name">${stud.name}</div>
+        <div class="available-stud-team">${stud.team}</div>
+        <div class="available-stud-bottom">
+          <div class="available-stud-value">${stud.value}</div>
+          <span class="available-stud-label">Available</span>
+        </div>
+      </article>
+    `).join("");
+  }
+
   async function loadWeeklyLeaders() {
     const grid = document.getElementById("weeklyLeadersGrid");
     const rangeTag = document.getElementById("weeklyLeaderRange");
@@ -277,15 +590,30 @@
       return;
     }
 
-    const { startDate, endDate, start, end } = getWeeklyDateRange();
+    let hittingStats;
+    let pitchingStats;
 
-    rangeTag.textContent = `${displayDate(startDate)} - ${displayDate(endDate)}`;
+    if (leaderRangeMode === "season") {
+      const season = getCurrentSeason();
+      rangeTag.textContent = `${season} Season`;
+    } else {
+      const { startDate, endDate } = getWeeklyDateRange();
+      rangeTag.textContent = `${displayDate(startDate)} - ${displayDate(endDate)}`;
+    }
 
     try {
-      const [hittingStats, pitchingStats] = await Promise.all([
-        fetchWeeklyStats("hitting", start, end),
-        fetchWeeklyStats("pitching", start, end)
-      ]);
+      if (leaderRangeMode === "season") {
+        [hittingStats, pitchingStats] = await Promise.all([
+          fetchSeasonStats("hitting"),
+          fetchSeasonStats("pitching")
+        ]);
+      } else {
+        const { start, end } = getWeeklyDateRange();
+        [hittingStats, pitchingStats] = await Promise.all([
+          fetchWeeklyStats("hitting", start, end),
+          fetchWeeklyStats("pitching", start, end)
+        ]);
+      }
 
       weeklyLeadersCache = weeklyLeaderCategories.map(category => {
         const source = category.group === "hitting" ? hittingStats : pitchingStats;
@@ -318,26 +646,71 @@
       });
 
       renderLeaderCards(weeklyLeadersCache);
+      renderAvailableStuds(hittingStats, pitchingStats);
     } catch (error) {
       console.error(error);
 
       grid.innerHTML = `
         <article class="article-card">
           <p class="article-summary">
-            MLB weekly leaders could not load right now.
+            MLB category leaders could not load right now.
           </p>
         </article>
       `;
     }
   }
 
-  document.addEventListener("DOMContentLoaded", loadWeeklyLeaders);
+  function setupLeaderModeToggle() {
+    document.querySelectorAll("[data-leader-mode]").forEach(button => {
+      button.addEventListener("click", () => {
+        leaderRangeMode = button.dataset.leaderMode || "weekly";
+        weeklyLeadersCache = [];
+
+        document.querySelectorAll("[data-leader-mode]").forEach(modeButton => {
+          const isActive = modeButton.dataset.leaderMode === leaderRangeMode;
+          modeButton.classList.toggle("active", isActive);
+          modeButton.setAttribute("aria-pressed", String(isActive));
+        });
+
+        const grid = document.getElementById("weeklyLeadersGrid");
+        if (grid) {
+          grid.innerHTML = `
+            <article class="article-card">
+              <p class="article-summary">Loading category leaders...</p>
+            </article>
+          `;
+        }
+
+        const availableGrid = document.getElementById("availableStudsGrid");
+        if (availableGrid) {
+          availableGrid.innerHTML = `
+            <article class="article-card">
+              <p class="article-summary">Loading available studs...</p>
+            </article>
+          `;
+        }
+
+        loadWeeklyLeaders();
+      });
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    setupLeaderModeToggle();
+    loadWeeklyLeaders();
+  });
+
+  function getTeamLogo(teamName) {
+    return window.TEAM_LOGOS?.[teamName] || "";
+  }
 </script>
-<script src="scripts/homerun-pool.js?v=top3-hard-fix"></script>
+<script src="scripts/homerun-pool.js?v=logos"></script>
+<script src="data/team-logos.js"></script>
+<script src="data/fantasy-owners.js"></script>
 
 <body>
   <div class="page">
-    <div class="top-banner">UTI Fantasy Baseball — Weekly Articles Hub</div>
+    <div class="top-banner">UTI Fantasy Baseball HQ — Recaps, Leaders, HR Pool, and Weekly Chaos</div>
     <section class="hero">
       <div class="kicker">League Newsroom</div>
       <h1>Fantasy Baseball Recaps, Power Rankings, and Weekly Chaos</h1>
@@ -348,27 +721,58 @@
     </section>
     <nav aria-label="Homepage sections" class="quick-nav">
       <a href="#mlb-weekly-leaders">MLB Leaders</a>
+      <!-- <a href="#available-studs">Available Studs</a> -->
       <a href="#home-run-pool">HR Pool</a>
       <a href="#fantasy-tools">Fantasy Tools</a>
       <a href="#featured-recap">Featured Recap</a>
 
     </nav>
     <section class="section-card" id="mlb-weekly-leaders">
-      <div style="display:flex; justify-content:space-between; gap:12px; align-items:center; flex-wrap:wrap;">
+      <div class="leader-section-header">
         <div>
-          <h2 class="section-title" style="margin-bottom:4px;">MLB Weekly Leaders</h2>
+          <h2 class="section-title" style="margin-bottom:4px;">MLB Category Leaders</h2>
           <p class="section-subtitle">
-            Monday-Sunday MLB category leaders.
+            Switch between this week’s Monday-Sunday leaders and full-season leaders.
           </p>
         </div>
-        <span class="tag" id="weeklyLeaderRange">Loading...</span>
+        <div class="leader-header-actions">
+          <div class="leader-mode-toggle" aria-label="Leader range filter">
+            <button class="leader-mode-btn active" type="button" data-leader-mode="weekly"
+              aria-pressed="true">Weekly</button>
+            <button class="leader-mode-btn" type="button" data-leader-mode="season" aria-pressed="false">Season</button>
+          </div>
+          <span class="tag" id="weeklyLeaderRange">Loading...</span>
+        </div>
       </div>
       <div class="weekly-leaders-grid" id="weeklyLeadersGrid">
         <article class="article-card">
-          <p class="article-summary">Loading weekly leaders...</p>
+          <p class="article-summary">Loading category leaders...</p>
         </article>
       </div>
     </section>
+
+    <!-- <section class="section-card" id="available-studs">
+      <div class="leader-section-header">
+        <div>
+          <h2 class="section-title" style="margin-bottom:4px;">Available Studs</h2>
+          <p class="section-subtitle">
+            Unowned players sitting top 10 in a category. Switch between weekly and season studs.
+          </p>
+        </div>
+        <div class="leader-header-actions">
+          <div class="leader-mode-toggle" aria-label="Available studs range filter">
+            <button class="leader-mode-btn active" type="button" data-leader-mode="weekly" aria-pressed="true">Weekly</button>
+            <button class="leader-mode-btn" type="button" data-leader-mode="season" aria-pressed="false">Season</button>
+          </div>
+          <span class="tag" id="availableStudsModeTag">Weekly</span>
+        </div>
+      </div>
+      <div class="available-studs-grid" id="availableStudsGrid">
+        <article class="article-card">
+          <p class="article-summary">Loading available studs...</p>
+        </article>
+      </div>
+    </section> -->
     <section class="section-card home-run-pool-preview" id="home-run-pool">
       <div class="section-heading home-run-pool-heading">
         <div>

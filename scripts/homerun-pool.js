@@ -11,6 +11,21 @@ function normalizeHomeRunPoolName(name) {
     .trim();
 }
 
+
+function getHomeRunTeamLogo(teamName) {
+  const logoPath = window.TEAM_LOGOS?.[teamName];
+
+  if (!logoPath) {
+    return "";
+  }
+
+  const isInToolsFolder = window.location.pathname.includes("/tools/");
+
+  return isInToolsFolder && !logoPath.startsWith("../")
+    ? `../${logoPath}`
+    : logoPath;
+}
+
 function getCurrentSeason() {
   return new Date().getFullYear();
 }
@@ -74,6 +89,7 @@ function buildHomeRunPoolStandings(homeRunLookup) {
 
     return {
       fantasyTeam: team.fantasyTeam,
+      logo: getHomeRunTeamLogo(team.fantasyTeam),
       totalHomeRuns,
       players
     };
@@ -101,7 +117,10 @@ function renderHomeRunPoolGrid(grid, standings) {
       <div class="home-run-card-top">
         <div>
           <div class="home-run-rank">#${index + 1}</div>
-          <h3 class="home-run-team">${team.fantasyTeam}</h3>
+          <h3 class="home-run-team">
+            ${team.logo ? `<img src="${team.logo}" alt="${team.fantasyTeam}" class="home-run-team-logo">` : ""}
+            <span>${team.fantasyTeam}</span>
+          </h3>
         </div>
         <div class="home-run-total">
           <strong>${team.totalHomeRuns}</strong>

@@ -9,6 +9,15 @@ window.HOME_RUN_POOL = [
     ]
   },
   {
+    fantasyTeam: "You Don't Know Bo",
+    players: [
+      "Shohei Ohtani",
+      "Oneil Cruz",
+      "Rafael Devers",
+      "Corey Seager"
+    ]
+  },
+  {
     fantasyTeam: "Dixon Cider",
     players: [
       "Yordan Alvarez",
