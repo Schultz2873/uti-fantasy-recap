@@ -609,3 +609,22 @@
          padding: 4px 8px;
      }
  }
+
+ .fantasy-owner-badge-with-thumb {
+     display: inline-flex;
+     align-items: center;
+     gap: 6px;
+     white-space: normal;
+     overflow-wrap: anywhere;
+     text-align: left;
+ }
+
+ .fantasy-owner-badge-with-thumb .owner-thumb {
+     width: 22px;
+     height: 22px;
+     border-radius: 50%;
+     object-fit: cover;
+     flex: 0 0 auto;
+     border: 1px solid rgba(11, 94, 215, 0.25);
+     background: #ffffff;
+ }
