@@ -610,21 +610,79 @@
      }
  }
 
- .fantasy-owner-badge-with-thumb {
-     display: inline-flex;
-     align-items: center;
-     gap: 6px;
-     white-space: normal;
-     overflow-wrap: anywhere;
-     text-align: left;
+ .leader-owner-line {
+     width: 100%;
+     margin-top: 8px;
  }
 
+ .fantasy-owner-badge {
+     width: 100%;
+     max-width: 100%;
+ }
+
+ .fantasy-owner-badge-with-thumb {
+     display: flex;
+     align-items: center;
+     gap: 6px;
+     width: 100%;
+     max-width: 100%;
+     min-width: 0;
+ }
+
+ .fantasy-owner-badge-with-thumb span {
+     flex: 1;
+     min-width: 0;
+     overflow-wrap: anywhere;
+ }
+
+ .owner-thumb,
  .fantasy-owner-badge-with-thumb .owner-thumb {
-     width: 22px;
-     height: 22px;
+     width: 28px;
+     height: 28px;
+     min-width: 28px;
+     max-width: 28px;
+     min-height: 28px;
+     max-height: 28px;
      border-radius: 50%;
      object-fit: cover;
-     flex: 0 0 auto;
-     border: 1px solid rgba(11, 94, 215, 0.25);
-     background: #ffffff;
+     object-position: center;
+     display: inline-block;
+     flex: 0 0 28px;
+ }
+
+ .hr-pool-team-name .owner-thumb {
+     width: 34px;
+     height: 34px;
+     min-width: 34px;
+     max-width: 34px;
+     min-height: 34px;
+     max-height: 34px;
+     border-radius: 50%;
+     object-fit: cover;
+     object-position: center;
+     flex: 0 0 34px;
+ }
+
+ @media (max-width: 520px) {
+
+     .owner-thumb,
+     .fantasy-owner-badge-with-thumb .owner-thumb {
+         width: 24px;
+         height: 24px;
+         min-width: 24px;
+         max-width: 24px;
+         min-height: 24px;
+         max-height: 24px;
+         flex-basis: 24px;
+     }
+
+     .hr-pool-team-name .owner-thumb {
+         width: 28px;
+         height: 28px;
+         min-width: 28px;
+         max-width: 28px;
+         min-height: 28px;
+         max-height: 28px;
+         flex-basis: 28px;
+     }
  }
