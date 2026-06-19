@@ -701,7 +701,17 @@
   });
 
   function getTeamLogo(teamName) {
-    return window.TEAM_LOGOS?.[teamName] || "";
+    const logoPath = window.TEAM_LOGOS?.[teamName];
+
+    if (!logoPath) {
+      return "";
+    }
+
+    const isInToolsFolder = window.location.pathname.includes("/tools/");
+
+    return isInToolsFolder && !logoPath.startsWith("../")
+      ? `../${logoPath}`
+      : logoPath;
   }
 </script>
 <script src="scripts/homerun-pool.js?v=logos"></script>
