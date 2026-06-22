@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>UTI Trade Analyzer</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="../styles/styles.css" rel="stylesheet" />
+  <link href="../styles/baseball-banner.css" rel="stylesheet" />
+  <style>
+    :root {
+      --uti-blue: #0b5ed7;
+      --uti-dark: #10233f;
+      --uti-border: rgba(16, 35, 63, 0.12);
+      --uti-card: #ffffff;
+      --uti-muted: #65758b;
+      --uti-good: #198754;
+      --uti-warn: #f59f00;
+      --uti-bad: #dc3545;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at top left, rgba(11, 94, 215, 0.14), transparent 32rem),
+        linear-gradient(180deg, #f3f7fc 0%, #ffffff 58%);
+      min-height: 100vh;
+    }
+
+    .trade-page {
+      width: min(1180px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 22px 0 44px;
+    }
+
+    .trade-hero {
+      border: 1px solid var(--uti-border);
+      background:
+        linear-gradient(135deg, rgba(11, 94, 215, 0.96), rgba(16, 35, 63, 0.95)),
+        radial-gradient(circle at right top, rgba(255, 255, 255, 0.22), transparent 20rem);
+      color: #ffffff;
+      border-radius: 24px;
+      padding: clamp(22px, 4vw, 40px);
+      box-shadow: 0 20px 50px rgba(16, 35, 63, 0.18);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .trade-hero::after {
+      content: "";
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border: 18px solid rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      right: -70px;
+      bottom: -90px;
+    }
+
+    .trade-hero .kicker {
+      color: rgba(255, 255, 255, 0.78);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+
+    .trade-hero h1 {
+      font-size: clamp(2rem, 5vw, 4rem);
+      line-height: 0.96;
+      font-weight: 950;
+      margin: 0;
+      max-width: 760px;
+    }
+
+    .trade-hero p {
+      margin: 14px 0 0;
+      max-width: 760px;
+      color: rgba(255, 255, 255, 0.84);
+      font-size: 1rem;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 14px;
+      color: var(--uti-blue);
+      font-weight: 900;
+      text-decoration: none;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+
+    .trade-shell {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(300px, 390px);
+      gap: 18px;
+      margin-top: 18px;
+      align-items: start;
+    }
+
+    .trade-card,
+    .result-card,
+    .player-table-card {
+      background: var(--uti-card);
+      border: 1px solid var(--uti-border);
+      border-radius: 22px;
+      box-shadow: 0 14px 34px rgba(16, 35, 63, 0.08);
+    }
+
+    .trade-card {
+      padding: 18px;
+    }
+
+    .trade-sides {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .trade-side {
+      border: 1px solid var(--uti-border);
+      border-radius: 18px;
+      padding: 14px;
+      background: #f8fbff;
+      min-width: 0;
+    }
+
+    .trade-side-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .trade-side-title {
+      font-size: 1rem;
+      font-weight: 950;
+      color: var(--uti-dark);
+      margin: 0;
+    }
+
+    .side-total-pill {
+      display: inline-flex;
+      border-radius: 999px;
+      background: rgba(11, 94, 215, 0.10);
+      color: var(--uti-blue);
+      padding: 5px 9px;
+      font-size: 0.78rem;
+      font-weight: 950;
+      white-space: nowrap;
+    }
+
+    .player-search-wrap {
+      position: relative;
+    }
+
+    .player-search {
+      width: 100%;
+      border: 1px solid var(--uti-border);
+      border-radius: 14px;
+      padding: 11px 12px;
+      outline: none;
+      font-weight: 700;
+      color: var(--uti-dark);
+      background: #ffffff;
+    }
+
+    .player-search:focus {
+      border-color: rgba(11, 94, 215, 0.55);
+      box-shadow: 0 0 0 4px rgba(11, 94, 215, 0.10);
+    }
+
+    .suggestions {
+      position: absolute;
+      inset-inline: 0;
+      top: calc(100% + 6px);
+      z-index: 20;
+      background: #ffffff;
+      border: 1px solid var(--uti-border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 16px 34px rgba(16, 35, 63, 0.18);
+      max-height: 320px;
+      overflow-y: auto;
+      display: none;
+    }
+
+    .suggestions.show {
+      display: block;
+    }
+
+    .suggestion-btn {
+      width: 100%;
+      border: 0;
+      background: #ffffff;
+      text-align: left;
+      padding: 10px 12px;
+      display: grid;
+      gap: 2px;
+      cursor: pointer;
+      border-bottom: 1px solid rgba(16, 35, 63, 0.08);
+    }
+
+    .suggestion-btn:hover {
+      background: #f3f7fc;
+    }
+
+    .suggestion-name {
+      font-weight: 950;
+      color: var(--uti-dark);
+    }
+
+    .suggestion-meta {
+      color: var(--uti-muted);
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+
+    .selected-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+      min-height: 72px;
+    }
+
+    .selected-empty {
+      border: 1px dashed rgba(16, 35, 63, 0.20);
+      background: rgba(255, 255, 255, 0.70);
+      border-radius: 14px;
+      padding: 14px;
+      color: var(--uti-muted);
+      font-weight: 800;
+      font-size: 0.9rem;
+    }
+
+    .selected-player {
+      border: 1px solid rgba(16, 35, 63, 0.12);
+      border-radius: 16px;
+      background: #ffffff;
+      padding: 11px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .selected-player-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .selected-player-name {
+      color: var(--uti-dark);
+      font-weight: 950;
+      line-height: 1.1;
+    }
+
+    .selected-player-meta {
+      color: var(--uti-muted);
+      font-size: 0.78rem;
+      font-weight: 800;
+      margin-top: 3px;
+    }
+
+    .value-badge {
+      border-radius: 999px;
+      background: var(--uti-dark);
+      color: #ffffff;
+      padding: 5px 9px;
+      font-weight: 950;
+      font-size: 0.82rem;
+      white-space: nowrap;
+    }
+
+    .remove-player {
+      border: 0;
+      border-radius: 999px;
+      background: rgba(220, 53, 69, 0.10);
+      color: var(--uti-bad);
+      padding: 5px 9px;
+      font-weight: 950;
+      font-size: 0.76rem;
+      cursor: pointer;
+      width: fit-content;
+    }
+
+    .remove-player:hover {
+      background: rgba(220, 53, 69, 0.18);
+    }
+
+    .result-card {
+      padding: 18px;
+      position: sticky;
+      top: 14px;
+    }
+
+    .result-title {
+      color: var(--uti-dark);
+      font-weight: 950;
+      margin: 0 0 6px;
+      font-size: 1.15rem;
+    }
+
+    .result-subtitle {
+      color: var(--uti-muted);
+      font-weight: 750;
+      font-size: 0.88rem;
+      margin: 0 0 14px;
+    }
+
+    .winner-box {
+      border-radius: 18px;
+      padding: 16px;
+      background: linear-gradient(135deg, rgba(11, 94, 215, 0.10), rgba(25, 135, 84, 0.09));
+      border: 1px solid rgba(11, 94, 215, 0.16);
+      margin-bottom: 12px;
+    }
+
+    .winner-label {
+      color: var(--uti-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.10em;
+      font-size: 0.72rem;
+      font-weight: 950;
+    }
+
+    .winner-value {
+      color: var(--uti-dark);
+      font-size: 1.65rem;
+      line-height: 1;
+      font-weight: 950;
+      margin-top: 4px;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .result-stat {
+      border: 1px solid var(--uti-border);
+      border-radius: 16px;
+      padding: 12px;
+      background: #f8fbff;
+    }
+
+    .result-stat-label {
+      font-size: 0.72rem;
+      color: var(--uti-muted);
+      font-weight: 950;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .result-stat-value {
+      color: var(--uti-dark);
+      font-size: 1.35rem;
+      font-weight: 950;
+      line-height: 1;
+      margin-top: 5px;
+    }
+
+    .fairness-pill {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      border-radius: 999px;
+      padding: 10px 12px;
+      font-weight: 950;
+      color: #ffffff;
+      background: var(--uti-good);
+      margin-bottom: 12px;
+    }
+
+    .fairness-pill.slight {
+      background: var(--uti-warn);
+    }
+
+    .fairness-pill.clear,
+    .fairness-pill.robbery {
+      background: var(--uti-bad);
+    }
+
+    .result-note {
+      color: var(--uti-muted);
+      font-weight: 760;
+      font-size: 0.9rem;
+      margin: 0;
+    }
+
+    .reset-btn {
+      border: 0;
+      border-radius: 999px;
+      background: rgba(16, 35, 63, 0.08);
+      color: var(--uti-dark);
+      padding: 9px 12px;
+      font-weight: 950;
+      cursor: pointer;
+      margin-top: 12px;
+      width: 100%;
+    }
+
+    .reset-btn:hover {
+      background: rgba(16, 35, 63, 0.14);
+    }
+
+    .player-table-card {
+      margin-top: 18px;
+      padding: 18px;
+    }
+
+    .table-toolbar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .table-toolbar h2 {
+      color: var(--uti-dark);
+      font-weight: 950;
+      font-size: 1.25rem;
+      margin: 0;
+    }
+
+    .table-filter {
+      border: 1px solid var(--uti-border);
+      border-radius: 999px;
+      padding: 9px 12px;
+      font-weight: 800;
+      min-width: min(100%, 260px);
+    }
+
+    .players-table-wrap {
+      max-height: 560px;
+      overflow: auto;
+      border: 1px solid var(--uti-border);
+      border-radius: 16px;
+    }
+
+    .players-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      min-width: 800px;
+      background: #ffffff;
+    }
+
+    .players-table th,
+    .players-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(16, 35, 63, 0.08);
+      vertical-align: middle;
+      font-size: 0.88rem;
+    }
+
+    .players-table th {
+      position: sticky;
+      top: 0;
+      z-index: 3;
+      background: #f3f7fc;
+      color: var(--uti-dark);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 950;
+    }
+
+    .players-table td {
+      color: var(--uti-dark);
+      font-weight: 760;
+    }
+
+    .players-table .muted {
+      color: var(--uti-muted);
+      font-weight: 800;
+    }
+
+    .add-small-btn {
+      border: 0;
+      border-radius: 999px;
+      background: rgba(11, 94, 215, 0.10);
+      color: var(--uti-blue);
+      font-weight: 950;
+      padding: 6px 10px;
+      font-size: 0.76rem;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .add-small-btn:hover {
+      background: rgba(11, 94, 215, 0.18);
+    }
+
+    .category-chip {
+      display: inline-flex;
+      border-radius: 999px;
+      padding: 4px 8px;
+      background: rgba(16, 35, 63, 0.07);
+      font-size: 0.72rem;
+      font-weight: 950;
+      color: var(--uti-dark);
+    }
+
+    .load-error {
+      border: 1px solid rgba(220, 53, 69, 0.28);
+      background: rgba(220, 53, 69, 0.08);
+      color: #842029;
+      border-radius: 16px;
+      padding: 14px;
+      font-weight: 850;
+      margin-top: 18px;
+    }
+
+    @media (max-width: 960px) {
+      .trade-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .result-card {
+        position: static;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .trade-sides {
+        grid-template-columns: 1fr;
+      }
+
+      .result-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="trade-page">
+    <a class="back-link" href="../index.html">← Back to UTI HQ</a>
+
+    <section class="trade-hero">
+      <div class="kicker">Dynasty Trade Tool</div>
+      <h1>UTI Trade Analyzer</h1>
+      <p>
+        Build both sides of a trade and compare dynasty value using player age, current rank, future upside,
+        category fit, position scarcity, risk, and current UTI ownership.
+      </p>
+    </section>
+
+    <div id="loadError" class="load-error" hidden>
+      Could not load player values. Make sure <strong>data/players.js</strong> exists and this page is opened through a server/GitHub Pages.
+    </div>
+
+    <section class="trade-shell" aria-label="Trade analyzer">
+      <div class="trade-card">
+        <div class="trade-sides">
+          <section class="trade-side" aria-label="Side A receives">
+            <div class="trade-side-header">
+              <h2 class="trade-side-title">Side A Receives</h2>
+              <span class="side-total-pill" id="sideATotalPill">0 pts</span>
+            </div>
+            <div class="player-search-wrap">
+              <input class="player-search" id="sideASearch" type="search" placeholder="Search player to add..." autocomplete="off" />
+              <div class="suggestions" id="sideASuggestions"></div>
+            </div>
+            <div class="selected-list" id="sideAList"></div>
+          </section>
+
+          <section class="trade-side" aria-label="Side B receives">
+            <div class="trade-side-header">
+              <h2 class="trade-side-title">Side B Receives</h2>
+              <span class="side-total-pill" id="sideBTotalPill">0 pts</span>
+            </div>
+            <div class="player-search-wrap">
+              <input class="player-search" id="sideBSearch" type="search" placeholder="Search player to add..." autocomplete="off" />
+              <div class="suggestions" id="sideBSuggestions"></div>
+            </div>
+            <div class="selected-list" id="sideBList"></div>
+          </section>
+        </div>
+      </div>
+
+      <aside class="result-card">
+        <h2 class="result-title">Trade Verdict</h2>
+        <p class="result-subtitle">Values update automatically when players are added or removed.</p>
+
+        <div class="winner-box">
+          <div class="winner-label">Winner</div>
+          <div class="winner-value" id="winnerValue">Even</div>
+        </div>
+
+        <div class="result-grid">
+          <div class="result-stat">
+            <div class="result-stat-label">Side A</div>
+            <div class="result-stat-value" id="sideAResult">0</div>
+          </div>
+          <div class="result-stat">
+            <div class="result-stat-label">Side B</div>
+            <div class="result-stat-value" id="sideBResult">0</div>
+          </div>
+          <div class="result-stat">
+            <div class="result-stat-label">Difference</div>
+            <div class="result-stat-value" id="differenceResult">0</div>
+          </div>
+          <div class="result-stat">
+            <div class="result-stat-label">Gap</div>
+            <div class="result-stat-value" id="percentResult">0%</div>
+          </div>
+        </div>
+
+        <div class="fairness-pill" id="fairnessPill">Fair Trade</div>
+        <p class="result-note" id="resultNote">
+          Add players to both sides to see who is getting cooked.
+        </p>
+
+        <button class="reset-btn" id="resetTradeBtn" type="button">Reset Trade</button>
+      </aside>
+    </section>
+
+    <section class="player-table-card">
+      <div class="table-toolbar">
+        <h2>Player Value Board</h2>
+        <input class="table-filter" id="playerTableFilter" type="search" placeholder="Filter player, team, owner..." autocomplete="off" />
+      </div>
+
+      <div class="players-table-wrap">
+        <table class="players-table">
+          <thead>
+            <tr>
+              <th>Player</th>
+              <th>Owner</th>
+              <th>Pos</th>
+              <th>Age</th>
+              <th>Value</th>
+              <th>Tier</th>
+              <th>Category</th>
+              <th>Add</th>
+            </tr>
+          </thead>
+          <tbody id="playersTableBody">
+            <tr>
+              <td colspan="8" class="muted">Loading players...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script type="module">
+    let playerData = [];
+    let selectedSideA = [];
+    let selectedSideB = [];
+
+    const state = {
+      sideA: selectedSideA,
+      sideB: selectedSideB
+    };
+
+    const elements = {
+      loadError: document.getElementById("loadError"),
+      sideASearch: document.getElementById("sideASearch"),
+      sideBSearch: document.getElementById("sideBSearch"),
+      sideASuggestions: document.getElementById("sideASuggestions"),
+      sideBSuggestions: document.getElementById("sideBSuggestions"),
+      sideAList: document.getElementById("sideAList"),
+      sideBList: document.getElementById("sideBList"),
+      sideATotalPill: document.getElementById("sideATotalPill"),
+      sideBTotalPill: document.getElementById("sideBTotalPill"),
+      sideAResult: document.getElementById("sideAResult"),
+      sideBResult: document.getElementById("sideBResult"),
+      differenceResult: document.getElementById("differenceResult"),
+      percentResult: document.getElementById("percentResult"),
+      winnerValue: document.getElementById("winnerValue"),
+      fairnessPill: document.getElementById("fairnessPill"),
+      resultNote: document.getElementById("resultNote"),
+      resetTradeBtn: document.getElementById("resetTradeBtn"),
+      playerTableFilter: document.getElementById("playerTableFilter"),
+      playersTableBody: document.getElementById("playersTableBody")
+    };
+
+    function normalizeName(value = "") {
+      return value
+        .toString()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-zA-Z0-9]/g, "")
+        .toLowerCase();
+    }
+
+    function formatPositions(player) {
+      return Array.isArray(player.positions) ? player.positions.join(", ") : "";
+    }
+
+    function getPlayerKey(player) {
+      return normalizeName(player.name);
+    }
+
+    function isSelected(player, side) {
+      return state[side].some(selected => getPlayerKey(selected) === getPlayerKey(player));
+    }
+
+    function getSideTotal(side) {
+      return state[side].reduce((sum, player) => sum + Number(player.dynastyValue || 0), 0);
+    }
+
+    function getFairness(sideATotal, sideBTotal) {
+      const difference = Math.abs(sideATotal - sideBTotal);
+      const maxTotal = Math.max(sideATotal, sideBTotal, 1);
+      const percentDifference = difference / maxTotal;
+
+      if (percentDifference > 0.22) return { label: "Robbery", className: "robbery" };
+      if (percentDifference > 0.12) return { label: "Clear Advantage", className: "clear" };
+      if (percentDifference > 0.05) return { label: "Slight Advantage", className: "slight" };
+
+      return { label: "Fair Trade", className: "" };
+    }
+
+    function getResultNote(sideATotal, sideBTotal, fairnessLabel) {
+      if (!sideATotal && !sideBTotal) {
+        return "Add players to both sides to see who is getting cooked.";
+      }
+
+      if (!sideATotal || !sideBTotal) {
+        return "One side is empty. Add players to both sides for a real verdict.";
+      }
+
+      const winner = sideATotal > sideBTotal ? "Side A" : sideBTotal > sideATotal ? "Side B" : "Nobody";
+      const difference = Math.abs(sideATotal - sideBTotal);
+
+      if (winner === "Nobody") {
+        return "Dead even on raw dynasty value. Now argue category needs like civilized idiots.";
+      }
+
+      if (fairnessLabel === "Robbery") {
+        return `${winner} wins by ${difference} points. This is the kind of trade that gets screenshotted in the group chat.`;
+      }
+
+      if (fairnessLabel === "Clear Advantage") {
+        return `${winner} has a clear edge by ${difference} points. Not illegal, but somebody better have a good explanation.`;
+      }
+
+      if (fairnessLabel === "Slight Advantage") {
+        return `${winner} has a small edge by ${difference} points. Team needs and win-now/rebuild context could swing this.`;
+      }
+
+      return `Only ${difference} points apart. Pretty fair on raw value. Commish can put the pitchfork down.`;
+    }
+
+    function addPlayerToSide(player, side) {
+      if (isSelected(player, side)) return;
+
+      state[side].push(player);
+      closeSuggestions();
+      elements.sideASearch.value = "";
+      elements.sideBSearch.value = "";
+      renderAll();
+    }
+
+    function removePlayerFromSide(playerName, side) {
+      const key = normalizeName(playerName);
+      state[side] = state[side].filter(player => normalizeName(player.name) !== key);
+
+      if (side === "sideA") selectedSideA = state[side];
+      if (side === "sideB") selectedSideB = state[side];
+
+      renderAll();
+    }
+
+    function closeSuggestions() {
+      elements.sideASuggestions.classList.remove("show");
+      elements.sideBSuggestions.classList.remove("show");
+    }
+
+    function getSearchMatches(query, side) {
+      const normalizedQuery = normalizeName(query);
+
+      if (!normalizedQuery) return [];
+
+      return playerData
+        .filter(player => !isSelected(player, side))
+        .filter(player => {
+          const haystack = [
+            player.name,
+            player.fantasyTeam,
+            player.mlbTeam,
+            formatPositions(player),
+            player.tier
+          ].join(" ");
+
+          return normalizeName(haystack).includes(normalizedQuery);
+        })
+        .slice(0, 12);
+    }
+
+    function renderSuggestions(query, side, container) {
+      const matches = getSearchMatches(query, side);
+
+      if (!matches.length) {
+        container.innerHTML = `
+          <button class="suggestion-btn" type="button" disabled>
+            <span class="suggestion-name">No players found</span>
+            <span class="suggestion-meta">Try a different spelling</span>
+          </button>
+        `;
+        container.classList.add("show");
+        return;
+      }
+
+      container.innerHTML = matches.map(player => `
+        <button class="suggestion-btn" type="button" data-add-side="${side}" data-player="${encodeURIComponent(player.name)}">
+          <span class="suggestion-name">${player.name} • ${player.dynastyValue}</span>
+          <span class="suggestion-meta">${player.fantasyTeam} • ${formatPositions(player)} • ${player.tier}</span>
+        </button>
+      `).join("");
+
+      container.querySelectorAll("[data-add-side]").forEach(button => {
+        button.addEventListener("click", () => {
+          const playerName = decodeURIComponent(button.dataset.player);
+          const selectedPlayer = playerData.find(player => player.name === playerName);
+          if (selectedPlayer) addPlayerToSide(selectedPlayer, side);
+        });
+      });
+
+      container.classList.add("show");
+    }
+
+    function renderSelectedList(side, container) {
+      const selectedPlayers = state[side];
+
+      if (!selectedPlayers.length) {
+        container.innerHTML = `
+          <div class="selected-empty">
+            No players added yet. Search above or use the value board below.
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = selectedPlayers.map(player => `
+        <article class="selected-player">
+          <div class="selected-player-top">
+            <div>
+              <div class="selected-player-name">${player.name}</div>
+              <div class="selected-player-meta">${player.fantasyTeam} • ${formatPositions(player)} • ${player.tier}</div>
+            </div>
+            <span class="value-badge">${player.dynastyValue}</span>
+          </div>
+          <button class="remove-player" type="button" data-remove-side="${side}" data-player="${encodeURIComponent(player.name)}">
+            Remove
+          </button>
+        </article>
+      `).join("");
+
+      container.querySelectorAll("[data-remove-side]").forEach(button => {
+        button.addEventListener("click", () => {
+          removePlayerFromSide(decodeURIComponent(button.dataset.player), button.dataset.removeSide);
+        });
+      });
+    }
+
+    function renderResult() {
+      const sideATotal = getSideTotal("sideA");
+      const sideBTotal = getSideTotal("sideB");
+      const difference = Math.abs(sideATotal - sideBTotal);
+      const maxTotal = Math.max(sideATotal, sideBTotal, 1);
+      const percentDifference = Number(((difference / maxTotal) * 100).toFixed(1));
+      const fairness = getFairness(sideATotal, sideBTotal);
+
+      elements.sideATotalPill.textContent = `${sideATotal} pts`;
+      elements.sideBTotalPill.textContent = `${sideBTotal} pts`;
+      elements.sideAResult.textContent = sideATotal;
+      elements.sideBResult.textContent = sideBTotal;
+      elements.differenceResult.textContent = difference;
+      elements.percentResult.textContent = `${percentDifference}%`;
+
+      elements.winnerValue.textContent =
+        sideATotal === sideBTotal ? "Even" : sideATotal > sideBTotal ? "Side A" : "Side B";
+
+      elements.fairnessPill.textContent = fairness.label;
+      elements.fairnessPill.className = `fairness-pill ${fairness.className}`.trim();
+      elements.resultNote.textContent = getResultNote(sideATotal, sideBTotal, fairness.label);
+    }
+
+    function renderPlayerTable() {
+      const filter = normalizeName(elements.playerTableFilter.value);
+      const visiblePlayers = playerData.filter(player => {
+        if (!filter) return true;
+
+        const haystack = [
+          player.name,
+          player.fantasyTeam,
+          player.mlbTeam,
+          formatPositions(player),
+          player.tier,
+          player.categoryType
+        ].join(" ");
+
+        return normalizeName(haystack).includes(filter);
+      }).slice(0, 220);
+
+      if (!visiblePlayers.length) {
+        elements.playersTableBody.innerHTML = `
+          <tr>
+            <td colspan="8" class="muted">No players match that search.</td>
+          </tr>
+        `;
+        return;
+      }
+
+      elements.playersTableBody.innerHTML = visiblePlayers.map(player => `
+        <tr>
+          <td>
+            <strong>${player.name}</strong>
+            <div class="muted">${player.mlbTeam || "—"}</div>
+          </td>
+          <td>${player.fantasyTeam}</td>
+          <td>${formatPositions(player)}</td>
+          <td>${player.age}</td>
+          <td><strong>${player.dynastyValue}</strong></td>
+          <td>${player.tier}</td>
+          <td><span class="category-chip">${player.categoryType || "—"} ${player.categoryFit || ""}</span></td>
+          <td>
+            <button class="add-small-btn" type="button" data-table-add="sideA" data-player="${encodeURIComponent(player.name)}">A</button>
+            <button class="add-small-btn" type="button" data-table-add="sideB" data-player="${encodeURIComponent(player.name)}">B</button>
+          </td>
+        </tr>
+      `).join("");
+
+      elements.playersTableBody.querySelectorAll("[data-table-add]").forEach(button => {
+        button.addEventListener("click", () => {
+          const playerName = decodeURIComponent(button.dataset.player);
+          const selectedPlayer = playerData.find(player => player.name === playerName);
+          if (selectedPlayer) addPlayerToSide(selectedPlayer, button.dataset.tableAdd);
+        });
+      });
+    }
+
+    function renderAll() {
+      renderSelectedList("sideA", elements.sideAList);
+      renderSelectedList("sideB", elements.sideBList);
+      renderResult();
+      renderPlayerTable();
+    }
+
+    function setupSearch(input, side, suggestionsContainer) {
+      input.addEventListener("input", () => {
+        renderSuggestions(input.value, side, suggestionsContainer);
+      });
+
+      input.addEventListener("focus", () => {
+        if (input.value.trim()) renderSuggestions(input.value, side, suggestionsContainer);
+      });
+    }
+
+    function setupEvents() {
+      setupSearch(elements.sideASearch, "sideA", elements.sideASuggestions);
+      setupSearch(elements.sideBSearch, "sideB", elements.sideBSuggestions);
+
+      document.addEventListener("click", event => {
+        const isSearchArea = event.target.closest(".player-search-wrap");
+        if (!isSearchArea) closeSuggestions();
+      });
+
+      elements.resetTradeBtn.addEventListener("click", () => {
+        state.sideA = [];
+        state.sideB = [];
+        selectedSideA = state.sideA;
+        selectedSideB = state.sideB;
+        renderAll();
+      });
+
+      elements.playerTableFilter.addEventListener("input", renderPlayerTable);
+    }
+
+    async function init() {
+      try {
+        const module = await import("../data/players.js");
+        playerData = [...module.players].sort((a, b) => b.dynastyValue - a.dynastyValue);
+        setupEvents();
+        renderAll();
+      } catch (error) {
+        console.error(error);
+        elements.loadError.hidden = false;
+        elements.playersTableBody.innerHTML = `
+          <tr>
+            <td colspan="8" class="muted">Player values failed to load.</td>
+          </tr>
+        `;
+      }
+    }
+
+    init();
+  </script>
+</body>
+
+</html>
