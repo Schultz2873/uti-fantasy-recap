@@ -57,100 +57,78 @@
       box-shadow: 0 8px 18px rgba(11, 94, 215, 0.20);
     }
 
-
-
-    .available-studs-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-      gap: 14px;
-      margin-top: 18px;
+    .leader-week-select {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: #ffffff;
+      color: var(--accent-dark);
+      padding: 8px 12px;
+      font-size: 0.78rem;
+      font-weight: 900;
+      cursor: pointer;
+      max-width: 250px;
     }
 
-    .available-stud-card {
-      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 16px;
-      box-shadow: var(--shadow);
+    .leader-owner-line {
+      width: 100%;
+      margin-top: 8px;
+    }
+
+    .fantasy-owner-badge,
+    .available-badge {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .fantasy-owner-badge-with-thumb {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      width: 100%;
+      max-width: 100%;
       min-width: 0;
     }
 
-    .available-stud-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      align-items: center;
-      margin-bottom: 10px;
+    .fantasy-owner-badge-with-thumb span {
+      flex: 1;
+      min-width: 0;
+      overflow-wrap: anywhere;
     }
 
-    .available-stud-category {
-      color: var(--muted);
-      font-size: 0.78rem;
+    .fantasy-owner-badge-with-thumb .owner-thumb {
+      width: 22px;
+      height: 22px;
+      min-width: 22px;
+      max-width: 22px;
+      min-height: 22px;
+      max-height: 22px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center;
+      flex: 0 0 22px;
+      border: 1px solid rgba(11, 94, 215, 0.25);
+      background: #ffffff;
+    }
+
+    .available-badge {
+      display: inline-flex;
+      justify-content: center;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(25, 135, 84, 0.12);
+      color: #146c43;
+      border: 1px solid rgba(25, 135, 84, 0.25);
+      font-size: 12px;
       font-weight: 900;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .available-stud-rank {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(25, 135, 84, 0.10);
-      border: 1px solid rgba(25, 135, 84, 0.22);
-      color: var(--green);
-      border-radius: 999px;
-      padding: 4px 8px;
-      font-size: 0.72rem;
-      font-weight: 900;
-      white-space: nowrap;
-    }
-
-    .available-stud-name {
-      font-size: 1.05rem;
-      font-weight: 900;
-      line-height: 1.15;
-      margin-bottom: 4px;
-    }
-
-    .available-stud-team {
-      color: var(--muted);
-      font-size: 0.86rem;
-      margin-bottom: 12px;
-    }
-
-    .available-stud-bottom {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      align-items: end;
-    }
-
-    .available-stud-value {
-      font-size: 1.55rem;
-      font-weight: 900;
-      color: var(--accent);
-      line-height: 1;
-    }
-
-    .available-stud-label {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      color: #198754;
-      background: rgba(25, 135, 84, 0.10);
-      border: 1px solid rgba(25, 135, 84, 0.22);
-      border-radius: 999px;
-      padding: 5px 9px;
-      font-size: 0.72rem;
-      font-weight: 900;
-      white-space: nowrap;
     }
 
     @media (max-width: 520px) {
 
       .leader-section-header,
       .leader-header-actions,
-      .leader-mode-toggle {
+      .leader-mode-toggle,
+      .leader-week-select {
         width: 100%;
       }
 
@@ -167,23 +145,10 @@
         width: 100%;
       }
 
-      .available-studs-grid {
-        grid-template-columns: 1fr;
-        gap: 10px;
+      .leader-week-select {
+        max-width: none;
+        text-align: center;
       }
-
-      .available-stud-card {
-        padding: 13px;
-      }
-
-      .available-stud-name {
-        font-size: 0.98rem;
-      }
-
-      .available-stud-value {
-        font-size: 1.35rem;
-      }
-
     }
   </style>
 </head>
@@ -192,6 +157,8 @@
 <script src="data/fantasy-owners.js"></script>
 <script src="data/team-logos.js"></script>
 <script src="data/homerun-pool.js"></script>
+<script src="scripts/category-leaders.js?v=week1-fixed"></script>
+
 <script>
   const weeklyLeaderCategories = [
     { label: "HR", group: "hitting", stat: "homeRuns", type: "max" },
@@ -742,15 +709,22 @@
         <div>
           <h2 class="section-title" style="margin-bottom:4px;">MLB Category Leaders</h2>
           <p class="section-subtitle">
-            Switch between this week’s Monday-Sunday leaders and full-season leaders.
+            Switch between the current week, any completed past week, and full-season leaders.
           </p>
         </div>
         <div class="leader-header-actions">
           <div class="leader-mode-toggle" aria-label="Leader range filter">
-            <button class="leader-mode-btn active" type="button" data-leader-mode="weekly"
-              aria-pressed="true">Weekly</button>
-            <button class="leader-mode-btn" type="button" data-leader-mode="season" aria-pressed="false">Season</button>
+            <button class="leader-mode-btn active" type="button" data-leader-mode="weekly" aria-pressed="true">
+              Current Week
+            </button>
+            <button class="leader-mode-btn" type="button" data-leader-mode="past" aria-pressed="false">
+              Past Weeks
+            </button>
+            <button class="leader-mode-btn" type="button" data-leader-mode="season" aria-pressed="false">
+              Season
+            </button>
           </div>
+          <select class="leader-week-select" id="pastWeekSelect" aria-label="Select past week" hidden></select>
           <span class="tag" id="weeklyLeaderRange">Loading...</span>
         </div>
       </div>
@@ -841,30 +815,53 @@
           <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
             <span
               style="background:#198754;color:white;padding:6px 10px;border-radius:999px;font-size:0.75rem;font-weight:700;">NEW</span>
-            <div class="article-meta" style="margin:0;">Week 11 • Matchup Recap</div>
+            <div class="article-meta" style="margin:0;">Week 12 • Matchup Recap</div>
           </div>
-          <h3 class="article-title">Week 11 Recap: BB Stays on Top, Me So Heorny and Goodyear stay right beind, BTA
-            Keeps Sinking,
-            and Gunnarrhea Loses Hope</h3>
+          <h3 class="article-title">Week 12 Recap: BB’s Bold Team Moves to 11-1 and Looks Unbeatable</h3>
           <p class="article-summary">
-            Top teams handled business, bottom teams kept embarrassing themselves, and Week 11 gave the league
-            plenty of bad pitching and worse excuses
+            BB’s Bold Team kept rolling, Goodyear sent a warning shot, Gunnarrhea pulled off the upset, and BTA
+            Boyz officially became the league’s biggest concern.
           <div class="tag-row">
-            <span class="tag">BAA (.217) - This is Mizerable</span>
-            <span class="tag">Checked Out</span>
-            <span class="tag">Defending Champs Stomped</span>
-            <span class="tag">Top Teams Rolling</span>
-            <span class="tag">Bo Still Doesn’t Know</span>
-            <span class="tag">Skenes Deserves Better</span>
-            <span class="tag">Gunnarrhea Weekly Meltdown</span>
+            <span class="tag">Strikeouts (40) - BTA Boyz</span>
+            <span class="tag">BB Final Boss Mode</span>
+            <span class="tag">Gunnarrhea Outbreak</span>
+            <span class="tag">Roch Watch Transfer</span>
+            <span class="tag">Goodyear is Back</span>
+            <span class="tag">Heorny Folded</span>
+            <span class="tag">Dixon Forgot and Won</span>
           </div>
           </p>
         </div>
         <div>
-          <a class="article-link" href="2026/week11.html">Read Week 11</a>
+          <a class="article-link" href="2026/week12.html">Read Week 12</a>
         </div>
       </article>
       <div class="articles-grid featured-archive-grid" style="margin-top:16px;">
+        <article class="hidden-article article-card featured">
+          <div>
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+              <div class="article-meta" style="margin:0;">Week 11 • Matchup Recap</div>
+            </div>
+            <h3 class="article-title">Week 11 Recap: BB Stays on Top, Me So Heorny and Goodyear stay right beind, BTA
+              Keeps Sinking,
+              and Gunnarrhea Loses Hope</h3>
+            <p class="article-summary">
+              Top teams handled business, bottom teams kept embarrassing themselves, and Week 11 gave the league
+              plenty of bad pitching and worse excuses
+            </p>
+            <div class="tag-row">
+              <span class="tag">BAA (.217) - This is Mizerable</span>
+              <span class="tag">Checked Out</span>
+              <span class="tag">Defending Champs Stomped</span>
+              <span class="tag">Top Teams Rolling</span>
+              <span class="tag">Bo Still Doesn’t Know</span>
+              <span class="tag">Skenes Deserves Better</span>
+              <span class="tag">Gunnarrhea Weekly Meltdown</span>
+            </div>
+            <div>
+              <a class="article-link" href="2026/week11.html">Read Week 11</a>
+            </div>
+        </article>
         <article class="hidden-article article-card featured">
           <div>
             <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
