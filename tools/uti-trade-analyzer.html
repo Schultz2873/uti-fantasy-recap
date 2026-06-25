@@ -795,39 +795,127 @@
 
 
     .suggested-trade-card {
-      border: 1px solid rgba(11, 94, 215, 0.18);
-      border-radius: 16px;
-      background: linear-gradient(135deg, rgba(11, 94, 215, 0.06), #ffffff);
-      padding: 12px;
+      border: 1px solid rgba(16, 35, 63, 0.12);
+      border-radius: 18px;
+      background: #ffffff;
+      box-shadow: 0 12px 26px rgba(16, 35, 63, 0.08);
+      overflow: hidden;
+    }
+
+    .suggested-trade-topbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      background: linear-gradient(135deg, rgba(16, 35, 63, 0.96), rgba(11, 94, 215, 0.86));
+      color: #ffffff;
+      padding: 10px 12px;
     }
 
     .suggested-trade-matchup {
-      color: var(--uti-dark);
-      font-size: 0.92rem;
+      font-size: 0.86rem;
       font-weight: 950;
-      margin-bottom: 7px;
+      line-height: 1.25;
     }
 
-    .suggested-trade-lines {
+    .suggested-trade-badge {
+      white-space: nowrap;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      padding: 4px 8px;
+      font-size: 0.68rem;
+      font-weight: 950;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .suggested-trade-swap {
       display: grid;
-      gap: 6px;
-      margin-bottom: 8px;
+      grid-template-columns: 1fr 42px 1fr;
+      gap: 8px;
+      align-items: stretch;
+      padding: 12px;
     }
 
-    .suggested-trade-line {
+    .suggested-trade-team-box {
+      border: 1px solid rgba(16, 35, 63, 0.10);
+      border-radius: 14px;
+      background: rgba(243, 247, 252, 0.80);
+      padding: 10px;
+      min-width: 0;
+    }
+
+    .suggested-trade-team {
+      color: var(--uti-muted);
+      font-size: 0.68rem;
+      font-weight: 950;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 4px;
+    }
+
+    .suggested-trade-player {
       color: var(--uti-dark);
-      font-size: 0.87rem;
+      font-size: 0.94rem;
+      font-weight: 950;
+      line-height: 1.25;
+    }
+
+    .suggested-trade-meta {
+      color: var(--uti-muted);
+      font-size: 0.76rem;
       font-weight: 850;
-      line-height: 1.35;
-      margin: 0;
+      margin-top: 4px;
+    }
+
+    .suggested-trade-arrow {
+      display: grid;
+      place-items: center;
+      align-self: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      background: rgba(11, 94, 215, 0.10);
+      color: var(--uti-blue);
+      font-size: 1.15rem;
+      font-weight: 950;
     }
 
     .suggested-trade-reason {
+      border-top: 1px solid rgba(16, 35, 63, 0.08);
       color: var(--uti-muted);
       font-size: 0.83rem;
       font-weight: 800;
-      line-height: 1.35;
+      line-height: 1.4;
       margin: 0;
+      padding: 10px 12px 12px;
+    }
+
+    .suggested-trade-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .suggested-trade-tag {
+      border-radius: 999px;
+      background: rgba(25, 135, 84, 0.10);
+      color: var(--uti-dark);
+      padding: 4px 7px;
+      font-size: 0.68rem;
+      font-weight: 950;
+    }
+
+    @media (max-width: 680px) {
+      .suggested-trade-swap {
+        grid-template-columns: 1fr;
+      }
+      .suggested-trade-arrow {
+        transform: rotate(90deg);
+        margin: 0 auto;
+      }
     }
 
     .team-warning {
@@ -1592,18 +1680,51 @@
       container.innerHTML = tags.map(tag => `<span class="team-tag ${className}">${tag}</span>`).join("");
     }
 
+    function getSameNamePlayers(player) {
+      if (!player?.name) return [];
+      const key = normalizeName(player.name);
+      return playerData.filter(candidate => normalizeName(candidate.name) === key);
+    }
+
+    function getBestSameNameRank(player) {
+      const ranks = getSameNamePlayers(player)
+        .map(candidate => Number(candidate.currentRank || 999))
+        .filter(rank => rank > 0);
+      return ranks.length ? Math.min(...ranks) : Number(player.currentRank || 999);
+    }
+
+    function getBestSameNameValue(player) {
+      const values = getSameNamePlayers(player)
+        .map(candidate => Number(candidate.dynastyValue || 0))
+        .filter(Boolean);
+      return values.length ? Math.max(...values) : Number(player.dynastyValue || 0);
+    }
+
+    function getBestSameNameFuture(player) {
+      const values = getSameNamePlayers(player)
+        .map(candidate => getFutureScore(candidate))
+        .filter(Boolean);
+      return values.length ? Math.max(...values) : getFutureScore(player);
+    }
+
     function isPremiumCoreOrOverpayOnly(player) {
       const age = Number(player.age || 99);
       const rank = Number(player.currentRank || 999);
+      const bestRank = getBestSameNameRank(player);
       const dynastyValue = Number(player.dynastyValue || 0);
+      const bestValue = getBestSameNameValue(player);
       const currentScore = getCurrentScore(player);
       const futureScore = getFutureScore(player);
+      const bestFutureScore = getBestSameNameFuture(player);
       const positions = player.positions || [];
       const futureTier = player.futureTier || "";
       const categoryType = player.categoryType || (positions.includes("SP") || positions.includes("RP") ? "pitcher" : "hitter");
       const premiumFutureTiers = new Set(["generational", "elite", "cornerstone", "prospectElite"]);
 
-      if (rank <= 35 || dynastyValue >= 84 || currentScore >= 94 || futureScore >= 94) return true;
+      // If any version of a split player is a superstar, treat every version as core.
+      // This blocks bad ideas like using pitcher-only Ohtani as a normal trade chip.
+      if (bestRank <= 50 || bestValue >= 84 || bestFutureScore >= 94) return true;
+      if (rank <= 45 || dynastyValue >= 82 || currentScore >= 94 || futureScore >= 94) return true;
       if (premiumFutureTiers.has(futureTier) && age <= 26) return true;
       if (categoryType === "hitter" && age <= 25 && futureScore >= 82) return true;
       if (positions.includes("C") && rank <= 130 && futureScore >= 70) return true;
@@ -1802,7 +1923,63 @@
 
 
     function getPlayerValueScore(player) {
-      return Number(player.dynastyValue || getCurrentScore(player) || getFutureScore(player) || 0);
+      return Math.max(
+        Number(player.dynastyValue || 0),
+        Number(getCurrentScore(player) || 0),
+        Number(getFutureScore(player) || 0),
+        Number(getBestSameNameValue(player) || 0)
+      );
+    }
+
+    function getTradeAssetBucket(player) {
+      const rank = getBestSameNameRank(player);
+      const value = getPlayerValueScore(player);
+      const future = getBestSameNameFuture(player);
+      if (isPremiumCoreOrOverpayOnly(player) || rank <= 50 || value >= 84 || future >= 94) return 5;
+      if (rank <= 90 || value >= 76 || future >= 86) return 4;
+      if (rank <= 150 || value >= 66 || future >= 76) return 3;
+      if (rank <= 250 || value >= 54 || future >= 64) return 2;
+      return 1;
+    }
+
+    function getTradeSafetyLabel(idea) {
+      if (idea.valueGap <= 4 && idea.bucketGap === 0) return "Clean fit";
+      if (idea.valueGap <= 7 && idea.bucketGap <= 1) return "Review fit";
+      return "Manual review";
+    }
+
+    function getPlayerMeta(player) {
+      const positions = (player.positions || []).join("/") || "UTIL";
+      const team = player.mlbTeam || "MLB";
+      const age = player.age ? `Age ${player.age}` : "Age N/A";
+      return `${team} • ${positions} • ${age}`;
+    }
+
+    function isSamePlayerName(a, b) {
+      return normalizeName(a?.name || "") === normalizeName(b?.name || "");
+    }
+
+    function isTradeFairEnough(givePlayer, getPlayer) {
+      if (!givePlayer || !getPlayer) return false;
+      if (isSamePlayerName(givePlayer, getPlayer)) return false;
+      if (isPremiumCoreOrOverpayOnly(givePlayer) || isPremiumCoreOrOverpayOnly(getPlayer)) return false;
+
+      const giveValue = getPlayerValueScore(givePlayer);
+      const getValue = getPlayerValueScore(getPlayer);
+      const valueGap = Math.abs(giveValue - getValue);
+      const giveBucket = getTradeAssetBucket(givePlayer);
+      const getBucket = getTradeAssetBucket(getPlayer);
+      const bucketGap = Math.abs(giveBucket - getBucket);
+      const giveRank = getBestSameNameRank(givePlayer);
+      const getRank = getBestSameNameRank(getPlayer);
+      const rankGap = Math.abs(giveRank - getRank);
+
+      // Hard blocks for lopsided one-for-one ideas. Hidden from UI, but used to prevent nonsense.
+      if (valueGap > 7) return false;
+      if (bucketGap > 1) return false;
+      if (Math.min(giveRank, getRank) <= 90 && Math.max(giveRank, getRank) > 160) return false;
+      if (Math.min(giveRank, getRank) <= 150 && rankGap > 130) return false;
+      return true;
     }
 
     function getDirectionFitScore(player, direction) {
@@ -1845,7 +2022,8 @@
       const myPlayers = getTeamRosterPlayers(teamName);
       const myPieces = myPlayers
         .filter(player => isReasonableTradePiece(player, direction))
-        .slice(0, 12);
+        .filter(player => !isPremiumCoreOrOverpayOnly(player))
+        .slice(0, 18);
       const ideas = [];
       const seen = new Set();
 
@@ -1853,12 +2031,14 @@
         if (otherTeam === teamName) continue;
 
         const otherPlayers = getTeamRosterPlayers(otherTeam);
+        const otherProfile = getTeamProfile(otherPlayers);
         const otherNeeds = getBottomCategoryScores(otherPlayers, 5);
-        const otherDirection = getTeamProfile(otherPlayers).futureScore > getTeamProfile(otherPlayers).currentScore ? "rebuild" : "balanced";
+        const otherDirection = otherProfile.futureScore > otherProfile.currentScore ? "rebuild" : "balanced";
         const otherTargets = otherPlayers
           .filter(player => !isPremiumCoreOrOverpayOnly(player))
+          .filter(player => isReasonableTradePiece(player, otherDirection))
           .filter(player => playerHelpsNeeds(player, teamNeeds))
-          .slice(0, 16);
+          .slice(0, 24);
 
         for (const givePlayer of myPieces) {
           const giveHelpsOther = getNeedMatchScore(givePlayer, otherNeeds);
@@ -1867,12 +2047,12 @@
           for (const getPlayer of otherTargets) {
             if (getPlayerOwner(getPlayer) !== otherTeam) continue;
             if (!playerHelpsNeeds(getPlayer, teamNeeds)) continue;
+            if (!isTradeFairEnough(givePlayer, getPlayer)) continue;
 
             const giveValue = getPlayerValueScore(givePlayer);
             const getValue = getPlayerValueScore(getPlayer);
             const valueGap = Math.abs(giveValue - getValue);
-            if (valueGap > 13) continue;
-
+            const bucketGap = Math.abs(getTradeAssetBucket(givePlayer) - getTradeAssetBucket(getPlayer));
             const getHelpsMe = getNeedMatchScore(getPlayer, teamNeeds);
             const key = [normalizeName(givePlayer.name), normalizeName(getPlayer.name)].sort().join("::");
             if (seen.has(key)) continue;
@@ -1881,7 +2061,7 @@
             const myCats = getReasonCategories(getPlayer, teamNeeds);
             const theirCats = getReasonCategories(givePlayer, otherNeeds);
             const directionFit = getDirectionFitScore(getPlayer, direction) + getDirectionFitScore(givePlayer, otherDirection);
-            const score = (13 - valueGap) + getHelpsMe * 3 + giveHelpsOther * 3 + directionFit;
+            const score = (7 - valueGap) * 2 + (1 - bucketGap) * 4 + getHelpsMe * 3 + giveHelpsOther * 3 + directionFit;
 
             ideas.push({
               score,
@@ -1891,7 +2071,9 @@
               getPlayer,
               myCats,
               theirCats,
-              valueGap
+              valueGap,
+              bucketGap,
+              safetyLabel: getTradeSafetyLabel({ valueGap, bucketGap })
             });
           }
         }
@@ -1899,21 +2081,41 @@
 
       return ideas
         .sort((a, b) => b.score - a.score)
-        .slice(0, 6);
+        .slice(0, 5);
     }
 
     function formatMutualTradeIdea(idea) {
       const myCatText = idea.myCats.length ? `helps ${idea.teamName} in ${idea.myCats.join(", ")}` : `fits ${idea.teamName}'s roster needs`;
       const theirCatText = idea.theirCats.length ? `helps ${idea.otherTeam} in ${idea.theirCats.join(", ")}` : `gives ${idea.otherTeam} a useful roster fit`;
+      const tags = [
+        idea.myCats.length ? `${idea.teamName}: ${idea.myCats.slice(0, 2).join(", ")}` : `${idea.teamName}: roster fit`,
+        idea.theirCats.length ? `${idea.otherTeam}: ${idea.theirCats.slice(0, 2).join(", ")}` : `${idea.otherTeam}: roster fit`,
+        idea.valueGap <= 4 ? "tight value band" : "manual review"
+      ];
 
       return `
         <article class="suggested-trade-card">
-          <div class="suggested-trade-matchup">${idea.teamName} ↔ ${idea.otherTeam}</div>
-          <div class="suggested-trade-lines">
-            <p class="suggested-trade-line"><strong>${idea.teamName} gets:</strong> ${idea.getPlayer.name}</p>
-            <p class="suggested-trade-line"><strong>${idea.otherTeam} gets:</strong> ${idea.givePlayer.name}</p>
+          <div class="suggested-trade-topbar">
+            <div class="suggested-trade-matchup">${idea.teamName} ↔ ${idea.otherTeam}</div>
+            <div class="suggested-trade-badge">${idea.safetyLabel}</div>
           </div>
-          <p class="suggested-trade-reason">Why it works: ${idea.getPlayer.name} ${myCatText}; ${idea.givePlayer.name} ${theirCatText}. This avoids core/overpay-only players and keeps the hidden value gap in a reasonable range.</p>
+          <div class="suggested-trade-swap">
+            <div class="suggested-trade-team-box">
+              <div class="suggested-trade-team">${idea.teamName} receives</div>
+              <div class="suggested-trade-player">${idea.getPlayer.name}</div>
+              <div class="suggested-trade-meta">${getPlayerMeta(idea.getPlayer)}</div>
+            </div>
+            <div class="suggested-trade-arrow">↔</div>
+            <div class="suggested-trade-team-box">
+              <div class="suggested-trade-team">${idea.otherTeam} receives</div>
+              <div class="suggested-trade-player">${idea.givePlayer.name}</div>
+              <div class="suggested-trade-meta">${getPlayerMeta(idea.givePlayer)}</div>
+            </div>
+          </div>
+          <p class="suggested-trade-reason">
+            Why it works: ${idea.getPlayer.name} ${myCatText}; ${idea.givePlayer.name} ${theirCatText}. Elite/core players are blocked from this list, and one-for-one ideas must pass a tighter hidden fairness band.
+            <span class="suggested-trade-tags">${tags.map(tag => `<span class="suggested-trade-tag">${tag}</span>`).join("")}</span>
+          </p>
         </article>
       `;
     }
