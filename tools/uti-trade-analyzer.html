@@ -1943,9 +1943,29 @@
     }
 
     function getTradeSafetyLabel(idea) {
-      if (idea.valueGap <= 4 && idea.bucketGap === 0) return "Clean fit";
-      if (idea.valueGap <= 7 && idea.bucketGap <= 1) return "Review fit";
+      if (idea.analyzerFairness?.className === "" && idea.analyzerGapLabel === "Small Gap") return "Clean fit";
+      if (["", "slight"].includes(idea.analyzerFairness?.className || "") && ["Small Gap", "Medium Gap"].includes(idea.analyzerGapLabel || "")) return "Review fit";
       return "Manual review";
+    }
+
+    function evaluateSuggestedTradeWithAnalyzer(givePlayer, getPlayer) {
+      const sideATotal = Number(givePlayer?.dynastyValue || 0);
+      const sideBTotal = Number(getPlayer?.dynastyValue || 0);
+      const fairness = getFairness(sideATotal, sideBTotal);
+      const difference = Math.abs(sideATotal - sideBTotal);
+      const maxTotal = Math.max(sideATotal, sideBTotal, 1);
+      const pct = difference / maxTotal;
+      const gapLabel = pct <= 0.05 ? "Small Gap" : pct <= 0.12 ? "Medium Gap" : "Large Gap";
+      const makesSense = fairness.className === "" || fairness.className === "slight";
+
+      return {
+        fairness,
+        gapLabel,
+        makesSense,
+        note: makesSense
+          ? `${fairness.label}. ${gapLabel}. This passes the same hidden trade analyzer balance check used above.`
+          : `${fairness.label}. ${gapLabel}. This is too lopsided to auto-suggest.`
+      };
     }
 
     function getPlayerMeta(player) {
@@ -1963,6 +1983,9 @@
       if (!givePlayer || !getPlayer) return false;
       if (isSamePlayerName(givePlayer, getPlayer)) return false;
       if (isPremiumCoreOrOverpayOnly(givePlayer) || isPremiumCoreOrOverpayOnly(getPlayer)) return false;
+
+      const analyzerCheck = evaluateSuggestedTradeWithAnalyzer(givePlayer, getPlayer);
+      if (!analyzerCheck.makesSense) return false;
 
       const giveValue = getPlayerValueScore(givePlayer);
       const getValue = getPlayerValueScore(getPlayer);
@@ -2049,6 +2072,9 @@
             if (!playerHelpsNeeds(getPlayer, teamNeeds)) continue;
             if (!isTradeFairEnough(givePlayer, getPlayer)) continue;
 
+            const analyzerCheck = evaluateSuggestedTradeWithAnalyzer(givePlayer, getPlayer);
+            if (!analyzerCheck.makesSense) continue;
+
             const giveValue = getPlayerValueScore(givePlayer);
             const getValue = getPlayerValueScore(getPlayer);
             const valueGap = Math.abs(giveValue - getValue);
@@ -2073,7 +2099,10 @@
               theirCats,
               valueGap,
               bucketGap,
-              safetyLabel: getTradeSafetyLabel({ valueGap, bucketGap })
+              analyzerFairness: analyzerCheck.fairness,
+              analyzerGapLabel: analyzerCheck.gapLabel,
+              analyzerNote: analyzerCheck.note,
+              safetyLabel: getTradeSafetyLabel({ valueGap, bucketGap, analyzerFairness: analyzerCheck.fairness, analyzerGapLabel: analyzerCheck.gapLabel })
             });
           }
         }
@@ -2090,7 +2119,8 @@
       const tags = [
         idea.myCats.length ? `${idea.teamName}: ${idea.myCats.slice(0, 2).join(", ")}` : `${idea.teamName}: roster fit`,
         idea.theirCats.length ? `${idea.otherTeam}: ${idea.theirCats.slice(0, 2).join(", ")}` : `${idea.otherTeam}: roster fit`,
-        idea.valueGap <= 4 ? "tight value band" : "manual review"
+        idea.analyzerFairness?.label || "Analyzer checked",
+        idea.analyzerGapLabel || "Gap checked"
       ];
 
       return `
@@ -2113,7 +2143,8 @@
             </div>
           </div>
           <p class="suggested-trade-reason">
-            Why it works: ${idea.getPlayer.name} ${myCatText}; ${idea.givePlayer.name} ${theirCatText}. Elite/core players are blocked from this list, and one-for-one ideas must pass a tighter hidden fairness band.
+            Why it works: ${idea.getPlayer.name} ${myCatText}; ${idea.givePlayer.name} ${theirCatText}.
+            <br><strong>Analyzer check:</strong> ${idea.analyzerNote}
             <span class="suggested-trade-tags">${tags.map(tag => `<span class="suggested-trade-tag">${tag}</span>`).join("")}</span>
           </p>
         </article>
@@ -2199,11 +2230,11 @@
 
       const mutualTrades = buildMutualTradeSuggestions(teamName, direction, needs);
       elements.teamSuggestedTradeSummary.textContent = mutualTrades.length
-        ? `Starter offers that should help ${teamName} and the other roster, without using core/overpay-only pieces.`
-        : `No clean mutual trade ideas found for ${teamName} with the current filters. Try a different team direction or manually build a trade above.`;
+        ? `Starter offers that help both rosters and pass the hidden trade analyzer fairness check.`
+        : `No clean mutual trade ideas passed the trade analyzer check for ${teamName}. Try a different team direction or manually build a trade above.`;
       elements.teamSuggestedTrades.innerHTML = mutualTrades.length
         ? mutualTrades.map(formatMutualTradeIdea).join("")
-        : `<article class="trade-idea"><div class="trade-idea-title">No clean match</div><p class="trade-idea-text">The analyzer could not find a fair, need-based one-for-one idea that avoided core pieces. That is better than forcing a bad trade.</p></article>`;
+        : `<article class="trade-idea"><div class="trade-idea-title">No clean match</div><p class="trade-idea-text">The analyzer could not find a fair, need-based one-for-one idea that avoided core pieces and passed the trade analyzer balance check. That is better than forcing a bad trade.</p></article>`;
     }
 
     function getPlayerOwner(player) {
