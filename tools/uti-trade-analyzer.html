@@ -379,6 +379,58 @@
       margin: 0;
     }
 
+
+
+    .insight-panel {
+      border-top: 1px solid rgba(16, 35, 63, 0.10);
+      margin-top: 14px;
+      padding-top: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .insight-card {
+      border: 1px solid var(--uti-border);
+      border-radius: 16px;
+      padding: 12px;
+      background: #f8fbff;
+    }
+
+    .insight-label {
+      color: var(--uti-muted);
+      font-size: 0.72rem;
+      font-weight: 950;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+
+    .insight-value {
+      color: var(--uti-dark);
+      font-size: 0.92rem;
+      font-weight: 850;
+      line-height: 1.35;
+      margin: 0;
+    }
+
+    .insight-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .insight-tag {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      background: rgba(11, 94, 215, 0.10);
+      color: var(--uti-dark);
+      padding: 5px 8px;
+      font-size: 0.76rem;
+      font-weight: 900;
+    }
+
     .reset-btn {
       border: 0;
       border-radius: 999px;
@@ -489,6 +541,27 @@
           Add players to both sides to see the verdict.
         </p>
 
+        <div class="insight-panel" id="tradeInsights" aria-label="Trade insight summary">
+          <div class="insight-card">
+            <div class="insight-label">Who Gets Better Now</div>
+            <p class="insight-value" id="nowImpact">Add players to compare short-term impact.</p>
+          </div>
+          <div class="insight-card">
+            <div class="insight-label">Who Gets Better Later</div>
+            <p class="insight-value" id="futureImpact">Add players to compare long-term upside.</p>
+          </div>
+          <div class="insight-card">
+            <div class="insight-label">Category Impact</div>
+            <p class="insight-value" id="categoryImpact">Category fit will appear here once both sides have players.</p>
+            <div class="insight-tags" id="categoryTags"></div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-label">Risk / Review Notes</div>
+            <p class="insight-value" id="riskImpact">Add players to check risk and review notes.</p>
+          </div>
+        </div>
+
+
         <button class="reset-btn" id="resetTradeBtn" type="button">Reset Trade</button>
       </aside>
     </section>
@@ -518,6 +591,11 @@
       winnerValue: document.getElementById("winnerValue"),
       fairnessPill: document.getElementById("fairnessPill"),
       resultNote: document.getElementById("resultNote"),
+      nowImpact: document.getElementById("nowImpact"),
+      futureImpact: document.getElementById("futureImpact"),
+      categoryImpact: document.getElementById("categoryImpact"),
+      categoryTags: document.getElementById("categoryTags"),
+      riskImpact: document.getElementById("riskImpact"),
       resetTradeBtn: document.getElementById("resetTradeBtn")
     };
 
@@ -584,6 +662,165 @@
       }
 
       return "Pretty fair. Commish can put the pitchfork down.";
+    }
+
+
+
+    function toArray(value) {
+      if (!value) return [];
+      if (Array.isArray(value)) return value.filter(Boolean);
+      if (typeof value === "object") {
+        return Object.entries(value)
+          .filter(([, score]) => score === true || Number(score) > 0)
+          .sort((a, b) => Number(b[1]) - Number(a[1]))
+          .map(([category]) => category);
+      }
+      return value
+        .toString()
+        .split(/[|,;/]+/)
+        .map(item => item.trim())
+        .filter(Boolean);
+    }
+
+    function getCurrentScore(player) {
+      const rank = Number(player.currentRank || 999);
+      const rankScore = Math.max(0, 220 - Math.min(rank, 220));
+      const productionScore = Number(player.currentProduction || 0);
+      return productionScore || rankScore;
+    }
+
+    function getFutureScore(player) {
+      const age = Number(player.age || 30);
+      const futureTier = Number(player.futureTier || 5);
+      const upside = Number(player.futureUpside || 0);
+      const ageBonus = Math.max(0, 31 - age) * 7;
+      const futureBonus = Math.max(0, 6 - futureTier) * 28;
+      return upside || (ageBonus + futureBonus);
+    }
+
+    function getSideCurrentScore(side) {
+      return state[side].reduce((sum, player) => sum + getCurrentScore(player), 0);
+    }
+
+    function getSideFutureScore(side) {
+      return state[side].reduce((sum, player) => sum + getFutureScore(player), 0);
+    }
+
+    function describeEdge(sideAScore, sideBScore, labelA, labelB, evenText) {
+      if (!state.sideA.length || !state.sideB.length) return evenText;
+      const difference = Math.abs(sideAScore - sideBScore);
+      const maxScore = Math.max(sideAScore, sideBScore, 1);
+      const pct = difference / maxScore;
+      if (pct < 0.08) return `Pretty even. ${labelA} and ${labelB} are close enough that team needs matter more.`;
+      const winner = sideAScore > sideBScore ? labelA : labelB;
+      if (pct < 0.18) return `${winner} has a small edge here, but it is not enough to ignore roster fit.`;
+      return `${winner} has the stronger edge here.`;
+    }
+
+    function getCategoryCounts(players) {
+      const counts = new Map();
+      players.forEach(player => {
+        const categories = [
+          ...toArray(player.categoryFitTie),
+          ...toArray(player.categoryFit),
+          ...toArray(player.categoryFits),
+          ...toArray(player.categories)
+        ];
+        categories.forEach(category => {
+          const cleanCategory = category.toString().trim();
+          if (!cleanCategory) return;
+          counts.set(cleanCategory, (counts.get(cleanCategory) || 0) + 1);
+        });
+      });
+      return counts;
+    }
+
+    function getTopCategories(side) {
+      const counts = getCategoryCounts(state[side]);
+      return [...counts.entries()]
+        .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+        .slice(0, 5)
+        .map(([category]) => category);
+    }
+
+    function getRiskScore(player) {
+      const value = (player.riskTier || player.risk || "medium").toString().toLowerCase();
+      if (value.includes("low") || value === "1") return 1;
+      if (value.includes("high") || value === "3") return 3;
+      if (value.includes("extreme") || value === "4") return 4;
+      return 2;
+    }
+
+    function getAverageRisk(side) {
+      if (!state[side].length) return 0;
+      return state[side].reduce((sum, player) => sum + getRiskScore(player), 0) / state[side].length;
+    }
+
+    function getReviewCount(side) {
+      return state[side].filter(player => Boolean(player.needsReview)).length;
+    }
+
+    function renderTradeInsights() {
+      const sideACurrent = getSideCurrentScore("sideA");
+      const sideBCurrent = getSideCurrentScore("sideB");
+      const sideAFuture = getSideFutureScore("sideA");
+      const sideBFuture = getSideFutureScore("sideB");
+      const sideACategories = getTopCategories("sideA");
+      const sideBCategories = getTopCategories("sideB");
+      const sideARisk = getAverageRisk("sideA");
+      const sideBRisk = getAverageRisk("sideB");
+      const sideAReviewCount = getReviewCount("sideA");
+      const sideBReviewCount = getReviewCount("sideB");
+
+      elements.nowImpact.textContent = describeEdge(
+        sideACurrent,
+        sideBCurrent,
+        "Side A",
+        "Side B",
+        "Add players to compare short-term impact."
+      );
+
+      elements.futureImpact.textContent = describeEdge(
+        sideAFuture,
+        sideBFuture,
+        "Side A",
+        "Side B",
+        "Add players to compare long-term upside."
+      );
+
+      if (!state.sideA.length || !state.sideB.length) {
+        elements.categoryImpact.textContent = "Category fit will appear here once both sides have players.";
+        elements.categoryTags.innerHTML = "";
+      } else if (!sideACategories.length && !sideBCategories.length) {
+        elements.categoryImpact.textContent = "No category tags are listed for these players yet.";
+        elements.categoryTags.innerHTML = "";
+      } else {
+        const sideAText = sideACategories.length ? `Side A gains ${sideACategories.join(", ")}` : "Side A category gain is unclear";
+        const sideBText = sideBCategories.length ? `Side B gains ${sideBCategories.join(", ")}` : "Side B category gain is unclear";
+        elements.categoryImpact.textContent = `${sideAText}. ${sideBText}.`;
+        const tags = [...new Set([...sideACategories, ...sideBCategories])];
+        elements.categoryTags.innerHTML = tags.map(tag => `<span class="insight-tag">${tag}</span>`).join("");
+      }
+
+      if (!state.sideA.length || !state.sideB.length) {
+        elements.riskImpact.textContent = "Add players to check risk and review notes.";
+      } else {
+        const riskGap = Math.abs(sideARisk - sideBRisk);
+        let riskText = "Risk looks pretty similar on both sides.";
+        if (riskGap >= 0.5) {
+          riskText = sideARisk > sideBRisk
+            ? "Side A is taking on more volatility."
+            : "Side B is taking on more volatility.";
+        }
+
+        const reviewParts = [];
+        if (sideAReviewCount) reviewParts.push(`Side A has ${sideAReviewCount} player${sideAReviewCount === 1 ? "" : "s"} worth a manual review`);
+        if (sideBReviewCount) reviewParts.push(`Side B has ${sideBReviewCount} player${sideBReviewCount === 1 ? "" : "s"} worth a manual review`);
+
+        elements.riskImpact.textContent = reviewParts.length
+          ? `${riskText} ${reviewParts.join(". ")}.`
+          : riskText;
+      }
     }
 
     function addPlayerToSide(player, side) {
@@ -714,6 +951,7 @@
       elements.fairnessPill.textContent = fairness.label;
       elements.fairnessPill.className = `fairness-pill ${fairness.className}`.trim();
       elements.resultNote.textContent = getResultNote(sideATotal, sideBTotal, fairness.label);
+      renderTradeInsights();
     }
 
     function renderAll() {
