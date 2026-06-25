@@ -2519,4 +2519,8 @@ export const FANTASY_OWNERS = [
   }
 ];
 
+if (typeof window !== "undefined") {
+  window.FANTASY_OWNERS = FANTASY_OWNERS;
+}
+
 export default FANTASY_OWNERS;

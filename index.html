@@ -154,7 +154,7 @@
 </head>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
 </script>
-<script src="data/fantasy-owners.js"></script>
+<script type="module" src="data/fantasy-owners.js"></script>
 <script src="data/team-logos.js"></script>
 <script src="data/homerun-pool.js"></script>
 <script src="scripts/category-leaders.js?v=week1-fixed"></script>
@@ -382,18 +382,46 @@
       .trim();
   }
 
+  function getRosterPlayerName(entry) {
+    if (!entry) return "";
+    if (typeof entry === "string") return entry;
+    if (typeof entry !== "object") return "";
+    return entry.name || entry.playerName || entry.fullName || entry.player || entry.Player || entry.Name || "";
+  }
+
   function getFantasyOwnersLookup() {
     if (fantasyOwnersLookupCache) {
       return fantasyOwnersLookupCache;
     }
 
-    fantasyOwnersLookupCache = Object.fromEntries(
-      Object.entries(window.FANTASY_OWNERS || {}).map(([player, fantasyTeam]) => [
-        normalizePlayerName(player),
-        fantasyTeam
-      ])
-    );
+    const ownersData = window.FANTASY_OWNERS || [];
+    const lookup = {};
 
+    // New format: [{ teamName, players: [{ name, positions }] }]
+    if (Array.isArray(ownersData)) {
+      ownersData.forEach(team => {
+        const teamName = team?.teamName || team?.name || team?.owner || "";
+        const roster = team?.players || team?.roster || [];
+
+        roster.forEach(playerEntry => {
+          const playerName = getRosterPlayerName(playerEntry);
+          if (playerName && teamName) {
+            lookup[normalizePlayerName(playerName)] = teamName;
+          }
+        });
+      });
+    }
+
+    // Old format: { "Player Name": "Team Name" }
+    else if (ownersData && typeof ownersData === "object") {
+      Object.entries(ownersData).forEach(([playerName, fantasyTeam]) => {
+        if (typeof fantasyTeam === "string") {
+          lookup[normalizePlayerName(playerName)] = fantasyTeam;
+        }
+      });
+    }
+
+    fantasyOwnersLookupCache = lookup;
     return fantasyOwnersLookupCache;
   }
 
@@ -683,7 +711,7 @@
 </script>
 <script src="scripts/homerun-pool.js?v=logos"></script>
 <script src="data/team-logos.js"></script>
-<script src="data/fantasy-owners.js"></script>
+<script type="module" src="data/fantasy-owners.js"></script>
 
 <body>
   <div class="page">

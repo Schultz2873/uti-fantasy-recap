@@ -2346,7 +2346,16 @@
       for (const path of candidatePaths) {
         try {
           const ownersModule = await import(path);
-          const rosterMaps = buildLeagueRosterMaps(ownersModule);
+          let rosterMaps = buildLeagueRosterMaps(ownersModule);
+
+          // Supports both module exports:
+          //   export const FANTASY_OWNERS = [...]
+          // and browser globals:
+          //   window.FANTASY_OWNERS = [...]
+          if (!rosterMaps.rosterMap.size && window.FANTASY_OWNERS) {
+            rosterMaps = buildLeagueRosterMaps(window.FANTASY_OWNERS);
+          }
+
           if (rosterMaps.rosterMap.size) {
             ownerLookup = rosterMaps.lookup;
             teamRosterMap = rosterMaps.rosterMap;
