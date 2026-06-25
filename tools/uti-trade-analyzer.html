@@ -634,6 +634,181 @@
       margin-top: 18px;
     }
 
+
+    .team-analyzer-card {
+      margin-top: 18px;
+      padding: 18px;
+      background: var(--uti-card);
+      border: 1px solid var(--uti-border);
+      border-radius: 22px;
+      box-shadow: 0 14px 34px rgba(16, 35, 63, 0.08);
+    }
+
+    .team-analyzer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .team-analyzer-title {
+      color: var(--uti-dark);
+      font-size: 1.35rem;
+      font-weight: 950;
+      margin: 0;
+    }
+
+    .team-analyzer-subtitle {
+      color: var(--uti-muted);
+      font-size: 0.9rem;
+      font-weight: 760;
+      margin: 4px 0 0;
+      max-width: 760px;
+    }
+
+    .team-controls {
+      display: grid;
+      grid-template-columns: minmax(190px, 1fr) minmax(150px, 0.65fr);
+      gap: 10px;
+      min-width: min(100%, 430px);
+    }
+
+    .team-field label {
+      display: block;
+      color: var(--uti-muted);
+      font-size: 0.70rem;
+      font-weight: 950;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+
+    .team-select {
+      width: 100%;
+      border: 1px solid var(--uti-border);
+      border-radius: 12px;
+      background: #ffffff;
+      color: var(--uti-dark);
+      font-size: 0.86rem;
+      font-weight: 850;
+      padding: 10px 11px;
+      outline: none;
+    }
+
+    .team-select:focus {
+      border-color: rgba(11, 94, 215, 0.55);
+      box-shadow: 0 0 0 4px rgba(11, 94, 215, 0.10);
+    }
+
+    .team-analysis-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .team-analysis-card {
+      border: 1px solid var(--uti-border);
+      border-radius: 18px;
+      background: #f8fbff;
+      padding: 14px;
+      min-width: 0;
+    }
+
+    .team-analysis-card.wide {
+      grid-column: 1 / -1;
+    }
+
+    .team-card-label {
+      color: var(--uti-muted);
+      font-size: 0.72rem;
+      font-weight: 950;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .team-card-value {
+      color: var(--uti-dark);
+      font-size: 0.96rem;
+      font-weight: 850;
+      line-height: 1.35;
+      margin: 0;
+    }
+
+    .team-tag-row {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 9px;
+    }
+
+    .team-tag {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      background: rgba(11, 94, 215, 0.10);
+      color: var(--uti-dark);
+      padding: 5px 8px;
+      font-size: 0.74rem;
+      font-weight: 950;
+    }
+
+    .team-tag.warn {
+      background: rgba(245, 159, 0, 0.14);
+    }
+
+    .team-tag.good {
+      background: rgba(25, 135, 84, 0.12);
+    }
+
+    .trade-idea-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .trade-idea {
+      border: 1px solid rgba(16, 35, 63, 0.10);
+      border-radius: 15px;
+      background: #ffffff;
+      padding: 12px;
+    }
+
+    .trade-idea-title {
+      color: var(--uti-dark);
+      font-size: 0.92rem;
+      font-weight: 950;
+      margin-bottom: 4px;
+    }
+
+    .trade-idea-text {
+      color: var(--uti-muted);
+      font-size: 0.86rem;
+      font-weight: 800;
+      line-height: 1.35;
+      margin: 0;
+    }
+
+    .team-warning {
+      border: 1px solid rgba(245, 159, 0, 0.32);
+      background: rgba(245, 159, 0, 0.10);
+      color: #7a5200;
+      border-radius: 16px;
+      padding: 12px;
+      font-weight: 850;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 760px) {
+      .team-analysis-grid,
+      .team-controls {
+        grid-template-columns: 1fr;
+      }
+    }
+
     @media (max-width: 960px) {
       .trade-shell {
         grid-template-columns: 1fr;
@@ -769,11 +944,72 @@
         <button class="reset-btn" id="resetTradeBtn" type="button">Reset Trade</button>
       </aside>
     </section>
+
+    <section class="team-analyzer-card" aria-label="Team analyzer">
+      <div class="team-analyzer-header">
+        <div>
+          <h2 class="team-analyzer-title">Team Analyzer + Trade Targets</h2>
+          <p class="team-analyzer-subtitle">
+            Pick a UTI team and direction to see roster strengths, weak spots, move type, trade chips, and realistic targets from the league. Values stay hidden.
+          </p>
+        </div>
+        <div class="team-controls">
+          <div class="team-field">
+            <label for="teamAnalyzeSelect">Team</label>
+            <select class="team-select" id="teamAnalyzeSelect">
+              <option value="">Load fantasy-owners.js first</option>
+            </select>
+          </div>
+          <div class="team-field">
+            <label for="teamAnalyzeDirection">Direction</label>
+            <select class="team-select" id="teamAnalyzeDirection">
+              <option value="balanced">Balanced</option>
+              <option value="winNow">Win Now</option>
+              <option value="rebuild">Rebuild</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div id="teamAnalyzerWarning" class="team-warning" hidden>
+        Team analysis needs <strong>data/fantasy-owners.js</strong>. If this is open locally, run it through a server or GitHub Pages.
+      </div>
+
+      <div class="team-analysis-grid">
+        <article class="team-analysis-card">
+          <div class="team-card-label">Roster Snapshot</div>
+          <p class="team-card-value" id="teamSnapshot">Select a team to analyze the roster.</p>
+          <div class="team-tag-row" id="teamSnapshotTags"></div>
+        </article>
+        <article class="team-analysis-card">
+          <div class="team-card-label">Recommended Direction</div>
+          <p class="team-card-value" id="teamDirectionSummary">Choose a team and goal.</p>
+          <div class="team-tag-row" id="teamDirectionTags"></div>
+        </article>
+        <article class="team-analysis-card">
+          <div class="team-card-label">Strengths</div>
+          <p class="team-card-value" id="teamStrengths">Strengths will appear here.</p>
+          <div class="team-tag-row" id="teamStrengthTags"></div>
+        </article>
+        <article class="team-analysis-card">
+          <div class="team-card-label">Needs / Weak Spots</div>
+          <p class="team-card-value" id="teamNeeds">Needs will appear here.</p>
+          <div class="team-tag-row" id="teamNeedTags"></div>
+        </article>
+        <article class="team-analysis-card wide">
+          <div class="team-card-label">Trade Suggestions</div>
+          <p class="team-card-value" id="teamTradeSummary">Suggested moves will appear here.</p>
+          <div class="trade-idea-list" id="teamTradeIdeas"></div>
+        </article>
+      </div>
+    </section>
+
   </main>
 
   <script type="module">
     let playerData = [];
     let ownerLookup = new Map();
+    let teamRosterMap = new Map();
     let selectedSideA = [];
     let selectedSideB = [];
 
@@ -807,7 +1043,20 @@
       recommendationText: document.getElementById("recommendationText"),
       counterText: document.getElementById("counterText"),
       recommendationTags: document.getElementById("recommendationTags"),
-      resetTradeBtn: document.getElementById("resetTradeBtn")
+      resetTradeBtn: document.getElementById("resetTradeBtn"),
+      teamAnalyzeSelect: document.getElementById("teamAnalyzeSelect"),
+      teamAnalyzeDirection: document.getElementById("teamAnalyzeDirection"),
+      teamAnalyzerWarning: document.getElementById("teamAnalyzerWarning"),
+      teamSnapshot: document.getElementById("teamSnapshot"),
+      teamSnapshotTags: document.getElementById("teamSnapshotTags"),
+      teamDirectionSummary: document.getElementById("teamDirectionSummary"),
+      teamDirectionTags: document.getElementById("teamDirectionTags"),
+      teamStrengths: document.getElementById("teamStrengths"),
+      teamStrengthTags: document.getElementById("teamStrengthTags"),
+      teamNeeds: document.getElementById("teamNeeds"),
+      teamNeedTags: document.getElementById("teamNeedTags"),
+      teamTradeSummary: document.getElementById("teamTradeSummary"),
+      teamTradeIdeas: document.getElementById("teamTradeIdeas")
     };
 
     function normalizeName(value = "") {
@@ -1207,6 +1456,265 @@
     }
 
 
+
+    function getCategoryScoreMap(players) {
+      const totals = new Map();
+      players.forEach(player => {
+        if (!player.categoryScores || typeof player.categoryScores !== "object") return;
+        Object.entries(player.categoryScores).forEach(([category, score]) => {
+          const numericScore = Number(score || 0);
+          if (numericScore <= 0) return;
+          totals.set(category, (totals.get(category) || 0) + numericScore);
+        });
+      });
+      return totals;
+    }
+
+    function getTopCategoryScores(players, count = 5) {
+      return [...getCategoryScoreMap(players).entries()]
+        .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+        .slice(0, count)
+        .map(([category]) => category);
+    }
+
+    function getBottomCategoryScores(players, count = 5) {
+      return [...getCategoryScoreMap(players).entries()]
+        .sort((a, b) => a[1] - b[1] || a[0].localeCompare(b[0]))
+        .slice(0, count)
+        .map(([category]) => category);
+    }
+
+    function getRosterPlayerNames(teamName) {
+      return [...(teamRosterMap.get(teamName) || new Set())];
+    }
+
+    function getTeamRosterPlayers(teamName) {
+      const playersByName = new Map(playerData.map(player => [normalizeName(player.name), player]));
+      return getRosterPlayerNames(teamName)
+        .map(name => playersByName.get(normalizeName(name)))
+        .filter(Boolean);
+    }
+
+    function getUnmatchedRosterNames(teamName) {
+      const playersByName = new Set(playerData.map(player => normalizeName(player.name)));
+      return getRosterPlayerNames(teamName).filter(name => !playersByName.has(normalizeName(name)));
+    }
+
+    function getOwnedPlayersNotOnTeam(teamName) {
+      return playerData.filter(player => {
+        const owner = getPlayerOwner(player);
+        return owner && owner !== "Free Agent" && owner !== teamName;
+      });
+    }
+
+    function getPositionCounts(players) {
+      const counts = new Map();
+      players.forEach(player => {
+        (player.positions || []).forEach(position => {
+          counts.set(position, (counts.get(position) || 0) + 1);
+        });
+      });
+      return counts;
+    }
+
+    function getPrimaryRole(player) {
+      const positions = player.positions || [];
+      if (positions.includes("RP")) return "RP";
+      if (positions.includes("SP") || positions.includes("P")) return "SP";
+      return "BAT";
+    }
+
+    function getTeamProfile(players) {
+      const count = players.length;
+      const avgAge = count ? players.reduce((sum, player) => sum + Number(player.age || 0), 0) / count : 0;
+      const currentScore = players.reduce((sum, player) => sum + getCurrentScore(player), 0);
+      const futureScore = players.reduce((sum, player) => sum + getFutureScore(player), 0);
+      const hitters = players.filter(player => getPrimaryRole(player) === "BAT").length;
+      const starters = players.filter(player => getPrimaryRole(player) === "SP").length;
+      const relievers = players.filter(player => getPrimaryRole(player) === "RP").length;
+      const youngCore = players.filter(player => Number(player.age || 99) <= 25).length;
+      const agingCore = players.filter(player => Number(player.age || 0) >= 32).length;
+      return { count, avgAge, currentScore, futureScore, hitters, starters, relievers, youngCore, agingCore };
+    }
+
+    function formatPlayerWithOwner(player) {
+      const owner = getPlayerOwner(player);
+      return `${player.name}${owner && owner !== "Free Agent" ? ` (${owner})` : ""}`;
+    }
+
+    function renderTeamTags(container, tags, className = "") {
+      container.innerHTML = tags.map(tag => `<span class="team-tag ${className}">${tag}</span>`).join("");
+    }
+
+    function getTradeChips(players, direction) {
+      const sorted = [...players];
+      if (direction === "rebuild") {
+        return sorted
+          .filter(player => Number(player.age || 0) >= 29 || getCurrentScore(player) > getFutureScore(player))
+          .sort((a, b) => getCurrentScore(b) - getCurrentScore(a))
+          .slice(0, 4);
+      }
+      if (direction === "winNow") {
+        return sorted
+          .filter(player => Number(player.age || 99) <= 25 || getFutureScore(player) > getCurrentScore(player))
+          .sort((a, b) => getFutureScore(b) - getFutureScore(a))
+          .slice(0, 4);
+      }
+      return sorted
+        .sort((a, b) => Math.abs(getCurrentScore(b) - getFutureScore(b)) - Math.abs(getCurrentScore(a) - getFutureScore(a)))
+        .slice(0, 4);
+    }
+
+    function playerHelpsNeeds(player, needs) {
+      if (!needs.length || !player.categoryScores) return true;
+      return needs.some(category => Number(player.categoryScores?.[category] || 0) >= 75);
+    }
+
+    function getTradeTargets(teamName, direction, needs) {
+      const pool = getOwnedPlayersNotOnTeam(teamName);
+      let filtered = pool.filter(player => playerHelpsNeeds(player, needs));
+      if (!filtered.length) filtered = pool;
+
+      if (direction === "rebuild") {
+        return filtered
+          .filter(player => Number(player.age || 99) <= 25 || getFutureScore(player) >= 80)
+          .sort((a, b) => getFutureScore(b) - getFutureScore(a))
+          .slice(0, 6);
+      }
+
+      if (direction === "winNow") {
+        return filtered
+          .filter(player => getCurrentScore(player) >= 65 || Number(player.currentRank || 999) <= 175)
+          .sort((a, b) => getCurrentScore(b) - getCurrentScore(a))
+          .slice(0, 6);
+      }
+
+      return filtered
+        .sort((a, b) => Number(b.dynastyValue || 0) - Number(a.dynastyValue || 0))
+        .slice(0, 6);
+    }
+
+    function buildTradeIdeas(teamName, players, direction, needs) {
+      const chips = getTradeChips(players, direction);
+      const targets = getTradeTargets(teamName, direction, needs);
+      const ideas = [];
+
+      if (direction === "rebuild") {
+        ideas.push({
+          title: "Rebuild move",
+          text: chips.length && targets.length
+            ? `Shop ${chips.slice(0, 2).map(player => player.name).join(" or ")} for younger upside like ${targets.slice(0, 3).map(formatPlayerWithOwner).join(", ")}.`
+            : "Move older production for younger players with future upside."
+        });
+      } else if (direction === "winNow") {
+        ideas.push({
+          title: "Win-now move",
+          text: chips.length && targets.length
+            ? `Use upside/depth like ${chips.slice(0, 2).map(player => player.name).join(" or ")} to chase production like ${targets.slice(0, 3).map(formatPlayerWithOwner).join(", ")}.`
+            : "Consolidate prospect/depth pieces for immediate category help."
+        });
+      } else {
+        ideas.push({
+          title: "Balanced move",
+          text: chips.length && targets.length
+            ? `Float ${chips.slice(0, 2).map(player => player.name).join(" or ")} for need-based targets like ${targets.slice(0, 3).map(formatPlayerWithOwner).join(", ")}.`
+            : "Look for need-for-need swaps that do not wreck your age curve."
+        });
+      }
+
+      if (needs.length) {
+        ideas.push({
+          title: "Category target",
+          text: `Prioritize players who help ${needs.slice(0, 4).join(", ")}. Do not just chase the biggest name if the categories do not fix the roster.`
+        });
+      }
+
+      if (targets.length > 3) {
+        ideas.push({
+          title: "Target list",
+          text: targets.slice(0, 6).map(formatPlayerWithOwner).join(" • ")
+        });
+      }
+
+      return ideas;
+    }
+
+    function renderTeamOptions() {
+      const teamNames = [...teamRosterMap.keys()].sort((a, b) => a.localeCompare(b));
+      if (!teamNames.length) {
+        elements.teamAnalyzeSelect.innerHTML = `<option value="">No teams found</option>`;
+        elements.teamAnalyzerWarning.hidden = false;
+        return;
+      }
+
+      elements.teamAnalyzerWarning.hidden = true;
+      elements.teamAnalyzeSelect.innerHTML = teamNames
+        .map(teamName => `<option value="${teamName}">${teamName}</option>`)
+        .join("");
+      renderTeamAnalysis();
+    }
+
+    function renderTeamAnalysis() {
+      const teamName = elements.teamAnalyzeSelect.value;
+      const direction = elements.teamAnalyzeDirection.value || "balanced";
+
+      if (!teamName) {
+        elements.teamSnapshot.textContent = "Select a team to analyze the roster.";
+        elements.teamTradeIdeas.innerHTML = "";
+        return;
+      }
+
+      const players = getTeamRosterPlayers(teamName);
+      const unmatched = getUnmatchedRosterNames(teamName);
+      const profile = getTeamProfile(players);
+      const strengths = getTopCategoryScores(players, 5);
+      const needs = getBottomCategoryScores(players, 5);
+      const positionCounts = getPositionCounts(players);
+      const weakPositions = ["C", "2B", "SS", "3B", "OF", "SP", "RP"]
+        .filter(position => (positionCounts.get(position) || 0) <= (position === "OF" ? 3 : position === "SP" ? 5 : 1))
+        .slice(0, 4);
+
+      elements.teamSnapshot.textContent = `${teamName} has ${profile.count} matched players in the analyzer${unmatched.length ? `, plus ${unmatched.length} roster name${unmatched.length === 1 ? "" : "s"} that need a player-data match` : ""}. Average age is ${profile.avgAge ? profile.avgAge.toFixed(1) : "N/A"}.`;
+      renderTeamTags(elements.teamSnapshotTags, [
+        `${profile.hitters} bats`,
+        `${profile.starters} SP`,
+        `${profile.relievers} RP`,
+        `${profile.youngCore} age 25 or younger`,
+        `${profile.agingCore} age 32+`
+      ]);
+
+      const directionText = direction === "winNow"
+        ? "Win-now mode: trade from future/depth pockets to add bankable category production."
+        : direction === "rebuild"
+          ? "Rebuild mode: sell older current production before the value starts leaking."
+          : "Balanced mode: look for category upgrades without crushing the roster timeline.";
+      elements.teamDirectionSummary.textContent = directionText;
+      renderTeamTags(elements.teamDirectionTags, [
+        profile.currentScore >= profile.futureScore ? "current-production lean" : "future-upside lean",
+        weakPositions.length ? `thin: ${weakPositions.join(", ")}` : "position depth looks okay"
+      ], weakPositions.length ? "warn" : "good");
+
+      elements.teamStrengths.textContent = strengths.length
+        ? `Best category pockets: ${strengths.join(", ")}.`
+        : "Not enough category data found yet.";
+      renderTeamTags(elements.teamStrengthTags, strengths, "good");
+
+      const needParts = [];
+      if (needs.length) needParts.push(`Category help: ${needs.join(", ")}`);
+      if (weakPositions.length) needParts.push(`Depth watch: ${weakPositions.join(", ")}`);
+      elements.teamNeeds.textContent = needParts.length ? `${needParts.join(". ")}.` : "No obvious weak spots found from the current roster data.";
+      renderTeamTags(elements.teamNeedTags, [...needs.slice(0, 4), ...weakPositions], "warn");
+
+      const tradeIdeas = buildTradeIdeas(teamName, players, direction, needs);
+      elements.teamTradeSummary.textContent = `Suggested approach for ${teamName}: ${direction === "rebuild" ? "turn older production into younger assets" : direction === "winNow" ? "consolidate depth for immediate category help" : "make a need-for-need upgrade without overpaying"}.`;
+      elements.teamTradeIdeas.innerHTML = tradeIdeas.map(idea => `
+        <article class="trade-idea">
+          <div class="trade-idea-title">${idea.title}</div>
+          <p class="trade-idea-text">${idea.text}</p>
+        </article>
+      `).join("");
+    }
+
     function getPlayerOwner(player) {
       return ownerLookup.get(normalizeName(player.name)) || "Free Agent";
     }
@@ -1247,65 +1755,75 @@
         || "";
     }
 
-    function addRosterEntriesToLookup(entries, teamName, lookup) {
+    function addRosterEntriesToLookup(entries, teamName, lookup, rosterMap) {
       if (!entries) return;
+
+      if (!rosterMap.has(teamName)) rosterMap.set(teamName, new Set());
+      const rosterSet = rosterMap.get(teamName);
 
       if (Array.isArray(entries)) {
         entries.forEach(entry => {
           const playerName = getPlayerNameFromRosterEntry(entry);
-          if (playerName) lookup.set(normalizeName(playerName), teamName);
+          if (playerName) {
+            lookup.set(normalizeName(playerName), teamName);
+            rosterSet.add(playerName);
+          }
         });
         return;
       }
 
       if (typeof entries === "object") {
-        Object.values(entries).forEach(value => addRosterEntriesToLookup(value, teamName, lookup));
+        Object.values(entries).forEach(value => addRosterEntriesToLookup(value, teamName, lookup, rosterMap));
       }
     }
 
-    function buildOwnerLookup(ownerData) {
+    function buildLeagueRosterMaps(ownerData) {
       const lookup = new Map();
+      const rosterMap = new Map();
       const data = getExportedOwnerData(ownerData);
 
       if (Array.isArray(data)) {
         data.forEach(team => {
           const teamName = getTeamLabel(team);
-          addRosterEntriesToLookup(team.players, teamName, lookup);
-          addRosterEntriesToLookup(team.roster, teamName, lookup);
-          addRosterEntriesToLookup(team.hitters, teamName, lookup);
-          addRosterEntriesToLookup(team.pitchers, teamName, lookup);
-          addRosterEntriesToLookup(team.bench, teamName, lookup);
-          addRosterEntriesToLookup(team.active, teamName, lookup);
+          addRosterEntriesToLookup(team.players, teamName, lookup, rosterMap);
+          addRosterEntriesToLookup(team.roster, teamName, lookup, rosterMap);
+          addRosterEntriesToLookup(team.hitters, teamName, lookup, rosterMap);
+          addRosterEntriesToLookup(team.pitchers, teamName, lookup, rosterMap);
+          addRosterEntriesToLookup(team.bench, teamName, lookup, rosterMap);
+          addRosterEntriesToLookup(team.active, teamName, lookup, rosterMap);
         });
-        return lookup;
+        return { lookup, rosterMap };
       }
 
       if (data && typeof data === "object") {
         Object.entries(data).forEach(([teamName, roster]) => {
           if (Array.isArray(roster)) {
-            addRosterEntriesToLookup(roster, teamName, lookup);
+            addRosterEntriesToLookup(roster, teamName, lookup, rosterMap);
           } else if (roster && typeof roster === "object") {
             const resolvedTeamName = getTeamLabel(roster, teamName);
-            addRosterEntriesToLookup(roster.players, resolvedTeamName, lookup);
-            addRosterEntriesToLookup(roster.roster, resolvedTeamName, lookup);
-            addRosterEntriesToLookup(roster.hitters, resolvedTeamName, lookup);
-            addRosterEntriesToLookup(roster.pitchers, resolvedTeamName, lookup);
-            addRosterEntriesToLookup(roster.bench, resolvedTeamName, lookup);
-            addRosterEntriesToLookup(roster.active, resolvedTeamName, lookup);
+            addRosterEntriesToLookup(roster.players, resolvedTeamName, lookup, rosterMap);
+            addRosterEntriesToLookup(roster.roster, resolvedTeamName, lookup, rosterMap);
+            addRosterEntriesToLookup(roster.hitters, resolvedTeamName, lookup, rosterMap);
+            addRosterEntriesToLookup(roster.pitchers, resolvedTeamName, lookup, rosterMap);
+            addRosterEntriesToLookup(roster.bench, resolvedTeamName, lookup, rosterMap);
+            addRosterEntriesToLookup(roster.active, resolvedTeamName, lookup, rosterMap);
           }
         });
       }
 
-      return lookup;
+      return { lookup, rosterMap };
     }
 
     async function loadFantasyOwners() {
       try {
         const ownersModule = await import("../data/fantasy-owners.js");
-        ownerLookup = buildOwnerLookup(ownersModule);
+        const rosterMaps = buildLeagueRosterMaps(ownersModule);
+        ownerLookup = rosterMaps.lookup;
+        teamRosterMap = rosterMaps.rosterMap;
       } catch (error) {
         console.warn("fantasy-owners.js was not loaded. Players will show as Free Agent until that file is available.", error);
         ownerLookup = new Map();
+        teamRosterMap = new Map();
       }
     }
 
@@ -1451,6 +1969,8 @@
 
       elements.myTradeSide.addEventListener("change", renderTradeSuggestion);
       elements.teamDirection.addEventListener("change", renderTradeSuggestion);
+      elements.teamAnalyzeSelect.addEventListener("change", renderTeamAnalysis);
+      elements.teamAnalyzeDirection.addEventListener("change", renderTeamAnalysis);
 
       elements.resetTradeBtn.addEventListener("click", () => {
         state.sideA = [];
@@ -1466,6 +1986,7 @@
         const module = await import("../data/players.js");
         await loadFantasyOwners();
         playerData = [...module.players].sort((a, b) => b.dynastyValue - a.dynastyValue);
+        renderTeamOptions();
         setupEvents();
         renderAll();
       } catch (error) {
