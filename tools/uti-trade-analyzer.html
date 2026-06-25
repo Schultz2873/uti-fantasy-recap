@@ -104,8 +104,7 @@
     }
 
     .trade-card,
-    .result-card,
-    .player-table-card {
+    .result-card {
       background: var(--uti-card);
       border: 1px solid var(--uti-border);
       border-radius: 22px;
@@ -146,14 +145,7 @@
     }
 
     .side-total-pill {
-      display: inline-flex;
-      border-radius: 999px;
-      background: rgba(11, 94, 215, 0.10);
-      color: var(--uti-blue);
-      padding: 5px 9px;
-      font-size: 0.78rem;
-      font-weight: 950;
-      white-space: nowrap;
+      display: none;
     }
 
     .player-search-wrap {
@@ -268,16 +260,6 @@
       margin-top: 3px;
     }
 
-    .value-badge {
-      border-radius: 999px;
-      background: var(--uti-dark);
-      color: #ffffff;
-      padding: 5px 9px;
-      font-weight: 950;
-      font-size: 0.82rem;
-      white-space: nowrap;
-    }
-
     .remove-player {
       border: 0;
       border-radius: 999px;
@@ -340,7 +322,7 @@
 
     .result-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
       gap: 10px;
       margin-bottom: 12px;
     }
@@ -413,106 +395,6 @@
       background: rgba(16, 35, 63, 0.14);
     }
 
-    .player-table-card {
-      margin-top: 18px;
-      padding: 18px;
-    }
-
-    .table-toolbar {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      margin-bottom: 12px;
-    }
-
-    .table-toolbar h2 {
-      color: var(--uti-dark);
-      font-weight: 950;
-      font-size: 1.25rem;
-      margin: 0;
-    }
-
-    .table-filter {
-      border: 1px solid var(--uti-border);
-      border-radius: 999px;
-      padding: 9px 12px;
-      font-weight: 800;
-      min-width: min(100%, 260px);
-    }
-
-    .players-table-wrap {
-      max-height: 560px;
-      overflow: auto;
-      border: 1px solid var(--uti-border);
-      border-radius: 16px;
-    }
-
-    .players-table {
-      width: 100%;
-      border-collapse: separate;
-      border-spacing: 0;
-      min-width: 800px;
-      background: #ffffff;
-    }
-
-    .players-table th,
-    .players-table td {
-      padding: 10px 12px;
-      border-bottom: 1px solid rgba(16, 35, 63, 0.08);
-      vertical-align: middle;
-      font-size: 0.88rem;
-    }
-
-    .players-table th {
-      position: sticky;
-      top: 0;
-      z-index: 3;
-      background: #f3f7fc;
-      color: var(--uti-dark);
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      font-weight: 950;
-    }
-
-    .players-table td {
-      color: var(--uti-dark);
-      font-weight: 760;
-    }
-
-    .players-table .muted {
-      color: var(--uti-muted);
-      font-weight: 800;
-    }
-
-    .add-small-btn {
-      border: 0;
-      border-radius: 999px;
-      background: rgba(11, 94, 215, 0.10);
-      color: var(--uti-blue);
-      font-weight: 950;
-      padding: 6px 10px;
-      font-size: 0.76rem;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
-    .add-small-btn:hover {
-      background: rgba(11, 94, 215, 0.18);
-    }
-
-    .category-chip {
-      display: inline-flex;
-      border-radius: 999px;
-      padding: 4px 8px;
-      background: rgba(16, 35, 63, 0.07);
-      font-size: 0.72rem;
-      font-weight: 950;
-      color: var(--uti-dark);
-    }
-
     .load-error {
       border: 1px solid rgba(220, 53, 69, 0.28);
       background: rgba(220, 53, 69, 0.08);
@@ -537,10 +419,6 @@
       .trade-sides {
         grid-template-columns: 1fr;
       }
-
-      .result-grid {
-        grid-template-columns: 1fr;
-      }
     }
   </style>
 </head>
@@ -553,13 +431,12 @@
       <div class="kicker">Dynasty Trade Tool</div>
       <h1>UTI Trade Analyzer</h1>
       <p>
-        Build both sides of a trade and compare dynasty value using player age, current rank, future upside,
-        category fit, position scarcity, risk, and current UTI ownership.
+        Build both sides of a trade and get a clean verdict without showing the raw player values, points, or dynasty tiers.
       </p>
     </section>
 
     <div id="loadError" class="load-error" hidden>
-      Could not load player values. Make sure <strong>data/players.js</strong> exists and this page is opened through a server/GitHub Pages.
+      Could not load player data. Make sure <strong>data/players.js</strong> exists and this page is opened through a server/GitHub Pages.
     </div>
 
     <section class="trade-shell" aria-label="Trade analyzer">
@@ -568,7 +445,7 @@
           <section class="trade-side" aria-label="Side A receives">
             <div class="trade-side-header">
               <h2 class="trade-side-title">Side A Receives</h2>
-              <span class="side-total-pill" id="sideATotalPill">0 pts</span>
+              <span class="side-total-pill" id="sideATotalPill" aria-hidden="true"></span>
             </div>
             <div class="player-search-wrap">
               <input class="player-search" id="sideASearch" type="search" placeholder="Search player to add..." autocomplete="off" />
@@ -580,7 +457,7 @@
           <section class="trade-side" aria-label="Side B receives">
             <div class="trade-side-header">
               <h2 class="trade-side-title">Side B Receives</h2>
-              <span class="side-total-pill" id="sideBTotalPill">0 pts</span>
+              <span class="side-total-pill" id="sideBTotalPill" aria-hidden="true"></span>
             </div>
             <div class="player-search-wrap">
               <input class="player-search" id="sideBSearch" type="search" placeholder="Search player to add..." autocomplete="off" />
@@ -593,7 +470,7 @@
 
       <aside class="result-card">
         <h2 class="result-title">Trade Verdict</h2>
-        <p class="result-subtitle">Values update automatically when players are added or removed.</p>
+        <p class="result-subtitle">Verdict updates automatically when players are added or removed.</p>
 
         <div class="winner-box">
           <div class="winner-label">Winner</div>
@@ -602,18 +479,6 @@
 
         <div class="result-grid">
           <div class="result-stat">
-            <div class="result-stat-label">Side A</div>
-            <div class="result-stat-value" id="sideAResult">0</div>
-          </div>
-          <div class="result-stat">
-            <div class="result-stat-label">Side B</div>
-            <div class="result-stat-value" id="sideBResult">0</div>
-          </div>
-          <div class="result-stat">
-            <div class="result-stat-label">Difference</div>
-            <div class="result-stat-value" id="differenceResult">0</div>
-          </div>
-          <div class="result-stat">
             <div class="result-stat-label">Gap</div>
             <div class="result-stat-value" id="percentResult">0%</div>
           </div>
@@ -621,40 +486,11 @@
 
         <div class="fairness-pill" id="fairnessPill">Fair Trade</div>
         <p class="result-note" id="resultNote">
-          Add players to both sides to see who is getting cooked.
+          Add players to both sides to see the verdict.
         </p>
 
         <button class="reset-btn" id="resetTradeBtn" type="button">Reset Trade</button>
       </aside>
-    </section>
-
-    <section class="player-table-card">
-      <div class="table-toolbar">
-        <h2>Player Value Board</h2>
-        <input class="table-filter" id="playerTableFilter" type="search" placeholder="Filter player, team, owner..." autocomplete="off" />
-      </div>
-
-      <div class="players-table-wrap">
-        <table class="players-table">
-          <thead>
-            <tr>
-              <th>Player</th>
-              <th>Owner</th>
-              <th>Pos</th>
-              <th>Age</th>
-              <th>Value</th>
-              <th>Tier</th>
-              <th>Category</th>
-              <th>Add</th>
-            </tr>
-          </thead>
-          <tbody id="playersTableBody">
-            <tr>
-              <td colspan="8" class="muted">Loading players...</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
     </section>
   </main>
 
@@ -678,16 +514,11 @@
       sideBList: document.getElementById("sideBList"),
       sideATotalPill: document.getElementById("sideATotalPill"),
       sideBTotalPill: document.getElementById("sideBTotalPill"),
-      sideAResult: document.getElementById("sideAResult"),
-      sideBResult: document.getElementById("sideBResult"),
-      differenceResult: document.getElementById("differenceResult"),
       percentResult: document.getElementById("percentResult"),
       winnerValue: document.getElementById("winnerValue"),
       fairnessPill: document.getElementById("fairnessPill"),
       resultNote: document.getElementById("resultNote"),
-      resetTradeBtn: document.getElementById("resetTradeBtn"),
-      playerTableFilter: document.getElementById("playerTableFilter"),
-      playersTableBody: document.getElementById("playersTableBody")
+      resetTradeBtn: document.getElementById("resetTradeBtn")
     };
 
     function normalizeName(value = "") {
@@ -729,33 +560,30 @@
 
     function getResultNote(sideATotal, sideBTotal, fairnessLabel) {
       if (!sideATotal && !sideBTotal) {
-        return "Add players to both sides to see who is getting cooked.";
+        return "Add players to both sides to see the verdict.";
       }
 
       if (!sideATotal || !sideBTotal) {
         return "One side is empty. Add players to both sides for a real verdict.";
       }
 
-      const winner = sideATotal > sideBTotal ? "Side A" : sideBTotal > sideATotal ? "Side B" : "Nobody";
-      const difference = Math.abs(sideATotal - sideBTotal);
-
-      if (winner === "Nobody") {
-        return "Dead even on raw dynasty value. Now argue category needs like civilized idiots.";
+      if (sideATotal === sideBTotal) {
+        return "Dead even. Team needs and league context can decide this one.";
       }
 
       if (fairnessLabel === "Robbery") {
-        return `${winner} wins by ${difference} points. This is the kind of trade that gets screenshotted in the group chat.`;
+        return "This one is lopsided enough to get the group chat yelling.";
       }
 
       if (fairnessLabel === "Clear Advantage") {
-        return `${winner} has a clear edge by ${difference} points. Not illegal, but somebody better have a good explanation.`;
+        return "One side has a clear edge. Not illegal, but somebody better have a good explanation.";
       }
 
       if (fairnessLabel === "Slight Advantage") {
-        return `${winner} has a small edge by ${difference} points. Team needs and win-now/rebuild context could swing this.`;
+        return "Small edge. Team needs and win-now/rebuild context could swing this.";
       }
 
-      return `Only ${difference} points apart. Pretty fair on raw value. Commish can put the pitchfork down.`;
+      return "Pretty fair. Commish can put the pitchfork down.";
     }
 
     function addPlayerToSide(player, side) {
@@ -795,8 +623,7 @@
             player.name,
             player.fantasyTeam,
             player.mlbTeam,
-            formatPositions(player),
-            player.tier
+            formatPositions(player)
           ].join(" ");
 
           return normalizeName(haystack).includes(normalizedQuery);
@@ -820,8 +647,8 @@
 
       container.innerHTML = matches.map(player => `
         <button class="suggestion-btn" type="button" data-add-side="${side}" data-player="${encodeURIComponent(player.name)}">
-          <span class="suggestion-name">${player.name} • ${player.dynastyValue}</span>
-          <span class="suggestion-meta">${player.fantasyTeam} • ${formatPositions(player)} • ${player.tier}</span>
+          <span class="suggestion-name">${player.name}</span>
+          <span class="suggestion-meta">${player.fantasyTeam} • ${formatPositions(player)}</span>
         </button>
       `).join("");
 
@@ -842,7 +669,7 @@
       if (!selectedPlayers.length) {
         container.innerHTML = `
           <div class="selected-empty">
-            No players added yet. Search above or use the value board below.
+            No players added yet. Search above to add players.
           </div>
         `;
         return;
@@ -853,9 +680,8 @@
           <div class="selected-player-top">
             <div>
               <div class="selected-player-name">${player.name}</div>
-              <div class="selected-player-meta">${player.fantasyTeam} • ${formatPositions(player)} • ${player.tier}</div>
+              <div class="selected-player-meta">${player.fantasyTeam} • ${formatPositions(player)}</div>
             </div>
-            <span class="value-badge">${player.dynastyValue}</span>
           </div>
           <button class="remove-player" type="button" data-remove-side="${side}" data-player="${encodeURIComponent(player.name)}">
             Remove
@@ -878,11 +704,8 @@
       const percentDifference = Number(((difference / maxTotal) * 100).toFixed(1));
       const fairness = getFairness(sideATotal, sideBTotal);
 
-      elements.sideATotalPill.textContent = `${sideATotal} pts`;
-      elements.sideBTotalPill.textContent = `${sideBTotal} pts`;
-      elements.sideAResult.textContent = sideATotal;
-      elements.sideBResult.textContent = sideBTotal;
-      elements.differenceResult.textContent = difference;
+      elements.sideATotalPill.textContent = "";
+      elements.sideBTotalPill.textContent = "";
       elements.percentResult.textContent = `${percentDifference}%`;
 
       elements.winnerValue.textContent =
@@ -893,65 +716,10 @@
       elements.resultNote.textContent = getResultNote(sideATotal, sideBTotal, fairness.label);
     }
 
-    function renderPlayerTable() {
-      const filter = normalizeName(elements.playerTableFilter.value);
-      const visiblePlayers = playerData.filter(player => {
-        if (!filter) return true;
-
-        const haystack = [
-          player.name,
-          player.fantasyTeam,
-          player.mlbTeam,
-          formatPositions(player),
-          player.tier,
-          player.categoryType
-        ].join(" ");
-
-        return normalizeName(haystack).includes(filter);
-      }).slice(0, 220);
-
-      if (!visiblePlayers.length) {
-        elements.playersTableBody.innerHTML = `
-          <tr>
-            <td colspan="8" class="muted">No players match that search.</td>
-          </tr>
-        `;
-        return;
-      }
-
-      elements.playersTableBody.innerHTML = visiblePlayers.map(player => `
-        <tr>
-          <td>
-            <strong>${player.name}</strong>
-            <div class="muted">${player.mlbTeam || "—"}</div>
-          </td>
-          <td>${player.fantasyTeam}</td>
-          <td>${formatPositions(player)}</td>
-          <td>${player.age}</td>
-          <td><strong>${player.dynastyValue}</strong></td>
-          <td>${player.tier}</td>
-          <td><span class="category-chip">${player.categoryType || "—"} ${player.categoryFit || ""}</span></td>
-          <td>
-            <button class="add-small-btn" type="button" data-table-add="sideA" data-player="${encodeURIComponent(player.name)}">A</button>
-            <button class="add-small-btn" type="button" data-table-add="sideB" data-player="${encodeURIComponent(player.name)}">B</button>
-          </td>
-        </tr>
-      `).join("");
-
-      elements.playersTableBody.querySelectorAll("[data-table-add]").forEach(button => {
-        button.addEventListener("click", () => {
-          const playerName = decodeURIComponent(button.dataset.player);
-          const selectedPlayer = playerData.find(player => player.name === playerName);
-          if (selectedPlayer) addPlayerToSide(selectedPlayer, button.dataset.tableAdd);
-        });
-      });
-    }
-
     function renderAll() {
       renderSelectedList("sideA", elements.sideAList);
       renderSelectedList("sideB", elements.sideBList);
       renderResult();
-      renderPlayerTable();
     }
 
     function setupSearch(input, side, suggestionsContainer) {
@@ -980,8 +748,6 @@
         selectedSideB = state.sideB;
         renderAll();
       });
-
-      elements.playerTableFilter.addEventListener("input", renderPlayerTable);
     }
 
     async function init() {
@@ -993,11 +759,6 @@
       } catch (error) {
         console.error(error);
         elements.loadError.hidden = false;
-        elements.playersTableBody.innerHTML = `
-          <tr>
-            <td colspan="8" class="muted">Player values failed to load.</td>
-          </tr>
-        `;
       }
     }
 
