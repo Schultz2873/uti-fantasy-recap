@@ -792,6 +792,44 @@
       margin: 0;
     }
 
+
+
+    .suggested-trade-card {
+      border: 1px solid rgba(11, 94, 215, 0.18);
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(11, 94, 215, 0.06), #ffffff);
+      padding: 12px;
+    }
+
+    .suggested-trade-matchup {
+      color: var(--uti-dark);
+      font-size: 0.92rem;
+      font-weight: 950;
+      margin-bottom: 7px;
+    }
+
+    .suggested-trade-lines {
+      display: grid;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .suggested-trade-line {
+      color: var(--uti-dark);
+      font-size: 0.87rem;
+      font-weight: 850;
+      line-height: 1.35;
+      margin: 0;
+    }
+
+    .suggested-trade-reason {
+      color: var(--uti-muted);
+      font-size: 0.83rem;
+      font-weight: 800;
+      line-height: 1.35;
+      margin: 0;
+    }
+
     .team-warning {
       border: 1px solid rgba(245, 159, 0, 0.32);
       background: rgba(245, 159, 0, 0.10);
@@ -1001,6 +1039,11 @@
           <p class="team-card-value" id="teamTradeSummary">Suggested moves will appear here.</p>
           <div class="trade-idea-list" id="teamTradeIdeas"></div>
         </article>
+        <article class="team-analysis-card wide">
+          <div class="team-card-label">Suggested Two-Team Trades</div>
+          <p class="team-card-value" id="teamSuggestedTradeSummary">Balanced trade ideas will appear here.</p>
+          <div class="trade-idea-list" id="teamSuggestedTrades"></div>
+        </article>
       </div>
     </section>
 
@@ -1057,7 +1100,9 @@
       teamNeeds: document.getElementById("teamNeeds"),
       teamNeedTags: document.getElementById("teamNeedTags"),
       teamTradeSummary: document.getElementById("teamTradeSummary"),
-      teamTradeIdeas: document.getElementById("teamTradeIdeas")
+      teamTradeIdeas: document.getElementById("teamTradeIdeas"),
+      teamSuggestedTradeSummary: document.getElementById("teamSuggestedTradeSummary"),
+      teamSuggestedTrades: document.getElementById("teamSuggestedTrades")
     };
 
     function normalizeName(value = "") {
@@ -1755,6 +1800,124 @@
       return ideas;
     }
 
+
+    function getPlayerValueScore(player) {
+      return Number(player.dynastyValue || getCurrentScore(player) || getFutureScore(player) || 0);
+    }
+
+    function getDirectionFitScore(player, direction) {
+      const age = Number(player.age || 99);
+      const currentScore = getCurrentScore(player);
+      const futureScore = getFutureScore(player);
+      const rank = Number(player.currentRank || 999);
+
+      if (direction === "rebuild") {
+        return (age <= 26 ? 8 : age <= 28 ? 3 : -6) + (futureScore >= currentScore ? 5 : -2) + (rank >= 55 ? 2 : -5);
+      }
+
+      if (direction === "winNow") {
+        return (currentScore >= 60 ? 8 : 0) + (rank <= 220 ? 4 : -2) + (age >= 27 ? 2 : 0);
+      }
+
+      return Math.abs(currentScore - futureScore) <= 20 ? 5 : 1;
+    }
+
+    function getReasonCategories(player, needs) {
+      if (!needs.length || !player.categoryScores) return [];
+      return needs
+        .filter(category => Number(player.categoryScores?.[category] || 0) >= 72)
+        .slice(0, 3);
+    }
+
+    function isReasonableTradePiece(player, direction) {
+      if (!player || isPremiumCoreOrOverpayOnly(player)) return false;
+      const value = getPlayerValueScore(player);
+      const rank = Number(player.currentRank || 999);
+      const age = Number(player.age || 99);
+
+      if (value > 82 || rank <= 45) return false;
+      if (direction === "rebuild") return age >= 28 || getCurrentScore(player) >= getFutureScore(player) - 3;
+      if (direction === "winNow") return rank >= 85 || getFutureScore(player) >= getCurrentScore(player) - 2;
+      return value <= 80;
+    }
+
+    function buildMutualTradeSuggestions(teamName, direction, teamNeeds) {
+      const myPlayers = getTeamRosterPlayers(teamName);
+      const myPieces = myPlayers
+        .filter(player => isReasonableTradePiece(player, direction))
+        .slice(0, 12);
+      const ideas = [];
+      const seen = new Set();
+
+      for (const otherTeam of [...teamRosterMap.keys()].sort((a, b) => a.localeCompare(b))) {
+        if (otherTeam === teamName) continue;
+
+        const otherPlayers = getTeamRosterPlayers(otherTeam);
+        const otherNeeds = getBottomCategoryScores(otherPlayers, 5);
+        const otherDirection = getTeamProfile(otherPlayers).futureScore > getTeamProfile(otherPlayers).currentScore ? "rebuild" : "balanced";
+        const otherTargets = otherPlayers
+          .filter(player => !isPremiumCoreOrOverpayOnly(player))
+          .filter(player => playerHelpsNeeds(player, teamNeeds))
+          .slice(0, 16);
+
+        for (const givePlayer of myPieces) {
+          const giveHelpsOther = getNeedMatchScore(givePlayer, otherNeeds);
+          if (giveHelpsOther <= 0) continue;
+
+          for (const getPlayer of otherTargets) {
+            if (getPlayerOwner(getPlayer) !== otherTeam) continue;
+            if (!playerHelpsNeeds(getPlayer, teamNeeds)) continue;
+
+            const giveValue = getPlayerValueScore(givePlayer);
+            const getValue = getPlayerValueScore(getPlayer);
+            const valueGap = Math.abs(giveValue - getValue);
+            if (valueGap > 13) continue;
+
+            const getHelpsMe = getNeedMatchScore(getPlayer, teamNeeds);
+            const key = [normalizeName(givePlayer.name), normalizeName(getPlayer.name)].sort().join("::");
+            if (seen.has(key)) continue;
+            seen.add(key);
+
+            const myCats = getReasonCategories(getPlayer, teamNeeds);
+            const theirCats = getReasonCategories(givePlayer, otherNeeds);
+            const directionFit = getDirectionFitScore(getPlayer, direction) + getDirectionFitScore(givePlayer, otherDirection);
+            const score = (13 - valueGap) + getHelpsMe * 3 + giveHelpsOther * 3 + directionFit;
+
+            ideas.push({
+              score,
+              teamName,
+              otherTeam,
+              givePlayer,
+              getPlayer,
+              myCats,
+              theirCats,
+              valueGap
+            });
+          }
+        }
+      }
+
+      return ideas
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 6);
+    }
+
+    function formatMutualTradeIdea(idea) {
+      const myCatText = idea.myCats.length ? `helps ${idea.teamName} in ${idea.myCats.join(", ")}` : `fits ${idea.teamName}'s roster needs`;
+      const theirCatText = idea.theirCats.length ? `helps ${idea.otherTeam} in ${idea.theirCats.join(", ")}` : `gives ${idea.otherTeam} a useful roster fit`;
+
+      return `
+        <article class="suggested-trade-card">
+          <div class="suggested-trade-matchup">${idea.teamName} ↔ ${idea.otherTeam}</div>
+          <div class="suggested-trade-lines">
+            <p class="suggested-trade-line"><strong>${idea.teamName} gets:</strong> ${idea.getPlayer.name}</p>
+            <p class="suggested-trade-line"><strong>${idea.otherTeam} gets:</strong> ${idea.givePlayer.name}</p>
+          </div>
+          <p class="suggested-trade-reason">Why it works: ${idea.getPlayer.name} ${myCatText}; ${idea.givePlayer.name} ${theirCatText}. This avoids core/overpay-only players and keeps the hidden value gap in a reasonable range.</p>
+        </article>
+      `;
+    }
+
     function renderTeamOptions() {
       const teamNames = [...teamRosterMap.keys()].sort((a, b) => a.localeCompare(b));
       if (!teamNames.length) {
@@ -1777,6 +1940,8 @@
       if (!teamName) {
         elements.teamSnapshot.textContent = "Select a team to analyze the roster.";
         elements.teamTradeIdeas.innerHTML = "";
+        elements.teamSuggestedTradeSummary.textContent = "Select a team to generate mutually beneficial trade ideas.";
+        elements.teamSuggestedTrades.innerHTML = "";
         return;
       }
 
@@ -1829,6 +1994,14 @@
           <p class="trade-idea-text">${idea.text}</p>
         </article>
       `).join("");
+
+      const mutualTrades = buildMutualTradeSuggestions(teamName, direction, needs);
+      elements.teamSuggestedTradeSummary.textContent = mutualTrades.length
+        ? `Starter offers that should help ${teamName} and the other roster, without using core/overpay-only pieces.`
+        : `No clean mutual trade ideas found for ${teamName} with the current filters. Try a different team direction or manually build a trade above.`;
+      elements.teamSuggestedTrades.innerHTML = mutualTrades.length
+        ? mutualTrades.map(formatMutualTradeIdea).join("")
+        : `<article class="trade-idea"><div class="trade-idea-title">No clean match</div><p class="trade-idea-text">The analyzer could not find a fair, need-based one-for-one idea that avoided core pieces. That is better than forcing a bad trade.</p></article>`;
     }
 
     function getPlayerOwner(player) {
@@ -2111,9 +2284,28 @@
       });
     }
 
+
+    async function loadPlayersModule() {
+      const candidatePaths = [
+        "../data/players.js",
+        "./data/players.js",
+        "/data/players.js"
+      ];
+
+      for (const path of candidatePaths) {
+        try {
+          return await import(path);
+        } catch (error) {
+          console.warn(`Could not load players from ${path}`, error);
+        }
+      }
+
+      throw new Error("Could not load data/players.js");
+    }
+
     async function init() {
       try {
-        const module = await import("../data/players.js");
+        const module = await loadPlayersModule();
         await loadFantasyOwners();
         playerData = [...module.players].sort((a, b) => b.dynastyValue - a.dynastyValue);
         renderTeamOptions();
