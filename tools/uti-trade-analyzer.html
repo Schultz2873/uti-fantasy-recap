@@ -232,12 +232,47 @@
     }
 
     .selected-player {
-      border: 1px solid rgba(16, 35, 63, 0.12);
-      border-radius: 16px;
-      background: #ffffff;
-      padding: 11px;
+      position: relative;
+      border: 2px solid rgba(11, 94, 215, 0.22);
+      border-radius: 18px;
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(11, 94, 215, 0.06)),
+        #ffffff;
+      padding: 13px 13px 12px 16px;
       display: grid;
-      gap: 8px;
+      gap: 9px;
+      box-shadow: 0 12px 28px rgba(16, 35, 63, 0.12);
+      overflow: hidden;
+      transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+    }
+
+    .selected-player::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 5px;
+      background: linear-gradient(180deg, var(--uti-blue), rgba(11, 94, 215, 0.35));
+    }
+
+    .selected-player:hover {
+      transform: translateY(-2px);
+      border-color: rgba(11, 94, 215, 0.42);
+      box-shadow: 0 18px 36px rgba(16, 35, 63, 0.16);
+    }
+
+    .selected-player-side-b {
+      border-color: rgba(25, 135, 84, 0.24);
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(25, 135, 84, 0.07)),
+        #ffffff;
+    }
+
+    .selected-player-side-b::before {
+      background: linear-gradient(180deg, var(--uti-good), rgba(25, 135, 84, 0.35));
+    }
+
+    .selected-player-side-b:hover {
+      border-color: rgba(25, 135, 84, 0.44);
     }
 
     .selected-player-top {
@@ -251,13 +286,44 @@
       color: var(--uti-dark);
       font-weight: 950;
       line-height: 1.1;
+      font-size: 1.02rem;
     }
 
     .selected-player-meta {
       color: var(--uti-muted);
       font-size: 0.78rem;
-      font-weight: 800;
-      margin-top: 3px;
+      font-weight: 850;
+      margin-top: 4px;
+    }
+
+    .selected-player-badges {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .selected-pill {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 4px 8px;
+      background: rgba(16, 35, 63, 0.06);
+      color: var(--uti-dark);
+      font-size: 0.72rem;
+      font-weight: 950;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .selected-pill-accent {
+      background: rgba(11, 94, 215, 0.10);
+      color: var(--uti-blue);
+    }
+
+    .selected-player-side-b .selected-pill-accent {
+      background: rgba(25, 135, 84, 0.11);
+      color: var(--uti-good);
     }
 
     .remove-player {
@@ -912,13 +978,21 @@
         return;
       }
 
+      const sideClass = side === "sideA" ? "selected-player-side-a" : "selected-player-side-b";
+      const sideLabel = side === "sideA" ? "Side A" : "Side B";
+
       container.innerHTML = selectedPlayers.map(player => `
-        <article class="selected-player">
+        <article class="selected-player ${sideClass}">
           <div class="selected-player-top">
             <div>
               <div class="selected-player-name">${player.name}</div>
               <div class="selected-player-meta">${player.fantasyTeam} • ${formatPositions(player)}</div>
             </div>
+          </div>
+          <div class="selected-player-badges">
+            <span class="selected-pill selected-pill-accent">${sideLabel} trade piece</span>
+            <span class="selected-pill">${player.mlbTeam || "MLB"}</span>
+            <span class="selected-pill">${formatPositions(player)}</span>
           </div>
           <button class="remove-player" type="button" data-remove-side="${side}" data-player="${encodeURIComponent(player.name)}">
             Remove
