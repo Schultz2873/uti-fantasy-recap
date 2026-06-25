@@ -4086,33 +4086,105 @@
       return needs.some(category => Number(player.categoryScores?.[category] || 0) >= 75);
     }
 
-    function getTradeTargets(teamName, direction, needs) {
-      const pool = getOwnedPlayersNotOnTeam(teamName);
-      let filtered = pool.filter(player => playerHelpsNeeds(player, needs));
-      if (!filtered.length) filtered = pool;
+    function getTradeValueBand(chips) {
+      const scores = chips
+        .map(player => Number(player.dynastyValue || getCurrentScore(player) || getFutureScore(player) || 0))
+        .filter(Boolean)
+        .sort((a, b) => b - a);
+      const best = scores[0] || 55;
+      const second = scores[1] || best;
+      const averageTopTwo = Math.round((best + second) / 2);
+
+      return {
+        floor: Math.max(20, averageTopTwo - 18),
+        ceiling: Math.min(84, best + 10),
+        best
+      };
+    }
+
+    function isUntouchableTarget(player) {
+      const rank = Number(player.currentRank || 999);
+      const dynastyValue = Number(player.dynastyValue || 0);
+      const futureScore = getFutureScore(player);
+      const currentScore = getCurrentScore(player);
+
+      return rank <= 45 || dynastyValue >= 86 || futureScore >= 94 || currentScore >= 94;
+    }
+
+    function getNeedMatchScore(player, needs) {
+      if (!needs.length || !player.categoryScores) return 1;
+      return needs.reduce((sum, category) => {
+        const score = Number(player.categoryScores?.[category] || 0);
+        if (score >= 85) return sum + 3;
+        if (score >= 75) return sum + 2;
+        if (score >= 65) return sum + 1;
+        return sum;
+      }, 0);
+    }
+
+    function getRealisticTargetScore(player, direction, needs, valueBand) {
+      const age = Number(player.age || 99);
+      const rank = Number(player.currentRank || 999);
+      const dynastyValue = Number(player.dynastyValue || 0);
+      const currentScore = getCurrentScore(player);
+      const futureScore = getFutureScore(player);
+      const needScore = getNeedMatchScore(player, needs);
+      const valueFit = dynastyValue >= valueBand.floor && dynastyValue <= valueBand.ceiling ? 8 : -6;
+      const notTooElitePenalty = isUntouchableTarget(player) ? -50 : 0;
 
       if (direction === "rebuild") {
-        return filtered
-          .filter(player => Number(player.age || 99) <= 25 || getFutureScore(player) >= 80)
-          .sort((a, b) => getFutureScore(b) - getFutureScore(a))
-          .slice(0, 6);
+        const ageFit = age <= 26 ? 8 : age <= 28 ? 3 : -8;
+        const upsideFit = futureScore >= 68 && futureScore <= 88 ? 8 : futureScore > 88 ? -4 : 0;
+        const rankFit = rank >= 75 || rank === 999 ? 5 : -8;
+        return needScore * 3 + valueFit + ageFit + upsideFit + rankFit + notTooElitePenalty;
       }
 
       if (direction === "winNow") {
-        return filtered
-          .filter(player => getCurrentScore(player) >= 65 || Number(player.currentRank || 999) <= 175)
-          .sort((a, b) => getCurrentScore(b) - getCurrentScore(a))
-          .slice(0, 6);
+        const productionFit = currentScore >= 58 && currentScore <= 84 ? 9 : currentScore > 84 ? -5 : 0;
+        const ageFit = age >= 27 ? 5 : 0;
+        const rankFit = rank >= 70 && rank <= 260 ? 6 : rank < 70 ? -9 : 0;
+        return needScore * 3 + valueFit + productionFit + ageFit + rankFit + notTooElitePenalty;
       }
 
+      const balancedFit = Math.abs(currentScore - futureScore) <= 18 ? 7 : 0;
+      const rankFit = rank >= 65 || rank === 999 ? 4 : -8;
+      return needScore * 3 + valueFit + balancedFit + rankFit + notTooElitePenalty;
+    }
+
+    function getTradeTargets(teamName, direction, needs, chips = []) {
+      const pool = getOwnedPlayersNotOnTeam(teamName);
+      const valueBand = getTradeValueBand(chips);
+      let filtered = pool.filter(player => playerHelpsNeeds(player, needs));
+      if (!filtered.length) filtered = pool;
+
+      const realistic = filtered
+        .filter(player => !isUntouchableTarget(player))
+        .filter(player => {
+          const dynastyValue = Number(player.dynastyValue || 0);
+          const rank = Number(player.currentRank || 999);
+          if (direction === "rebuild") return Number(player.age || 99) <= 28 && dynastyValue <= valueBand.ceiling;
+          if (direction === "winNow") return rank >= 65 && dynastyValue <= valueBand.ceiling;
+          return dynastyValue <= valueBand.ceiling;
+        })
+        .map(player => ({
+          player,
+          score: getRealisticTargetScore(player, direction, needs, valueBand)
+        }))
+        .filter(item => item.score > -10)
+        .sort((a, b) => b.score - a.score)
+        .map(item => item.player);
+
+      if (realistic.length) return realistic.slice(0, 6);
+
       return filtered
-        .sort((a, b) => Number(b.dynastyValue || 0) - Number(a.dynastyValue || 0))
+        .filter(player => !isUntouchableTarget(player))
+        .sort((a, b) => getNeedMatchScore(b, needs) - getNeedMatchScore(a, needs))
         .slice(0, 6);
     }
 
     function buildTradeIdeas(teamName, players, direction, needs) {
       const chips = getTradeChips(players, direction);
-      const targets = getTradeTargets(teamName, direction, needs);
+      const targets = getTradeTargets(teamName, direction, needs, chips);
       const ideas = [];
 
       if (direction === "rebuild") {
@@ -4141,13 +4213,13 @@
       if (needs.length) {
         ideas.push({
           title: "Category target",
-          text: `Prioritize players who help ${needs.slice(0, 4).join(", ")}. Do not just chase the biggest name if the categories do not fix the roster.`
+          text: `Prioritize players who help ${needs.slice(0, 4).join(", ")}. Do not just chase the biggest name if the categories do not fix the roster. The target list now filters out obvious untouchable superstar asks.`
         });
       }
 
       if (targets.length > 3) {
         ideas.push({
-          title: "Target list",
+          title: "Realistic target list",
           text: targets.slice(0, 6).map(formatPlayerWithOwner).join(" • ")
         });
       }
