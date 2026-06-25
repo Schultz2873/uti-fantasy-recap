@@ -497,6 +497,117 @@
       font-weight: 900;
     }
 
+
+    .suggestion-panel {
+      border-top: 1px solid rgba(16, 35, 63, 0.10);
+      margin-top: 14px;
+      padding-top: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .suggestion-controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .suggestion-field label {
+      display: block;
+      color: var(--uti-muted);
+      font-size: 0.70rem;
+      font-weight: 950;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+
+    .suggestion-select {
+      width: 100%;
+      border: 1px solid var(--uti-border);
+      border-radius: 12px;
+      background: #ffffff;
+      color: var(--uti-dark);
+      font-size: 0.84rem;
+      font-weight: 850;
+      padding: 9px 10px;
+      outline: none;
+    }
+
+    .suggestion-select:focus {
+      border-color: rgba(11, 94, 215, 0.55);
+      box-shadow: 0 0 0 4px rgba(11, 94, 215, 0.10);
+    }
+
+    .recommendation-card {
+      border: 1px solid rgba(11, 94, 215, 0.16);
+      border-radius: 16px;
+      padding: 13px;
+      background: linear-gradient(135deg, rgba(11, 94, 215, 0.08), rgba(255, 255, 255, 0.96));
+    }
+
+    .recommendation-verdict {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: var(--uti-dark);
+      color: #ffffff;
+      font-size: 0.76rem;
+      font-weight: 950;
+      margin-bottom: 8px;
+    }
+
+    .recommendation-verdict.accept {
+      background: var(--uti-good);
+    }
+
+    .recommendation-verdict.counter {
+      background: var(--uti-warn);
+    }
+
+    .recommendation-verdict.reject {
+      background: var(--uti-bad);
+    }
+
+    .recommendation-text,
+    .counter-text {
+      color: var(--uti-dark);
+      font-size: 0.9rem;
+      font-weight: 850;
+      line-height: 1.35;
+      margin: 0;
+    }
+
+    .counter-text {
+      color: var(--uti-muted);
+      margin-top: 8px;
+    }
+
+    .recommendation-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .recommendation-tag {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      background: rgba(16, 35, 63, 0.07);
+      color: var(--uti-dark);
+      padding: 5px 8px;
+      font-size: 0.72rem;
+      font-weight: 950;
+    }
+
+    @media (max-width: 420px) {
+      .suggestion-controls {
+        grid-template-columns: 1fr;
+      }
+    }
+
     .reset-btn {
       border: 0;
       border-radius: 999px;
@@ -628,6 +739,33 @@
         </div>
 
 
+        <div class="suggestion-panel" aria-label="Trade suggestion">
+          <div class="insight-label">Trade Suggestion</div>
+          <div class="suggestion-controls">
+            <div class="suggestion-field">
+              <label for="myTradeSide">My Side</label>
+              <select class="suggestion-select" id="myTradeSide">
+                <option value="sideA">Side A</option>
+                <option value="sideB">Side B</option>
+              </select>
+            </div>
+            <div class="suggestion-field">
+              <label for="teamDirection">Goal</label>
+              <select class="suggestion-select" id="teamDirection">
+                <option value="balanced">Balanced</option>
+                <option value="winNow">Win Now</option>
+                <option value="rebuild">Rebuild</option>
+              </select>
+            </div>
+          </div>
+          <div class="recommendation-card">
+            <div class="recommendation-verdict" id="recommendationVerdict">Add both sides</div>
+            <p class="recommendation-text" id="recommendationText">Choose your side and goal, then add players to get an accept, reject, or counter suggestion.</p>
+            <p class="counter-text" id="counterText"></p>
+            <div class="recommendation-tags" id="recommendationTags"></div>
+          </div>
+        </div>
+
         <button class="reset-btn" id="resetTradeBtn" type="button">Reset Trade</button>
       </aside>
     </section>
@@ -635,6 +773,7 @@
 
   <script type="module">
     let playerData = [];
+    let ownerLookup = new Map();
     let selectedSideA = [];
     let selectedSideB = [];
 
@@ -662,6 +801,12 @@
       categoryImpact: document.getElementById("categoryImpact"),
       categoryTags: document.getElementById("categoryTags"),
       riskImpact: document.getElementById("riskImpact"),
+      myTradeSide: document.getElementById("myTradeSide"),
+      teamDirection: document.getElementById("teamDirection"),
+      recommendationVerdict: document.getElementById("recommendationVerdict"),
+      recommendationText: document.getElementById("recommendationText"),
+      counterText: document.getElementById("counterText"),
+      recommendationTags: document.getElementById("recommendationTags"),
       resetTradeBtn: document.getElementById("resetTradeBtn")
     };
 
@@ -826,6 +971,153 @@
       return state[side].filter(player => Boolean(player.needsReview)).length;
     }
 
+
+    function getSideLabel(side) {
+      return side === "sideA" ? "Side A" : "Side B";
+    }
+
+    function getOtherSide(side) {
+      return side === "sideA" ? "sideB" : "sideA";
+    }
+
+    function getNeedPhrase(goal) {
+      if (goal === "winNow") return "win-now production";
+      if (goal === "rebuild") return "future upside";
+      return "overall roster fit";
+    }
+
+    function getGoalScores(goal, mySide, otherSide) {
+      if (goal === "winNow") {
+        return {
+          mine: getSideCurrentScore(mySide),
+          theirs: getSideCurrentScore(otherSide),
+          label: "Win-now help"
+        };
+      }
+
+      if (goal === "rebuild") {
+        return {
+          mine: getSideFutureScore(mySide),
+          theirs: getSideFutureScore(otherSide),
+          label: "Future upside"
+        };
+      }
+
+      return {
+        mine: getSideTotal(mySide),
+        theirs: getSideTotal(otherSide),
+        label: "Overall balance"
+      };
+    }
+
+    function getEdgeLevel(myScore, otherScore) {
+      const difference = myScore - otherScore;
+      const maxScore = Math.max(Math.abs(myScore), Math.abs(otherScore), 1);
+      const pct = difference / maxScore;
+
+      if (pct >= 0.18) return "strongForMe";
+      if (pct >= 0.07) return "slightForMe";
+      if (pct <= -0.18) return "strongAgainstMe";
+      if (pct <= -0.07) return "slightAgainstMe";
+      return "even";
+    }
+
+    function getRecommendation(mySide, goal) {
+      const otherSide = getOtherSide(mySide);
+      const myPlayers = state[mySide];
+      const otherPlayers = state[otherSide];
+
+      if (!myPlayers.length || !otherPlayers.length) {
+        return {
+          verdict: "Add both sides",
+          className: "",
+          text: "Choose your side and goal, then add players to get an accept, reject, or counter suggestion.",
+          counter: "",
+          tags: []
+        };
+      }
+
+      const totalEdge = getEdgeLevel(getSideTotal(mySide), getSideTotal(otherSide));
+      const goalScores = getGoalScores(goal, mySide, otherSide);
+      const goalEdge = getEdgeLevel(goalScores.mine, goalScores.theirs);
+      const myRisk = getAverageRisk(mySide);
+      const otherRisk = getAverageRisk(otherSide);
+      const myCategories = getTopCategories(mySide);
+      const otherCategories = getTopCategories(otherSide);
+      const reviewCount = getReviewCount(mySide) + getReviewCount(otherSide);
+      const needPhrase = getNeedPhrase(goal);
+
+      let verdict = "Accept if it fits";
+      let className = "accept";
+      let text = `This is close enough to come down to ${needPhrase}.`;
+      let counter = "No must-have counter needed unless you dislike the category mix.";
+
+      if (totalEdge === "strongForMe") {
+        verdict = "Accept";
+        className = "accept";
+        text = `Your side has the stronger overall return, and the trade does not need raw point totals to justify it.`;
+        counter = "Do not over-counter. Take the clean win if the players fit your roster.";
+      } else if (totalEdge === "slightForMe") {
+        verdict = "Accept / Hold";
+        className = "accept";
+        text = `Your side has a small edge. It is reasonable to accept if the roster fit works.`;
+        counter = "If you want to squeeze more, ask for a small category helper or upside throw-in.";
+      } else if (totalEdge === "slightAgainstMe") {
+        verdict = "Counter";
+        className = "counter";
+        text = `Your side is giving up a little too much unless this specifically solves a roster need.`;
+        counter = `Counter by asking for one more useful ${goal === "rebuild" ? "prospect/upside piece" : goal === "winNow" ? "win-now category contributor" : "depth or category piece"}.`;
+      } else if (totalEdge === "strongAgainstMe") {
+        verdict = "Reject / Major Counter";
+        className = "reject";
+        text = `Your side is not getting enough back. This should not be accepted as-is.`;
+        counter = `Ask for a real add-on, upgrade the best player coming back, or remove one piece from your side.`;
+      }
+
+      if ((goal === "winNow" || goal === "rebuild") && (goalEdge === "strongForMe" || goalEdge === "slightForMe") && (totalEdge === "even" || totalEdge === "slightAgainstMe")) {
+        verdict = totalEdge === "slightAgainstMe" ? "Context Accept / Counter" : "Accept if goal fits";
+        className = totalEdge === "slightAgainstMe" ? "counter" : "accept";
+        text = `For your selected goal, your side gets the better ${goalScores.label.toLowerCase()}. That makes the deal more defensible than the raw balance alone.`;
+      }
+
+      if ((goal === "winNow" || goal === "rebuild") && (goalEdge === "strongAgainstMe" || goalEdge === "slightAgainstMe") && (totalEdge === "even" || totalEdge === "slightForMe")) {
+        verdict = "Counter";
+        className = "counter";
+        text = `The trade may look close overall, but it does not line up well with your ${needPhrase} goal.`;
+        counter = `Counter for a player who better supports ${needPhrase}.`;
+      }
+
+      if (myRisk - otherRisk >= 0.75 && className !== "reject") {
+        counter = `${counter} Your side is also taking on more volatility, so ask for a safer add-on if possible.`;
+      }
+
+      if (reviewCount) {
+        counter = `${counter} Manual review recommended because at least one player has a stale, imported, injury, role, or prospect-risk flag.`;
+      }
+
+      const tags = [goalScores.label];
+      if (myCategories.length) tags.push(`You gain: ${myCategories.slice(0, 3).join(", ")}`);
+      if (otherCategories.length) tags.push(`Other side gains: ${otherCategories.slice(0, 3).join(", ")}`);
+      if (myRisk > otherRisk + 0.5) tags.push("More risk on your side");
+      if (otherRisk > myRisk + 0.5) tags.push("Other side takes more risk");
+
+      return { verdict, className, text, counter, tags };
+    }
+
+    function renderTradeSuggestion() {
+      const mySide = elements.myTradeSide.value || "sideA";
+      const goal = elements.teamDirection.value || "balanced";
+      const recommendation = getRecommendation(mySide, goal);
+
+      elements.recommendationVerdict.textContent = recommendation.verdict;
+      elements.recommendationVerdict.className = `recommendation-verdict ${recommendation.className}`.trim();
+      elements.recommendationText.textContent = recommendation.text;
+      elements.counterText.textContent = recommendation.counter;
+      elements.recommendationTags.innerHTML = recommendation.tags
+        .map(tag => `<span class="recommendation-tag">${tag}</span>`)
+        .join("");
+    }
+
     function renderTradeInsights() {
       const sideACurrent = getSideCurrentScore("sideA");
       const sideBCurrent = getSideCurrentScore("sideB");
@@ -914,6 +1206,109 @@
       elements.sideBSuggestions.classList.remove("show");
     }
 
+
+    function getPlayerOwner(player) {
+      return ownerLookup.get(normalizeName(player.name)) || "Free Agent";
+    }
+
+    function getExportedOwnerData(module) {
+      return module.fantasyOwners
+        || module.FANTASY_OWNERS
+        || module.owners
+        || module.OWNERS
+        || module.teams
+        || module.TEAMS
+        || module.default
+        || module;
+    }
+
+    function getTeamLabel(team, fallback = "Unknown Team") {
+      if (!team || typeof team !== "object") return fallback;
+      return team.teamName
+        || team.fantasyTeam
+        || team.ownerName
+        || team.owner
+        || team.name
+        || team.team
+        || team.title
+        || fallback;
+    }
+
+    function getPlayerNameFromRosterEntry(entry) {
+      if (!entry) return "";
+      if (typeof entry === "string") return entry;
+      if (typeof entry !== "object") return "";
+      return entry.name
+        || entry.playerName
+        || entry.fullName
+        || entry.player
+        || entry.Player
+        || entry.Name
+        || "";
+    }
+
+    function addRosterEntriesToLookup(entries, teamName, lookup) {
+      if (!entries) return;
+
+      if (Array.isArray(entries)) {
+        entries.forEach(entry => {
+          const playerName = getPlayerNameFromRosterEntry(entry);
+          if (playerName) lookup.set(normalizeName(playerName), teamName);
+        });
+        return;
+      }
+
+      if (typeof entries === "object") {
+        Object.values(entries).forEach(value => addRosterEntriesToLookup(value, teamName, lookup));
+      }
+    }
+
+    function buildOwnerLookup(ownerData) {
+      const lookup = new Map();
+      const data = getExportedOwnerData(ownerData);
+
+      if (Array.isArray(data)) {
+        data.forEach(team => {
+          const teamName = getTeamLabel(team);
+          addRosterEntriesToLookup(team.players, teamName, lookup);
+          addRosterEntriesToLookup(team.roster, teamName, lookup);
+          addRosterEntriesToLookup(team.hitters, teamName, lookup);
+          addRosterEntriesToLookup(team.pitchers, teamName, lookup);
+          addRosterEntriesToLookup(team.bench, teamName, lookup);
+          addRosterEntriesToLookup(team.active, teamName, lookup);
+        });
+        return lookup;
+      }
+
+      if (data && typeof data === "object") {
+        Object.entries(data).forEach(([teamName, roster]) => {
+          if (Array.isArray(roster)) {
+            addRosterEntriesToLookup(roster, teamName, lookup);
+          } else if (roster && typeof roster === "object") {
+            const resolvedTeamName = getTeamLabel(roster, teamName);
+            addRosterEntriesToLookup(roster.players, resolvedTeamName, lookup);
+            addRosterEntriesToLookup(roster.roster, resolvedTeamName, lookup);
+            addRosterEntriesToLookup(roster.hitters, resolvedTeamName, lookup);
+            addRosterEntriesToLookup(roster.pitchers, resolvedTeamName, lookup);
+            addRosterEntriesToLookup(roster.bench, resolvedTeamName, lookup);
+            addRosterEntriesToLookup(roster.active, resolvedTeamName, lookup);
+          }
+        });
+      }
+
+      return lookup;
+    }
+
+    async function loadFantasyOwners() {
+      try {
+        const ownersModule = await import("../data/fantasy-owners.js");
+        ownerLookup = buildOwnerLookup(ownersModule);
+      } catch (error) {
+        console.warn("fantasy-owners.js was not loaded. Players will show as Free Agent until that file is available.", error);
+        ownerLookup = new Map();
+      }
+    }
+
     function getSearchMatches(query, side) {
       const normalizedQuery = normalizeName(query);
 
@@ -924,7 +1319,7 @@
         .filter(player => {
           const haystack = [
             player.name,
-            player.fantasyTeam,
+            getPlayerOwner(player),
             player.mlbTeam,
             formatPositions(player)
           ].join(" ");
@@ -951,7 +1346,7 @@
       container.innerHTML = matches.map(player => `
         <button class="suggestion-btn" type="button" data-add-side="${side}" data-player="${encodeURIComponent(player.name)}">
           <span class="suggestion-name">${player.name}</span>
-          <span class="suggestion-meta">${player.fantasyTeam} • ${formatPositions(player)}</span>
+          <span class="suggestion-meta">${getPlayerOwner(player)} • ${formatPositions(player)}</span>
         </button>
       `).join("");
 
@@ -986,7 +1381,7 @@
           <div class="selected-player-top">
             <div>
               <div class="selected-player-name">${player.name}</div>
-              <div class="selected-player-meta">${player.fantasyTeam} • ${formatPositions(player)}</div>
+              <div class="selected-player-meta">${getPlayerOwner(player)} • ${formatPositions(player)}</div>
             </div>
           </div>
           <div class="selected-player-badges">
@@ -1026,6 +1421,7 @@
       elements.fairnessPill.className = `fairness-pill ${fairness.className}`.trim();
       elements.resultNote.textContent = getResultNote(sideATotal, sideBTotal, fairness.label);
       renderTradeInsights();
+      renderTradeSuggestion();
     }
 
     function renderAll() {
@@ -1053,6 +1449,9 @@
         if (!isSearchArea) closeSuggestions();
       });
 
+      elements.myTradeSide.addEventListener("change", renderTradeSuggestion);
+      elements.teamDirection.addEventListener("change", renderTradeSuggestion);
+
       elements.resetTradeBtn.addEventListener("click", () => {
         state.sideA = [];
         state.sideB = [];
@@ -1065,6 +1464,7 @@
     async function init() {
       try {
         const module = await import("../data/players.js");
+        await loadFantasyOwners();
         playerData = [...module.players].sort((a, b) => b.dynastyValue - a.dynastyValue);
         setupEvents();
         renderAll();
