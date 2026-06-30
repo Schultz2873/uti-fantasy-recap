@@ -647,147 +647,235 @@
     <div id="emptyState" class="empty">No players match those filters.</div>
   </main>
 
-  <script src="players-data.js"></script>
   <script>
-    const players = window.TOP_100_PLAYERS || [];
+    const FANTASY_OWNER_PATHS = [
+      "fantasy-owners.js",
+      "../fantasy-owners.js",
+      "data/fantasy-owners.js",
+      "../data/fantasy-owners.js",
+      "scripts/fantasy-owners.js",
+      "../scripts/fantasy-owners.js"
+    ];
 
-    if (!players.length) {
-      console.error("No players loaded. Make sure players-data.js is in the same folder as this HTML file.");
-    }
-
-    const playersBody = document.getElementById("playersBody");
-    const emptyState = document.getElementById("emptyState");
-    const searchInput = document.getElementById("searchInput");
-    const teamFilter = document.getElementById("teamFilter");
-    const positionFilter = document.getElementById("positionFilter");
-    const levelFilter = document.getElementById("levelFilter");
-    const availabilityFilter = document.getElementById("availabilityFilter");
-
-    function getDefaultOwned(player) {
-      return Boolean(player.fantasyTeam && player.fantasyTeam.trim().toLowerCase() !== "available");
-    }
-
-    // This keeps checkbox changes live on the page.
-    // Initial values still come from fantasyTeam in players-data.js:
-    // "Available" = unchecked, any team name = checked.
-    const ownedState = new Map(
-      players.map(player => [String(player.rank), getDefaultOwned(player)])
-    );
-
-    function isPlayerOwned(player) {
-      const key = String(player.rank);
-      return ownedState.has(key) ? ownedState.get(key) : getDefaultOwned(player);
-    }
-
-    function initials(name) {
-      return name.split(" ").filter(Boolean).slice(0, 2).map(part => part[0]).join("").toUpperCase();
-    }
-
-    function uniqueValues(key) {
-      return [...new Set(players.map(player => player[key]).filter(Boolean))].sort((a, b) => a.localeCompare(b));
-    }
-
-    function fillSelect(select, values) {
-      values.forEach(value => {
-        const option = document.createElement("option");
-        option.value = value;
-        option.textContent = value;
-        select.appendChild(option);
+    function loadScriptOnce(src) {
+      return new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        script.src = src;
+        script.onload = () => resolve(src);
+        script.onerror = () => {
+          script.remove();
+          reject(new Error(`Could not load ${src}`));
+        };
+        document.head.appendChild(script);
       });
     }
 
-    function renderPlayers() {
-      const search = searchInput.value.trim().toLowerCase();
-      const selectedTeam = teamFilter.value;
-      const selectedPosition = positionFilter.value;
-      const selectedLevel = levelFilter.value;
-      const selectedAvailability = availabilityFilter.value;
+    async function loadFantasyOwners() {
+      // If another page already loaded it, use it.
+      if (window.FANTASY_OWNERS && Object.keys(window.FANTASY_OWNERS).length) {
+        return "already-loaded";
+      }
 
-      const filteredPlayers = players.filter(player => {
-        const haystack = [
-          player.player, player.position, player.team, player.level, player.eta,
-          player.age, player.heightWeight, player.bats, player.throws,
-          player.fantasyTeam, isPlayerOwned(player) ? "owned" : "available"
-        ].join(" ").toLowerCase();
+      for (const path of FANTASY_OWNER_PATHS) {
+        try {
+          await loadScriptOnce(path);
+          if (window.FANTASY_OWNERS && Object.keys(window.FANTASY_OWNERS).length) {
+            console.info(`Loaded fantasy owners from ${path}`);
+            return path;
+          }
+        } catch (error) {
+          // Try the next possible location.
+        }
+      }
 
+      console.error(
+        "fantasy-owners.js was not found. Put fantasy-owners.js in the same folder as mlb-top-100.html, " +
+        "or in ../, data/, ../data/, scripts/, or ../scripts/."
+      );
+      return null;
+    }
+
+    function normalizePlayerName(name) {
+      return String(name || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/&/g, "and")
+        .replace(/\bJr\.?\b/gi, "jr")
+        .replace(/\bSr\.?\b/gi, "sr")
+        .replace(/[^a-z0-9]/gi, "")
+        .toLowerCase();
+    }
+
+    async function initTop100Board() {
+      await loadFantasyOwners();
+      await loadScriptOnce("players-data.js");
+
+      const players = window.TOP_100_PLAYERS || [];
+      const fantasyOwners = window.FANTASY_OWNERS || {};
+
+      if (!players.length) {
+        console.error("No players loaded. Make sure players-data.js is in the same folder as this HTML file.");
+      }
+
+      if (!Object.keys(fantasyOwners).length) {
+        console.warn("No fantasy ownership loaded. Everyone will show as available until fantasy-owners.js loads.");
+      }
+
+      const playersBody = document.getElementById("playersBody");
+      const emptyState = document.getElementById("emptyState");
+      const searchInput = document.getElementById("searchInput");
+      const teamFilter = document.getElementById("teamFilter");
+      const positionFilter = document.getElementById("positionFilter");
+      const levelFilter = document.getElementById("levelFilter");
+      const availabilityFilter = document.getElementById("availabilityFilter");
+
+      const normalizedFantasyOwners = Object.entries(fantasyOwners).reduce((lookup, [playerName, fantasyTeam]) => {
+        lookup[normalizePlayerName(playerName)] = fantasyTeam;
+        return lookup;
+      }, {});
+
+      function getFantasyTeam(player) {
+        return normalizedFantasyOwners[normalizePlayerName(player.player)] || "Available";
+      }
+
+      function getDefaultOwned(player) {
+        return getFantasyTeam(player).trim().toLowerCase() !== "available";
+      }
+
+      // This keeps checkbox changes live on the page.
+      // Initial ownership comes from fantasy-owners.js, not players-data.js.
+      const ownedState = new Map(
+        players.map(player => [String(player.rank), getDefaultOwned(player)])
+      );
+
+      function isPlayerOwned(player) {
+        const key = String(player.rank);
+        return ownedState.has(key) ? ownedState.get(key) : getDefaultOwned(player);
+      }
+
+      function getOwnerDisplay(player) {
+        const fantasyTeam = getFantasyTeam(player);
         const owned = isPlayerOwned(player);
 
-        return (!search || haystack.includes(search))
-          && (!selectedTeam || player.team === selectedTeam)
-          && (!selectedPosition || player.position === selectedPosition)
-          && (!selectedLevel || player.level === selectedLevel)
-          && (!selectedAvailability
-            || (selectedAvailability === "available" && !owned)
-            || (selectedAvailability === "owned" && owned));
-      });
+        if (fantasyTeam.trim().toLowerCase() !== "available") {
+          return fantasyTeam;
+        }
 
-      playersBody.innerHTML = filteredPlayers.map(player => {
-        const owned = isPlayerOwned(player);
-        const fantasyTeam = player.fantasyTeam || "Available";
-        const ownerContent = fantasyTeam.trim().toLowerCase() === "available"
-          ? `<span class="available-badge">Available</span>`
-          : fantasyTeam;
-        return `
-          <tr class="${owned ? 'owned-row' : ''}">
-            <td class="owned-toggle-cell" data-label="Owned">
-              <input class="owned-checkbox" type="checkbox" aria-label="Mark ${player.player} as owned" data-rank="${player.rank}" ${owned ? 'checked' : ''} />
-            </td>
-            <td class="rank" data-label="Rank">#${player.rank}</td>
-            <td data-label="Player">
-              <div class="player-cell">
-                <div class="avatar" aria-hidden="true">${initials(player.player)}</div>
-                <div>
-                  <div class="name">${player.player}</div>
-                  <div class="sub">${player.team}</div>
-                  <div class="mobile-player-meta">
-                    <span>${player.position}</span>
-                    <span>${player.team}</span>
-                    <span>${player.level}</span>
-                    <span>Age ${player.age}</span>
-                  </div>
-                  <div class="mobile-owner"><span class="owner-label">Fantasy:</span>${ownerContent}</div>
-                </div>
-              </div>
-            </td>
-            <td data-label="Position"><span class="pill">${player.position}</span></td>
-            <td data-label="Team">${player.team}</td>
-            <td data-label="Level"><span class="pill">${player.level}</span></td>
-            <td class="eta mobile-hide" data-label="ETA">${player.eta}</td>
-            <td data-label="Age">${player.age}</td>
-            <td class="mobile-hide" data-label="Height / Weight">${player.heightWeight}</td>
-            <td class="mobile-hide" data-label="Bats">${player.bats}</td>
-            <td class="mobile-hide" data-label="Throws">${player.throws}</td>
-            <td class="owner-cell" data-label="Fantasy Team">${ownerContent}</td>
-          </tr>
-        `;
-      }).join("");
+        return owned ? "Owned" : `<span class="available-badge">Available</span>`;
+      }
 
-      document.querySelectorAll(".owned-checkbox").forEach(checkbox => {
-        checkbox.addEventListener("change", event => {
-          const rank = event.target.dataset.rank;
-          const checked = event.target.checked;
-          ownedState.set(String(rank), checked);
-          renderPlayers();
+      function initials(name) {
+        return name.split(" ").filter(Boolean).slice(0, 2).map(part => part[0]).join("").toUpperCase();
+      }
+
+      function uniqueValues(key) {
+        return [...new Set(players.map(player => player[key]).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+      }
+
+      function fillSelect(select, values) {
+        select.querySelectorAll("option:not(:first-child)").forEach(option => option.remove());
+        values.forEach(value => {
+          const option = document.createElement("option");
+          option.value = value;
+          option.textContent = value;
+          select.appendChild(option);
         });
+      }
+
+      function renderPlayers() {
+        const search = searchInput.value.trim().toLowerCase();
+        const selectedTeam = teamFilter.value;
+        const selectedPosition = positionFilter.value;
+        const selectedLevel = levelFilter.value;
+        const selectedAvailability = availabilityFilter.value;
+
+        const filteredPlayers = players.filter(player => {
+          const fantasyTeam = getFantasyTeam(player);
+          const owned = isPlayerOwned(player);
+          const availabilityText = owned ? "owned taken rostered" : "available free agent";
+          const haystack = [
+            player.player, player.position, player.team, player.level, player.eta,
+            player.age, player.heightWeight, player.bats, player.throws,
+            fantasyTeam, availabilityText
+          ].join(" ").toLowerCase();
+
+          return (!search || haystack.includes(search))
+            && (!selectedTeam || player.team === selectedTeam)
+            && (!selectedPosition || player.position === selectedPosition)
+            && (!selectedLevel || player.level === selectedLevel)
+            && (!selectedAvailability
+              || (selectedAvailability === "available" && !owned)
+              || (selectedAvailability === "owned" && owned));
+        });
+
+        playersBody.innerHTML = filteredPlayers.map(player => {
+          const owned = isPlayerOwned(player);
+          const ownerContent = getOwnerDisplay(player);
+
+          return `
+            <tr class="${owned ? 'owned-row' : ''}">
+              <td class="owned-toggle-cell" data-label="Owned">
+                <input class="owned-checkbox" type="checkbox" aria-label="Mark ${player.player} as owned" data-rank="${player.rank}" ${owned ? 'checked' : ''} />
+              </td>
+              <td class="rank" data-label="Rank">#${player.rank}</td>
+              <td data-label="Player">
+                <div class="player-cell">
+                  <div class="avatar" aria-hidden="true">${initials(player.player)}</div>
+                  <div>
+                    <div class="name">${player.player}</div>
+                    <div class="sub">${player.team}</div>
+                    <div class="mobile-player-meta">
+                      <span>${player.position}</span>
+                      <span>${player.team}</span>
+                      <span>${player.level}</span>
+                      <span>Age ${player.age}</span>
+                    </div>
+                    <div class="mobile-owner"><span class="owner-label">Fantasy:</span>${ownerContent}</div>
+                  </div>
+                </div>
+              </td>
+              <td data-label="Position"><span class="pill">${player.position}</span></td>
+              <td data-label="Team">${player.team}</td>
+              <td data-label="Level"><span class="pill">${player.level}</span></td>
+              <td class="eta mobile-hide" data-label="ETA">${player.eta}</td>
+              <td data-label="Age">${player.age}</td>
+              <td class="mobile-hide" data-label="Height / Weight">${player.heightWeight}</td>
+              <td class="mobile-hide" data-label="Bats">${player.bats}</td>
+              <td class="mobile-hide" data-label="Throws">${player.throws}</td>
+              <td class="owner-cell" data-label="Fantasy Team">${ownerContent}</td>
+            </tr>
+          `;
+        }).join("");
+
+        document.querySelectorAll(".owned-checkbox").forEach(checkbox => {
+          checkbox.addEventListener("change", event => {
+            const rank = event.target.dataset.rank;
+            const checked = event.target.checked;
+            ownedState.set(String(rank), checked);
+            renderPlayers();
+          });
+        });
+
+        emptyState.style.display = filteredPlayers.length ? "none" : "block";
+
+        // Available count is based on how many currently filtered players are NOT checked.
+        const availableCount = filteredPlayers.filter(player => !isPlayerOwned(player)).length;
+        document.getElementById("availablePlayers").textContent = availableCount;
+      }
+
+      fillSelect(teamFilter, uniqueValues("team"));
+      fillSelect(positionFilter, uniqueValues("position"));
+      fillSelect(levelFilter, uniqueValues("level"));
+
+      [searchInput, teamFilter, positionFilter, levelFilter, availabilityFilter].forEach(control => {
+        control.addEventListener("input", renderPlayers);
+        control.addEventListener("change", renderPlayers);
       });
 
-      emptyState.style.display = filteredPlayers.length ? "none" : "block";
-
-      // Available count is based on how many currently filtered players are NOT checked.
-      const availableCount = filteredPlayers.filter(player => !isPlayerOwned(player)).length;
-      document.getElementById("availablePlayers").textContent = availableCount;
+      renderPlayers();
     }
 
-    fillSelect(teamFilter, uniqueValues("team"));
-    fillSelect(positionFilter, uniqueValues("position"));
-    fillSelect(levelFilter, uniqueValues("level"));
-
-    [searchInput, teamFilter, positionFilter, levelFilter, availabilityFilter].forEach(control => {
-      control.addEventListener("input", renderPlayers);
-      control.addEventListener("change", renderPlayers);
-    });
-
-    renderPlayers();
+    initTop100Board();
   </script>
 </body>
 
