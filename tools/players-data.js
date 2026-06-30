@@ -1,7 +1,5 @@
 // Edit this file to update the Top 100 board.
-// To mark a player owned by default, change fantasyTeam from "Available" to the team name.
-// Example: fantasyTeam: "Gunnarrhea"
-// The checkbox will default to checked when fantasyTeam is anything other than "Available".
+// Ownership is loaded from fantasy-owners.js, not from this file.
 
 window.TOP_100_PLAYERS = [
   {
@@ -14,9 +12,7 @@ window.TOP_100_PLAYERS = [
     "age": "19",
     "heightWeight": "6' 1\" / 221 lbs",
     "bats": "S",
-    "throws": "R",
-    "fantasyTeam": "You Don't Know Bo"
-  },
+    "throws": "R",},
   {
     "rank": 2,
     "player": "Leo De Vries",
@@ -27,9 +23,7 @@ window.TOP_100_PLAYERS = [
     "age": "19",
     "heightWeight": "6' 0\" / 183 lbs",
     "bats": "S",
-    "throws": "R",
-    "fantasyTeam": "Dixon Cider"
-  },
+    "throws": "R",},
   {
     "rank": 3,
     "player": "Seth Hernandez",
@@ -40,9 +34,7 @@ window.TOP_100_PLAYERS = [
     "age": "19",
     "heightWeight": "6' 4\" / 190 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "Dixon Cider"
-  },
+    "throws": "R",},
   {
     "rank": 4,
     "player": "Eli Willits",
@@ -53,9 +45,7 @@ window.TOP_100_PLAYERS = [
     "age": "18",
     "heightWeight": "6' 1\" / 180 lbs",
     "bats": "S",
-    "throws": "R",
-    "fantasyTeam": "Me So Heorny"
-  },
+    "throws": "R",},
   {
     "rank": 5,
     "player": "Colt Emerson",
@@ -66,9 +56,7 @@ window.TOP_100_PLAYERS = [
     "age": "20",
     "heightWeight": "6' 0\" / 195 lbs",
     "bats": "L",
-    "throws": "R",
-    "fantasyTeam": "Gunnarrhea"
-  },
+    "throws": "R",},
   {
     "rank": 6,
     "player": "Kade Anderson",
@@ -79,9 +67,7 @@ window.TOP_100_PLAYERS = [
     "age": "21",
     "heightWeight": "6' 2\" / 179 lbs",
     "bats": "L",
-    "throws": "L",
-    "fantasyTeam": "This is Mizerable"
-  },
+    "throws": "L",},
   {
     "rank": 7,
     "player": "Max Clark",
@@ -92,9 +78,7 @@ window.TOP_100_PLAYERS = [
     "age": "21",
     "heightWeight": "5' 11\" / 205 lbs",
     "bats": "L",
-    "throws": "L",
-    "fantasyTeam": "Dixon Cider"
-  },
+    "throws": "L",},
   {
     "rank": 8,
     "player": "Josue De Paula",
@@ -105,9 +89,7 @@ window.TOP_100_PLAYERS = [
     "age": "21",
     "heightWeight": "6' 3\" / 185 lbs",
     "bats": "L",
-    "throws": "L",
-    "fantasyTeam": "You Don't Know Bo"
-  },
+    "throws": "L",},
   {
     "rank": 9,
     "player": "Sebastian Walcott",
@@ -118,9 +100,7 @@ window.TOP_100_PLAYERS = [
     "age": "20",
     "heightWeight": "6' 4\" / 190 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "Dixon Cider"
-  },
+    "throws": "R",},
   {
     "rank": 10,
     "player": "Franklin Arias",
@@ -131,9 +111,7 @@ window.TOP_100_PLAYERS = [
     "age": "20",
     "heightWeight": "5' 11\" / 170 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "BB's Bold Team"
-  },
+    "throws": "R",},
   {
     "rank": 11,
     "player": "Walker Jenkins",
@@ -144,9 +122,7 @@ window.TOP_100_PLAYERS = [
     "age": "21",
     "heightWeight": "6' 3\" / 210 lbs",
     "bats": "L",
-    "throws": "R",
-    "fantasyTeam": "This is Mizerable"
-  },
+    "throws": "R",},
   {
     "rank": 12,
     "player": "Thomas White",
@@ -157,9 +133,7 @@ window.TOP_100_PLAYERS = [
     "age": "21",
     "heightWeight": "6' 5\" / 240 lbs",
     "bats": "L",
-    "throws": "L",
-    "fantasyTeam": "Mactown MacDaddies"
-  },
+    "throws": "L",},
   {
     "rank": 13,
     "player": "Caleb Bonemer",
@@ -170,9 +144,7 @@ window.TOP_100_PLAYERS = [
     "age": "20",
     "heightWeight": "6' 1\" / 195 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "BTA Boyz"
-  },
+    "throws": "R",},
   {
     "rank": 14,
     "player": "Aidan Miller",
@@ -183,9 +155,7 @@ window.TOP_100_PLAYERS = [
     "age": "22",
     "heightWeight": "6' 1\" / 205 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "You Don't Know Bo"
-  },
+    "throws": "R",},
   {
     "rank": 15,
     "player": "Ethan Holliday",
@@ -196,9 +166,7 @@ window.TOP_100_PLAYERS = [
     "age": "19",
     "heightWeight": "6' 2\" / 210 lbs",
     "bats": "L",
-    "throws": "R",
-    "fantasyTeam": "BTA Boyz"
-  },
+    "throws": "R",},
   {
     "rank": 16,
     "player": "Luis Peña",
@@ -209,9 +177,7 @@ window.TOP_100_PLAYERS = [
     "age": "19",
     "heightWeight": "5' 11\" / 185 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "Dixon Cider"
-  },
+    "throws": "R",},
   {
     "rank": 17,
     "player": "Zyhir Hope",
@@ -222,9 +188,7 @@ window.TOP_100_PLAYERS = [
     "age": "21",
     "heightWeight": "5' 10\" / 193 lbs",
     "bats": "L",
-    "throws": "L",
-    "fantasyTeam": "Gunnarrhea"
-  },
+    "throws": "L",},
   {
     "rank": 18,
     "player": "George Lombard Jr.",
@@ -235,9 +199,7 @@ window.TOP_100_PLAYERS = [
     "age": "21",
     "heightWeight": "6' 2\" / 190 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "Gunnarrhea"
-  },
+    "throws": "R",},
   {
     "rank": 19,
     "player": "Ryan Sloan",
@@ -248,9 +210,7 @@ window.TOP_100_PLAYERS = [
     "age": "20",
     "heightWeight": "6' 5\" / 220 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "John's Super Team"
-  },
+    "throws": "R",},
   {
     "rank": 20,
     "player": "Liam Doyle",
@@ -261,9 +221,7 @@ window.TOP_100_PLAYERS = [
     "age": "22",
     "heightWeight": "6' 2\" / 220 lbs",
     "bats": "R",
-    "throws": "L",
-    "fantasyTeam": "Dixon Cider"
-  },
+    "throws": "L",},
   {
     "rank": 21,
     "player": "Braden Montgomery",
@@ -274,9 +232,7 @@ window.TOP_100_PLAYERS = [
     "age": "23",
     "heightWeight": "6' 2\" / 220 lbs",
     "bats": "S",
-    "throws": "R",
-    "fantasyTeam": "Me So Heorny"
-  },
+    "throws": "R",},
   {
     "rank": 22,
     "player": "Rainiel Rodriguez",
@@ -287,9 +243,7 @@ window.TOP_100_PLAYERS = [
     "age": "19",
     "heightWeight": "5' 10\" / 197 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "Goodyear Gila Monsters"
-  },
+    "throws": "R",},
   {
     "rank": 23,
     "player": "Alfredo Duno",
@@ -300,9 +254,7 @@ window.TOP_100_PLAYERS = [
     "age": "20",
     "heightWeight": "6' 2\" / 210 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "Goodyear Gila Monsters"
-  },
+    "throws": "R",},
   {
     "rank": 24,
     "player": "Noah Schultz",
@@ -313,9 +265,7 @@ window.TOP_100_PLAYERS = [
     "age": "22",
     "heightWeight": "6' 10\" / 240 lbs",
     "bats": "L",
-    "throws": "L",
-    "fantasyTeam": "Gunnarrhea"
-  },
+    "throws": "L",},
   {
     "rank": 25,
     "player": "Robby Snelling",
@@ -326,9 +276,7 @@ window.TOP_100_PLAYERS = [
     "age": "22",
     "heightWeight": "6' 3\" / 210 lbs",
     "bats": "R",
-    "throws": "L",
-    "fantasyTeam": "You Don't Know Bo"
-  },
+    "throws": "L",},
   {
     "rank": 26,
     "player": "Jamie Arnold",
@@ -339,9 +287,7 @@ window.TOP_100_PLAYERS = [
     "age": "22",
     "heightWeight": "6' 1\" / 188 lbs",
     "bats": "L",
-    "throws": "L",
-    "fantasyTeam": "Goodyear Gila Monsters"
-  },
+    "throws": "L",},
   {
     "rank": 27,
     "player": "Lazaro Montes",
@@ -352,9 +298,7 @@ window.TOP_100_PLAYERS = [
     "age": "21",
     "heightWeight": "6' 5\" / 210 lbs",
     "bats": "L",
-    "throws": "R",
-    "fantasyTeam": "Me So Heorny"
-  },
+    "throws": "R",},
   {
     "rank": 28,
     "player": "Josuar Gonzalez",
@@ -365,9 +309,7 @@ window.TOP_100_PLAYERS = [
     "age": "18",
     "heightWeight": "5' 10\" / 178 lbs",
     "bats": "S",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 29,
     "player": "JoJo Parker",
@@ -378,9 +320,7 @@ window.TOP_100_PLAYERS = [
     "age": "19",
     "heightWeight": "6' 2\" / 200 lbs",
     "bats": "L",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 30,
     "player": "Ryan Waldschmidt",
@@ -391,9 +331,7 @@ window.TOP_100_PLAYERS = [
     "age": "23",
     "heightWeight": "6' 0\" / 205 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "Gunnarrhea"
-  },
+    "throws": "R",},
   {
     "rank": 31,
     "player": "A.J. Ewing",
@@ -404,9 +342,7 @@ window.TOP_100_PLAYERS = [
     "age": "21",
     "heightWeight": "5' 10\" / 160 lbs",
     "bats": "L",
-    "throws": "R",
-    "fantasyTeam": "Me So Heorny"
-  },
+    "throws": "R",},
   {
     "rank": 32,
     "player": "Aiva Arquette",
@@ -417,9 +353,7 @@ window.TOP_100_PLAYERS = [
     "age": "22",
     "heightWeight": "6' 5\" / 220 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "John's Super Team"
-  },
+    "throws": "R",},
   {
     "rank": 33,
     "player": "Jonah Tong",
@@ -430,9 +364,7 @@ window.TOP_100_PLAYERS = [
     "age": "22",
     "heightWeight": "6' 1\" / 180 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "Me So Heorny"
-  },
+    "throws": "R",},
   {
     "rank": 34,
     "player": "Edward Florentino",
@@ -443,9 +375,7 @@ window.TOP_100_PLAYERS = [
     "age": "19",
     "heightWeight": "6' 3\" / 200 lbs",
     "bats": "L",
-    "throws": "R",
-    "fantasyTeam": "Goodyear Gila Monsters"
-  },
+    "throws": "R",},
   {
     "rank": 35,
     "player": "Eduardo Quintero",
@@ -456,9 +386,7 @@ window.TOP_100_PLAYERS = [
     "age": "20",
     "heightWeight": "6' 1\" / 175 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "Goodyear Gila Monsters"
-  },
+    "throws": "R",},
   {
     "rank": 36,
     "player": "Kaelen Culpepper",
@@ -469,9 +397,7 @@ window.TOP_100_PLAYERS = [
     "age": "23",
     "heightWeight": "5' 10\" / 185 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "This is Mizerable"
-  },
+    "throws": "R",},
   {
     "rank": 37,
     "player": "Travis Sykora",
@@ -482,9 +408,7 @@ window.TOP_100_PLAYERS = [
     "age": "22",
     "heightWeight": "6' 6\" / 232 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "John's Super Team"
-  },
+    "throws": "R",},
   {
     "rank": 38,
     "player": "Gage Jump",
@@ -495,9 +419,7 @@ window.TOP_100_PLAYERS = [
     "age": "23",
     "heightWeight": "6' 0\" / 200 lbs",
     "bats": "L",
-    "throws": "L",
-    "fantasyTeam": "BB's Bold Team"
-  },
+    "throws": "L",},
   {
     "rank": 39,
     "player": "Mike Sirota",
@@ -508,9 +430,7 @@ window.TOP_100_PLAYERS = [
     "age": "23",
     "heightWeight": "6' 2\" / 188 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "John's Super Team"
-  },
+    "throws": "R",},
   {
     "rank": 40,
     "player": "Theo Gillen",
@@ -521,9 +441,7 @@ window.TOP_100_PLAYERS = [
     "age": "20",
     "heightWeight": "6' 2\" / 195 lbs",
     "bats": "L",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 41,
     "player": "Joe Mack",
@@ -534,9 +452,7 @@ window.TOP_100_PLAYERS = [
     "age": "23",
     "heightWeight": "6' 0\" / 210 lbs",
     "bats": "L",
-    "throws": "R",
-    "fantasyTeam": "Gunnarrhea"
-  },
+    "throws": "R",},
   {
     "rank": 42,
     "player": "Eduardo Tait",
@@ -547,9 +463,7 @@ window.TOP_100_PLAYERS = [
     "age": "19",
     "heightWeight": "6' 0\" / 175 lbs",
     "bats": "L",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 43,
     "player": "Bryce Rainer",
@@ -560,9 +474,7 @@ window.TOP_100_PLAYERS = [
     "age": "20",
     "heightWeight": "6' 3\" / 195 lbs",
     "bats": "L",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 44,
     "player": "Angel Genao",
@@ -573,9 +485,7 @@ window.TOP_100_PLAYERS = [
     "age": "22",
     "heightWeight": "5' 11\" / 150 lbs",
     "bats": "S",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 45,
     "player": "Michael Arroyo",
@@ -586,9 +496,7 @@ window.TOP_100_PLAYERS = [
     "age": "21",
     "heightWeight": "5' 10\" / 160 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 46,
     "player": "Cam Caminiti",
@@ -599,9 +507,7 @@ window.TOP_100_PLAYERS = [
     "age": "19",
     "heightWeight": "6' 2\" / 195 lbs",
     "bats": "L",
-    "throws": "L",
-    "fantasyTeam": "BTA Boyz"
-  },
+    "throws": "L",},
   {
     "rank": 47,
     "player": "Hagen Smith",
@@ -612,9 +518,7 @@ window.TOP_100_PLAYERS = [
     "age": "22",
     "heightWeight": "6' 3\" / 235 lbs",
     "bats": "L",
-    "throws": "L",
-    "fantasyTeam": "Mactown MacDaddies"
-  },
+    "throws": "L",},
   {
     "rank": 48,
     "player": "Tyler Bremner",
@@ -625,9 +529,7 @@ window.TOP_100_PLAYERS = [
     "age": "22",
     "heightWeight": "6' 2\" / 190 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 49,
     "player": "Ethan Salas",
@@ -638,9 +540,7 @@ window.TOP_100_PLAYERS = [
     "age": "20",
     "heightWeight": "6' 1\" / 185 lbs",
     "bats": "L",
-    "throws": "R",
-    "fantasyTeam": "Mactown MacDaddies"
-  },
+    "throws": "R",},
   {
     "rank": 50,
     "player": "Billy Carlson",
@@ -651,9 +551,7 @@ window.TOP_100_PLAYERS = [
     "age": "19",
     "heightWeight": "6' 1\" / 185 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "John's Super Team"
-  },
+    "throws": "R",},
   {
     "rank": 51,
     "player": "Emmanuel Rodriguez",
@@ -664,9 +562,7 @@ window.TOP_100_PLAYERS = [
     "age": "23",
     "heightWeight": "5' 11\" / 210 lbs",
     "bats": "L",
-    "throws": "L",
-    "fantasyTeam": "Me So Heorny"
-  },
+    "throws": "L",},
   {
     "rank": 52,
     "player": "Blake Mitchell",
@@ -677,9 +573,7 @@ window.TOP_100_PLAYERS = [
     "age": "21",
     "heightWeight": "6' 0\" / 202 lbs",
     "bats": "L",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 53,
     "player": "Arjun Nimmala",
@@ -690,9 +584,7 @@ window.TOP_100_PLAYERS = [
     "age": "20",
     "heightWeight": "6' 0\" / 190 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 54,
     "player": "Emil Morales",
@@ -703,9 +595,7 @@ window.TOP_100_PLAYERS = [
     "age": "19",
     "heightWeight": "6' 3\" / 191 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 55,
     "player": "Luis Hernández",
@@ -716,9 +606,7 @@ window.TOP_100_PLAYERS = [
     "age": "17",
     "heightWeight": "5' 10\" / 172 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 56,
     "player": "Ralphy Velazquez",
@@ -729,9 +617,7 @@ window.TOP_100_PLAYERS = [
     "age": "21",
     "heightWeight": "6' 1\" / 240 lbs",
     "bats": "L",
-    "throws": "R",
-    "fantasyTeam": "Mactown MacDaddies"
-  },
+    "throws": "R",},
   {
     "rank": 57,
     "player": "Jett Williams",
@@ -742,9 +628,7 @@ window.TOP_100_PLAYERS = [
     "age": "22",
     "heightWeight": "5' 7\" / 179 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "Mactown MacDaddies"
-  },
+    "throws": "R",},
   {
     "rank": 58,
     "player": "JR Ritchie",
@@ -755,9 +639,7 @@ window.TOP_100_PLAYERS = [
     "age": "22",
     "heightWeight": "6' 2\" / 185 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "Me So Heorny"
-  },
+    "throws": "R",},
   {
     "rank": 59,
     "player": "Jarlin Susana",
@@ -768,9 +650,7 @@ window.TOP_100_PLAYERS = [
     "age": "22",
     "heightWeight": "6' 6\" / 235 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "Mactown MacDaddies"
-  },
+    "throws": "R",},
   {
     "rank": 60,
     "player": "Elmer Rodríguez",
@@ -781,9 +661,7 @@ window.TOP_100_PLAYERS = [
     "age": "22",
     "heightWeight": "6' 4\" / 177 lbs",
     "bats": "L",
-    "throws": "R",
-    "fantasyTeam": "BB's Bold Team"
-  },
+    "throws": "R",},
   {
     "rank": 61,
     "player": "Jhonny Level",
@@ -794,9 +672,7 @@ window.TOP_100_PLAYERS = [
     "age": "19",
     "heightWeight": "5' 8\" / 186 lbs",
     "bats": "S",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 62,
     "player": "Steele Hall",
@@ -807,9 +683,7 @@ window.TOP_100_PLAYERS = [
     "age": "18",
     "heightWeight": "5' 10\" / 180 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 63,
     "player": "Cooper Pratt",
@@ -820,9 +694,7 @@ window.TOP_100_PLAYERS = [
     "age": "21",
     "heightWeight": "6' 4\" / 210 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 64,
     "player": "Josue Briceño",
@@ -833,9 +705,7 @@ window.TOP_100_PLAYERS = [
     "age": "21",
     "heightWeight": "6' 4\" / 200 lbs",
     "bats": "L",
-    "throws": "R",
-    "fantasyTeam": "John's Super Team"
-  },
+    "throws": "R",},
   {
     "rank": 65,
     "player": "Joshua Báez",
@@ -846,9 +716,7 @@ window.TOP_100_PLAYERS = [
     "age": "22",
     "heightWeight": "6' 3\" / 220 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 66,
     "player": "Nate George",
@@ -859,9 +727,7 @@ window.TOP_100_PLAYERS = [
     "age": "20",
     "heightWeight": "6' 0\" / 200 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "BTA Boyz"
-  },
+    "throws": "R",},
   {
     "rank": 67,
     "player": "Dax Kilby",
@@ -872,9 +738,7 @@ window.TOP_100_PLAYERS = [
     "age": "19",
     "heightWeight": "6' 2\" / 190 lbs",
     "bats": "L",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 68,
     "player": "Gage Wood",
@@ -885,9 +749,7 @@ window.TOP_100_PLAYERS = [
     "age": "22",
     "heightWeight": "6' 0\" / 205 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 69,
     "player": "Anthony Eyanson",
@@ -898,9 +760,7 @@ window.TOP_100_PLAYERS = [
     "age": "21",
     "heightWeight": "6' 2\" / 208 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 70,
     "player": "Cooper Ingle",
@@ -911,9 +771,7 @@ window.TOP_100_PLAYERS = [
     "age": "24",
     "heightWeight": "5' 8\" / 190 lbs",
     "bats": "L",
-    "throws": "R",
-    "fantasyTeam": "Me So Heorny"
-  },
+    "throws": "R",},
   {
     "rank": 71,
     "player": "Jonny Farmelo",
@@ -924,9 +782,7 @@ window.TOP_100_PLAYERS = [
     "age": "21",
     "heightWeight": "6' 1\" / 205 lbs",
     "bats": "L",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 72,
     "player": "Charlie Condon",
@@ -937,9 +793,7 @@ window.TOP_100_PLAYERS = [
     "age": "23",
     "heightWeight": "6' 5\" / 216 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "BB's Bold Team"
-  },
+    "throws": "R",},
   {
     "rank": 73,
     "player": "Carlos Lagrange",
@@ -950,9 +804,7 @@ window.TOP_100_PLAYERS = [
     "age": "23",
     "heightWeight": "6' 7\" / 248 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "You Don't Know Bo"
-  },
+    "throws": "R",},
   {
     "rank": 74,
     "player": "Caden Scarborough",
@@ -963,9 +815,7 @@ window.TOP_100_PLAYERS = [
     "age": "21",
     "heightWeight": "6' 5\" / 185 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 75,
     "player": "Kendry Chourio",
@@ -976,9 +826,7 @@ window.TOP_100_PLAYERS = [
     "age": "18",
     "heightWeight": "6' 0\" / 160 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 76,
     "player": "Kevin Alvarez",
@@ -989,9 +837,7 @@ window.TOP_100_PLAYERS = [
     "age": "18",
     "heightWeight": "6' 3\" / 184 lbs",
     "bats": "L",
-    "throws": "L",
-    "fantasyTeam": "Available"
-  },
+    "throws": "L",},
   {
     "rank": 77,
     "player": "River Ryan",
@@ -1002,9 +848,7 @@ window.TOP_100_PLAYERS = [
     "age": "27",
     "heightWeight": "6' 2\" / 195 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 78,
     "player": "Roldy Brito",
@@ -1015,9 +859,7 @@ window.TOP_100_PLAYERS = [
     "age": "19",
     "heightWeight": "5' 11\" / 183 lbs",
     "bats": "S",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 79,
     "player": "Kayson Cunningham",
@@ -1028,9 +870,7 @@ window.TOP_100_PLAYERS = [
     "age": "19",
     "heightWeight": "5' 10\" / 182 lbs",
     "bats": "L",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 80,
     "player": "Jefferson Rojas",
@@ -1041,9 +881,7 @@ window.TOP_100_PLAYERS = [
     "age": "21",
     "heightWeight": "5' 11\" / 150 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 81,
     "player": "Brody Hopkins",
@@ -1054,9 +892,7 @@ window.TOP_100_PLAYERS = [
     "age": "24",
     "heightWeight": "6' 4\" / 200 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 82,
     "player": "Pedro Ramírez",
@@ -1067,9 +903,7 @@ window.TOP_100_PLAYERS = [
     "age": "22",
     "heightWeight": "5' 9\" / 165 lbs",
     "bats": "S",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 83,
     "player": "Kyson Witherspoon",
@@ -1080,9 +914,7 @@ window.TOP_100_PLAYERS = [
     "age": "21",
     "heightWeight": "6' 2\" / 206 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "Me So Heorny"
-  },
+    "throws": "R",},
   {
     "rank": 84,
     "player": "Jurrangelo Cijntje",
@@ -1093,9 +925,7 @@ window.TOP_100_PLAYERS = [
     "age": "23",
     "heightWeight": "5' 11\" / 200 lbs",
     "bats": "S",
-    "throws": "S",
-    "fantasyTeam": "This is Mizerable"
-  },
+    "throws": "S",},
   {
     "rank": 85,
     "player": "Jaxon Wiggins",
@@ -1106,9 +936,7 @@ window.TOP_100_PLAYERS = [
     "age": "24",
     "heightWeight": "6' 6\" / 225 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "BTA Boyz"
-  },
+    "throws": "R",},
   {
     "rank": 86,
     "player": "Nathan Flewelling",
@@ -1119,9 +947,7 @@ window.TOP_100_PLAYERS = [
     "age": "19",
     "heightWeight": "6' 2\" / 200 lbs",
     "bats": "L",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 87,
     "player": "Ronny Cruz",
@@ -1132,9 +958,7 @@ window.TOP_100_PLAYERS = [
     "age": "19",
     "heightWeight": "6' 2\" / 170 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 88,
     "player": "Kruz Schoolcraft",
@@ -1145,9 +969,7 @@ window.TOP_100_PLAYERS = [
     "age": "19",
     "heightWeight": "6' 8\" / 229 lbs",
     "bats": "L",
-    "throws": "L",
-    "fantasyTeam": "Dixon Cider"
-  },
+    "throws": "L",},
   {
     "rank": 89,
     "player": "Ike Irish",
@@ -1158,9 +980,7 @@ window.TOP_100_PLAYERS = [
     "age": "22",
     "heightWeight": "6' 2\" / 201 lbs",
     "bats": "L",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 90,
     "player": "Wei-En Lin",
@@ -1171,9 +991,7 @@ window.TOP_100_PLAYERS = [
     "age": "20",
     "heightWeight": "6' 2\" / 179 lbs",
     "bats": "L",
-    "throws": "L",
-    "fantasyTeam": "Available"
-  },
+    "throws": "L",},
   {
     "rank": 91,
     "player": "Luis Lara",
@@ -1184,9 +1002,7 @@ window.TOP_100_PLAYERS = [
     "age": "21",
     "heightWeight": "5' 7\" / 169 lbs",
     "bats": "S",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 92,
     "player": "Josh Hammond",
@@ -1197,9 +1013,7 @@ window.TOP_100_PLAYERS = [
     "age": "19",
     "heightWeight": "6' 1\" / 210 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 93,
     "player": "Justin Gonzales",
@@ -1210,9 +1024,7 @@ window.TOP_100_PLAYERS = [
     "age": "19",
     "heightWeight": "6' 5\" / 210 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 94,
     "player": "Charles Davalan",
@@ -1223,9 +1035,7 @@ window.TOP_100_PLAYERS = [
     "age": "22",
     "heightWeight": "5' 9\" / 190 lbs",
     "bats": "L",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 95,
     "player": "Xavier Neyens",
@@ -1236,9 +1046,7 @@ window.TOP_100_PLAYERS = [
     "age": "19",
     "heightWeight": "6' 3\" / 210 lbs",
     "bats": "L",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 96,
     "player": "Edwin Arroyo",
@@ -1249,9 +1057,7 @@ window.TOP_100_PLAYERS = [
     "age": "22",
     "heightWeight": "5' 11\" / 173 lbs",
     "bats": "S",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 97,
     "player": "Devin Fitz-Gerald",
@@ -1262,9 +1068,7 @@ window.TOP_100_PLAYERS = [
     "age": "20",
     "heightWeight": "5' 10\" / 185 lbs",
     "bats": "S",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 98,
     "player": "Felnin Celesten",
@@ -1275,9 +1079,7 @@ window.TOP_100_PLAYERS = [
     "age": "20",
     "heightWeight": "6' 1\" / 175 lbs",
     "bats": "S",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 99,
     "player": "Seaver King",
@@ -1288,9 +1090,7 @@ window.TOP_100_PLAYERS = [
     "age": "23",
     "heightWeight": "6' 0\" / 195 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  },
+    "throws": "R",},
   {
     "rank": 100,
     "player": "Karson Milbrandt",
@@ -1301,7 +1101,5 @@ window.TOP_100_PLAYERS = [
     "age": "22",
     "heightWeight": "6' 2\" / 230 lbs",
     "bats": "R",
-    "throws": "R",
-    "fantasyTeam": "Available"
-  }
+    "throws": "R",}
 ];
