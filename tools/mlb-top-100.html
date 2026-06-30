@@ -239,6 +239,38 @@
       box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .25);
     }
 
+    .avatar.owner-avatar {
+      position: relative;
+      overflow: visible;
+      background: rgba(255, 255, 255, .10);
+      padding: 2px;
+      box-shadow:
+        inset 0 0 0 2px rgba(255, 255, 255, .20),
+        0 0 0 1px rgba(77, 163, 255, .35);
+    }
+
+    .owner-avatar-img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      background: #ffffff;
+    }
+
+    .owner-avatar-crown {
+      position: absolute;
+      top: -15px;
+      right: -8px;
+      z-index: 2;
+      font-size: 18px;
+      line-height: 1;
+      transform: rotate(18deg);
+      filter: drop-shadow(0 2px 2px rgba(0, 0, 0, .45));
+      pointer-events: none;
+    }
+
     .name {
       font-weight: 850;
       letter-spacing: -.02em;
@@ -313,6 +345,11 @@
     tr.owned-row .avatar {
       opacity: .45;
       filter: grayscale(1);
+    }
+
+    tr.owned-row .avatar.owner-avatar {
+      opacity: .95;
+      filter: none;
     }
 
     .empty {
@@ -657,6 +694,15 @@
       "../scripts/fantasy-owners.js"
     ];
 
+    const TEAM_LOGO_PATHS = [
+      "team-logos.js",
+      "../team-logos.js",
+      "data/team-logos.js",
+      "../data/team-logos.js",
+      "scripts/team-logos.js",
+      "../scripts/team-logos.js"
+    ];
+
     function loadScriptOnce(src) {
       return new Promise((resolve, reject) => {
         const script = document.createElement("script");
@@ -695,6 +741,53 @@
       return null;
     }
 
+    async function loadTeamLogos() {
+      // If another page already loaded it, use it.
+      if (window.TEAM_LOGOS && Object.keys(window.TEAM_LOGOS).length) {
+        return "already-loaded";
+      }
+
+      for (const path of TEAM_LOGO_PATHS) {
+        try {
+          await loadScriptOnce(path);
+          if (window.TEAM_LOGOS && Object.keys(window.TEAM_LOGOS).length) {
+            console.info(`Loaded team logos from ${path}`);
+            return path;
+          }
+        } catch (error) {
+          // Try the next possible location.
+        }
+      }
+
+      console.warn(
+        "team-logos.js was not found. Owned players will still show as owned, but their avatar will fall back to initials."
+      );
+      return null;
+    }
+
+    function getTeamLogo(teamName) {
+      const logoPath = window.TEAM_LOGOS?.[teamName];
+
+      if (!logoPath) {
+        return "";
+      }
+
+      const isInToolsFolder = window.location.pathname.includes("/tools/");
+
+      return isInToolsFolder && !logoPath.startsWith("../") && !logoPath.startsWith("http")
+        ? `../${logoPath}`
+        : logoPath;
+    }
+
+    function escapeHtml(value) {
+      return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
     function normalizePlayerName(name) {
       return String(name || "")
         .normalize("NFD")
@@ -708,6 +801,7 @@
 
     async function initTop100Board() {
       await loadFantasyOwners();
+      await loadTeamLogos();
       await loadScriptOnce("players-data.js");
 
       const players = window.TOP_100_PLAYERS || [];
@@ -768,6 +862,24 @@
         return name.split(" ").filter(Boolean).slice(0, 2).map(part => part[0]).join("").toUpperCase();
       }
 
+      function getPlayerAvatarMarkup(player, fantasyTeam, owned) {
+        const logoPath = owned ? getTeamLogo(fantasyTeam) : "";
+
+        if (logoPath) {
+          const safeTeam = escapeHtml(fantasyTeam);
+          const crown = fantasyTeam === "Dixon Cider" ? `<span class="owner-avatar-crown">👑</span>` : "";
+
+          return `
+            <div class="avatar owner-avatar" aria-hidden="true" title="${safeTeam}">
+              ${crown}
+              <img src="${escapeHtml(logoPath)}" alt="${safeTeam}" class="owner-avatar-img owner-thumb">
+            </div>
+          `;
+        }
+
+        return `<div class="avatar" aria-hidden="true">${initials(player.player)}</div>`;
+      }
+
       function uniqueValues(key) {
         return [...new Set(players.map(player => player[key]).filter(Boolean))].sort((a, b) => a.localeCompare(b));
       }
@@ -810,7 +922,9 @@
 
         playersBody.innerHTML = filteredPlayers.map(player => {
           const owned = isPlayerOwned(player);
+          const fantasyTeam = getFantasyTeam(player);
           const ownerContent = getOwnerDisplay(player);
+          const avatarMarkup = getPlayerAvatarMarkup(player, fantasyTeam, owned);
 
           return `
             <tr class="${owned ? 'owned-row' : ''}">
@@ -820,7 +934,7 @@
               <td class="rank" data-label="Rank">#${player.rank}</td>
               <td data-label="Player">
                 <div class="player-cell">
-                  <div class="avatar" aria-hidden="true">${initials(player.player)}</div>
+                  ${avatarMarkup}
                   <div>
                     <div class="name">${player.player}</div>
                     <div class="sub">${player.team}</div>
