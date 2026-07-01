@@ -121,6 +121,7 @@ window.FANTASY_OWNERS = {
   "Emmet Sheehan": "Mactown MacDaddies",
   "Erik Sabrowski": "Dixon Cider",
   "Ernie Clement": "BTA Boyz",
+  "Esmerlyn Valdez": "Me So Heorny",
   "Ethan Holliday": "BTA Boyz",
   "Ethan Salas": "Mactown MacDaddies",
   "Eury Perez": "This Is Mizerable",
