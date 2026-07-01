@@ -1,20 +1,28 @@
 const weeklyLeaderCategories = [
+  { label: "R", group: "hitting", stat: "runs", type: "max" },
   { label: "HR", group: "hitting", stat: "homeRuns", type: "max" },
   { label: "RBI", group: "hitting", stat: "rbi", type: "max" },
-  { label: "Runs", group: "hitting", stat: "runs", type: "max" },
-  { label: "Total Bases", group: "hitting", stat: "totalBases", type: "max" },
-  { label: "AVG", group: "hitting", stat: "avg", type: "max", decimals: 3, minStat: "atBats", minValue: 15, seasonMinValue: 100 },
   { label: "NSB", group: "hitting", custom: "nsb", type: "max" },
+  { label: "AVG", group: "hitting", stat: "avg", type: "max", decimals: 3, minStat: "atBats", minValue: 15, last30MinValue: 50, seasonMinValue: 100 },
+  { label: "TB", group: "hitting", stat: "totalBases", type: "max" },
+  { label: "SO", group: "hitting", stat: "strikeOuts", type: "min" },
+  { label: "BB", group: "hitting", stat: "baseOnBalls", type: "max" },
+
+  { label: "W", group: "pitching", stat: "wins", type: "max" },
+  { label: "L", group: "pitching", stat: "losses", type: "min" },
+  { label: "QS", group: "pitching", stat: "qualityStarts", type: "max" },
+  { label: "SV+H-BS", group: "pitching", custom: "svhbs", type: "max" },
   { label: "K", group: "pitching", stat: "strikeOuts", type: "max" },
-  { label: "ERA", group: "pitching", stat: "era", type: "min", decimals: 2, minStat: "inningsPitched", minValue: 5, seasonMinValue: 40 },
-  { label: "WHIP", group: "pitching", stat: "whip", type: "min", decimals: 3, minStat: "inningsPitched", minValue: 5, seasonMinValue: 40 },
-  { label: "SV+H", group: "pitching", custom: "svh", type: "max" }
+  { label: "ERA", group: "pitching", stat: "era", type: "min", decimals: 2, minStat: "inningsPitched", minValue: 5, last30MinValue: 15, seasonMinValue: 40 },
+  { label: "WHIP", group: "pitching", stat: "whip", type: "min", decimals: 3, minStat: "inningsPitched", minValue: 5, last30MinValue: 15, seasonMinValue: 40 },
+  { label: "BAA", group: "pitching", stat: "avg", type: "min", decimals: 3, minStat: "inningsPitched", minValue: 5, last30MinValue: 15, seasonMinValue: 40 }
 ];
 
 const leaderRotationState = new Map();
 let weeklyLeadersCache = [];
 let leaderRangeMode = "weekly";
 let selectedPastWeek = null;
+let pickupRangeMode = "weekly";
 let fantasyOwnersLookupCache = null;
 
 function formatDate(date) {
@@ -60,6 +68,22 @@ function getWeeklyDateRange() {
 
 function getCurrentSeason() {
   return new Date().getFullYear();
+}
+
+function getLast30DateRange() {
+  const endDate = new Date();
+  endDate.setHours(23, 59, 59, 999);
+
+  const startDate = new Date(endDate);
+  startDate.setDate(endDate.getDate() - 29);
+  startDate.setHours(0, 0, 0, 0);
+
+  return {
+    startDate,
+    endDate,
+    start: formatDate(startDate),
+    end: formatDate(endDate)
+  };
 }
 
 function getSeasonWeekRanges() {
@@ -153,6 +177,10 @@ function getStatValue(player, category) {
     return Number(stat.saves || 0) + Number(stat.holds || 0);
   }
 
+  if (category.custom === "svhbs") {
+    return Number(stat.saves || 0) + Number(stat.holds || 0) - Number(stat.blownSaves || 0);
+  }
+
   if (category.stat === "inningsPitched") {
     return inningsToNumber(stat.inningsPitched);
   }
@@ -184,7 +212,7 @@ function passesMinimum(player, category) {
 }
 
 function formatLeaderValue(value, category) {
-  if (category.label === "AVG") {
+  if (category.label === "AVG" || category.label === "BAA") {
     return Number(value).toFixed(3).replace(/^0/, "");
   }
 
@@ -294,18 +322,43 @@ function normalizePlayerName(name) {
     .trim();
 }
 
+function getRosterPlayerName(entry) {
+  if (!entry) return "";
+  if (typeof entry === "string") return entry;
+  if (typeof entry !== "object") return "";
+  return entry.name || entry.playerName || entry.fullName || entry.player || entry.Player || entry.Name || "";
+}
+
 function getFantasyOwnersLookup() {
   if (fantasyOwnersLookupCache) {
     return fantasyOwnersLookupCache;
   }
 
-  fantasyOwnersLookupCache = Object.fromEntries(
-    Object.entries(window.FANTASY_OWNERS || {}).map(([player, fantasyTeam]) => [
-      normalizePlayerName(player),
-      fantasyTeam
-    ])
-  );
+  const ownersData = window.FANTASY_OWNERS || [];
+  const lookup = {};
 
+  if (Array.isArray(ownersData)) {
+    ownersData.forEach(team => {
+      const teamName = team?.teamName || team?.name || team?.owner || "";
+      const roster = team?.players || team?.roster || [];
+
+      roster.forEach(playerEntry => {
+        const playerName = getRosterPlayerName(playerEntry);
+
+        if (playerName && teamName) {
+          lookup[normalizePlayerName(playerName)] = teamName;
+        }
+      });
+    });
+  } else if (ownersData && typeof ownersData === "object") {
+    Object.entries(ownersData).forEach(([playerName, fantasyTeam]) => {
+      if (typeof fantasyTeam === "string") {
+        lookup[normalizePlayerName(playerName)] = fantasyTeam;
+      }
+    });
+  }
+
+  fantasyOwnersLookupCache = lookup;
   return fantasyOwnersLookupCache;
 }
 
@@ -326,6 +379,15 @@ function getTeamLogo(teamName) {
   return isInToolsFolder && !logoPath.startsWith("../")
     ? `../${logoPath}`
     : logoPath;
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
 
 function renderLeaderCards(leaders) {
@@ -409,52 +471,56 @@ function renderAvailableStuds(hittingStats, pitchingStats) {
   if (!grid) return;
 
   if (tag) {
-    tag.textContent =
-      leaderRangeMode === "season"
-        ? "Season"
-        : leaderRangeMode === "past"
-          ? "Past Week"
-          : "Weekly";
+    tag.textContent = pickupRangeMode === "season" ? "Season" : pickupRangeMode === "last30" ? "Last 30" : "Weekly";
   }
 
   const candidateMap = new Map();
+  const previousLeaderRangeMode = leaderRangeMode;
 
-  weeklyLeaderCategories.forEach(category => {
-    const source = category.group === "hitting" ? hittingStats : pitchingStats;
-    const sortedPlayers = getSortedEligiblePlayers(source, category);
+  // passesMinimum() uses leaderRangeMode for weekly vs season thresholds.
+  // Top Pickups has its own toggle, so set it temporarily while building pickups.
+  leaderRangeMode = pickupRangeMode === "season" ? "season" : pickupRangeMode === "last30" ? "last30" : "weekly";
 
-    sortedPlayers.slice(0, 10).forEach((item, index) => {
-      const name = item.player.player?.fullName || "N/A";
-      const owner = getFantasyOwner(name);
+  try {
+    weeklyLeaderCategories.forEach(category => {
+      const source = category.group === "hitting" ? hittingStats : pitchingStats;
+      const sortedPlayers = getSortedEligiblePlayers(source || [], category);
 
-      if (owner) return;
+      sortedPlayers.slice(0, 12).forEach((item, index) => {
+        const name = item.player.player?.fullName || "N/A";
+        const owner = getFantasyOwner(name);
 
-      const playerKey = normalizePlayerName(name);
-      const candidate = {
-        name,
-        team: item.player.team?.name || "",
-        category: category.label,
-        value: formatLeaderValue(item.value, category),
-        rank: index + 1
-      };
+        if (owner) return;
 
-      const existing = candidateMap.get(playerKey);
-      if (!existing || candidate.rank < existing.rank) {
-        candidateMap.set(playerKey, candidate);
-      }
+        const playerKey = normalizePlayerName(name);
+        const candidate = {
+          name,
+          team: item.player.team?.name || "",
+          category: category.label,
+          value: formatLeaderValue(item.value, category),
+          rank: index + 1
+        };
+
+        const existing = candidateMap.get(playerKey);
+        if (!existing || candidate.rank < existing.rank) {
+          candidateMap.set(playerKey, candidate);
+        }
+      });
     });
-  });
+  } finally {
+    leaderRangeMode = previousLeaderRangeMode;
+  }
 
   const candidates = [...candidateMap.values()]
     .sort((a, b) => a.rank - b.rank || a.category.localeCompare(b.category));
 
-  const studs = candidates.slice(0, 6);
+  const studs = candidates.slice(0, 4);
 
   if (!studs.length) {
     grid.innerHTML = `
       <article class="article-card">
         <p class="article-summary">
-          No available top-10 category studs found right now. Apparently the league is actually paying attention for once.
+          No top pickups found right now. Apparently the league is actually paying attention for once.
         </p>
       </article>
     `;
@@ -464,14 +530,14 @@ function renderAvailableStuds(hittingStats, pitchingStats) {
   grid.innerHTML = studs.map(stud => `
     <article class="available-stud-card">
       <div class="available-stud-top">
-        <div class="available-stud-category">${stud.category}</div>
-        <div class="available-stud-rank">#${stud.rank}</div>
+        <div class="available-stud-category">${escapeHtml(stud.category)}</div>
+        <div class="available-stud-rank">#${escapeHtml(stud.rank)}</div>
       </div>
-      <div class="available-stud-name">${stud.name}</div>
-      <div class="available-stud-team">${stud.team}</div>
+      <div class="available-stud-name">${escapeHtml(stud.name)}</div>
+      <div class="available-stud-team">${escapeHtml(stud.team)}</div>
       <div class="available-stud-bottom">
-        <div class="available-stud-value">${stud.value}</div>
-        <span class="available-stud-label">Available</span>
+        <div class="available-stud-value">${escapeHtml(stud.value)}</div>
+        <span class="available-stud-label">Pickup</span>
       </div>
     </article>
   `).join("");
@@ -483,15 +549,6 @@ function resetLeaderLoadingCards() {
     grid.innerHTML = `
       <article class="article-card">
         <p class="article-summary">Loading category leaders...</p>
-      </article>
-    `;
-  }
-
-  const availableGrid = document.getElementById("availableStudsGrid");
-  if (availableGrid) {
-    availableGrid.innerHTML = `
-      <article class="article-card">
-        <p class="article-summary">Loading available studs...</p>
       </article>
     `;
   }
@@ -599,7 +656,6 @@ async function loadWeeklyLeaders() {
     });
 
     renderLeaderCards(weeklyLeadersCache);
-    renderAvailableStuds(hittingStats, pitchingStats);
   } catch (error) {
     console.error(error);
 
@@ -611,6 +667,77 @@ async function loadWeeklyLeaders() {
       </article>
     `;
   }
+}
+
+async function loadTopPickups() {
+  const grid = document.getElementById("availableStudsGrid");
+  const tag = document.getElementById("availableStudsModeTag");
+
+  if (!grid) return;
+
+  grid.innerHTML = `
+    <article class="article-card">
+      <p class="article-summary">Loading top pickups...</p>
+    </article>
+  `;
+
+  if (tag) {
+    tag.textContent = pickupRangeMode === "season" ? "Season" : pickupRangeMode === "last30" ? "Last 30" : "Weekly";
+  }
+
+  try {
+    let hittingStats = [];
+    let pitchingStats = [];
+
+    if (pickupRangeMode === "season") {
+      [hittingStats, pitchingStats] = await Promise.all([
+        fetchSeasonStats("hitting"),
+        fetchSeasonStats("pitching")
+      ]);
+    } else if (pickupRangeMode === "last30") {
+      const { start, end } = getLast30DateRange();
+
+      [hittingStats, pitchingStats] = await Promise.all([
+        fetchWeeklyStats("hitting", start, end),
+        fetchWeeklyStats("pitching", start, end)
+      ]);
+    } else {
+      const { start, end } = getWeeklyDateRange();
+
+      [hittingStats, pitchingStats] = await Promise.all([
+        fetchWeeklyStats("hitting", start, end),
+        fetchWeeklyStats("pitching", start, end)
+      ]);
+    }
+
+    renderAvailableStuds(hittingStats, pitchingStats);
+  } catch (error) {
+    console.error("Top pickups failed:", error);
+
+    grid.innerHTML = `
+      <article class="article-card">
+        <p class="article-summary">
+          Top pickups could not load right now.
+        </p>
+      </article>
+    `;
+  }
+}
+
+function setupPickupModeToggle() {
+  document.querySelectorAll("[data-pickup-mode]").forEach(button => {
+    button.addEventListener("click", () => {
+      pickupRangeMode = button.dataset.pickupMode || "weekly";
+
+      document.querySelectorAll("[data-pickup-mode]").forEach(modeButton => {
+        const isActive = modeButton.dataset.pickupMode === pickupRangeMode;
+        modeButton.classList.toggle("active", isActive);
+        modeButton.setAttribute("aria-pressed", String(isActive));
+      });
+
+      loadTopPickups();
+    });
+  });
 }
 
 function setupLeaderModeToggle() {
@@ -639,5 +766,7 @@ function setupLeaderModeToggle() {
 document.addEventListener("DOMContentLoaded", () => {
   setupPastWeekSelect();
   setupLeaderModeToggle();
+  setupPickupModeToggle();
   loadWeeklyLeaders();
+  loadTopPickups();
 });
