@@ -18,6 +18,27 @@ const weeklyLeaderCategories = [
   { label: "BAA", group: "pitching", stat: "avg", type: "min", decimals: 3, minStat: "inningsPitched", minValue: 5, last30MinValue: 15, seasonMinValue: 40 }
 ];
 
+// Top Pickups should not use "bad category" traps like hitter SO or pitcher L.
+// It also requires playing-time minimums for every pickup category so bench bats with 0 K
+// or tiny-sample pitchers do not show up as fake good pickups.
+const topPickupCategories = [
+  { label: "R", group: "hitting", stat: "runs", type: "max", pickupMinStat: "atBats", pickupMinValue: 10, pickupLast30MinValue: 40, pickupSeasonMinValue: 80 },
+  { label: "HR", group: "hitting", stat: "homeRuns", type: "max", pickupMinStat: "atBats", pickupMinValue: 10, pickupLast30MinValue: 40, pickupSeasonMinValue: 80 },
+  { label: "RBI", group: "hitting", stat: "rbi", type: "max", pickupMinStat: "atBats", pickupMinValue: 10, pickupLast30MinValue: 40, pickupSeasonMinValue: 80 },
+  { label: "NSB", group: "hitting", custom: "nsb", type: "max", pickupMinStat: "atBats", pickupMinValue: 10, pickupLast30MinValue: 40, pickupSeasonMinValue: 80 },
+  { label: "AVG", group: "hitting", stat: "avg", type: "max", decimals: 3, pickupMinStat: "atBats", pickupMinValue: 15, pickupLast30MinValue: 50, pickupSeasonMinValue: 100 },
+  { label: "TB", group: "hitting", stat: "totalBases", type: "max", pickupMinStat: "atBats", pickupMinValue: 10, pickupLast30MinValue: 40, pickupSeasonMinValue: 80 },
+  { label: "BB", group: "hitting", stat: "baseOnBalls", type: "max", pickupMinStat: "atBats", pickupMinValue: 10, pickupLast30MinValue: 40, pickupSeasonMinValue: 80 },
+
+  { label: "W", group: "pitching", stat: "wins", type: "max", pickupMinStat: "inningsPitched", pickupMinValue: 3, pickupLast30MinValue: 12, pickupSeasonMinValue: 30 },
+  { label: "QS", group: "pitching", stat: "qualityStarts", type: "max", pickupMinStat: "inningsPitched", pickupMinValue: 3, pickupLast30MinValue: 12, pickupSeasonMinValue: 30 },
+  { label: "SV+H-BS", group: "pitching", custom: "svhbs", type: "max", pickupMinStat: "inningsPitched", pickupMinValue: 1, pickupLast30MinValue: 4, pickupSeasonMinValue: 12 },
+  { label: "K", group: "pitching", stat: "strikeOuts", type: "max", pickupMinStat: "inningsPitched", pickupMinValue: 3, pickupLast30MinValue: 12, pickupSeasonMinValue: 30 },
+  { label: "ERA", group: "pitching", stat: "era", type: "min", decimals: 2, pickupMinStat: "inningsPitched", pickupMinValue: 5, pickupLast30MinValue: 15, pickupSeasonMinValue: 40 },
+  { label: "WHIP", group: "pitching", stat: "whip", type: "min", decimals: 3, pickupMinStat: "inningsPitched", pickupMinValue: 5, pickupLast30MinValue: 15, pickupSeasonMinValue: 40 },
+  { label: "BAA", group: "pitching", stat: "avg", type: "min", decimals: 3, pickupMinStat: "inningsPitched", pickupMinValue: 5, pickupLast30MinValue: 15, pickupSeasonMinValue: 40 }
+];
+
 const leaderRotationState = new Map();
 let weeklyLeadersCache = [];
 let leaderRangeMode = "weekly";
@@ -315,6 +336,7 @@ function normalizePlayerName(name) {
   return String(name || "")
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s*-\s*[HP]\s*$/i, "") // Shohei Ohtani-H / Shohei Ohtani-P => Shohei Ohtani
     .replace(/[.'’]/g, "")
     .replace(/\b(jr|sr|ii|iii|iv|v)\b/gi, "")
     .replace(/\s+/g, " ")
@@ -327,6 +349,16 @@ function getRosterPlayerName(entry) {
   if (typeof entry === "string") return entry;
   if (typeof entry !== "object") return "";
   return entry.name || entry.playerName || entry.fullName || entry.player || entry.Player || entry.Name || "";
+}
+
+
+const PLAYER_NAME_ALIASES = {
+  "jacob latz": "jake latz"
+};
+
+function getOwnerLookupName(playerName) {
+  const normalizedName = normalizePlayerName(playerName);
+  return PLAYER_NAME_ALIASES[normalizedName] || normalizedName;
 }
 
 function getFantasyOwnersLookup() {
@@ -364,7 +396,24 @@ function getFantasyOwnersLookup() {
 
 function getFantasyOwner(playerName) {
   const ownersLookup = getFantasyOwnersLookup();
-  return ownersLookup[normalizePlayerName(playerName)] || "";
+  const normalizedName = normalizePlayerName(playerName);
+  const lookupName = getOwnerLookupName(playerName);
+
+  if (ownersLookup[lookupName]) {
+    return ownersLookup[lookupName];
+  }
+
+  if (ownersLookup[normalizedName]) {
+    return ownersLookup[normalizedName];
+  }
+
+  if (normalizedName === "shohei ohtani") {
+    return ownersLookup[normalizePlayerName("Shohei Ohtani-H")]
+      || ownersLookup[normalizePlayerName("Shohei Ohtani-P")]
+      || "";
+  }
+
+  return "";
 }
 
 function getTeamLogo(teamName) {
@@ -464,6 +513,91 @@ function getSortedEligiblePlayers(players, category) {
     });
 }
 
+
+function getPickupMinimumValue(category) {
+  if (pickupRangeMode === "season" && typeof category.pickupSeasonMinValue === "number") {
+    return category.pickupSeasonMinValue;
+  }
+
+  if (pickupRangeMode === "last30" && typeof category.pickupLast30MinValue === "number") {
+    return category.pickupLast30MinValue;
+  }
+
+  return category.pickupMinValue;
+}
+
+function passesPickupMinimum(player, category) {
+  if (!category.pickupMinStat) return true;
+
+  const stat = player.stat || {};
+  let value = stat[category.pickupMinStat];
+
+  if (category.pickupMinStat === "inningsPitched") {
+    value = inningsToNumber(value);
+  } else {
+    value = Number(value || 0);
+  }
+
+  return value >= getPickupMinimumValue(category);
+}
+
+function getSortedPickupPlayers(players, category) {
+  return players
+    .filter(player => passesPickupMinimum(player, category))
+    .map(player => ({
+      player,
+      value: getStatValue(player, category)
+    }))
+    .filter(item => Number.isFinite(item.value))
+    .sort((a, b) => {
+      return category.type === "min"
+        ? a.value - b.value
+        : b.value - a.value;
+    });
+}
+
+function getPickupScore(rank, category) {
+  const categoryWeight = {
+    HR: 1.25,
+    RBI: 1.15,
+    R: 1.05,
+    TB: 1.05,
+    AVG: 1.0,
+    BB: 0.95,
+    NSB: 0.95,
+    K: 1.2,
+    QS: 1.15,
+    W: 1.0,
+    "SV+H-BS": 1.05,
+    ERA: 1.0,
+    WHIP: 1.0,
+    BAA: 0.95
+  }[category.label] || 1;
+
+  return Math.max(0, 13 - rank) * categoryWeight;
+}
+
+
+function getPickupSampleValue(player, category) {
+  const stat = player.stat || {};
+
+  if (category.group === "hitting") {
+    return {
+      label: "AB",
+      value: Number(stat.atBats || 0)
+    };
+  }
+
+  return {
+    label: "IP",
+    value: stat.inningsPitched || "0"
+  };
+}
+
+function formatPickupSample(sample) {
+  return `${sample.label}: ${sample.value}`;
+}
+
 function renderAvailableStuds(hittingStats, pitchingStats) {
   const grid = document.getElementById("availableStudsGrid");
   const tag = document.getElementById("availableStudsModeTag");
@@ -475,44 +609,65 @@ function renderAvailableStuds(hittingStats, pitchingStats) {
   }
 
   const candidateMap = new Map();
-  const previousLeaderRangeMode = leaderRangeMode;
 
-  // passesMinimum() uses leaderRangeMode for weekly vs season thresholds.
-  // Top Pickups has its own toggle, so set it temporarily while building pickups.
-  leaderRangeMode = pickupRangeMode === "season" ? "season" : pickupRangeMode === "last30" ? "last30" : "weekly";
+  topPickupCategories.forEach(category => {
+    const source = category.group === "hitting" ? hittingStats : pitchingStats;
+    const sortedPlayers = getSortedPickupPlayers(source || [], category);
 
-  try {
-    weeklyLeaderCategories.forEach(category => {
-      const source = category.group === "hitting" ? hittingStats : pitchingStats;
-      const sortedPlayers = getSortedEligiblePlayers(source || [], category);
+    sortedPlayers.slice(0, 12).forEach((item, index) => {
+      const name = item.player.player?.fullName || "N/A";
+      const owner = getFantasyOwner(name);
 
-      sortedPlayers.slice(0, 12).forEach((item, index) => {
-        const name = item.player.player?.fullName || "N/A";
-        const owner = getFantasyOwner(name);
+      if (owner) return;
 
-        if (owner) return;
+      const rank = index + 1;
+      const playerKey = normalizePlayerName(name);
+      const score = getPickupScore(rank, category);
+      const categoryResult = {
+        category: category.label,
+        value: formatLeaderValue(item.value, category),
+        rank,
+        score,
+        sample: getPickupSampleValue(item.player, category)
+      };
 
-        const playerKey = normalizePlayerName(name);
-        const candidate = {
+      const existing = candidateMap.get(playerKey);
+
+      if (!existing) {
+        candidateMap.set(playerKey, {
           name,
           team: item.player.team?.name || "",
-          category: category.label,
-          value: formatLeaderValue(item.value, category),
-          rank: index + 1
-        };
+          totalScore: score,
+          bestRank: rank,
+          bestCategory: categoryResult,
+          categories: [categoryResult]
+        });
+      } else {
+        existing.totalScore += score;
+        existing.bestRank = Math.min(existing.bestRank, rank);
+        existing.categories.push(categoryResult);
 
-        const existing = candidateMap.get(playerKey);
-        if (!existing || candidate.rank < existing.rank) {
-          candidateMap.set(playerKey, candidate);
+        if (
+          rank < existing.bestCategory.rank ||
+          (rank === existing.bestCategory.rank && score > existing.bestCategory.score)
+        ) {
+          existing.bestCategory = categoryResult;
         }
-      });
+      }
     });
-  } finally {
-    leaderRangeMode = previousLeaderRangeMode;
-  }
+  });
 
   const candidates = [...candidateMap.values()]
-    .sort((a, b) => a.rank - b.rank || a.category.localeCompare(b.category));
+    .map(candidate => ({
+      ...candidate,
+      categoryCount: candidate.categories.length
+    }))
+    .sort((a, b) =>
+      b.totalScore - a.totalScore ||
+      b.categoryCount - a.categoryCount ||
+      a.bestRank - b.bestRank ||
+      a.name.localeCompare(b.name)
+    );
 
   const studs = candidates.slice(0, 4);
 
@@ -520,27 +675,40 @@ function renderAvailableStuds(hittingStats, pitchingStats) {
     grid.innerHTML = `
       <article class="article-card">
         <p class="article-summary">
-          No top pickups found right now. Apparently the league is actually paying attention for once.
+          No top pickups found right now. The wire might actually be cooked.
         </p>
       </article>
     `;
     return;
   }
 
-  grid.innerHTML = studs.map(stud => `
-    <article class="available-stud-card">
-      <div class="available-stud-top">
-        <div class="available-stud-category">${escapeHtml(stud.category)}</div>
-        <div class="available-stud-rank">#${escapeHtml(stud.rank)}</div>
-      </div>
-      <div class="available-stud-name">${escapeHtml(stud.name)}</div>
-      <div class="available-stud-team">${escapeHtml(stud.team)}</div>
-      <div class="available-stud-bottom">
-        <div class="available-stud-value">${escapeHtml(stud.value)}</div>
-        <span class="available-stud-label">Pickup</span>
-      </div>
-    </article>
-  `).join("");
+  grid.innerHTML = studs.map(stud => {
+    const secondaryCategories = stud.categories
+      .filter(item => item.category !== stud.bestCategory.category)
+      .sort((a, b) => a.rank - b.rank)
+      .slice(0, 2)
+      .map(item => `${escapeHtml(item.category)} #${escapeHtml(item.rank)}`)
+      .join(" · ");
+
+    return `
+      <article class="available-stud-card">
+        <div class="available-stud-top">
+          <div class="available-stud-category">${escapeHtml(stud.bestCategory.category)}</div>
+          <div class="available-stud-rank">#${escapeHtml(stud.bestCategory.rank)}</div>
+        </div>
+        <div class="available-stud-name">${escapeHtml(stud.name)}</div>
+        <div class="available-stud-team">${escapeHtml(stud.team)}</div>
+        <div class="available-stud-team">
+          ${escapeHtml(formatPickupSample(stud.bestCategory.sample))}
+          ${secondaryCategories ? ` · ${secondaryCategories}` : ""}
+        </div>
+        <div class="available-stud-bottom">
+          <div class="available-stud-value">${escapeHtml(stud.bestCategory.value)}</div>
+          <span class="available-stud-label">Pickup</span>
+        </div>
+      </article>
+    `;
+  }).join("");
 }
 
 function resetLeaderLoadingCards() {
