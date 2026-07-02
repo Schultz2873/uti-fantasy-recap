@@ -582,27 +582,27 @@
     <section class="trade-shell" aria-label="Trade analyzer">
       <div class="trade-card">
         <div class="trade-sides">
-          <section class="trade-side" aria-label="Side A receives">
+          <section class="trade-side" aria-label="Team A sends">
             <div class="trade-side-header">
-              <h2 class="trade-side-title">Side A Receives</h2>
+              <h2 class="trade-side-title" id="sideATitle">Team A Sends</h2>
               <span class="side-total-pill" id="sideATotalPill">0 pts</span>
             </div>
-            <select class="team-fit-select" id="sideATeamSelect" aria-label="Side A receiving team"></select>
+            <select class="team-fit-select" id="sideATeamSelect" aria-label="Team A sending team"></select>
             <div class="player-search-wrap">
-              <input class="player-search" id="sideASearch" type="search" placeholder="Search player to add..." autocomplete="off" />
+              <input class="player-search" id="sideASearch" type="search" placeholder="Search selected team roster..." autocomplete="off" />
               <div class="suggestions" id="sideASuggestions"></div>
             </div>
             <div class="selected-list" id="sideAList"></div>
           </section>
 
-          <section class="trade-side" aria-label="Side B receives">
+          <section class="trade-side" aria-label="Team B sends">
             <div class="trade-side-header">
-              <h2 class="trade-side-title">Side B Receives</h2>
+              <h2 class="trade-side-title" id="sideBTitle">Team B Sends</h2>
               <span class="side-total-pill" id="sideBTotalPill">0 pts</span>
             </div>
-            <select class="team-fit-select" id="sideBTeamSelect" aria-label="Side B receiving team"></select>
+            <select class="team-fit-select" id="sideBTeamSelect" aria-label="Team B sending team"></select>
             <div class="player-search-wrap">
-              <input class="player-search" id="sideBSearch" type="search" placeholder="Search player to add..." autocomplete="off" />
+              <input class="player-search" id="sideBSearch" type="search" placeholder="Search selected team roster..." autocomplete="off" />
               <div class="suggestions" id="sideBSuggestions"></div>
             </div>
             <div class="selected-list" id="sideBList"></div>
@@ -623,11 +623,11 @@
 
         <div class="result-grid">
           <div class="result-stat">
-            <div class="result-stat-label">Side A</div>
+            <div class="result-stat-label" id="sideAResultLabel">Team A Sends</div>
             <div class="result-stat-value" id="sideAResult">0</div>
           </div>
           <div class="result-stat">
-            <div class="result-stat-label">Side B</div>
+            <div class="result-stat-label" id="sideBResultLabel">Team B Sends</div>
             <div class="result-stat-value" id="sideBResult">0</div>
           </div>
           <div class="result-stat">
@@ -671,8 +671,8 @@
 
     <section class="player-table-card">
       <div class="table-toolbar">
-        <h2>Player Value Board</h2>
-        <input class="table-filter" id="playerTableFilter" type="search" placeholder="Filter player, team, owner, category..." autocomplete="off" />
+        <h2>Selected Team Rosters</h2>
+        <input class="table-filter" id="playerTableFilter" type="search" placeholder="Filter selected team rosters..." autocomplete="off" />
       </div>
 
       <div class="players-table-wrap">
@@ -754,6 +754,8 @@
       sideBSuggestions: document.getElementById("sideBSuggestions"),
       sideAList: document.getElementById("sideAList"),
       sideBList: document.getElementById("sideBList"),
+      sideATitle: document.getElementById("sideATitle"),
+      sideBTitle: document.getElementById("sideBTitle"),
       sideATotalPill: document.getElementById("sideATotalPill"),
       sideBTotalPill: document.getElementById("sideBTotalPill"),
       sideAResult: document.getElementById("sideAResult"),
@@ -849,6 +851,30 @@
       };
     }
 
+    function getSendingTeam(side) {
+      return side === "sideA" ? state.sideATeam : state.sideBTeam;
+    }
+
+    function getReceivingTeam(side) {
+      return side === "sideA" ? state.sideBTeam : state.sideATeam;
+    }
+
+    function getReceivingPackageForTeam(teamSide) {
+      return teamSide === "sideA" ? state.sideB : state.sideA;
+    }
+
+    function belongsToSelectedTeam(player, side) {
+      return getFantasyOwner(player) === getSendingTeam(side);
+    }
+
+    function syncSideToSelectedTeam(side) {
+      const team = getSendingTeam(side);
+      state[side] = state[side].filter(player => getFantasyOwner(player) === team);
+      if (side === "sideA") selectedSideA = state[side];
+      if (side === "sideB") selectedSideB = state[side];
+    }
+
+
     function getPlayerKey(player) {
       return normalizeName(player.name);
     }
@@ -882,8 +908,8 @@
         .map(([category, score]) => ({ category, score }));
     }
 
-    function getSideCategoryTotals(side) {
-      return state[side].reduce((totals, player) => {
+    function getCategoryTotalsForPlayers(players = []) {
+      return players.reduce((totals, player) => {
         Object.entries(player.categoryScores || {}).forEach(([category, score]) => {
           totals[category] = (totals[category] || 0) + Number(score || 0);
         });
@@ -891,24 +917,28 @@
       }, {});
     }
 
+    function getSideCategoryTotals(side) {
+      return getCategoryTotalsForPlayers(state[side]);
+    }
+
     function getCategoryImpactDiffs() {
-      const sideA = getSideCategoryTotals("sideA");
-      const sideB = getSideCategoryTotals("sideB");
-      const categories = [...new Set([...Object.keys(sideA), ...Object.keys(sideB)])];
+      // Team A receives the package Team B sends. Team B receives the package Team A sends.
+      const teamAReceives = getCategoryTotalsForPlayers(state.sideB);
+      const teamBReceives = getCategoryTotalsForPlayers(state.sideA);
+      const categories = [...new Set([...Object.keys(teamAReceives), ...Object.keys(teamBReceives)])];
 
       return categories
         .map(category => ({
           category,
-          sideA: sideA[category] || 0,
-          sideB: sideB[category] || 0,
-          diff: (sideA[category] || 0) - (sideB[category] || 0)
+          teamA: teamAReceives[category] || 0,
+          teamB: teamBReceives[category] || 0,
+          diff: (teamAReceives[category] || 0) - (teamBReceives[category] || 0)
         }))
         .filter(item => Math.abs(item.diff) > 0)
         .sort((a, b) => Math.abs(b.diff) - Math.abs(a.diff));
     }
 
-    function getFitScore(side, teamName) {
-      const players = state[side];
+    function getFitScoreForPlayers(players = [], teamName) {
       if (!players.length) return 0;
 
       const needs = TEAM_NEEDS[teamName] || [];
@@ -920,6 +950,10 @@
       }, 0);
 
       return Math.round(total / players.length);
+    }
+
+    function getFitScore(side, teamName) {
+      return getFitScoreForPlayers(state[side], teamName);
     }
 
     function average(values) {
@@ -942,8 +976,7 @@
       return "D";
     }
 
-    function getSideRiskSummary(side) {
-      const players = state[side];
+    function getRiskSummaryForPlayers(players = []) {
       if (!players.length) return { risk: 0, age: 0, prospects: 0, pitchers: 0, risky: 0 };
 
       const prospects = players.filter(player => String(player.riskTier || "").includes("prospect") || String(player.futureTier || "").includes("prospect")).length;
@@ -959,28 +992,34 @@
       };
     }
 
-    function getResultNote(sideATotal, sideBTotal, fairnessLabel, sideAFitScore, sideBFitScore) {
-      if (!sideATotal && !sideBTotal) return "Add players to both sides to see who is getting cooked.";
-      if (!sideATotal || !sideBTotal) return "One side is empty. Add players to both sides for a real verdict.";
+    function getSideRiskSummary(side) {
+      return getRiskSummaryForPlayers(state[side]);
+    }
 
-      const winner = sideATotal > sideBTotal ? "Side A" : sideBTotal > sideATotal ? "Side B" : "Nobody";
-      const difference = Math.abs(sideATotal - sideBTotal);
-      const fitWinner = sideAFitScore === sideBFitScore ? "neither side" : sideAFitScore > sideBFitScore ? "Side A" : "Side B";
+    function getResultNote(teamASendsTotal, teamBSendsTotal, fairnessLabel, teamAFitScore, teamBFitScore) {
+      if (!teamASendsTotal && !teamBSendsTotal) return `Pick each team, then add only players from their roster. ${state.sideATeam} sends from the left, ${state.sideBTeam} sends from the right.`;
+      if (!teamASendsTotal || !teamBSendsTotal) return "One team has not sent anything yet. Add players from both rosters for a real verdict.";
+
+      const teamAReceives = teamBSendsTotal;
+      const teamBReceives = teamASendsTotal;
+      const winner = teamAReceives > teamBReceives ? state.sideATeam : teamBReceives > teamAReceives ? state.sideBTeam : "Nobody";
+      const difference = Math.abs(teamAReceives - teamBReceives);
+      const fitWinner = teamAFitScore === teamBFitScore ? "neither side" : teamAFitScore > teamBFitScore ? state.sideATeam : state.sideBTeam;
 
       if (winner === "Nobody") {
         return `Dead even on raw dynasty value. Team fit leans ${fitWinner}, so now the group chat can argue category needs like civilized idiots.`;
       }
 
       if (fairnessLabel === "Robbery") {
-        return `${winner} wins by ${difference} points. This is the kind of trade that gets screenshotted in the group chat.`;
+        return `${winner} receives ${difference} more dynasty points. This is the kind of trade that gets screenshotted in the group chat.`;
       }
 
       if (fairnessLabel === "Clear Advantage") {
-        return `${winner} has a clear edge by ${difference} points. Not illegal, but somebody better have a good explanation.`;
+        return `${winner} has a clear edge by ${difference} points received. Not illegal, but somebody better have a good explanation.`;
       }
 
       if (fairnessLabel === "Slight Advantage") {
-        return `${winner} has a small edge by ${difference} points. Team fit currently leans ${fitWinner}, so context matters.`;
+        return `${winner} has a small edge by ${difference} points received. Team fit currently leans ${fitWinner}, so context matters.`;
       }
 
       return `Only ${difference} points apart. Pretty fair on raw value. Team fit leans ${fitWinner}. Commish can put the pitchfork down.`;
@@ -994,7 +1033,18 @@
       elements.sideBTeamSelect.value = state.sideBTeam;
     }
 
+
+    function updateSideLabels() {
+      elements.sideATitle.textContent = `${state.sideATeam} Sends`;
+      elements.sideBTitle.textContent = `${state.sideBTeam} Sends`;
+      elements.sideAResultLabel.textContent = `${state.sideATeam} Sends`;
+      elements.sideBResultLabel.textContent = `${state.sideBTeam} Sends`;
+      elements.sideASearch.placeholder = `Search ${state.sideATeam} roster...`;
+      elements.sideBSearch.placeholder = `Search ${state.sideBTeam} roster...`;
+    }
+
     function addPlayerToSide(player, side) {
+      if (!belongsToSelectedTeam(player, side)) return;
       if (isSelected(player, side)) return;
       state[side].push(player);
       closeSuggestions();
@@ -1018,11 +1068,12 @@
 
     function getSearchMatches(query, side) {
       const normalizedQuery = normalizeName(query);
-      if (!normalizedQuery) return [];
 
       return playerData
+        .filter(player => belongsToSelectedTeam(player, side))
         .filter(player => !isSelected(player, side))
         .filter(player => {
+          if (!normalizedQuery) return true;
           const haystack = [
             player.name,
             player.fantasyTeam,
@@ -1043,8 +1094,8 @@
       if (!matches.length) {
         container.innerHTML = `
           <button class="suggestion-btn" type="button" disabled>
-            <span class="suggestion-name">No players found</span>
-            <span class="suggestion-meta">Try a different spelling</span>
+            <span class="suggestion-name">No rostered players found</span>
+            <span class="suggestion-meta">Only the selected team's roster is searchable here</span>
           </button>
         `;
         container.classList.add("show");
@@ -1075,7 +1126,7 @@
       if (!selectedPlayers.length) {
         container.innerHTML = `
           <div class="selected-empty">
-            No players added yet. Search above or use the value board below.
+            No players added yet. Search this team's roster above or use the roster board below.
           </div>
         `;
         return;
@@ -1117,22 +1168,25 @@
       const maxTotal = Math.max(sideATotal, sideBTotal, 1);
       const percentDifference = Number(((difference / maxTotal) * 100).toFixed(1));
       const fairness = getFairness(sideATotal, sideBTotal);
-      const sideAFitScore = getFitScore("sideA", state.sideATeam);
-      const sideBFitScore = getFitScore("sideB", state.sideBTeam);
+      const sideAFitScore = getFitScoreForPlayers(state.sideB, state.sideATeam);
+      const sideBFitScore = getFitScoreForPlayers(state.sideA, state.sideBTeam);
+      const teamAReceivesTotal = sideBTotal;
+      const teamBReceivesTotal = sideATotal;
 
-      elements.sideATotalPill.textContent = `${sideATotal} pts`;
-      elements.sideBTotalPill.textContent = `${sideBTotal} pts`;
+      updateSideLabels();
+      elements.sideATotalPill.textContent = `${sideATotal} pts sent`;
+      elements.sideBTotalPill.textContent = `${sideBTotal} pts sent`;
       elements.sideAResult.textContent = sideATotal;
       elements.sideBResult.textContent = sideBTotal;
       elements.differenceResult.textContent = difference;
       elements.percentResult.textContent = `${percentDifference}%`;
-      elements.winnerValue.textContent = sideATotal === sideBTotal ? "Even" : sideATotal > sideBTotal ? "Side A" : "Side B";
+      elements.winnerValue.textContent = teamAReceivesTotal === teamBReceivesTotal ? "Even" : teamAReceivesTotal > teamBReceivesTotal ? state.sideATeam : state.sideBTeam;
       elements.fairnessPill.textContent = fairness.label;
       elements.fairnessPill.className = `fairness-pill ${fairness.className}`.trim();
       elements.resultNote.textContent = getResultNote(sideATotal, sideBTotal, fairness.label, sideAFitScore, sideBFitScore);
 
-      elements.sideAFitLabel.textContent = `${state.sideATeam} Fit`;
-      elements.sideBFitLabel.textContent = `${state.sideBTeam} Fit`;
+      elements.sideAFitLabel.textContent = `${state.sideATeam} Receives Fit`;
+      elements.sideBFitLabel.textContent = `${state.sideBTeam} Receives Fit`;
       elements.sideAFitGrade.textContent = getGrade(sideAFitScore);
       elements.sideBFitGrade.textContent = getGrade(sideBFitScore);
 
@@ -1150,9 +1204,9 @@
       }
 
       elements.categoryImpactList.innerHTML = diffs.map(item => {
-        const side = item.diff > 0 ? "A" : "B";
+        const team = item.diff > 0 ? state.sideATeam : state.sideBTeam;
         const className = item.diff > 0 ? "positive" : "negative";
-        return `<span class="impact-chip ${className}">${escapeHtml(formatCategory(item.category))}: Side ${side} +${escapeHtml(Math.abs(item.diff))}</span>`;
+        return `<span class="impact-chip ${className}">${escapeHtml(formatCategory(item.category))}: ${escapeHtml(team)} +${escapeHtml(Math.abs(item.diff))}</span>`;
       }).join("");
 
       const best = diffs[0];
@@ -1161,31 +1215,32 @@
         return;
       }
 
-      const side = best.diff > 0 ? "Side A" : "Side B";
-      elements.categoryImpactText.textContent = `${side} gets the biggest category edge in ${formatCategory(best.category)}.`;
+      const side = best.diff > 0 ? state.sideATeam : state.sideBTeam;
+      elements.categoryImpactText.textContent = `${side} receives the biggest category edge in ${formatCategory(best.category)}.`;
     }
 
     function renderRiskWindow() {
-      const sideA = getSideRiskSummary("sideA");
-      const sideB = getSideRiskSummary("sideB");
+      const teamAReceives = getRiskSummaryForPlayers(state.sideB);
+      const teamBReceives = getRiskSummaryForPlayers(state.sideA);
 
       if (!state.sideA.length && !state.sideB.length) {
         elements.riskWindowText.textContent = "Risk and dynasty-window notes will appear here.";
         return;
       }
 
-      const riskier = sideA.risk === sideB.risk ? "Neither side" : sideA.risk > sideB.risk ? "Side A" : "Side B";
-      const younger = sideA.age === sideB.age ? "neither side" : sideA.age < sideB.age ? "Side A" : "Side B";
-      const prospectNote = sideA.prospects || sideB.prospects
-        ? ` Prospect count: Side A ${sideA.prospects}, Side B ${sideB.prospects}.`
+      const riskier = teamAReceives.risk === teamBReceives.risk ? "Neither side" : teamAReceives.risk > teamBReceives.risk ? state.sideATeam : state.sideBTeam;
+      const younger = teamAReceives.age === teamBReceives.age ? "neither side" : teamAReceives.age < teamBReceives.age ? state.sideATeam : state.sideBTeam;
+      const prospectNote = teamAReceives.prospects || teamBReceives.prospects
+        ? ` Prospect count received: ${state.sideATeam} ${teamAReceives.prospects}, ${state.sideBTeam} ${teamBReceives.prospects}.`
         : "";
 
-      elements.riskWindowText.textContent = `${riskier} takes on more risk. ${younger} has the younger dynasty window.${prospectNote}`;
+      elements.riskWindowText.textContent = `${riskier} receives more risk. ${younger} receives the younger dynasty window.${prospectNote}`;
     }
 
     function renderPlayerTable() {
       const filter = normalizeName(elements.playerTableFilter.value);
-      const visiblePlayers = playerData.filter(player => {
+      const selectedTeams = new Set([state.sideATeam, state.sideBTeam]);
+      const visiblePlayers = playerData.filter(player => selectedTeams.has(player.fantasyTeam)).filter(player => {
         if (!filter) return true;
 
         const haystack = [
@@ -1204,7 +1259,7 @@
       if (!visiblePlayers.length) {
         elements.playersTableBody.innerHTML = `
           <tr>
-            <td colspan="8" class="muted">No players match that search.</td>
+            <td colspan="8" class="muted">No players match that search for the selected teams.</td>
           </tr>
         `;
         return;
@@ -1231,8 +1286,8 @@
               <div class="muted">${escapeHtml(topCategoryText)}</div>
             </td>
             <td>
-              <button class="add-small-btn" type="button" data-table-add="sideA" data-player="${encodeURIComponent(player.name)}">A</button>
-              <button class="add-small-btn" type="button" data-table-add="sideB" data-player="${encodeURIComponent(player.name)}">B</button>
+              ${player.fantasyTeam === state.sideATeam ? `<button class="add-small-btn" type="button" data-table-add="sideA" data-player="${encodeURIComponent(player.name)}">Send</button>` : ""}
+              ${player.fantasyTeam === state.sideBTeam ? `<button class="add-small-btn" type="button" data-table-add="sideB" data-player="${encodeURIComponent(player.name)}">Send</button>` : ""}
             </td>
           </tr>
         `;
@@ -1248,6 +1303,7 @@
     }
 
     function renderAll() {
+      updateSideLabels();
       renderSelectedList("sideA", elements.sideAList);
       renderSelectedList("sideB", elements.sideBList);
       renderResult();
@@ -1256,9 +1312,7 @@
 
     function setupSearch(input, side, suggestionsContainer) {
       input.addEventListener("input", () => renderSuggestions(input.value, side, suggestionsContainer));
-      input.addEventListener("focus", () => {
-        if (input.value.trim()) renderSuggestions(input.value, side, suggestionsContainer);
-      });
+      input.addEventListener("focus", () => renderSuggestions(input.value, side, suggestionsContainer));
     }
 
     function setupEvents() {
@@ -1272,12 +1326,18 @@
 
       elements.sideATeamSelect.addEventListener("change", () => {
         state.sideATeam = elements.sideATeamSelect.value;
-        renderResult();
+        syncSideToSelectedTeam("sideA");
+        elements.sideASearch.value = "";
+        closeSuggestions();
+        renderAll();
       });
 
       elements.sideBTeamSelect.addEventListener("change", () => {
         state.sideBTeam = elements.sideBTeamSelect.value;
-        renderResult();
+        syncSideToSelectedTeam("sideB");
+        elements.sideBSearch.value = "";
+        closeSuggestions();
+        renderAll();
       });
 
       elements.resetTradeBtn.addEventListener("click", () => {
@@ -1301,7 +1361,7 @@
       const errors = [];
       for (const path of possiblePaths) {
         try {
-          return await import(`${path}?v=trade-context-1`);
+          return await import(`${path}?v=trade-roster-filter-1`);
         } catch (error) {
           errors.push({ path, error });
         }
