@@ -91,29 +91,27 @@
       text-decoration: none;
     }
 
-    .back-link:hover {
-      text-decoration: underline;
-    }
+    .back-link:hover { text-decoration: underline; }
 
     .trade-shell {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(300px, 390px);
+      grid-template-columns: minmax(0, 1fr) minmax(320px, 430px);
       gap: 18px;
       margin-top: 18px;
       align-items: start;
     }
 
     .trade-card,
-    .result-card {
+    .result-card,
+    .player-table-card,
+    .insight-card {
       background: var(--uti-card);
       border: 1px solid var(--uti-border);
       border-radius: 22px;
       box-shadow: 0 14px 34px rgba(16, 35, 63, 0.08);
     }
 
-    .trade-card {
-      padding: 18px;
-    }
+    .trade-card { padding: 18px; }
 
     .trade-sides {
       display: grid;
@@ -145,12 +143,30 @@
     }
 
     .side-total-pill {
-      display: none;
+      display: inline-flex;
+      border-radius: 999px;
+      background: rgba(11, 94, 215, 0.10);
+      color: var(--uti-blue);
+      padding: 5px 9px;
+      font-size: 0.78rem;
+      font-weight: 950;
+      white-space: nowrap;
     }
 
-    .player-search-wrap {
-      position: relative;
+    .team-fit-select {
+      width: 100%;
+      border: 1px solid var(--uti-border);
+      border-radius: 999px;
+      background: #ffffff;
+      color: var(--uti-dark);
+      padding: 8px 10px;
+      font-size: 0.78rem;
+      font-weight: 900;
+      margin-bottom: 10px;
+      cursor: pointer;
     }
+
+    .player-search-wrap { position: relative; }
 
     .player-search {
       width: 100%;
@@ -183,9 +199,7 @@
       display: none;
     }
 
-    .suggestions.show {
-      display: block;
-    }
+    .suggestions.show { display: block; }
 
     .suggestion-btn {
       width: 100%;
@@ -199,9 +213,7 @@
       border-bottom: 1px solid rgba(16, 35, 63, 0.08);
     }
 
-    .suggestion-btn:hover {
-      background: #f3f7fc;
-    }
+    .suggestion-btn:hover { background: #f3f7fc; }
 
     .suggestion-name {
       font-weight: 950;
@@ -232,47 +244,12 @@
     }
 
     .selected-player {
-      position: relative;
-      border: 2px solid rgba(11, 94, 215, 0.22);
-      border-radius: 18px;
-      background:
-        linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(11, 94, 215, 0.06)),
-        #ffffff;
-      padding: 13px 13px 12px 16px;
+      border: 1px solid rgba(16, 35, 63, 0.12);
+      border-radius: 16px;
+      background: #ffffff;
+      padding: 11px;
       display: grid;
-      gap: 9px;
-      box-shadow: 0 12px 28px rgba(16, 35, 63, 0.12);
-      overflow: hidden;
-      transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
-    }
-
-    .selected-player::before {
-      content: "";
-      position: absolute;
-      inset: 0 auto 0 0;
-      width: 5px;
-      background: linear-gradient(180deg, var(--uti-blue), rgba(11, 94, 215, 0.35));
-    }
-
-    .selected-player:hover {
-      transform: translateY(-2px);
-      border-color: rgba(11, 94, 215, 0.42);
-      box-shadow: 0 18px 36px rgba(16, 35, 63, 0.16);
-    }
-
-    .selected-player-side-b {
-      border-color: rgba(25, 135, 84, 0.24);
-      background:
-        linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(25, 135, 84, 0.07)),
-        #ffffff;
-    }
-
-    .selected-player-side-b::before {
-      background: linear-gradient(180deg, var(--uti-good), rgba(25, 135, 84, 0.35));
-    }
-
-    .selected-player-side-b:hover {
-      border-color: rgba(25, 135, 84, 0.44);
+      gap: 8px;
     }
 
     .selected-player-top {
@@ -286,44 +263,44 @@
       color: var(--uti-dark);
       font-weight: 950;
       line-height: 1.1;
-      font-size: 1.02rem;
     }
 
     .selected-player-meta {
       color: var(--uti-muted);
       font-size: 0.78rem;
-      font-weight: 850;
-      margin-top: 4px;
+      font-weight: 800;
+      margin-top: 3px;
     }
 
-    .selected-player-badges {
+    .mini-category-row {
       display: flex;
-      gap: 6px;
       flex-wrap: wrap;
-      align-items: center;
+      gap: 5px;
     }
 
-    .selected-pill {
+    .mini-category-chip,
+    .category-chip,
+    .impact-chip {
       display: inline-flex;
-      align-items: center;
       border-radius: 999px;
       padding: 4px 8px;
-      background: rgba(16, 35, 63, 0.06);
-      color: var(--uti-dark);
+      background: rgba(16, 35, 63, 0.07);
       font-size: 0.72rem;
       font-weight: 950;
-      line-height: 1;
+      color: var(--uti-dark);
       white-space: nowrap;
     }
 
-    .selected-pill-accent {
-      background: rgba(11, 94, 215, 0.10);
-      color: var(--uti-blue);
-    }
+    .mini-category-chip { font-size: 0.66rem; padding: 3px 7px; }
 
-    .selected-player-side-b .selected-pill-accent {
-      background: rgba(25, 135, 84, 0.11);
-      color: var(--uti-good);
+    .value-badge {
+      border-radius: 999px;
+      background: var(--uti-dark);
+      color: #ffffff;
+      padding: 5px 9px;
+      font-weight: 950;
+      font-size: 0.82rem;
+      white-space: nowrap;
     }
 
     .remove-player {
@@ -338,14 +315,14 @@
       width: fit-content;
     }
 
-    .remove-player:hover {
-      background: rgba(220, 53, 69, 0.18);
-    }
+    .remove-player:hover { background: rgba(220, 53, 69, 0.18); }
 
     .result-card {
       padding: 18px;
       position: sticky;
       top: 14px;
+      display: grid;
+      gap: 12px;
     }
 
     .result-title {
@@ -359,7 +336,7 @@
       color: var(--uti-muted);
       font-weight: 750;
       font-size: 0.88rem;
-      margin: 0 0 14px;
+      margin: 0;
     }
 
     .winner-box {
@@ -367,7 +344,6 @@
       padding: 16px;
       background: linear-gradient(135deg, rgba(11, 94, 215, 0.10), rgba(25, 135, 84, 0.09));
       border: 1px solid rgba(11, 94, 215, 0.16);
-      margin-bottom: 12px;
     }
 
     .winner-label {
@@ -386,21 +362,24 @@
       margin-top: 4px;
     }
 
-    .result-grid {
+    .result-grid,
+    .fit-grid {
       display: grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: 1fr 1fr;
       gap: 10px;
-      margin-bottom: 12px;
     }
 
-    .result-stat {
+    .result-stat,
+    .fit-stat {
       border: 1px solid var(--uti-border);
       border-radius: 16px;
       padding: 12px;
       background: #f8fbff;
     }
 
-    .result-stat-label {
+    .result-stat-label,
+    .fit-stat-label,
+    .insight-label {
       font-size: 0.72rem;
       color: var(--uti-muted);
       font-weight: 950;
@@ -408,7 +387,8 @@
       letter-spacing: 0.08em;
     }
 
-    .result-stat-value {
+    .result-stat-value,
+    .fit-stat-value {
       color: var(--uti-dark);
       font-size: 1.35rem;
       font-weight: 950;
@@ -426,187 +406,37 @@
       font-weight: 950;
       color: #ffffff;
       background: var(--uti-good);
-      margin-bottom: 12px;
     }
 
-    .fairness-pill.slight {
-      background: var(--uti-warn);
-    }
-
+    .fairness-pill.slight { background: var(--uti-warn); }
     .fairness-pill.clear,
-    .fairness-pill.robbery {
-      background: var(--uti-bad);
-    }
+    .fairness-pill.robbery { background: var(--uti-bad); }
 
-    .result-note {
+    .result-note,
+    .insight-text {
       color: var(--uti-muted);
       font-weight: 760;
       font-size: 0.9rem;
       margin: 0;
     }
 
-
-
-    .insight-panel {
-      border-top: 1px solid rgba(16, 35, 63, 0.10);
-      margin-top: 14px;
-      padding-top: 14px;
-      display: grid;
-      gap: 10px;
-    }
-
     .insight-card {
-      border: 1px solid var(--uti-border);
-      border-radius: 16px;
       padding: 12px;
+      display: grid;
+      gap: 8px;
+      box-shadow: none;
+      border-radius: 16px;
       background: #f8fbff;
     }
 
-    .insight-label {
-      color: var(--uti-muted);
-      font-size: 0.72rem;
-      font-weight: 950;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 5px;
-    }
-
-    .insight-value {
-      color: var(--uti-dark);
-      font-size: 0.92rem;
-      font-weight: 850;
-      line-height: 1.35;
-      margin: 0;
-    }
-
-    .insight-tags {
+    .impact-list {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      margin-top: 8px;
     }
 
-    .insight-tag {
-      display: inline-flex;
-      align-items: center;
-      border-radius: 999px;
-      background: rgba(11, 94, 215, 0.10);
-      color: var(--uti-dark);
-      padding: 5px 8px;
-      font-size: 0.76rem;
-      font-weight: 900;
-    }
-
-
-    .suggestion-panel {
-      border-top: 1px solid rgba(16, 35, 63, 0.10);
-      margin-top: 14px;
-      padding-top: 14px;
-      display: grid;
-      gap: 10px;
-    }
-
-    .suggestion-controls {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-
-    .suggestion-field label {
-      display: block;
-      color: var(--uti-muted);
-      font-size: 0.70rem;
-      font-weight: 950;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 5px;
-    }
-
-    .suggestion-select {
-      width: 100%;
-      border: 1px solid var(--uti-border);
-      border-radius: 12px;
-      background: #ffffff;
-      color: var(--uti-dark);
-      font-size: 0.84rem;
-      font-weight: 850;
-      padding: 9px 10px;
-      outline: none;
-    }
-
-    .suggestion-select:focus {
-      border-color: rgba(11, 94, 215, 0.55);
-      box-shadow: 0 0 0 4px rgba(11, 94, 215, 0.10);
-    }
-
-    .recommendation-card {
-      border: 1px solid rgba(11, 94, 215, 0.16);
-      border-radius: 16px;
-      padding: 13px;
-      background: linear-gradient(135deg, rgba(11, 94, 215, 0.08), rgba(255, 255, 255, 0.96));
-    }
-
-    .recommendation-verdict {
-      display: inline-flex;
-      align-items: center;
-      border-radius: 999px;
-      padding: 6px 10px;
-      background: var(--uti-dark);
-      color: #ffffff;
-      font-size: 0.76rem;
-      font-weight: 950;
-      margin-bottom: 8px;
-    }
-
-    .recommendation-verdict.accept {
-      background: var(--uti-good);
-    }
-
-    .recommendation-verdict.counter {
-      background: var(--uti-warn);
-    }
-
-    .recommendation-verdict.reject {
-      background: var(--uti-bad);
-    }
-
-    .recommendation-text,
-    .counter-text {
-      color: var(--uti-dark);
-      font-size: 0.9rem;
-      font-weight: 850;
-      line-height: 1.35;
-      margin: 0;
-    }
-
-    .counter-text {
-      color: var(--uti-muted);
-      margin-top: 8px;
-    }
-
-    .recommendation-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 10px;
-    }
-
-    .recommendation-tag {
-      display: inline-flex;
-      align-items: center;
-      border-radius: 999px;
-      background: rgba(16, 35, 63, 0.07);
-      color: var(--uti-dark);
-      padding: 5px 8px;
-      font-size: 0.72rem;
-      font-weight: 950;
-    }
-
-    @media (max-width: 420px) {
-      .suggestion-controls {
-        grid-template-columns: 1fr;
-      }
-    }
+    .impact-chip.positive { background: rgba(25, 135, 84, 0.12); color: #146c43; }
+    .impact-chip.negative { background: rgba(220, 53, 69, 0.10); color: #842029; }
 
     .reset-btn {
       border: 0;
@@ -616,13 +446,98 @@
       padding: 9px 12px;
       font-weight: 950;
       cursor: pointer;
-      margin-top: 12px;
       width: 100%;
     }
 
-    .reset-btn:hover {
-      background: rgba(16, 35, 63, 0.14);
+    .reset-btn:hover { background: rgba(16, 35, 63, 0.14); }
+
+    .player-table-card {
+      margin-top: 18px;
+      padding: 18px;
     }
+
+    .table-toolbar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .table-toolbar h2 {
+      color: var(--uti-dark);
+      font-weight: 950;
+      font-size: 1.25rem;
+      margin: 0;
+    }
+
+    .table-filter {
+      border: 1px solid var(--uti-border);
+      border-radius: 999px;
+      padding: 9px 12px;
+      font-weight: 800;
+      min-width: min(100%, 260px);
+    }
+
+    .players-table-wrap {
+      max-height: 560px;
+      overflow: auto;
+      border: 1px solid var(--uti-border);
+      border-radius: 16px;
+    }
+
+    .players-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      min-width: 860px;
+      background: #ffffff;
+    }
+
+    .players-table th,
+    .players-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(16, 35, 63, 0.08);
+      vertical-align: middle;
+      font-size: 0.88rem;
+    }
+
+    .players-table th {
+      position: sticky;
+      top: 0;
+      z-index: 3;
+      background: #f3f7fc;
+      color: var(--uti-dark);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 950;
+    }
+
+    .players-table td {
+      color: var(--uti-dark);
+      font-weight: 760;
+    }
+
+    .players-table .muted {
+      color: var(--uti-muted);
+      font-weight: 800;
+    }
+
+    .add-small-btn {
+      border: 0;
+      border-radius: 999px;
+      background: rgba(11, 94, 215, 0.10);
+      color: var(--uti-blue);
+      font-weight: 950;
+      padding: 6px 10px;
+      font-size: 0.76rem;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .add-small-btn:hover { background: rgba(11, 94, 215, 0.18); }
 
     .load-error {
       border: 1px solid rgba(220, 53, 69, 0.28);
@@ -634,321 +549,15 @@
       margin-top: 18px;
     }
 
-
-    .team-analyzer-card {
-      margin-top: 18px;
-      padding: 18px;
-      background: var(--uti-card);
-      border: 1px solid var(--uti-border);
-      border-radius: 22px;
-      box-shadow: 0 14px 34px rgba(16, 35, 63, 0.08);
-    }
-
-    .team-analyzer-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 14px;
-      flex-wrap: wrap;
-      margin-bottom: 14px;
-    }
-
-    .team-analyzer-title {
-      color: var(--uti-dark);
-      font-size: 1.35rem;
-      font-weight: 950;
-      margin: 0;
-    }
-
-    .team-analyzer-subtitle {
-      color: var(--uti-muted);
-      font-size: 0.9rem;
-      font-weight: 760;
-      margin: 4px 0 0;
-      max-width: 760px;
-    }
-
-    .team-controls {
-      display: grid;
-      grid-template-columns: minmax(190px, 1fr) minmax(150px, 0.65fr);
-      gap: 10px;
-      min-width: min(100%, 430px);
-    }
-
-    .team-field label {
-      display: block;
-      color: var(--uti-muted);
-      font-size: 0.70rem;
-      font-weight: 950;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 5px;
-    }
-
-    .team-select {
-      width: 100%;
-      border: 1px solid var(--uti-border);
-      border-radius: 12px;
-      background: #ffffff;
-      color: var(--uti-dark);
-      font-size: 0.86rem;
-      font-weight: 850;
-      padding: 10px 11px;
-      outline: none;
-    }
-
-    .team-select:focus {
-      border-color: rgba(11, 94, 215, 0.55);
-      box-shadow: 0 0 0 4px rgba(11, 94, 215, 0.10);
-    }
-
-    .team-analysis-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-      margin-top: 12px;
-    }
-
-    .team-analysis-card {
-      border: 1px solid var(--uti-border);
-      border-radius: 18px;
-      background: #f8fbff;
-      padding: 14px;
-      min-width: 0;
-    }
-
-    .team-analysis-card.wide {
-      grid-column: 1 / -1;
-    }
-
-    .team-card-label {
-      color: var(--uti-muted);
-      font-size: 0.72rem;
-      font-weight: 950;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 6px;
-    }
-
-    .team-card-value {
-      color: var(--uti-dark);
-      font-size: 0.96rem;
-      font-weight: 850;
-      line-height: 1.35;
-      margin: 0;
-    }
-
-    .team-tag-row {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-      margin-top: 9px;
-    }
-
-    .team-tag {
-      display: inline-flex;
-      align-items: center;
-      border-radius: 999px;
-      background: rgba(11, 94, 215, 0.10);
-      color: var(--uti-dark);
-      padding: 5px 8px;
-      font-size: 0.74rem;
-      font-weight: 950;
-    }
-
-    .team-tag.warn {
-      background: rgba(245, 159, 0, 0.14);
-    }
-
-    .team-tag.good {
-      background: rgba(25, 135, 84, 0.12);
-    }
-
-    .trade-idea-list {
-      display: grid;
-      gap: 10px;
-      margin-top: 10px;
-    }
-
-    .trade-idea {
-      border: 1px solid rgba(16, 35, 63, 0.10);
-      border-radius: 15px;
-      background: #ffffff;
-      padding: 12px;
-    }
-
-    .trade-idea-title {
-      color: var(--uti-dark);
-      font-size: 0.92rem;
-      font-weight: 950;
-      margin-bottom: 4px;
-    }
-
-    .trade-idea-text {
-      color: var(--uti-muted);
-      font-size: 0.86rem;
-      font-weight: 800;
-      line-height: 1.35;
-      margin: 0;
-    }
-
-
-
-    .suggested-trade-card {
-      border: 1px solid rgba(16, 35, 63, 0.12);
-      border-radius: 18px;
-      background: #ffffff;
-      box-shadow: 0 12px 26px rgba(16, 35, 63, 0.08);
-      overflow: hidden;
-    }
-
-    .suggested-trade-topbar {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      align-items: center;
-      background: linear-gradient(135deg, rgba(16, 35, 63, 0.96), rgba(11, 94, 215, 0.86));
-      color: #ffffff;
-      padding: 10px 12px;
-    }
-
-    .suggested-trade-matchup {
-      font-size: 0.86rem;
-      font-weight: 950;
-      line-height: 1.25;
-    }
-
-    .suggested-trade-badge {
-      white-space: nowrap;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.18);
-      border: 1px solid rgba(255, 255, 255, 0.22);
-      padding: 4px 8px;
-      font-size: 0.68rem;
-      font-weight: 950;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-
-    .suggested-trade-swap {
-      display: grid;
-      grid-template-columns: 1fr 42px 1fr;
-      gap: 8px;
-      align-items: stretch;
-      padding: 12px;
-    }
-
-    .suggested-trade-team-box {
-      border: 1px solid rgba(16, 35, 63, 0.10);
-      border-radius: 14px;
-      background: rgba(243, 247, 252, 0.80);
-      padding: 10px;
-      min-width: 0;
-    }
-
-    .suggested-trade-team {
-      color: var(--uti-muted);
-      font-size: 0.68rem;
-      font-weight: 950;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      margin-bottom: 4px;
-    }
-
-    .suggested-trade-player {
-      color: var(--uti-dark);
-      font-size: 0.94rem;
-      font-weight: 950;
-      line-height: 1.25;
-    }
-
-    .suggested-trade-meta {
-      color: var(--uti-muted);
-      font-size: 0.76rem;
-      font-weight: 850;
-      margin-top: 4px;
-    }
-
-    .suggested-trade-arrow {
-      display: grid;
-      place-items: center;
-      align-self: center;
-      width: 42px;
-      height: 42px;
-      border-radius: 999px;
-      background: rgba(11, 94, 215, 0.10);
-      color: var(--uti-blue);
-      font-size: 1.15rem;
-      font-weight: 950;
-    }
-
-    .suggested-trade-reason {
-      border-top: 1px solid rgba(16, 35, 63, 0.08);
-      color: var(--uti-muted);
-      font-size: 0.83rem;
-      font-weight: 800;
-      line-height: 1.4;
-      margin: 0;
-      padding: 10px 12px 12px;
-    }
-
-    .suggested-trade-tags {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-      margin-top: 8px;
-    }
-
-    .suggested-trade-tag {
-      border-radius: 999px;
-      background: rgba(25, 135, 84, 0.10);
-      color: var(--uti-dark);
-      padding: 4px 7px;
-      font-size: 0.68rem;
-      font-weight: 950;
-    }
-
-    @media (max-width: 680px) {
-      .suggested-trade-swap {
-        grid-template-columns: 1fr;
-      }
-      .suggested-trade-arrow {
-        transform: rotate(90deg);
-        margin: 0 auto;
-      }
-    }
-
-    .team-warning {
-      border: 1px solid rgba(245, 159, 0, 0.32);
-      background: rgba(245, 159, 0, 0.10);
-      color: #7a5200;
-      border-radius: 16px;
-      padding: 12px;
-      font-weight: 850;
-      margin-top: 12px;
-    }
-
-    @media (max-width: 760px) {
-      .team-analysis-grid,
-      .team-controls {
-        grid-template-columns: 1fr;
-      }
-    }
-
     @media (max-width: 960px) {
-      .trade-shell {
-        grid-template-columns: 1fr;
-      }
-
-      .result-card {
-        position: static;
-      }
+      .trade-shell { grid-template-columns: 1fr; }
+      .result-card { position: static; }
     }
 
     @media (max-width: 720px) {
-      .trade-sides {
-        grid-template-columns: 1fr;
-      }
+      .trade-sides,
+      .result-grid,
+      .fit-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -961,12 +570,13 @@
       <div class="kicker">Dynasty Trade Tool</div>
       <h1>UTI Trade Analyzer</h1>
       <p>
-        Build both sides of a trade and get a clean verdict without showing the raw player values, points, or dynasty tiers.
+        Build both sides of a trade and compare dynasty value, category impact, team fit, risk, age window,
+        and current UTI ownership.
       </p>
     </section>
 
     <div id="loadError" class="load-error" hidden>
-      Could not load player data. Make sure <strong>data/players.js</strong> exists and this page is opened through a server/GitHub Pages.
+      Could not load player values. Make sure <strong>data/players.js</strong> exists and open this page through GitHub Pages or a local server, not directly from your file system.
     </div>
 
     <section class="trade-shell" aria-label="Trade analyzer">
@@ -975,8 +585,9 @@
           <section class="trade-side" aria-label="Side A receives">
             <div class="trade-side-header">
               <h2 class="trade-side-title">Side A Receives</h2>
-              <span class="side-total-pill" id="sideATotalPill" aria-hidden="true"></span>
+              <span class="side-total-pill" id="sideATotalPill">0 pts</span>
             </div>
+            <select class="team-fit-select" id="sideATeamSelect" aria-label="Side A receiving team"></select>
             <div class="player-search-wrap">
               <input class="player-search" id="sideASearch" type="search" placeholder="Search player to add..." autocomplete="off" />
               <div class="suggestions" id="sideASuggestions"></div>
@@ -987,8 +598,9 @@
           <section class="trade-side" aria-label="Side B receives">
             <div class="trade-side-header">
               <h2 class="trade-side-title">Side B Receives</h2>
-              <span class="side-total-pill" id="sideBTotalPill" aria-hidden="true"></span>
+              <span class="side-total-pill" id="sideBTotalPill">0 pts</span>
             </div>
+            <select class="team-fit-select" id="sideBTeamSelect" aria-label="Side B receiving team"></select>
             <div class="player-search-wrap">
               <input class="player-search" id="sideBSearch" type="search" placeholder="Search player to add..." autocomplete="off" />
               <div class="suggestions" id="sideBSuggestions"></div>
@@ -999,8 +611,10 @@
       </div>
 
       <aside class="result-card">
-        <h2 class="result-title">Trade Verdict</h2>
-        <p class="result-subtitle">Verdict updates automatically when players are added or removed.</p>
+        <div>
+          <h2 class="result-title">Trade Verdict</h2>
+          <p class="result-subtitle">Values, category fit, and roster context update automatically.</p>
+        </div>
 
         <div class="winner-box">
           <div class="winner-label">Winner</div>
@@ -1009,145 +623,127 @@
 
         <div class="result-grid">
           <div class="result-stat">
+            <div class="result-stat-label">Side A</div>
+            <div class="result-stat-value" id="sideAResult">0</div>
+          </div>
+          <div class="result-stat">
+            <div class="result-stat-label">Side B</div>
+            <div class="result-stat-value" id="sideBResult">0</div>
+          </div>
+          <div class="result-stat">
+            <div class="result-stat-label">Difference</div>
+            <div class="result-stat-value" id="differenceResult">0</div>
+          </div>
+          <div class="result-stat">
             <div class="result-stat-label">Gap</div>
             <div class="result-stat-value" id="percentResult">0%</div>
           </div>
         </div>
 
         <div class="fairness-pill" id="fairnessPill">Fair Trade</div>
-        <p class="result-note" id="resultNote">
-          Add players to both sides to see the verdict.
-        </p>
+        <p class="result-note" id="resultNote">Add players to both sides to see who is getting cooked.</p>
 
-        <div class="insight-panel" id="tradeInsights" aria-label="Trade insight summary">
-          <div class="insight-card">
-            <div class="insight-label">Who Gets Better Now</div>
-            <p class="insight-value" id="nowImpact">Add players to compare short-term impact.</p>
+        <div class="fit-grid">
+          <div class="fit-stat">
+            <div class="fit-stat-label" id="sideAFitLabel">Side A Fit</div>
+            <div class="fit-stat-value" id="sideAFitGrade">—</div>
           </div>
-          <div class="insight-card">
-            <div class="insight-label">Who Gets Better Later</div>
-            <p class="insight-value" id="futureImpact">Add players to compare long-term upside.</p>
-          </div>
-          <div class="insight-card">
-            <div class="insight-label">Category Impact</div>
-            <p class="insight-value" id="categoryImpact">Category fit will appear here once both sides have players.</p>
-            <div class="insight-tags" id="categoryTags"></div>
-          </div>
-          <div class="insight-card">
-            <div class="insight-label">Risk / Review Notes</div>
-            <p class="insight-value" id="riskImpact">Add players to check risk and review notes.</p>
+          <div class="fit-stat">
+            <div class="fit-stat-label" id="sideBFitLabel">Side B Fit</div>
+            <div class="fit-stat-value" id="sideBFitGrade">—</div>
           </div>
         </div>
 
+        <div class="insight-card">
+          <div class="insight-label">Category Impact</div>
+          <div class="impact-list" id="categoryImpactList"></div>
+          <p class="insight-text" id="categoryImpactText">Add players to see which side gains the better category profile.</p>
+        </div>
 
-        <div class="suggestion-panel" aria-label="Trade suggestion">
-          <div class="insight-label">Trade Suggestion</div>
-          <div class="suggestion-controls">
-            <div class="suggestion-field">
-              <label for="myTradeSide">My Side</label>
-              <select class="suggestion-select" id="myTradeSide">
-                <option value="sideA">Side A</option>
-                <option value="sideB">Side B</option>
-              </select>
-            </div>
-            <div class="suggestion-field">
-              <label for="teamDirection">Goal</label>
-              <select class="suggestion-select" id="teamDirection">
-                <option value="balanced">Balanced</option>
-                <option value="winNow">Win Now</option>
-                <option value="rebuild">Rebuild</option>
-              </select>
-            </div>
-          </div>
-          <div class="recommendation-card">
-            <div class="recommendation-verdict" id="recommendationVerdict">Add both sides</div>
-            <p class="recommendation-text" id="recommendationText">Choose your side and goal, then add players to get an accept, reject, or counter suggestion.</p>
-            <p class="counter-text" id="counterText"></p>
-            <div class="recommendation-tags" id="recommendationTags"></div>
-          </div>
+        <div class="insight-card">
+          <div class="insight-label">Risk / Window</div>
+          <p class="insight-text" id="riskWindowText">Risk and dynasty-window notes will appear here.</p>
         </div>
 
         <button class="reset-btn" id="resetTradeBtn" type="button">Reset Trade</button>
       </aside>
     </section>
 
-    <section class="team-analyzer-card" aria-label="Team analyzer">
-      <div class="team-analyzer-header">
-        <div>
-          <h2 class="team-analyzer-title">Team Analyzer + Trade Targets</h2>
-          <p class="team-analyzer-subtitle">
-            Pick a UTI team and direction to see roster strengths, weak spots, move type, trade chips, and realistic targets from the league. Values stay hidden.
-          </p>
-        </div>
-        <div class="team-controls">
-          <div class="team-field">
-            <label for="teamAnalyzeSelect">Team</label>
-            <select class="team-select" id="teamAnalyzeSelect">
-              <option value="">Load fantasy-owners.js first</option>
-            </select>
-          </div>
-          <div class="team-field">
-            <label for="teamAnalyzeDirection">Direction</label>
-            <select class="team-select" id="teamAnalyzeDirection">
-              <option value="balanced">Balanced</option>
-              <option value="winNow">Win Now</option>
-              <option value="rebuild">Rebuild</option>
-            </select>
-          </div>
-        </div>
+    <section class="player-table-card">
+      <div class="table-toolbar">
+        <h2>Player Value Board</h2>
+        <input class="table-filter" id="playerTableFilter" type="search" placeholder="Filter player, team, owner, category..." autocomplete="off" />
       </div>
 
-      <div id="teamAnalyzerWarning" class="team-warning" hidden>
-        Team analysis needs <strong>data/fantasy-owners.js</strong>. Keep the file in /data and run through a server or GitHub Pages.
-      </div>
-
-      <div class="team-analysis-grid">
-        <article class="team-analysis-card">
-          <div class="team-card-label">Roster Snapshot</div>
-          <p class="team-card-value" id="teamSnapshot">Select a team to analyze the roster.</p>
-          <div class="team-tag-row" id="teamSnapshotTags"></div>
-        </article>
-        <article class="team-analysis-card">
-          <div class="team-card-label">Recommended Direction</div>
-          <p class="team-card-value" id="teamDirectionSummary">Choose a team and goal.</p>
-          <div class="team-tag-row" id="teamDirectionTags"></div>
-        </article>
-        <article class="team-analysis-card">
-          <div class="team-card-label">Strengths</div>
-          <p class="team-card-value" id="teamStrengths">Strengths will appear here.</p>
-          <div class="team-tag-row" id="teamStrengthTags"></div>
-        </article>
-        <article class="team-analysis-card">
-          <div class="team-card-label">Needs / Weak Spots</div>
-          <p class="team-card-value" id="teamNeeds">Needs will appear here.</p>
-          <div class="team-tag-row" id="teamNeedTags"></div>
-        </article>
-        <article class="team-analysis-card wide">
-          <div class="team-card-label">Trade Suggestions</div>
-          <p class="team-card-value" id="teamTradeSummary">Suggested moves will appear here.</p>
-          <div class="trade-idea-list" id="teamTradeIdeas"></div>
-        </article>
-        <article class="team-analysis-card wide">
-          <div class="team-card-label">Suggested Two-Team Trades</div>
-          <p class="team-card-value" id="teamSuggestedTradeSummary">Balanced trade ideas will appear here.</p>
-          <div class="trade-idea-list" id="teamSuggestedTrades"></div>
-        </article>
+      <div class="players-table-wrap">
+        <table class="players-table">
+          <thead>
+            <tr>
+              <th>Player</th>
+              <th>Owner</th>
+              <th>Pos</th>
+              <th>Age</th>
+              <th>Value</th>
+              <th>Tier</th>
+              <th>Category</th>
+              <th>Add</th>
+            </tr>
+          </thead>
+          <tbody id="playersTableBody">
+            <tr>
+              <td colspan="8" class="muted">Loading players...</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </section>
-
   </main>
 
+  <script src="../data/fantasy-owners.js?v=trade-analyzer-owners"></script>
   <script type="module">
     let playerData = [];
-
     let ownerLookup = new Map();
-    let teamRosterMap = new Map();
     let selectedSideA = [];
     let selectedSideB = [];
 
+    const TEAM_NAMES = [
+      "Gunnarrhea",
+      "BB's Bold Team",
+      "Dixon Cider",
+      "Goodyear Gila Monsters",
+      "John's Super Team",
+      "Mactown MacDaddies",
+      "Me So Heorny",
+      "This Is Mizerable",
+      "You Don't Know Bo",
+      "BTA Boyz"
+    ];
+
+    // Edit these anytime your standings/team needs change.
+    const TEAM_NEEDS = {
+      "Gunnarrhea": ["AVG", "NSB", "SVH_BS"],
+      "BB's Bold Team": ["K", "ERA", "WHIP", "BAA"],
+      "Dixon Cider": ["HR", "RBI", "TB", "K"],
+      "Goodyear Gila Monsters": ["SVH_BS", "ERA", "WHIP"],
+      "John's Super Team": ["R", "HR", "TB", "K"],
+      "Mactown MacDaddies": ["ERA", "WHIP", "BAA", "K"],
+      "Me So Heorny": ["AVG", "BB", "NSB"],
+      "This Is Mizerable": ["HR", "RBI", "TB"],
+      "You Don't Know Bo": ["R", "AVG", "BB"],
+      "BTA Boyz": ["R", "HR", "RBI", "K", "ERA"]
+    };
+
+    const HITTER_DISPLAY_CATEGORIES = ["R", "HR", "RBI", "NSB", "AVG", "TB", "SO", "BB"];
+    const PITCHER_DISPLAY_CATEGORIES = ["W", "L", "QS", "SVH_BS", "K", "ERA", "WHIP", "BAA"];
+    const CATEGORY_LABELS = {
+      SVH_BS: "SV+H-BS"
+    };
+
     const state = {
       sideA: selectedSideA,
-      sideB: selectedSideB
+      sideB: selectedSideB,
+      sideATeam: "Gunnarrhea",
+      sideBTeam: "Dixon Cider"
     };
 
     const elements = {
@@ -1160,37 +756,25 @@
       sideBList: document.getElementById("sideBList"),
       sideATotalPill: document.getElementById("sideATotalPill"),
       sideBTotalPill: document.getElementById("sideBTotalPill"),
+      sideAResult: document.getElementById("sideAResult"),
+      sideBResult: document.getElementById("sideBResult"),
+      differenceResult: document.getElementById("differenceResult"),
       percentResult: document.getElementById("percentResult"),
       winnerValue: document.getElementById("winnerValue"),
       fairnessPill: document.getElementById("fairnessPill"),
       resultNote: document.getElementById("resultNote"),
-      nowImpact: document.getElementById("nowImpact"),
-      futureImpact: document.getElementById("futureImpact"),
-      categoryImpact: document.getElementById("categoryImpact"),
-      categoryTags: document.getElementById("categoryTags"),
-      riskImpact: document.getElementById("riskImpact"),
-      myTradeSide: document.getElementById("myTradeSide"),
-      teamDirection: document.getElementById("teamDirection"),
-      recommendationVerdict: document.getElementById("recommendationVerdict"),
-      recommendationText: document.getElementById("recommendationText"),
-      counterText: document.getElementById("counterText"),
-      recommendationTags: document.getElementById("recommendationTags"),
       resetTradeBtn: document.getElementById("resetTradeBtn"),
-      teamAnalyzeSelect: document.getElementById("teamAnalyzeSelect"),
-      teamAnalyzeDirection: document.getElementById("teamAnalyzeDirection"),
-      teamAnalyzerWarning: document.getElementById("teamAnalyzerWarning"),
-      teamSnapshot: document.getElementById("teamSnapshot"),
-      teamSnapshotTags: document.getElementById("teamSnapshotTags"),
-      teamDirectionSummary: document.getElementById("teamDirectionSummary"),
-      teamDirectionTags: document.getElementById("teamDirectionTags"),
-      teamStrengths: document.getElementById("teamStrengths"),
-      teamStrengthTags: document.getElementById("teamStrengthTags"),
-      teamNeeds: document.getElementById("teamNeeds"),
-      teamNeedTags: document.getElementById("teamNeedTags"),
-      teamTradeSummary: document.getElementById("teamTradeSummary"),
-      teamTradeIdeas: document.getElementById("teamTradeIdeas"),
-      teamSuggestedTradeSummary: document.getElementById("teamSuggestedTradeSummary"),
-      teamSuggestedTrades: document.getElementById("teamSuggestedTrades")
+      playerTableFilter: document.getElementById("playerTableFilter"),
+      playersTableBody: document.getElementById("playersTableBody"),
+      sideATeamSelect: document.getElementById("sideATeamSelect"),
+      sideBTeamSelect: document.getElementById("sideBTeamSelect"),
+      sideAFitLabel: document.getElementById("sideAFitLabel"),
+      sideBFitLabel: document.getElementById("sideBFitLabel"),
+      sideAFitGrade: document.getElementById("sideAFitGrade"),
+      sideBFitGrade: document.getElementById("sideBFitGrade"),
+      categoryImpactList: document.getElementById("categoryImpactList"),
+      categoryImpactText: document.getElementById("categoryImpactText"),
+      riskWindowText: document.getElementById("riskWindowText")
     };
 
     function normalizeName(value = "") {
@@ -1198,12 +782,71 @@
         .toString()
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
+        .replace(/\s*-\s*[HP]\s*$/i, "")
         .replace(/[^a-zA-Z0-9]/g, "")
         .toLowerCase();
     }
 
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
     function formatPositions(player) {
       return Array.isArray(player.positions) ? player.positions.join(", ") : "";
+    }
+
+    function formatCategory(category) {
+      return CATEGORY_LABELS[category] || category;
+    }
+
+    function getRosterPlayerName(entry) {
+      if (!entry) return "";
+      if (typeof entry === "string") return entry;
+      if (typeof entry !== "object") return "";
+      return entry.name || entry.playerName || entry.fullName || entry.player || entry.Player || entry.Name || "";
+    }
+
+    function buildOwnerLookup() {
+      const ownersData = window.FANTASY_OWNERS || [];
+      const lookup = new Map();
+
+      if (Array.isArray(ownersData)) {
+        ownersData.forEach(team => {
+          const teamName = team?.teamName || team?.name || team?.owner || "";
+          const roster = team?.players || team?.roster || [];
+
+          roster.forEach(playerEntry => {
+            const playerName = getRosterPlayerName(playerEntry);
+            if (playerName && teamName) lookup.set(normalizeName(playerName), teamName);
+          });
+        });
+      } else if (ownersData && typeof ownersData === "object") {
+        Object.entries(ownersData).forEach(([playerName, fantasyTeam]) => {
+          if (typeof fantasyTeam === "string") lookup.set(normalizeName(playerName), fantasyTeam);
+        });
+      }
+
+      return lookup;
+    }
+
+    function getFantasyOwner(player) {
+      const name = typeof player === "string" ? player : player?.name;
+      const normalizedName = normalizeName(name);
+      return ownerLookup.get(normalizedName)
+        || (normalizedName === "shoheiohtani" ? ownerLookup.get(normalizeName("Shohei Ohtani-H")) || ownerLookup.get(normalizeName("Shohei Ohtani-P")) : "")
+        || "Free Agent";
+    }
+
+    function enrichPlayer(player) {
+      return {
+        ...player,
+        fantasyTeam: getFantasyOwner(player)
+      };
     }
 
     function getPlayerKey(player) {
@@ -1230,343 +873,129 @@
       return { label: "Fair Trade", className: "" };
     }
 
-    function getResultNote(sideATotal, sideBTotal, fairnessLabel) {
-      if (!sideATotal && !sideBTotal) {
-        return "Add players to both sides to see the verdict.";
-      }
-
-      if (!sideATotal || !sideBTotal) {
-        return "One side is empty. Add players to both sides for a real verdict.";
-      }
-
-      if (sideATotal === sideBTotal) {
-        return "Dead even. Team needs and league context can decide this one.";
-      }
-
-      if (fairnessLabel === "Robbery") {
-        return "This one is lopsided enough to get the group chat yelling.";
-      }
-
-      if (fairnessLabel === "Clear Advantage") {
-        return "One side has a clear edge. Not illegal, but somebody better have a good explanation.";
-      }
-
-      if (fairnessLabel === "Slight Advantage") {
-        return "Small edge. Team needs and win-now/rebuild context could swing this.";
-      }
-
-      return "Pretty fair. Commish can put the pitchfork down.";
+    function getTopCategories(player, limit = 3) {
+      const scores = player.categoryScores || {};
+      return Object.entries(scores)
+        .filter(([, score]) => Number(score) > 0)
+        .sort((a, b) => Number(b[1]) - Number(a[1]))
+        .slice(0, limit)
+        .map(([category, score]) => ({ category, score }));
     }
 
-
-
-    function toArray(value) {
-      if (!value) return [];
-      if (Array.isArray(value)) return value.filter(Boolean);
-      if (typeof value === "object") {
-        return Object.entries(value)
-          .filter(([, score]) => score === true || Number(score) > 0)
-          .sort((a, b) => Number(b[1]) - Number(a[1]))
-          .map(([category]) => category);
-      }
-      return value
-        .toString()
-        .split(/[|,;/]+/)
-        .map(item => item.trim())
-        .filter(Boolean);
-    }
-
-    function getCurrentScore(player) {
-      const rank = Number(player.currentRank || 999);
-      const rankScore = Math.max(0, 220 - Math.min(rank, 220));
-      const productionScore = Number(player.currentProduction || 0);
-      return productionScore || rankScore;
-    }
-
-    function getFutureScore(player) {
-      const age = Number(player.age || 30);
-      const futureTier = Number(player.futureTier || 5);
-      const upside = Number(player.futureUpside || 0);
-      const ageBonus = Math.max(0, 31 - age) * 7;
-      const futureBonus = Math.max(0, 6 - futureTier) * 28;
-      return upside || (ageBonus + futureBonus);
-    }
-
-    function getSideCurrentScore(side) {
-      return state[side].reduce((sum, player) => sum + getCurrentScore(player), 0);
-    }
-
-    function getSideFutureScore(side) {
-      return state[side].reduce((sum, player) => sum + getFutureScore(player), 0);
-    }
-
-    function describeEdge(sideAScore, sideBScore, labelA, labelB, evenText) {
-      if (!state.sideA.length || !state.sideB.length) return evenText;
-      const difference = Math.abs(sideAScore - sideBScore);
-      const maxScore = Math.max(sideAScore, sideBScore, 1);
-      const pct = difference / maxScore;
-      if (pct < 0.08) return `Pretty even. ${labelA} and ${labelB} are close enough that team needs matter more.`;
-      const winner = sideAScore > sideBScore ? labelA : labelB;
-      if (pct < 0.18) return `${winner} has a small edge here, but it is not enough to ignore roster fit.`;
-      return `${winner} has the stronger edge here.`;
-    }
-
-    function getCategoryCounts(players) {
-      const counts = new Map();
-      players.forEach(player => {
-        const categories = [
-          ...toArray(player.categoryFitTie),
-          ...toArray(player.categoryFit),
-          ...toArray(player.categoryFits),
-          ...toArray(player.categories)
-        ];
-        categories.forEach(category => {
-          const cleanCategory = category.toString().trim();
-          if (!cleanCategory) return;
-          counts.set(cleanCategory, (counts.get(cleanCategory) || 0) + 1);
+    function getSideCategoryTotals(side) {
+      return state[side].reduce((totals, player) => {
+        Object.entries(player.categoryScores || {}).forEach(([category, score]) => {
+          totals[category] = (totals[category] || 0) + Number(score || 0);
         });
-      });
-      return counts;
+        return totals;
+      }, {});
     }
 
-    function getTopCategories(side) {
-      const counts = getCategoryCounts(state[side]);
-      return [...counts.entries()]
-        .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
-        .slice(0, 5)
-        .map(([category]) => category);
+    function getCategoryImpactDiffs() {
+      const sideA = getSideCategoryTotals("sideA");
+      const sideB = getSideCategoryTotals("sideB");
+      const categories = [...new Set([...Object.keys(sideA), ...Object.keys(sideB)])];
+
+      return categories
+        .map(category => ({
+          category,
+          sideA: sideA[category] || 0,
+          sideB: sideB[category] || 0,
+          diff: (sideA[category] || 0) - (sideB[category] || 0)
+        }))
+        .filter(item => Math.abs(item.diff) > 0)
+        .sort((a, b) => Math.abs(b.diff) - Math.abs(a.diff));
     }
 
-    function getRiskScore(player) {
-      const value = (player.riskTier || player.risk || "medium").toString().toLowerCase();
-      if (value.includes("low") || value === "1") return 1;
-      if (value.includes("high") || value === "3") return 3;
-      if (value.includes("extreme") || value === "4") return 4;
-      return 2;
+    function getFitScore(side, teamName) {
+      const players = state[side];
+      if (!players.length) return 0;
+
+      const needs = TEAM_NEEDS[teamName] || [];
+      if (!needs.length) return Math.round(average(players.map(player => player.categoryFit || 0)));
+
+      const total = players.reduce((sum, player) => {
+        const score = needs.reduce((needSum, category) => needSum + Number(player.categoryScores?.[category] || 0), 0) / needs.length;
+        return sum + score;
+      }, 0);
+
+      return Math.round(total / players.length);
     }
 
-    function getAverageRisk(side) {
-      if (!state[side].length) return 0;
-      return state[side].reduce((sum, player) => sum + getRiskScore(player), 0) / state[side].length;
+    function average(values) {
+      const clean = values.map(Number).filter(Number.isFinite);
+      if (!clean.length) return 0;
+      return clean.reduce((sum, value) => sum + value, 0) / clean.length;
     }
 
-    function getReviewCount(side) {
-      return state[side].filter(player => Boolean(player.needsReview)).length;
+    function getGrade(score) {
+      if (!score) return "—";
+      if (score >= 90) return "A+";
+      if (score >= 85) return "A";
+      if (score >= 80) return "A-";
+      if (score >= 75) return "B+";
+      if (score >= 70) return "B";
+      if (score >= 65) return "B-";
+      if (score >= 60) return "C+";
+      if (score >= 55) return "C";
+      if (score >= 50) return "C-";
+      return "D";
     }
 
+    function getSideRiskSummary(side) {
+      const players = state[side];
+      if (!players.length) return { risk: 0, age: 0, prospects: 0, pitchers: 0, risky: 0 };
 
-    function getSideLabel(side) {
-      return side === "sideA" ? "Side A" : "Side B";
-    }
-
-    function getOtherSide(side) {
-      return side === "sideA" ? "sideB" : "sideA";
-    }
-
-    function getNeedPhrase(goal) {
-      if (goal === "winNow") return "win-now production";
-      if (goal === "rebuild") return "future upside";
-      return "overall roster fit";
-    }
-
-    function getGoalScores(goal, mySide, otherSide) {
-      if (goal === "winNow") {
-        return {
-          mine: getSideCurrentScore(mySide),
-          theirs: getSideCurrentScore(otherSide),
-          label: "Win-now help"
-        };
-      }
-
-      if (goal === "rebuild") {
-        return {
-          mine: getSideFutureScore(mySide),
-          theirs: getSideFutureScore(otherSide),
-          label: "Future upside"
-        };
-      }
+      const prospects = players.filter(player => String(player.riskTier || "").includes("prospect") || String(player.futureTier || "").includes("prospect")).length;
+      const pitchers = players.filter(player => (player.positions || []).some(pos => ["SP", "RP", "P"].includes(pos))).length;
+      const risky = players.filter(player => ["high", "veryHigh", "injured", "prospectPitcher", "reliever", "aging"].includes(player.riskTier)).length;
 
       return {
-        mine: getSideTotal(mySide),
-        theirs: getSideTotal(otherSide),
-        label: "Overall balance"
+        risk: Math.round(average(players.map(player => player.riskPenalty || 0))),
+        age: Number(average(players.map(player => player.age || 0)).toFixed(1)),
+        prospects,
+        pitchers,
+        risky
       };
     }
 
-    function getEdgeLevel(myScore, otherScore) {
-      const difference = myScore - otherScore;
-      const maxScore = Math.max(Math.abs(myScore), Math.abs(otherScore), 1);
-      const pct = difference / maxScore;
+    function getResultNote(sideATotal, sideBTotal, fairnessLabel, sideAFitScore, sideBFitScore) {
+      if (!sideATotal && !sideBTotal) return "Add players to both sides to see who is getting cooked.";
+      if (!sideATotal || !sideBTotal) return "One side is empty. Add players to both sides for a real verdict.";
 
-      if (pct >= 0.18) return "strongForMe";
-      if (pct >= 0.07) return "slightForMe";
-      if (pct <= -0.18) return "strongAgainstMe";
-      if (pct <= -0.07) return "slightAgainstMe";
-      return "even";
+      const winner = sideATotal > sideBTotal ? "Side A" : sideBTotal > sideATotal ? "Side B" : "Nobody";
+      const difference = Math.abs(sideATotal - sideBTotal);
+      const fitWinner = sideAFitScore === sideBFitScore ? "neither side" : sideAFitScore > sideBFitScore ? "Side A" : "Side B";
+
+      if (winner === "Nobody") {
+        return `Dead even on raw dynasty value. Team fit leans ${fitWinner}, so now the group chat can argue category needs like civilized idiots.`;
+      }
+
+      if (fairnessLabel === "Robbery") {
+        return `${winner} wins by ${difference} points. This is the kind of trade that gets screenshotted in the group chat.`;
+      }
+
+      if (fairnessLabel === "Clear Advantage") {
+        return `${winner} has a clear edge by ${difference} points. Not illegal, but somebody better have a good explanation.`;
+      }
+
+      if (fairnessLabel === "Slight Advantage") {
+        return `${winner} has a small edge by ${difference} points. Team fit currently leans ${fitWinner}, so context matters.`;
+      }
+
+      return `Only ${difference} points apart. Pretty fair on raw value. Team fit leans ${fitWinner}. Commish can put the pitchfork down.`;
     }
 
-    function getRecommendation(mySide, goal) {
-      const otherSide = getOtherSide(mySide);
-      const myPlayers = state[mySide];
-      const otherPlayers = state[otherSide];
-
-      if (!myPlayers.length || !otherPlayers.length) {
-        return {
-          verdict: "Add both sides",
-          className: "",
-          text: "Choose your side and goal, then add players to get an accept, reject, or counter suggestion.",
-          counter: "",
-          tags: []
-        };
-      }
-
-      const totalEdge = getEdgeLevel(getSideTotal(mySide), getSideTotal(otherSide));
-      const goalScores = getGoalScores(goal, mySide, otherSide);
-      const goalEdge = getEdgeLevel(goalScores.mine, goalScores.theirs);
-      const myRisk = getAverageRisk(mySide);
-      const otherRisk = getAverageRisk(otherSide);
-      const myCategories = getTopCategories(mySide);
-      const otherCategories = getTopCategories(otherSide);
-      const reviewCount = getReviewCount(mySide) + getReviewCount(otherSide);
-      const needPhrase = getNeedPhrase(goal);
-
-      let verdict = "Accept if it fits";
-      let className = "accept";
-      let text = `This is close enough to come down to ${needPhrase}.`;
-      let counter = "No must-have counter needed unless you dislike the category mix.";
-
-      if (totalEdge === "strongForMe") {
-        verdict = "Accept";
-        className = "accept";
-        text = `Your side has the stronger overall return, and the trade does not need raw point totals to justify it.`;
-        counter = "Do not over-counter. Take the clean win if the players fit your roster.";
-      } else if (totalEdge === "slightForMe") {
-        verdict = "Accept / Hold";
-        className = "accept";
-        text = `Your side has a small edge. It is reasonable to accept if the roster fit works.`;
-        counter = "If you want to squeeze more, ask for a small category helper or upside throw-in.";
-      } else if (totalEdge === "slightAgainstMe") {
-        verdict = "Counter";
-        className = "counter";
-        text = `Your side is giving up a little too much unless this specifically solves a roster need.`;
-        counter = `Counter by asking for one more useful ${goal === "rebuild" ? "prospect/upside piece" : goal === "winNow" ? "win-now category contributor" : "depth or category piece"}.`;
-      } else if (totalEdge === "strongAgainstMe") {
-        verdict = "Reject / Major Counter";
-        className = "reject";
-        text = `Your side is not getting enough back. This should not be accepted as-is.`;
-        counter = `Ask for a real add-on, upgrade the best player coming back, or remove one piece from your side.`;
-      }
-
-      if ((goal === "winNow" || goal === "rebuild") && (goalEdge === "strongForMe" || goalEdge === "slightForMe") && (totalEdge === "even" || totalEdge === "slightAgainstMe")) {
-        verdict = totalEdge === "slightAgainstMe" ? "Context Accept / Counter" : "Accept if goal fits";
-        className = totalEdge === "slightAgainstMe" ? "counter" : "accept";
-        text = `For your selected goal, your side gets the better ${goalScores.label.toLowerCase()}. That makes the deal more defensible than the raw balance alone.`;
-      }
-
-      if ((goal === "winNow" || goal === "rebuild") && (goalEdge === "strongAgainstMe" || goalEdge === "slightAgainstMe") && (totalEdge === "even" || totalEdge === "slightForMe")) {
-        verdict = "Counter";
-        className = "counter";
-        text = `The trade may look close overall, but it does not line up well with your ${needPhrase} goal.`;
-        counter = `Counter for a player who better supports ${needPhrase}.`;
-      }
-
-      if (myRisk - otherRisk >= 0.75 && className !== "reject") {
-        counter = `${counter} Your side is also taking on more volatility, so ask for a safer add-on if possible.`;
-      }
-
-      if (reviewCount) {
-        counter = `${counter} Manual review recommended because at least one player has a stale, imported, injury, role, or prospect-risk flag.`;
-      }
-
-      const tags = [goalScores.label];
-      if (myCategories.length) tags.push(`You gain: ${myCategories.slice(0, 3).join(", ")}`);
-      if (otherCategories.length) tags.push(`Other side gains: ${otherCategories.slice(0, 3).join(", ")}`);
-      if (myRisk > otherRisk + 0.5) tags.push("More risk on your side");
-      if (otherRisk > myRisk + 0.5) tags.push("Other side takes more risk");
-
-      return { verdict, className, text, counter, tags };
-    }
-
-    function renderTradeSuggestion() {
-      const mySide = elements.myTradeSide.value || "sideA";
-      const goal = elements.teamDirection.value || "balanced";
-      const recommendation = getRecommendation(mySide, goal);
-
-      elements.recommendationVerdict.textContent = recommendation.verdict;
-      elements.recommendationVerdict.className = `recommendation-verdict ${recommendation.className}`.trim();
-      elements.recommendationText.textContent = recommendation.text;
-      elements.counterText.textContent = recommendation.counter;
-      elements.recommendationTags.innerHTML = recommendation.tags
-        .map(tag => `<span class="recommendation-tag">${tag}</span>`)
-        .join("");
-    }
-
-    function renderTradeInsights() {
-      const sideACurrent = getSideCurrentScore("sideA");
-      const sideBCurrent = getSideCurrentScore("sideB");
-      const sideAFuture = getSideFutureScore("sideA");
-      const sideBFuture = getSideFutureScore("sideB");
-      const sideACategories = getTopCategories("sideA");
-      const sideBCategories = getTopCategories("sideB");
-      const sideARisk = getAverageRisk("sideA");
-      const sideBRisk = getAverageRisk("sideB");
-      const sideAReviewCount = getReviewCount("sideA");
-      const sideBReviewCount = getReviewCount("sideB");
-
-      elements.nowImpact.textContent = describeEdge(
-        sideACurrent,
-        sideBCurrent,
-        "Side A",
-        "Side B",
-        "Add players to compare short-term impact."
-      );
-
-      elements.futureImpact.textContent = describeEdge(
-        sideAFuture,
-        sideBFuture,
-        "Side A",
-        "Side B",
-        "Add players to compare long-term upside."
-      );
-
-      if (!state.sideA.length || !state.sideB.length) {
-        elements.categoryImpact.textContent = "Category fit will appear here once both sides have players.";
-        elements.categoryTags.innerHTML = "";
-      } else if (!sideACategories.length && !sideBCategories.length) {
-        elements.categoryImpact.textContent = "No category tags are listed for these players yet.";
-        elements.categoryTags.innerHTML = "";
-      } else {
-        const sideAText = sideACategories.length ? `Side A gains ${sideACategories.join(", ")}` : "Side A category gain is unclear";
-        const sideBText = sideBCategories.length ? `Side B gains ${sideBCategories.join(", ")}` : "Side B category gain is unclear";
-        elements.categoryImpact.textContent = `${sideAText}. ${sideBText}.`;
-        const tags = [...new Set([...sideACategories, ...sideBCategories])];
-        elements.categoryTags.innerHTML = tags.map(tag => `<span class="insight-tag">${tag}</span>`).join("");
-      }
-
-      if (!state.sideA.length || !state.sideB.length) {
-        elements.riskImpact.textContent = "Add players to check risk and review notes.";
-      } else {
-        const riskGap = Math.abs(sideARisk - sideBRisk);
-        let riskText = "Risk looks pretty similar on both sides.";
-        if (riskGap >= 0.5) {
-          riskText = sideARisk > sideBRisk
-            ? "Side A is taking on more volatility."
-            : "Side B is taking on more volatility.";
-        }
-
-        const reviewParts = [];
-        if (sideAReviewCount) reviewParts.push(`Side A has ${sideAReviewCount} player${sideAReviewCount === 1 ? "" : "s"} worth a manual review`);
-        if (sideBReviewCount) reviewParts.push(`Side B has ${sideBReviewCount} player${sideBReviewCount === 1 ? "" : "s"} worth a manual review`);
-
-        elements.riskImpact.textContent = reviewParts.length
-          ? `${riskText} ${reviewParts.join(". ")}.`
-          : riskText;
-      }
+    function renderTeamSelects() {
+      const options = TEAM_NAMES.map(team => `<option value="${escapeHtml(team)}">${escapeHtml(team)}</option>`).join("");
+      elements.sideATeamSelect.innerHTML = options;
+      elements.sideBTeamSelect.innerHTML = options;
+      elements.sideATeamSelect.value = state.sideATeam;
+      elements.sideBTeamSelect.value = state.sideBTeam;
     }
 
     function addPlayerToSide(player, side) {
       if (isSelected(player, side)) return;
-
       state[side].push(player);
       closeSuggestions();
       elements.sideASearch.value = "";
@@ -1577,10 +1006,8 @@
     function removePlayerFromSide(playerName, side) {
       const key = normalizeName(playerName);
       state[side] = state[side].filter(player => normalizeName(player.name) !== key);
-
       if (side === "sideA") selectedSideA = state[side];
       if (side === "sideB") selectedSideB = state[side];
-
       renderAll();
     }
 
@@ -1589,792 +1016,8 @@
       elements.sideBSuggestions.classList.remove("show");
     }
 
-
-
-    function getCategoryScoreMap(players) {
-      const totals = new Map();
-      players.forEach(player => {
-        if (!player.categoryScores || typeof player.categoryScores !== "object") return;
-        Object.entries(player.categoryScores).forEach(([category, score]) => {
-          const numericScore = Number(score || 0);
-          if (numericScore <= 0) return;
-          totals.set(category, (totals.get(category) || 0) + numericScore);
-        });
-      });
-      return totals;
-    }
-
-    function getTopCategoryScores(players, count = 5) {
-      return [...getCategoryScoreMap(players).entries()]
-        .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
-        .slice(0, count)
-        .map(([category]) => category);
-    }
-
-    function getBottomCategoryScores(players, count = 5) {
-      return [...getCategoryScoreMap(players).entries()]
-        .sort((a, b) => a[1] - b[1] || a[0].localeCompare(b[0]))
-        .slice(0, count)
-        .map(([category]) => category);
-    }
-
-    function getRosterPlayerNames(teamName) {
-      return [...(teamRosterMap.get(teamName) || new Set())];
-    }
-
-    function getTeamRosterPlayers(teamName) {
-      const playersByName = new Map(playerData.map(player => [normalizeName(player.name), player]));
-      return getRosterPlayerNames(teamName)
-        .map(name => playersByName.get(normalizeName(name)))
-        .filter(Boolean);
-    }
-
-    function getUnmatchedRosterNames(teamName) {
-      const playersByName = new Set(playerData.map(player => normalizeName(player.name)));
-      return getRosterPlayerNames(teamName).filter(name => !playersByName.has(normalizeName(name)));
-    }
-
-    function getOwnedPlayersNotOnTeam(teamName) {
-      return playerData.filter(player => {
-        const owner = getPlayerOwner(player);
-        return owner && owner !== "Free Agent" && owner !== teamName;
-      });
-    }
-
-    function getPositionCounts(players) {
-      const counts = new Map();
-      players.forEach(player => {
-        (player.positions || []).forEach(position => {
-          counts.set(position, (counts.get(position) || 0) + 1);
-        });
-      });
-      return counts;
-    }
-
-    function getPrimaryRole(player) {
-      const positions = player.positions || [];
-      if (positions.includes("RP")) return "RP";
-      if (positions.includes("SP") || positions.includes("P")) return "SP";
-      return "BAT";
-    }
-
-    function getTeamProfile(players) {
-      const count = players.length;
-      const avgAge = count ? players.reduce((sum, player) => sum + Number(player.age || 0), 0) / count : 0;
-      const currentScore = players.reduce((sum, player) => sum + getCurrentScore(player), 0);
-      const futureScore = players.reduce((sum, player) => sum + getFutureScore(player), 0);
-      const hitters = players.filter(player => getPrimaryRole(player) === "BAT").length;
-      const starters = players.filter(player => getPrimaryRole(player) === "SP").length;
-      const relievers = players.filter(player => getPrimaryRole(player) === "RP").length;
-      const youngCore = players.filter(player => Number(player.age || 99) <= 25).length;
-      const agingCore = players.filter(player => Number(player.age || 0) >= 32).length;
-      return { count, avgAge, currentScore, futureScore, hitters, starters, relievers, youngCore, agingCore };
-    }
-
-    function formatPlayerWithOwner(player) {
-      const owner = getPlayerOwner(player);
-      return `${player.name}${owner && owner !== "Free Agent" ? ` (${owner})` : ""}`;
-    }
-
-    function renderTeamTags(container, tags, className = "") {
-      container.innerHTML = tags.map(tag => `<span class="team-tag ${className}">${tag}</span>`).join("");
-    }
-
-    function getSameNamePlayers(player) {
-      if (!player?.name) return [];
-      const key = normalizeName(player.name);
-      return playerData.filter(candidate => normalizeName(candidate.name) === key);
-    }
-
-    function getBestSameNameRank(player) {
-      const ranks = getSameNamePlayers(player)
-        .map(candidate => Number(candidate.currentRank || 999))
-        .filter(rank => rank > 0);
-      return ranks.length ? Math.min(...ranks) : Number(player.currentRank || 999);
-    }
-
-    function getBestSameNameValue(player) {
-      const values = getSameNamePlayers(player)
-        .map(candidate => Number(candidate.dynastyValue || 0))
-        .filter(Boolean);
-      return values.length ? Math.max(...values) : Number(player.dynastyValue || 0);
-    }
-
-    function getBestSameNameFuture(player) {
-      const values = getSameNamePlayers(player)
-        .map(candidate => getFutureScore(candidate))
-        .filter(Boolean);
-      return values.length ? Math.max(...values) : getFutureScore(player);
-    }
-
-    function isPremiumCoreOrOverpayOnly(player) {
-      const age = Number(player.age || 99);
-      const rank = Number(player.currentRank || 999);
-      const bestRank = getBestSameNameRank(player);
-      const dynastyValue = Number(player.dynastyValue || 0);
-      const bestValue = getBestSameNameValue(player);
-      const currentScore = getCurrentScore(player);
-      const futureScore = getFutureScore(player);
-      const bestFutureScore = getBestSameNameFuture(player);
-      const positions = player.positions || [];
-      const futureTier = player.futureTier || "";
-      const categoryType = player.categoryType || (positions.includes("SP") || positions.includes("RP") ? "pitcher" : "hitter");
-      const premiumFutureTiers = new Set(["generational", "elite", "cornerstone", "prospectElite"]);
-
-      // If any version of a split player is a superstar, treat every version as core.
-      // This blocks bad ideas like using pitcher-only Ohtani as a normal trade chip.
-      if (bestRank <= 50 || bestValue >= 84 || bestFutureScore >= 94) return true;
-      if (rank <= 45 || dynastyValue >= 82 || currentScore >= 94 || futureScore >= 94) return true;
-      if (premiumFutureTiers.has(futureTier) && age <= 26) return true;
-      if (categoryType === "hitter" && age <= 25 && futureScore >= 82) return true;
-      if (positions.includes("C") && rank <= 130 && futureScore >= 70) return true;
-      return false;
-    }
-
-    function getOverpayOnlyPlayers(players) {
-      return [...players]
-        .filter(isPremiumCoreOrOverpayOnly)
-        .sort((a, b) => (Number(b.dynastyValue || 0) || getFutureScore(b)) - (Number(a.dynastyValue || 0) || getFutureScore(a)))
-        .slice(0, 4);
-    }
-
-    function getTradeChips(players, direction) {
-      const sorted = players.filter(player => !isPremiumCoreOrOverpayOnly(player));
-
-      if (direction === "rebuild") {
-        return sorted
-          .filter(player => Number(player.age || 0) >= 29 || getCurrentScore(player) > getFutureScore(player) + 8)
-          .sort((a, b) => getCurrentScore(b) - getCurrentScore(a))
-          .slice(0, 4);
-      }
-
-      if (direction === "winNow") {
-        return sorted
-          .filter(player => {
-            const rank = Number(player.currentRank || 999);
-            const dynastyValue = Number(player.dynastyValue || 0);
-            const futureScore = getFutureScore(player);
-            const currentScore = getCurrentScore(player);
-            return rank >= 100 && dynastyValue <= 76 && futureScore >= currentScore;
-          })
-          .sort((a, b) => getFutureScore(b) - getFutureScore(a))
-          .slice(0, 4);
-      }
-
-      return sorted
-        .filter(player => Number(player.dynastyValue || 0) <= 78)
-        .sort((a, b) => Math.abs(getCurrentScore(b) - getFutureScore(b)) - Math.abs(getCurrentScore(a) - getFutureScore(a)))
-        .slice(0, 4);
-    }
-
-    function playerHelpsNeeds(player, needs) {
-      if (!needs.length || !player.categoryScores) return true;
-      return needs.some(category => Number(player.categoryScores?.[category] || 0) >= 75);
-    }
-
-    function getTradeValueBand(chips) {
-      const scores = chips
-        .map(player => Number(player.dynastyValue || getCurrentScore(player) || getFutureScore(player) || 0))
-        .filter(Boolean)
-        .sort((a, b) => b - a);
-      const best = scores[0] || 55;
-      const second = scores[1] || best;
-      const averageTopTwo = Math.round((best + second) / 2);
-
-      return {
-        floor: Math.max(20, averageTopTwo - 18),
-        ceiling: Math.min(78, best + 8),
-        best
-      };
-    }
-
-    function isUntouchableTarget(player) {
-      const rank = Number(player.currentRank || 999);
-      const dynastyValue = Number(player.dynastyValue || 0);
-      const futureScore = getFutureScore(player);
-      const currentScore = getCurrentScore(player);
-
-      return rank <= 45 || dynastyValue >= 86 || futureScore >= 94 || currentScore >= 94;
-    }
-
-    function getNeedMatchScore(player, needs) {
-      if (!needs.length || !player.categoryScores) return 1;
-      return needs.reduce((sum, category) => {
-        const score = Number(player.categoryScores?.[category] || 0);
-        if (score >= 85) return sum + 3;
-        if (score >= 75) return sum + 2;
-        if (score >= 65) return sum + 1;
-        return sum;
-      }, 0);
-    }
-
-    function getRealisticTargetScore(player, direction, needs, valueBand) {
-      const age = Number(player.age || 99);
-      const rank = Number(player.currentRank || 999);
-      const dynastyValue = Number(player.dynastyValue || 0);
-      const currentScore = getCurrentScore(player);
-      const futureScore = getFutureScore(player);
-      const needScore = getNeedMatchScore(player, needs);
-      const valueFit = dynastyValue >= valueBand.floor && dynastyValue <= valueBand.ceiling ? 8 : -6;
-      const notTooElitePenalty = isUntouchableTarget(player) ? -50 : 0;
-
-      if (direction === "rebuild") {
-        const ageFit = age <= 26 ? 8 : age <= 28 ? 3 : -8;
-        const upsideFit = futureScore >= 68 && futureScore <= 88 ? 8 : futureScore > 88 ? -4 : 0;
-        const rankFit = rank >= 75 || rank === 999 ? 5 : -8;
-        return needScore * 3 + valueFit + ageFit + upsideFit + rankFit + notTooElitePenalty;
-      }
-
-      if (direction === "winNow") {
-        const productionFit = currentScore >= 58 && currentScore <= 84 ? 9 : currentScore > 84 ? -5 : 0;
-        const ageFit = age >= 27 ? 5 : 0;
-        const rankFit = rank >= 70 && rank <= 260 ? 6 : rank < 70 ? -9 : 0;
-        return needScore * 3 + valueFit + productionFit + ageFit + rankFit + notTooElitePenalty;
-      }
-
-      const balancedFit = Math.abs(currentScore - futureScore) <= 18 ? 7 : 0;
-      const rankFit = rank >= 65 || rank === 999 ? 4 : -8;
-      return needScore * 3 + valueFit + balancedFit + rankFit + notTooElitePenalty;
-    }
-
-    function getTradeTargets(teamName, direction, needs, chips = []) {
-      const pool = getOwnedPlayersNotOnTeam(teamName);
-      const valueBand = getTradeValueBand(chips);
-      let filtered = pool.filter(player => playerHelpsNeeds(player, needs));
-      if (!filtered.length) filtered = pool;
-
-      const realistic = filtered
-        .filter(player => !isUntouchableTarget(player))
-        .filter(player => {
-          const dynastyValue = Number(player.dynastyValue || 0);
-          const rank = Number(player.currentRank || 999);
-          if (direction === "rebuild") return Number(player.age || 99) <= 28 && dynastyValue <= valueBand.ceiling;
-          if (direction === "winNow") return rank >= 65 && dynastyValue <= valueBand.ceiling;
-          return dynastyValue <= valueBand.ceiling;
-        })
-        .map(player => ({
-          player,
-          score: getRealisticTargetScore(player, direction, needs, valueBand)
-        }))
-        .filter(item => item.score > -10)
-        .sort((a, b) => b.score - a.score)
-        .map(item => item.player);
-
-      if (realistic.length) return realistic.slice(0, 6);
-
-      return filtered
-        .filter(player => !isUntouchableTarget(player))
-        .sort((a, b) => getNeedMatchScore(b, needs) - getNeedMatchScore(a, needs))
-        .slice(0, 6);
-    }
-
-    function buildTradeIdeas(teamName, players, direction, needs) {
-      const chips = getTradeChips(players, direction);
-      const overpayOnly = getOverpayOnlyPlayers(players);
-      const targets = getTradeTargets(teamName, direction, needs, chips);
-      const ideas = [];
-
-      if (overpayOnly.length) {
-        ideas.push({
-          title: "Core / overpay-only",
-          text: `${overpayOnly.slice(0, 3).map(player => player.name).join(", ")} should not be used as default trade chips. Only move them for a clear overpay or a true top-tier return.`
-        });
-      }
-
-      if (direction === "rebuild") {
-        ideas.push({
-          title: "Rebuild move",
-          text: chips.length && targets.length
-            ? `Shop non-core pieces like ${chips.slice(0, 2).map(player => player.name).join(" or ")} for younger upside like ${targets.slice(0, 3).map(formatPlayerWithOwner).join(", ")}.`
-            : "Move older production for younger players with future upside."
-        });
-      } else if (direction === "winNow") {
-        ideas.push({
-          title: "Win-now move",
-          text: chips.length && targets.length
-            ? `Use non-core upside/depth like ${chips.slice(0, 2).map(player => player.name).join(" or ")} to chase production like ${targets.slice(0, 3).map(formatPlayerWithOwner).join(", ")}.`
-            : "Consolidate prospect/depth pieces for immediate category help."
-        });
-      } else {
-        ideas.push({
-          title: "Balanced move",
-          text: chips.length && targets.length
-            ? `Float non-core pieces like ${chips.slice(0, 2).map(player => player.name).join(" or ")} for need-based targets like ${targets.slice(0, 3).map(formatPlayerWithOwner).join(", ")}.`
-            : "Look for need-for-need swaps that do not wreck your age curve."
-        });
-      }
-
-      if (needs.length) {
-        ideas.push({
-          title: "Category target",
-          text: `Prioritize players who help ${needs.slice(0, 4).join(", ")}. Do not just chase the biggest name if the categories do not fix the roster. The target list now filters out obvious untouchable superstar asks.`
-        });
-      }
-
-      if (targets.length > 3) {
-        ideas.push({
-          title: "Realistic target list",
-          text: targets.slice(0, 6).map(formatPlayerWithOwner).join(" • ")
-        });
-      }
-
-      return ideas;
-    }
-
-
-    function getPlayerValueScore(player) {
-      return Math.max(
-        Number(player.dynastyValue || 0),
-        Number(getCurrentScore(player) || 0),
-        Number(getFutureScore(player) || 0),
-        Number(getBestSameNameValue(player) || 0)
-      );
-    }
-
-    function getTradeAssetBucket(player) {
-      const rank = getBestSameNameRank(player);
-      const value = getPlayerValueScore(player);
-      const future = getBestSameNameFuture(player);
-      if (isPremiumCoreOrOverpayOnly(player) || rank <= 50 || value >= 84 || future >= 94) return 5;
-      if (rank <= 90 || value >= 76 || future >= 86) return 4;
-      if (rank <= 150 || value >= 66 || future >= 76) return 3;
-      if (rank <= 250 || value >= 54 || future >= 64) return 2;
-      return 1;
-    }
-
-    function getTradeSafetyLabel(idea) {
-      if (idea.analyzerFairness?.className === "" && idea.analyzerGapLabel === "Small Gap") return "Clean fit";
-      if (["", "slight"].includes(idea.analyzerFairness?.className || "") && ["Small Gap", "Medium Gap"].includes(idea.analyzerGapLabel || "")) return "Review fit";
-      return "Manual review";
-    }
-
-    function evaluateSuggestedTradeWithAnalyzer(givePlayer, getPlayer) {
-      const sideATotal = Number(givePlayer?.dynastyValue || 0);
-      const sideBTotal = Number(getPlayer?.dynastyValue || 0);
-      const fairness = getFairness(sideATotal, sideBTotal);
-      const difference = Math.abs(sideATotal - sideBTotal);
-      const maxTotal = Math.max(sideATotal, sideBTotal, 1);
-      const pct = difference / maxTotal;
-      const gapLabel = pct <= 0.05 ? "Small Gap" : pct <= 0.12 ? "Medium Gap" : "Large Gap";
-      const makesSense = fairness.className === "" || fairness.className === "slight";
-
-      return {
-        fairness,
-        gapLabel,
-        makesSense,
-        note: makesSense
-          ? `${fairness.label}. ${gapLabel}. This passes the same hidden trade analyzer balance check used above.`
-          : `${fairness.label}. ${gapLabel}. This is too lopsided to auto-suggest.`
-      };
-    }
-
-    function getPlayerMeta(player) {
-      const positions = (player.positions || []).join("/") || "UTIL";
-      const team = player.mlbTeam || "MLB";
-      const age = player.age ? `Age ${player.age}` : "Age N/A";
-      return `${team} • ${positions} • ${age}`;
-    }
-
-    function isSamePlayerName(a, b) {
-      return normalizeName(a?.name || "") === normalizeName(b?.name || "");
-    }
-
-    function isTradeFairEnough(givePlayer, getPlayer) {
-      if (!givePlayer || !getPlayer) return false;
-      if (isSamePlayerName(givePlayer, getPlayer)) return false;
-      if (isPremiumCoreOrOverpayOnly(givePlayer) || isPremiumCoreOrOverpayOnly(getPlayer)) return false;
-
-      const analyzerCheck = evaluateSuggestedTradeWithAnalyzer(givePlayer, getPlayer);
-      if (!analyzerCheck.makesSense) return false;
-
-      const giveValue = getPlayerValueScore(givePlayer);
-      const getValue = getPlayerValueScore(getPlayer);
-      const valueGap = Math.abs(giveValue - getValue);
-      const giveBucket = getTradeAssetBucket(givePlayer);
-      const getBucket = getTradeAssetBucket(getPlayer);
-      const bucketGap = Math.abs(giveBucket - getBucket);
-      const giveRank = getBestSameNameRank(givePlayer);
-      const getRank = getBestSameNameRank(getPlayer);
-      const rankGap = Math.abs(giveRank - getRank);
-
-      // Hard blocks for lopsided one-for-one ideas. Hidden from UI, but used to prevent nonsense.
-      if (valueGap > 7) return false;
-      if (bucketGap > 1) return false;
-      if (Math.min(giveRank, getRank) <= 90 && Math.max(giveRank, getRank) > 160) return false;
-      if (Math.min(giveRank, getRank) <= 150 && rankGap > 130) return false;
-      return true;
-    }
-
-    function getDirectionFitScore(player, direction) {
-      const age = Number(player.age || 99);
-      const currentScore = getCurrentScore(player);
-      const futureScore = getFutureScore(player);
-      const rank = Number(player.currentRank || 999);
-
-      if (direction === "rebuild") {
-        return (age <= 26 ? 8 : age <= 28 ? 3 : -6) + (futureScore >= currentScore ? 5 : -2) + (rank >= 55 ? 2 : -5);
-      }
-
-      if (direction === "winNow") {
-        return (currentScore >= 60 ? 8 : 0) + (rank <= 220 ? 4 : -2) + (age >= 27 ? 2 : 0);
-      }
-
-      return Math.abs(currentScore - futureScore) <= 20 ? 5 : 1;
-    }
-
-    function getReasonCategories(player, needs) {
-      if (!needs.length || !player.categoryScores) return [];
-      return needs
-        .filter(category => Number(player.categoryScores?.[category] || 0) >= 72)
-        .slice(0, 3);
-    }
-
-    function isReasonableTradePiece(player, direction) {
-      if (!player || isPremiumCoreOrOverpayOnly(player)) return false;
-      const value = getPlayerValueScore(player);
-      const rank = Number(player.currentRank || 999);
-      const age = Number(player.age || 99);
-
-      if (value > 82 || rank <= 45) return false;
-      if (direction === "rebuild") return age >= 28 || getCurrentScore(player) >= getFutureScore(player) - 3;
-      if (direction === "winNow") return rank >= 85 || getFutureScore(player) >= getCurrentScore(player) - 2;
-      return value <= 80;
-    }
-
-    function buildMutualTradeSuggestions(teamName, direction, teamNeeds) {
-      const myPlayers = getTeamRosterPlayers(teamName);
-      const myPieces = myPlayers
-        .filter(player => isReasonableTradePiece(player, direction))
-        .filter(player => !isPremiumCoreOrOverpayOnly(player))
-        .slice(0, 18);
-      const ideas = [];
-      const seen = new Set();
-
-      for (const otherTeam of [...teamRosterMap.keys()].sort((a, b) => a.localeCompare(b))) {
-        if (otherTeam === teamName) continue;
-
-        const otherPlayers = getTeamRosterPlayers(otherTeam);
-        const otherProfile = getTeamProfile(otherPlayers);
-        const otherNeeds = getBottomCategoryScores(otherPlayers, 5);
-        const otherDirection = otherProfile.futureScore > otherProfile.currentScore ? "rebuild" : "balanced";
-        const otherTargets = otherPlayers
-          .filter(player => !isPremiumCoreOrOverpayOnly(player))
-          .filter(player => isReasonableTradePiece(player, otherDirection))
-          .filter(player => playerHelpsNeeds(player, teamNeeds))
-          .slice(0, 24);
-
-        for (const givePlayer of myPieces) {
-          const giveHelpsOther = getNeedMatchScore(givePlayer, otherNeeds);
-          if (giveHelpsOther <= 0) continue;
-
-          for (const getPlayer of otherTargets) {
-            if (getPlayerOwner(getPlayer) !== otherTeam) continue;
-            if (!playerHelpsNeeds(getPlayer, teamNeeds)) continue;
-            if (!isTradeFairEnough(givePlayer, getPlayer)) continue;
-
-            const analyzerCheck = evaluateSuggestedTradeWithAnalyzer(givePlayer, getPlayer);
-            if (!analyzerCheck.makesSense) continue;
-
-            const giveValue = getPlayerValueScore(givePlayer);
-            const getValue = getPlayerValueScore(getPlayer);
-            const valueGap = Math.abs(giveValue - getValue);
-            const bucketGap = Math.abs(getTradeAssetBucket(givePlayer) - getTradeAssetBucket(getPlayer));
-            const getHelpsMe = getNeedMatchScore(getPlayer, teamNeeds);
-            const key = [normalizeName(givePlayer.name), normalizeName(getPlayer.name)].sort().join("::");
-            if (seen.has(key)) continue;
-            seen.add(key);
-
-            const myCats = getReasonCategories(getPlayer, teamNeeds);
-            const theirCats = getReasonCategories(givePlayer, otherNeeds);
-            const directionFit = getDirectionFitScore(getPlayer, direction) + getDirectionFitScore(givePlayer, otherDirection);
-            const score = (7 - valueGap) * 2 + (1 - bucketGap) * 4 + getHelpsMe * 3 + giveHelpsOther * 3 + directionFit;
-
-            ideas.push({
-              score,
-              teamName,
-              otherTeam,
-              givePlayer,
-              getPlayer,
-              myCats,
-              theirCats,
-              valueGap,
-              bucketGap,
-              analyzerFairness: analyzerCheck.fairness,
-              analyzerGapLabel: analyzerCheck.gapLabel,
-              analyzerNote: analyzerCheck.note,
-              safetyLabel: getTradeSafetyLabel({ valueGap, bucketGap, analyzerFairness: analyzerCheck.fairness, analyzerGapLabel: analyzerCheck.gapLabel })
-            });
-          }
-        }
-      }
-
-      return ideas
-        .sort((a, b) => b.score - a.score)
-        .slice(0, 5);
-    }
-
-    function formatMutualTradeIdea(idea) {
-      const myCatText = idea.myCats.length ? `helps ${idea.teamName} in ${idea.myCats.join(", ")}` : `fits ${idea.teamName}'s roster needs`;
-      const theirCatText = idea.theirCats.length ? `helps ${idea.otherTeam} in ${idea.theirCats.join(", ")}` : `gives ${idea.otherTeam} a useful roster fit`;
-      const tags = [
-        idea.myCats.length ? `${idea.teamName}: ${idea.myCats.slice(0, 2).join(", ")}` : `${idea.teamName}: roster fit`,
-        idea.theirCats.length ? `${idea.otherTeam}: ${idea.theirCats.slice(0, 2).join(", ")}` : `${idea.otherTeam}: roster fit`,
-        idea.analyzerFairness?.label || "Analyzer checked",
-        idea.analyzerGapLabel || "Gap checked"
-      ];
-
-      return `
-        <article class="suggested-trade-card">
-          <div class="suggested-trade-topbar">
-            <div class="suggested-trade-matchup">${idea.teamName} ↔ ${idea.otherTeam}</div>
-            <div class="suggested-trade-badge">${idea.safetyLabel}</div>
-          </div>
-          <div class="suggested-trade-swap">
-            <div class="suggested-trade-team-box">
-              <div class="suggested-trade-team">${idea.teamName} receives</div>
-              <div class="suggested-trade-player">${idea.getPlayer.name}</div>
-              <div class="suggested-trade-meta">${getPlayerMeta(idea.getPlayer)}</div>
-            </div>
-            <div class="suggested-trade-arrow">↔</div>
-            <div class="suggested-trade-team-box">
-              <div class="suggested-trade-team">${idea.otherTeam} receives</div>
-              <div class="suggested-trade-player">${idea.givePlayer.name}</div>
-              <div class="suggested-trade-meta">${getPlayerMeta(idea.givePlayer)}</div>
-            </div>
-          </div>
-          <p class="suggested-trade-reason">
-            Why it works: ${idea.getPlayer.name} ${myCatText}; ${idea.givePlayer.name} ${theirCatText}.
-            <br><strong>Analyzer check:</strong> ${idea.analyzerNote}
-            <span class="suggested-trade-tags">${tags.map(tag => `<span class="suggested-trade-tag">${tag}</span>`).join("")}</span>
-          </p>
-        </article>
-      `;
-    }
-
-    function renderTeamOptions() {
-      const teamNames = [...teamRosterMap.keys()].sort((a, b) => a.localeCompare(b));
-      if (!teamNames.length) {
-        elements.teamAnalyzeSelect.innerHTML = `<option value="">No teams found</option>`;
-        elements.teamAnalyzerWarning.hidden = false;
-        return;
-      }
-
-      elements.teamAnalyzerWarning.hidden = true;
-      elements.teamAnalyzeSelect.innerHTML = teamNames
-        .map(teamName => `<option value="${teamName}">${teamName}</option>`)
-        .join("");
-      renderTeamAnalysis();
-    }
-
-    function renderTeamAnalysis() {
-      const teamName = elements.teamAnalyzeSelect.value;
-      const direction = elements.teamAnalyzeDirection.value || "balanced";
-
-      if (!teamName) {
-        elements.teamSnapshot.textContent = "Select a team to analyze the roster.";
-        elements.teamTradeIdeas.innerHTML = "";
-        elements.teamSuggestedTradeSummary.textContent = "Select a team to generate mutually beneficial trade ideas.";
-        elements.teamSuggestedTrades.innerHTML = "";
-        return;
-      }
-
-      const players = getTeamRosterPlayers(teamName);
-      const unmatched = getUnmatchedRosterNames(teamName);
-      const profile = getTeamProfile(players);
-      const strengths = getTopCategoryScores(players, 5);
-      const needs = getBottomCategoryScores(players, 5);
-      const positionCounts = getPositionCounts(players);
-      const weakPositions = ["C", "2B", "SS", "3B", "OF", "SP", "RP"]
-        .filter(position => (positionCounts.get(position) || 0) <= (position === "OF" ? 3 : position === "SP" ? 5 : 1))
-        .slice(0, 4);
-
-      elements.teamSnapshot.textContent = `${teamName} has ${profile.count} matched players in the analyzer${unmatched.length ? `, plus ${unmatched.length} roster name${unmatched.length === 1 ? "" : "s"} that need a player-data match` : ""}. Average age is ${profile.avgAge ? profile.avgAge.toFixed(1) : "N/A"}.`;
-      renderTeamTags(elements.teamSnapshotTags, [
-        `${profile.hitters} bats`,
-        `${profile.starters} SP`,
-        `${profile.relievers} RP`,
-        `${profile.youngCore} age 25 or younger`,
-        `${profile.agingCore} age 32+`
-      ]);
-
-      const directionText = direction === "winNow"
-        ? "Win-now mode: trade from future/depth pockets to add bankable category production."
-        : direction === "rebuild"
-          ? "Rebuild mode: sell older current production before the value starts leaking."
-          : "Balanced mode: look for category upgrades without crushing the roster timeline.";
-      elements.teamDirectionSummary.textContent = directionText;
-      renderTeamTags(elements.teamDirectionTags, [
-        profile.currentScore >= profile.futureScore ? "current-production lean" : "future-upside lean",
-        weakPositions.length ? `thin: ${weakPositions.join(", ")}` : "position depth looks okay"
-      ], weakPositions.length ? "warn" : "good");
-
-      elements.teamStrengths.textContent = strengths.length
-        ? `Best category pockets: ${strengths.join(", ")}.`
-        : "Not enough category data found yet.";
-      renderTeamTags(elements.teamStrengthTags, strengths, "good");
-
-      const needParts = [];
-      if (needs.length) needParts.push(`Category help: ${needs.join(", ")}`);
-      if (weakPositions.length) needParts.push(`Depth watch: ${weakPositions.join(", ")}`);
-      elements.teamNeeds.textContent = needParts.length ? `${needParts.join(". ")}.` : "No obvious weak spots found from the current roster data.";
-      renderTeamTags(elements.teamNeedTags, [...needs.slice(0, 4), ...weakPositions], "warn");
-
-      const tradeIdeas = buildTradeIdeas(teamName, players, direction, needs);
-      elements.teamTradeSummary.textContent = `Suggested approach for ${teamName}: ${direction === "rebuild" ? "turn older production into younger assets" : direction === "winNow" ? "consolidate depth for immediate category help" : "make a need-for-need upgrade without overpaying"}.`;
-      elements.teamTradeIdeas.innerHTML = tradeIdeas.map(idea => `
-        <article class="trade-idea">
-          <div class="trade-idea-title">${idea.title}</div>
-          <p class="trade-idea-text">${idea.text}</p>
-        </article>
-      `).join("");
-
-      const mutualTrades = buildMutualTradeSuggestions(teamName, direction, needs);
-      elements.teamSuggestedTradeSummary.textContent = mutualTrades.length
-        ? `Starter offers that help both rosters and pass the hidden trade analyzer fairness check.`
-        : `No clean mutual trade ideas passed the trade analyzer check for ${teamName}. Try a different team direction or manually build a trade above.`;
-      elements.teamSuggestedTrades.innerHTML = mutualTrades.length
-        ? mutualTrades.map(formatMutualTradeIdea).join("")
-        : `<article class="trade-idea"><div class="trade-idea-title">No clean match</div><p class="trade-idea-text">The analyzer could not find a fair, need-based one-for-one idea that avoided core pieces and passed the trade analyzer balance check. That is better than forcing a bad trade.</p></article>`;
-    }
-
-    function getPlayerOwner(player) {
-      return ownerLookup.get(normalizeName(player.name)) || "Free Agent";
-    }
-
-    function getExportedOwnerData(module) {
-      return module.fantasyOwners
-        || module.FANTASY_OWNERS
-        || module.owners
-        || module.OWNERS
-        || module.teams
-        || module.TEAMS
-        || module.default
-        || module;
-    }
-
-    function getTeamLabel(team, fallback = "Unknown Team") {
-      if (!team || typeof team !== "object") return fallback;
-      return team.teamName
-        || team.fantasyTeam
-        || team.ownerName
-        || team.owner
-        || team.name
-        || team.team
-        || team.title
-        || fallback;
-    }
-
-    function getPlayerNameFromRosterEntry(entry) {
-      if (!entry) return "";
-      if (typeof entry === "string") return entry;
-      if (typeof entry !== "object") return "";
-      return entry.name
-        || entry.playerName
-        || entry.fullName
-        || entry.player
-        || entry.Player
-        || entry.Name
-        || "";
-    }
-
-    function addRosterEntriesToLookup(entries, teamName, lookup, rosterMap) {
-      if (!entries) return;
-
-      if (!rosterMap.has(teamName)) rosterMap.set(teamName, new Set());
-      const rosterSet = rosterMap.get(teamName);
-
-      if (Array.isArray(entries)) {
-        entries.forEach(entry => {
-          const playerName = getPlayerNameFromRosterEntry(entry);
-          if (playerName) {
-            lookup.set(normalizeName(playerName), teamName);
-            rosterSet.add(playerName);
-          }
-        });
-        return;
-      }
-
-      if (typeof entries === "object") {
-        Object.values(entries).forEach(value => addRosterEntriesToLookup(value, teamName, lookup, rosterMap));
-      }
-    }
-
-    function buildLeagueRosterMaps(ownerData) {
-      const lookup = new Map();
-      const rosterMap = new Map();
-      const data = getExportedOwnerData(ownerData);
-
-      if (Array.isArray(data)) {
-        data.forEach(team => {
-          const teamName = getTeamLabel(team);
-          addRosterEntriesToLookup(team.players, teamName, lookup, rosterMap);
-          addRosterEntriesToLookup(team.roster, teamName, lookup, rosterMap);
-          addRosterEntriesToLookup(team.hitters, teamName, lookup, rosterMap);
-          addRosterEntriesToLookup(team.pitchers, teamName, lookup, rosterMap);
-          addRosterEntriesToLookup(team.bench, teamName, lookup, rosterMap);
-          addRosterEntriesToLookup(team.active, teamName, lookup, rosterMap);
-        });
-        return { lookup, rosterMap };
-      }
-
-      if (data && typeof data === "object") {
-        Object.entries(data).forEach(([teamName, roster]) => {
-          if (Array.isArray(roster)) {
-            addRosterEntriesToLookup(roster, teamName, lookup, rosterMap);
-          } else if (roster && typeof roster === "object") {
-            const resolvedTeamName = getTeamLabel(roster, teamName);
-            addRosterEntriesToLookup(roster.players, resolvedTeamName, lookup, rosterMap);
-            addRosterEntriesToLookup(roster.roster, resolvedTeamName, lookup, rosterMap);
-            addRosterEntriesToLookup(roster.hitters, resolvedTeamName, lookup, rosterMap);
-            addRosterEntriesToLookup(roster.pitchers, resolvedTeamName, lookup, rosterMap);
-            addRosterEntriesToLookup(roster.bench, resolvedTeamName, lookup, rosterMap);
-            addRosterEntriesToLookup(roster.active, resolvedTeamName, lookup, rosterMap);
-          }
-        });
-      }
-
-      return { lookup, rosterMap };
-    }
-
-    async function loadFantasyOwners() {
-      const candidatePaths = [
-        "../data/fantasy-owners.js",
-        "./data/fantasy-owners.js",
-        "/data/fantasy-owners.js"
-      ];
-
-      for (const path of candidatePaths) {
-        try {
-          const ownersModule = await import(path);
-          let rosterMaps = buildLeagueRosterMaps(ownersModule);
-
-          // Supports both module exports:
-          //   export const FANTASY_OWNERS = [...]
-          // and browser globals:
-          //   window.FANTASY_OWNERS = [...]
-          if (!rosterMaps.rosterMap.size && window.FANTASY_OWNERS) {
-            rosterMaps = buildLeagueRosterMaps(window.FANTASY_OWNERS);
-          }
-
-          if (rosterMaps.rosterMap.size) {
-            ownerLookup = rosterMaps.lookup;
-            teamRosterMap = rosterMaps.rosterMap;
-            elements.teamAnalyzerWarning.hidden = true;
-            return;
-          }
-        } catch (error) {
-          console.warn(`Could not load fantasy owners from ${path}`, error);
-        }
-      }
-
-      ownerLookup = new Map();
-      teamRosterMap = new Map();
-      elements.teamAnalyzerWarning.hidden = false;
-    }
-
     function getSearchMatches(query, side) {
       const normalizedQuery = normalizeName(query);
-
       if (!normalizedQuery) return [];
 
       return playerData
@@ -2382,11 +1025,13 @@
         .filter(player => {
           const haystack = [
             player.name,
-            getPlayerOwner(player),
+            player.fantasyTeam,
             player.mlbTeam,
-            formatPositions(player)
+            formatPositions(player),
+            player.tier,
+            player.categoryType,
+            ...getTopCategories(player).map(item => item.category)
           ].join(" ");
-
           return normalizeName(haystack).includes(normalizedQuery);
         })
         .slice(0, 12);
@@ -2408,8 +1053,8 @@
 
       container.innerHTML = matches.map(player => `
         <button class="suggestion-btn" type="button" data-add-side="${side}" data-player="${encodeURIComponent(player.name)}">
-          <span class="suggestion-name">${player.name}</span>
-          <span class="suggestion-meta">${getPlayerOwner(player)} • ${formatPositions(player)}</span>
+          <span class="suggestion-name">${escapeHtml(player.name)} • ${escapeHtml(player.dynastyValue)}</span>
+          <span class="suggestion-meta">${escapeHtml(player.fantasyTeam)} • ${escapeHtml(formatPositions(player))} • ${escapeHtml(player.tier)}</span>
         </button>
       `).join("");
 
@@ -2430,33 +1075,33 @@
       if (!selectedPlayers.length) {
         container.innerHTML = `
           <div class="selected-empty">
-            No players added yet. Search above to add players.
+            No players added yet. Search above or use the value board below.
           </div>
         `;
         return;
       }
 
-      const sideClass = side === "sideA" ? "selected-player-side-a" : "selected-player-side-b";
-      const sideLabel = side === "sideA" ? "Side A" : "Side B";
+      container.innerHTML = selectedPlayers.map(player => {
+        const topCategories = getTopCategories(player, 4).map(item => `
+          <span class="mini-category-chip">${escapeHtml(formatCategory(item.category))} ${escapeHtml(item.score)}</span>
+        `).join("");
 
-      container.innerHTML = selectedPlayers.map(player => `
-        <article class="selected-player ${sideClass}">
-          <div class="selected-player-top">
-            <div>
-              <div class="selected-player-name">${player.name}</div>
-              <div class="selected-player-meta">${getPlayerOwner(player)} • ${formatPositions(player)}</div>
+        return `
+          <article class="selected-player">
+            <div class="selected-player-top">
+              <div>
+                <div class="selected-player-name">${escapeHtml(player.name)}</div>
+                <div class="selected-player-meta">${escapeHtml(player.fantasyTeam)} • ${escapeHtml(formatPositions(player))} • ${escapeHtml(player.tier)}</div>
+              </div>
+              <span class="value-badge">${escapeHtml(player.dynastyValue)}</span>
             </div>
-          </div>
-          <div class="selected-player-badges">
-            <span class="selected-pill selected-pill-accent">${sideLabel} trade piece</span>
-            <span class="selected-pill">${player.mlbTeam || "MLB"}</span>
-            <span class="selected-pill">${formatPositions(player)}</span>
-          </div>
-          <button class="remove-player" type="button" data-remove-side="${side}" data-player="${encodeURIComponent(player.name)}">
-            Remove
-          </button>
-        </article>
-      `).join("");
+            <div class="mini-category-row">${topCategories}</div>
+            <button class="remove-player" type="button" data-remove-side="${side}" data-player="${encodeURIComponent(player.name)}">
+              Remove
+            </button>
+          </article>
+        `;
+      }).join("");
 
       container.querySelectorAll("[data-remove-side]").forEach(button => {
         button.addEventListener("click", () => {
@@ -2472,32 +1117,145 @@
       const maxTotal = Math.max(sideATotal, sideBTotal, 1);
       const percentDifference = Number(((difference / maxTotal) * 100).toFixed(1));
       const fairness = getFairness(sideATotal, sideBTotal);
+      const sideAFitScore = getFitScore("sideA", state.sideATeam);
+      const sideBFitScore = getFitScore("sideB", state.sideBTeam);
 
-      elements.sideATotalPill.textContent = "";
-      elements.sideBTotalPill.textContent = "";
+      elements.sideATotalPill.textContent = `${sideATotal} pts`;
+      elements.sideBTotalPill.textContent = `${sideBTotal} pts`;
+      elements.sideAResult.textContent = sideATotal;
+      elements.sideBResult.textContent = sideBTotal;
+      elements.differenceResult.textContent = difference;
       elements.percentResult.textContent = `${percentDifference}%`;
-
-      elements.winnerValue.textContent =
-        sideATotal === sideBTotal ? "Even" : sideATotal > sideBTotal ? "Side A" : "Side B";
-
+      elements.winnerValue.textContent = sideATotal === sideBTotal ? "Even" : sideATotal > sideBTotal ? "Side A" : "Side B";
       elements.fairnessPill.textContent = fairness.label;
       elements.fairnessPill.className = `fairness-pill ${fairness.className}`.trim();
-      elements.resultNote.textContent = getResultNote(sideATotal, sideBTotal, fairness.label);
-      renderTradeInsights();
-      renderTradeSuggestion();
+      elements.resultNote.textContent = getResultNote(sideATotal, sideBTotal, fairness.label, sideAFitScore, sideBFitScore);
+
+      elements.sideAFitLabel.textContent = `${state.sideATeam} Fit`;
+      elements.sideBFitLabel.textContent = `${state.sideBTeam} Fit`;
+      elements.sideAFitGrade.textContent = getGrade(sideAFitScore);
+      elements.sideBFitGrade.textContent = getGrade(sideBFitScore);
+
+      renderCategoryImpact();
+      renderRiskWindow();
+    }
+
+    function renderCategoryImpact() {
+      const diffs = getCategoryImpactDiffs().slice(0, 6);
+
+      if (!state.sideA.length && !state.sideB.length) {
+        elements.categoryImpactList.innerHTML = "";
+        elements.categoryImpactText.textContent = "Add players to see which side gains the better category profile.";
+        return;
+      }
+
+      elements.categoryImpactList.innerHTML = diffs.map(item => {
+        const side = item.diff > 0 ? "A" : "B";
+        const className = item.diff > 0 ? "positive" : "negative";
+        return `<span class="impact-chip ${className}">${escapeHtml(formatCategory(item.category))}: Side ${side} +${escapeHtml(Math.abs(item.diff))}</span>`;
+      }).join("");
+
+      const best = diffs[0];
+      if (!best) {
+        elements.categoryImpactText.textContent = "Category profile is basically even. Congrats, somehow this is not chaos.";
+        return;
+      }
+
+      const side = best.diff > 0 ? "Side A" : "Side B";
+      elements.categoryImpactText.textContent = `${side} gets the biggest category edge in ${formatCategory(best.category)}.`;
+    }
+
+    function renderRiskWindow() {
+      const sideA = getSideRiskSummary("sideA");
+      const sideB = getSideRiskSummary("sideB");
+
+      if (!state.sideA.length && !state.sideB.length) {
+        elements.riskWindowText.textContent = "Risk and dynasty-window notes will appear here.";
+        return;
+      }
+
+      const riskier = sideA.risk === sideB.risk ? "Neither side" : sideA.risk > sideB.risk ? "Side A" : "Side B";
+      const younger = sideA.age === sideB.age ? "neither side" : sideA.age < sideB.age ? "Side A" : "Side B";
+      const prospectNote = sideA.prospects || sideB.prospects
+        ? ` Prospect count: Side A ${sideA.prospects}, Side B ${sideB.prospects}.`
+        : "";
+
+      elements.riskWindowText.textContent = `${riskier} takes on more risk. ${younger} has the younger dynasty window.${prospectNote}`;
+    }
+
+    function renderPlayerTable() {
+      const filter = normalizeName(elements.playerTableFilter.value);
+      const visiblePlayers = playerData.filter(player => {
+        if (!filter) return true;
+
+        const haystack = [
+          player.name,
+          player.fantasyTeam,
+          player.mlbTeam,
+          formatPositions(player),
+          player.tier,
+          player.categoryType,
+          ...getTopCategories(player).map(item => item.category)
+        ].join(" ");
+
+        return normalizeName(haystack).includes(filter);
+      }).slice(0, 260);
+
+      if (!visiblePlayers.length) {
+        elements.playersTableBody.innerHTML = `
+          <tr>
+            <td colspan="8" class="muted">No players match that search.</td>
+          </tr>
+        `;
+        return;
+      }
+
+      elements.playersTableBody.innerHTML = visiblePlayers.map(player => {
+        const topCategoryText = getTopCategories(player, 3)
+          .map(item => `${formatCategory(item.category)} ${item.score}`)
+          .join(" · ");
+
+        return `
+          <tr>
+            <td>
+              <strong>${escapeHtml(player.name)}</strong>
+              <div class="muted">${escapeHtml(player.mlbTeam || "—")}</div>
+            </td>
+            <td>${escapeHtml(player.fantasyTeam)}</td>
+            <td>${escapeHtml(formatPositions(player))}</td>
+            <td>${escapeHtml(player.age)}</td>
+            <td><strong>${escapeHtml(player.dynastyValue)}</strong></td>
+            <td>${escapeHtml(player.tier)}</td>
+            <td>
+              <span class="category-chip">${escapeHtml(player.categoryType || "—")} ${escapeHtml(player.categoryFit || "")}</span>
+              <div class="muted">${escapeHtml(topCategoryText)}</div>
+            </td>
+            <td>
+              <button class="add-small-btn" type="button" data-table-add="sideA" data-player="${encodeURIComponent(player.name)}">A</button>
+              <button class="add-small-btn" type="button" data-table-add="sideB" data-player="${encodeURIComponent(player.name)}">B</button>
+            </td>
+          </tr>
+        `;
+      }).join("");
+
+      elements.playersTableBody.querySelectorAll("[data-table-add]").forEach(button => {
+        button.addEventListener("click", () => {
+          const playerName = decodeURIComponent(button.dataset.player);
+          const selectedPlayer = playerData.find(player => player.name === playerName);
+          if (selectedPlayer) addPlayerToSide(selectedPlayer, button.dataset.tableAdd);
+        });
+      });
     }
 
     function renderAll() {
       renderSelectedList("sideA", elements.sideAList);
       renderSelectedList("sideB", elements.sideBList);
       renderResult();
+      renderPlayerTable();
     }
 
     function setupSearch(input, side, suggestionsContainer) {
-      input.addEventListener("input", () => {
-        renderSuggestions(input.value, side, suggestionsContainer);
-      });
-
+      input.addEventListener("input", () => renderSuggestions(input.value, side, suggestionsContainer));
       input.addEventListener("focus", () => {
         if (input.value.trim()) renderSuggestions(input.value, side, suggestionsContainer);
       });
@@ -2512,10 +1270,15 @@
         if (!isSearchArea) closeSuggestions();
       });
 
-      elements.myTradeSide.addEventListener("change", renderTradeSuggestion);
-      elements.teamDirection.addEventListener("change", renderTradeSuggestion);
-      elements.teamAnalyzeSelect.addEventListener("change", renderTeamAnalysis);
-      elements.teamAnalyzeDirection.addEventListener("change", renderTeamAnalysis);
+      elements.sideATeamSelect.addEventListener("change", () => {
+        state.sideATeam = elements.sideATeamSelect.value;
+        renderResult();
+      });
+
+      elements.sideBTeamSelect.addEventListener("change", () => {
+        state.sideBTeam = elements.sideBTeamSelect.value;
+        renderResult();
+      });
 
       elements.resetTradeBtn.addEventListener("click", () => {
         state.sideA = [];
@@ -2524,38 +1287,54 @@
         selectedSideB = state.sideB;
         renderAll();
       });
+
+      elements.playerTableFilter.addEventListener("input", renderPlayerTable);
     }
 
-
     async function loadPlayersModule() {
-      const candidatePaths = [
+      const possiblePaths = [
         "../data/players.js",
         "./data/players.js",
-        "/data/players.js"
+        "data/players.js"
       ];
 
-      for (const path of candidatePaths) {
+      const errors = [];
+      for (const path of possiblePaths) {
         try {
-          return await import(path);
+          return await import(`${path}?v=trade-context-1`);
         } catch (error) {
-          console.warn(`Could not load players from ${path}`, error);
+          errors.push({ path, error });
         }
       }
 
-      throw new Error("Could not load data/players.js");
+      console.error("Player module failed to load from all paths:", errors);
+      throw errors[0]?.error || new Error("Could not load players.js");
     }
 
     async function init() {
       try {
+        ownerLookup = buildOwnerLookup();
+        renderTeamSelects();
+
         const module = await loadPlayersModule();
-        await loadFantasyOwners();
-        playerData = [...module.players].sort((a, b) => b.dynastyValue - a.dynastyValue);
-        renderTeamOptions();
+        if (!module.players || !Array.isArray(module.players)) {
+          throw new Error("players.js loaded, but it did not export a players array.");
+        }
+
+        playerData = [...module.players]
+          .map(enrichPlayer)
+          .sort((a, b) => b.dynastyValue - a.dynastyValue);
+
         setupEvents();
         renderAll();
       } catch (error) {
         console.error(error);
         elements.loadError.hidden = false;
+        elements.playersTableBody.innerHTML = `
+          <tr>
+            <td colspan="8" class="muted">Player values failed to load.</td>
+          </tr>
+        `;
       }
     }
 
