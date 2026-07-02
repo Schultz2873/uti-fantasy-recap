@@ -576,7 +576,7 @@
     </section>
 
     <div id="loadError" class="load-error" hidden>
-      Could not load player values. Make sure <strong>data/players.js</strong> exists and open this page through GitHub Pages or a local server, not directly from your file system.
+      Could not load player values. Put this file at <strong>tools/uti-trade-analyzer.html</strong>, make sure <strong>data/players.js</strong> exists in the repo root, and open through GitHub Pages or a local server — not directly from your file system.
     </div>
 
     <section class="trade-shell" aria-label="Trade analyzer">
@@ -699,7 +699,7 @@
     </section>
   </main>
 
-  <script src="../data/fantasy-owners.js?v=trade-analyzer-owners"></script>
+  <script src="../data/fantasy-owners.js?v=trade-analyzer-owners-2"></script>
   <script type="module">
     let playerData = [];
     let ownerLookup = new Map();
@@ -1352,23 +1352,33 @@
     }
 
     async function loadPlayersModule() {
-      const possiblePaths = [
-        "../data/players.js",
-        "./data/players.js",
-        "data/players.js"
+      const cacheBust = "trade-roster-filter-2";
+      const primaryUrl = new URL("../data/players.js", window.location.href).href;
+      const fallbackUrls = [
+        primaryUrl,
+        new URL("/data/players.js", window.location.origin).href,
+        new URL("data/players.js", window.location.href).href
       ];
 
+      const urls = [...new Set(fallbackUrls)].map((url) => `${url}?v=${cacheBust}`);
       const errors = [];
-      for (const path of possiblePaths) {
+
+      for (const url of urls) {
         try {
-          return await import(`${path}?v=trade-roster-filter-1`);
+          const loadedModule = await import(url);
+          if (loadedModule?.players && Array.isArray(loadedModule.players)) {
+            console.info("Loaded player values from:", url);
+            return loadedModule;
+          }
+          throw new Error(`Loaded ${url}, but it did not export a players array.`);
         } catch (error) {
-          errors.push({ path, error });
+          errors.push({ url, message: error?.message || String(error) });
         }
       }
 
-      console.error("Player module failed to load from all paths:", errors);
-      throw errors[0]?.error || new Error("Could not load players.js");
+      const details = errors.map((entry) => `${entry.url} — ${entry.message}`).join("\n");
+      console.error("Player module failed to load from all URLs:", errors);
+      throw new Error(`Could not load players.js. Tried:\n${details}`);
     }
 
     async function init() {
@@ -1390,9 +1400,15 @@
       } catch (error) {
         console.error(error);
         elements.loadError.hidden = false;
+        elements.loadError.innerHTML = `
+          <strong>Could not load player values.</strong><br>
+          This page must be at <code>tools/uti-trade-analyzer.html</code> and your values file must be at <code>data/players.js</code>.<br>
+          <span class="muted">Browser error:</span>
+          <pre style="white-space:pre-wrap;margin:8px 0 0;font-size:0.72rem;line-height:1.25;">${escapeHtml(error?.message || String(error))}</pre>
+        `;
         elements.playersTableBody.innerHTML = `
           <tr>
-            <td colspan="8" class="muted">Player values failed to load.</td>
+            <td colspan="8" class="muted">Player values failed to load. Check the error box above for the exact URL GitHub Pages tried.</td>
           </tr>
         `;
       }
