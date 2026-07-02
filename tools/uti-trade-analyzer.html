@@ -589,7 +589,7 @@
             </div>
             <select class="team-fit-select" id="sideATeamSelect" aria-label="Team A sending team"></select>
             <div class="player-search-wrap">
-              <input class="player-search" id="sideASearch" type="search" placeholder="Search selected team roster..." autocomplete="off" />
+              <input class="player-search" id="sideASearch" type="search" placeholder="Search selected team roster or draft picks..." autocomplete="off" />
               <div class="suggestions" id="sideASuggestions"></div>
             </div>
             <div class="selected-list" id="sideAList"></div>
@@ -602,7 +602,7 @@
             </div>
             <select class="team-fit-select" id="sideBTeamSelect" aria-label="Team B sending team"></select>
             <div class="player-search-wrap">
-              <input class="player-search" id="sideBSearch" type="search" placeholder="Search selected team roster..." autocomplete="off" />
+              <input class="player-search" id="sideBSearch" type="search" placeholder="Search selected team roster or draft picks..." autocomplete="off" />
               <div class="suggestions" id="sideBSuggestions"></div>
             </div>
             <div class="selected-list" id="sideBList"></div>
@@ -672,14 +672,14 @@
     <section class="player-table-card">
       <div class="table-toolbar">
         <h2>Selected Team Rosters</h2>
-        <input class="table-filter" id="playerTableFilter" type="search" placeholder="Filter selected team rosters..." autocomplete="off" />
+        <input class="table-filter" id="playerTableFilter" type="search" placeholder="Filter selected team rosters or draft picks..." autocomplete="off" />
       </div>
 
       <div class="players-table-wrap">
         <table class="players-table">
           <thead>
             <tr>
-              <th>Player</th>
+              <th>Asset</th>
               <th>Owner</th>
               <th>Pos</th>
               <th>Age</th>
@@ -702,6 +702,8 @@
   <script src="../data/fantasy-owners.js?v=trade-analyzer-owners-2"></script>
   <script type="module">
     let playerData = [];
+    let draftPickData = [];
+    let assetData = [];
     let ownerLookup = new Map();
     let selectedSideA = [];
     let selectedSideB = [];
@@ -731,6 +733,31 @@
       "This Is Mizerable": ["HR", "RBI", "TB"],
       "You Don't Know Bo": ["R", "AVG", "BB"],
       "BTA Boyz": ["R", "HR", "RBI", "K", "ERA"]
+    };
+
+    // Draft pick values are editable. Values assume a 10-team dynasty league prospect/draft pick market.
+    const DRAFT_PICK_YEARS = [2027, 2028];
+    const DRAFT_PICK_ROUNDS = [
+      { round: 1, label: "1st Round Pick", baseValue: 45 },
+      { round: 2, label: "2nd Round Pick", baseValue: 28 },
+      { round: 3, label: "3rd Round Pick", baseValue: 18 },
+      { round: 4, label: "4th Round Pick", baseValue: 10 },
+      { round: 5, label: "5th Round Pick", baseValue: 6 }
+    ];
+
+    // Bad/older teams get a small value boost because their picks are more likely to be early.
+    // Tweak these any time the playoff race changes.
+    const TEAM_PICK_MULTIPLIER = {
+      "BB's Bold Team": 0.86,
+      "Goodyear Gila Monsters": 0.92,
+      "Me So Heorny": 0.95,
+      "Dixon Cider": 1.00,
+      "John's Super Team": 1.00,
+      "Mactown MacDaddies": 1.04,
+      "This Is Mizerable": 1.08,
+      "You Don't Know Bo": 1.10,
+      "Gunnarrhea": 1.12,
+      "BTA Boyz": 1.18
     };
 
     const HITTER_DISPLAY_CATEGORIES = ["R", "HR", "RBI", "NSB", "AVG", "TB", "SO", "BB"];
@@ -804,6 +831,46 @@
       return Array.isArray(player.positions) ? player.positions.join(", ") : "";
     }
 
+    function isDraftPick(asset) {
+      return asset?.assetType === "draftPick";
+    }
+
+    function formatAssetType(asset) {
+      if (isDraftPick(asset)) return "Pick";
+      return formatPositions(asset);
+    }
+
+    function buildDraftPicks() {
+      return TEAM_NAMES.flatMap(teamName => {
+        const multiplier = TEAM_PICK_MULTIPLIER[teamName] ?? 1;
+        return DRAFT_PICK_YEARS.flatMap(year => DRAFT_PICK_ROUNDS.map(pick => {
+          const dynastyValue = Math.max(1, Math.round(pick.baseValue * multiplier));
+          return {
+            id: `pick-${year}-${pick.round}-${normalizeName(teamName)}`,
+            name: `${year} ${pick.label}`,
+            mlbTeam: "DRAFT",
+            fantasyTeam: teamName,
+            positions: ["PICK"],
+            age: "—",
+            dynastyValue,
+            tier: pick.round === 1 ? "Premium Draft Pick" : "Draft Pick",
+            categoryType: "draft pick",
+            categoryFit: 0,
+            categoryScores: {},
+            currentProduction: 0,
+            futureUpside: dynastyValue,
+            riskPenalty: pick.round === 1 ? 30 : 38,
+            riskTier: "draftPick",
+            futureTier: "draftPick",
+            assetType: "draftPick",
+            draftYear: year,
+            draftRound: pick.round,
+            pickLabel: pick.label
+          };
+        }));
+      });
+    }
+
     function formatCategory(category) {
       return CATEGORY_LABELS[category] || category;
     }
@@ -839,6 +906,10 @@
     }
 
     function getFantasyOwner(player) {
+      if (player && typeof player === "object" && player.fantasyTeam && player.fantasyTeam !== "Free Agent") {
+        return player.fantasyTeam;
+      }
+
       const name = typeof player === "string" ? player : player?.name;
       const normalizedName = normalizeName(name);
       return ownerLookup.get(normalizedName)
@@ -878,7 +949,11 @@
 
 
     function getPlayerKey(player) {
-      return normalizeName(player.name);
+      return player?.id ? String(player.id) : normalizeName(player?.name);
+    }
+
+    function findAssetByKey(key) {
+      return assetData.find(asset => getPlayerKey(asset) === String(key));
     }
 
     function isSelected(player, side) {
@@ -941,17 +1016,18 @@
     }
 
     function getFitScoreForPlayers(players = [], teamName) {
-      if (!players.length) return 0;
+      const categoryAssets = players.filter(asset => !isDraftPick(asset));
+      if (!categoryAssets.length) return 0;
 
       const needs = TEAM_NEEDS[teamName] || [];
-      if (!needs.length) return Math.round(average(players.map(player => player.categoryFit || 0)));
+      if (!needs.length) return Math.round(average(categoryAssets.map(player => player.categoryFit || 0)));
 
-      const total = players.reduce((sum, player) => {
+      const total = categoryAssets.reduce((sum, player) => {
         const score = needs.reduce((needSum, category) => needSum + Number(player.categoryScores?.[category] || 0), 0) / needs.length;
         return sum + score;
       }, 0);
 
-      return Math.round(total / players.length);
+      return Math.round(total / categoryAssets.length);
     }
 
     function getFitScore(side, teamName) {
@@ -979,18 +1055,21 @@
     }
 
     function getRiskSummaryForPlayers(players = []) {
-      if (!players.length) return { risk: 0, age: 0, prospects: 0, pitchers: 0, risky: 0 };
+      if (!players.length) return { risk: 0, age: 0, prospects: 0, pitchers: 0, risky: 0, picks: 0 };
 
-      const prospects = players.filter(player => String(player.riskTier || "").includes("prospect") || String(player.futureTier || "").includes("prospect")).length;
-      const pitchers = players.filter(player => (player.positions || []).some(pos => ["SP", "RP", "P"].includes(pos))).length;
-      const risky = players.filter(player => ["high", "veryHigh", "injured", "prospectPitcher", "reliever", "aging"].includes(player.riskTier)).length;
+      const nonPickPlayers = players.filter(player => !isDraftPick(player));
+      const prospects = nonPickPlayers.filter(player => String(player.riskTier || "").includes("prospect") || String(player.futureTier || "").includes("prospect")).length;
+      const pitchers = nonPickPlayers.filter(player => (player.positions || []).some(pos => ["SP", "RP", "P"].includes(pos))).length;
+      const risky = nonPickPlayers.filter(player => ["high", "veryHigh", "injured", "prospectPitcher", "reliever", "aging"].includes(player.riskTier)).length;
+      const picks = players.filter(isDraftPick).length;
 
       return {
-        risk: Math.round(average(players.map(player => player.riskPenalty || 0))),
-        age: Number(average(players.map(player => player.age || 0)).toFixed(1)),
+        risk: Math.round(average(nonPickPlayers.map(player => player.riskPenalty || 0))),
+        age: Number(average(nonPickPlayers.map(player => player.age || 0)).toFixed(1)),
         prospects,
         pitchers,
-        risky
+        risky,
+        picks
       };
     }
 
@@ -999,7 +1078,7 @@
     }
 
     function getResultNote(teamASendsTotal, teamBSendsTotal, fairnessLabel, teamAFitScore, teamBFitScore) {
-      if (!teamASendsTotal && !teamBSendsTotal) return `Pick each team, then add only players from their roster. ${state.sideATeam} sends from the left, ${state.sideBTeam} sends from the right.`;
+      if (!teamASendsTotal && !teamBSendsTotal) return `Pick each team, then add players or draft picks from their side. ${state.sideATeam} sends from the left, ${state.sideBTeam} sends from the right.`;
       if (!teamASendsTotal || !teamBSendsTotal) return "One team has not sent anything yet. Add players from both rosters for a real verdict.";
 
       const teamAReceives = teamBSendsTotal;
@@ -1055,9 +1134,9 @@
       renderAll();
     }
 
-    function removePlayerFromSide(playerName, side) {
-      const key = normalizeName(playerName);
-      state[side] = state[side].filter(player => normalizeName(player.name) !== key);
+    function removePlayerFromSide(assetKey, side) {
+      const key = String(assetKey);
+      state[side] = state[side].filter(player => getPlayerKey(player) !== key);
       if (side === "sideA") selectedSideA = state[side];
       if (side === "sideB") selectedSideB = state[side];
       renderAll();
@@ -1071,7 +1150,7 @@
     function getSearchMatches(query, side) {
       const normalizedQuery = normalizeName(query);
 
-      return playerData
+      return assetData
         .filter(player => belongsToSelectedTeam(player, side))
         .filter(player => !isSelected(player, side))
         .filter(player => {
@@ -1096,8 +1175,8 @@
       if (!matches.length) {
         container.innerHTML = `
           <button class="suggestion-btn" type="button" disabled>
-            <span class="suggestion-name">No rostered players found</span>
-            <span class="suggestion-meta">Only the selected team's roster is searchable here</span>
+            <span class="suggestion-name">No players or picks found</span>
+            <span class="suggestion-meta">Only the selected team's roster and draft picks are searchable here</span>
           </button>
         `;
         container.classList.add("show");
@@ -1105,17 +1184,17 @@
       }
 
       container.innerHTML = matches.map(player => `
-        <button class="suggestion-btn" type="button" data-add-side="${side}" data-player="${encodeURIComponent(player.name)}">
+        <button class="suggestion-btn" type="button" data-add-side="${side}" data-asset-key="${encodeURIComponent(getPlayerKey(player))}">
           <span class="suggestion-name">${escapeHtml(player.name)} • ${escapeHtml(player.dynastyValue)}</span>
-          <span class="suggestion-meta">${escapeHtml(player.fantasyTeam)} • ${escapeHtml(formatPositions(player))} • ${escapeHtml(player.tier)}</span>
+          <span class="suggestion-meta">${escapeHtml(player.fantasyTeam)} • ${escapeHtml(formatAssetType(player))} • ${escapeHtml(player.tier)}</span>
         </button>
       `).join("");
 
       container.querySelectorAll("[data-add-side]").forEach(button => {
         button.addEventListener("click", () => {
-          const playerName = decodeURIComponent(button.dataset.player);
-          const selectedPlayer = playerData.find(player => player.name === playerName);
-          if (selectedPlayer) addPlayerToSide(selectedPlayer, side);
+          const assetKey = decodeURIComponent(button.dataset.assetKey);
+          const selectedAsset = findAssetByKey(assetKey);
+          if (selectedAsset) addPlayerToSide(selectedAsset, side);
         });
       });
 
@@ -1128,28 +1207,30 @@
       if (!selectedPlayers.length) {
         container.innerHTML = `
           <div class="selected-empty">
-            No players added yet. Search this team's roster above or use the roster board below.
+            No assets added yet. Search this team's roster/picks above or use the board below.
           </div>
         `;
         return;
       }
 
       container.innerHTML = selectedPlayers.map(player => {
-        const topCategories = getTopCategories(player, 4).map(item => `
-          <span class="mini-category-chip">${escapeHtml(formatCategory(item.category))} ${escapeHtml(item.score)}</span>
-        `).join("");
+        const topCategories = isDraftPick(player)
+          ? `<span class="mini-category-chip">Draft Capital ${escapeHtml(player.dynastyValue)}</span>`
+          : getTopCategories(player, 4).map(item => `
+              <span class="mini-category-chip">${escapeHtml(formatCategory(item.category))} ${escapeHtml(item.score)}</span>
+            `).join("");
 
         return `
           <article class="selected-player">
             <div class="selected-player-top">
               <div>
                 <div class="selected-player-name">${escapeHtml(player.name)}</div>
-                <div class="selected-player-meta">${escapeHtml(player.fantasyTeam)} • ${escapeHtml(formatPositions(player))} • ${escapeHtml(player.tier)}</div>
+                <div class="selected-player-meta">${escapeHtml(player.fantasyTeam)} • ${escapeHtml(formatAssetType(player))} • ${escapeHtml(player.tier)}</div>
               </div>
               <span class="value-badge">${escapeHtml(player.dynastyValue)}</span>
             </div>
             <div class="mini-category-row">${topCategories}</div>
-            <button class="remove-player" type="button" data-remove-side="${side}" data-player="${encodeURIComponent(player.name)}">
+            <button class="remove-player" type="button" data-remove-side="${side}" data-asset-key="${encodeURIComponent(getPlayerKey(player))}">
               Remove
             </button>
           </article>
@@ -1158,7 +1239,7 @@
 
       container.querySelectorAll("[data-remove-side]").forEach(button => {
         button.addEventListener("click", () => {
-          removePlayerFromSide(decodeURIComponent(button.dataset.player), button.dataset.removeSide);
+          removePlayerFromSide(decodeURIComponent(button.dataset.assetKey), button.dataset.removeSide);
         });
       });
     }
@@ -1235,14 +1316,17 @@
       const prospectNote = teamAReceives.prospects || teamBReceives.prospects
         ? ` Prospect count received: ${state.sideATeam} ${teamAReceives.prospects}, ${state.sideBTeam} ${teamBReceives.prospects}.`
         : "";
+      const pickNote = teamAReceives.picks || teamBReceives.picks
+        ? ` Draft picks received: ${state.sideATeam} ${teamAReceives.picks}, ${state.sideBTeam} ${teamBReceives.picks}.`
+        : "";
 
-      elements.riskWindowText.textContent = `${riskier} receives more risk. ${younger} receives the younger dynasty window.${prospectNote}`;
+      elements.riskWindowText.textContent = `${riskier} receives more risk. ${younger} receives the younger dynasty window.${prospectNote}${pickNote}`;
     }
 
     function renderPlayerTable() {
       const filter = normalizeName(elements.playerTableFilter.value);
       const selectedTeams = new Set([state.sideATeam, state.sideBTeam]);
-      const visiblePlayers = playerData.filter(player => selectedTeams.has(player.fantasyTeam)).filter(player => {
+      const visiblePlayers = assetData.filter(player => selectedTeams.has(player.fantasyTeam)).filter(player => {
         if (!filter) return true;
 
         const haystack = [
@@ -1252,6 +1336,7 @@
           formatPositions(player),
           player.tier,
           player.categoryType,
+          isDraftPick(player) ? "draft pick picks draft capital" : "",
           ...getTopCategories(player).map(item => item.category)
         ].join(" ");
 
@@ -1261,35 +1346,37 @@
       if (!visiblePlayers.length) {
         elements.playersTableBody.innerHTML = `
           <tr>
-            <td colspan="8" class="muted">No players match that search for the selected teams.</td>
+            <td colspan="8" class="muted">No players or picks match that search for the selected teams.</td>
           </tr>
         `;
         return;
       }
 
       elements.playersTableBody.innerHTML = visiblePlayers.map(player => {
-        const topCategoryText = getTopCategories(player, 3)
-          .map(item => `${formatCategory(item.category)} ${item.score}`)
-          .join(" · ");
+        const topCategoryText = isDraftPick(player)
+          ? `${player.draftYear} • Round ${player.draftRound} • projected value ${player.dynastyValue}`
+          : getTopCategories(player, 3)
+              .map(item => `${formatCategory(item.category)} ${item.score}`)
+              .join(" · ");
 
         return `
           <tr>
             <td>
-              <strong>${escapeHtml(player.name)}</strong>
+              <strong>${escapeHtml(player.name)}</strong>${isDraftPick(player) ? ` <span class="category-chip">PICK</span>` : ""}
               <div class="muted">${escapeHtml(player.mlbTeam || "—")}</div>
             </td>
             <td>${escapeHtml(player.fantasyTeam)}</td>
-            <td>${escapeHtml(formatPositions(player))}</td>
+            <td>${escapeHtml(formatAssetType(player))}</td>
             <td>${escapeHtml(player.age)}</td>
             <td><strong>${escapeHtml(player.dynastyValue)}</strong></td>
             <td>${escapeHtml(player.tier)}</td>
             <td>
-              <span class="category-chip">${escapeHtml(player.categoryType || "—")} ${escapeHtml(player.categoryFit || "")}</span>
+              <span class="category-chip">${escapeHtml(player.categoryType || "—")} ${isDraftPick(player) ? "" : escapeHtml(player.categoryFit || "")}</span>
               <div class="muted">${escapeHtml(topCategoryText)}</div>
             </td>
             <td>
-              ${player.fantasyTeam === state.sideATeam ? `<button class="add-small-btn" type="button" data-table-add="sideA" data-player="${encodeURIComponent(player.name)}">Send</button>` : ""}
-              ${player.fantasyTeam === state.sideBTeam ? `<button class="add-small-btn" type="button" data-table-add="sideB" data-player="${encodeURIComponent(player.name)}">Send</button>` : ""}
+              ${player.fantasyTeam === state.sideATeam ? `<button class="add-small-btn" type="button" data-table-add="sideA" data-asset-key="${encodeURIComponent(getPlayerKey(player))}">Send</button>` : ""}
+              ${player.fantasyTeam === state.sideBTeam ? `<button class="add-small-btn" type="button" data-table-add="sideB" data-asset-key="${encodeURIComponent(getPlayerKey(player))}">Send</button>` : ""}
             </td>
           </tr>
         `;
@@ -1297,9 +1384,9 @@
 
       elements.playersTableBody.querySelectorAll("[data-table-add]").forEach(button => {
         button.addEventListener("click", () => {
-          const playerName = decodeURIComponent(button.dataset.player);
-          const selectedPlayer = playerData.find(player => player.name === playerName);
-          if (selectedPlayer) addPlayerToSide(selectedPlayer, button.dataset.tableAdd);
+          const assetKey = decodeURIComponent(button.dataset.assetKey);
+          const selectedAsset = findAssetByKey(assetKey);
+          if (selectedAsset) addPlayerToSide(selectedAsset, button.dataset.tableAdd);
         });
       });
     }
@@ -1354,7 +1441,7 @@
     }
 
     async function loadPlayersModule() {
-      const cacheBust = "trade-roster-filter-2";
+      const cacheBust = "trade-roster-filter-picks-1";
       const primaryUrl = new URL("../data/players.js", window.location.href).href;
       const fallbackUrls = [
         primaryUrl,
@@ -1396,6 +1483,9 @@
         playerData = [...module.players]
           .map(enrichPlayer)
           .sort((a, b) => b.dynastyValue - a.dynastyValue);
+
+        draftPickData = buildDraftPicks();
+        assetData = [...playerData, ...draftPickData].sort((a, b) => b.dynastyValue - a.dynastyValue);
 
         setupEvents();
         renderAll();
