@@ -758,6 +758,8 @@
       sideBTitle: document.getElementById("sideBTitle"),
       sideATotalPill: document.getElementById("sideATotalPill"),
       sideBTotalPill: document.getElementById("sideBTotalPill"),
+      sideAResultLabel: document.getElementById("sideAResultLabel"),
+      sideBResultLabel: document.getElementById("sideBResultLabel"),
       sideAResult: document.getElementById("sideAResult"),
       sideBResult: document.getElementById("sideBResult"),
       differenceResult: document.getElementById("differenceResult"),
@@ -1035,10 +1037,10 @@
 
 
     function updateSideLabels() {
-      elements.sideATitle.textContent = `${state.sideATeam} Sends`;
-      elements.sideBTitle.textContent = `${state.sideBTeam} Sends`;
-      elements.sideAResultLabel.textContent = `${state.sideATeam} Sends`;
-      elements.sideBResultLabel.textContent = `${state.sideBTeam} Sends`;
+      if (elements.sideATitle) elements.sideATitle.textContent = `${state.sideATeam} Sends`;
+      if (elements.sideBTitle) elements.sideBTitle.textContent = `${state.sideBTeam} Sends`;
+      if (elements.sideAResultLabel) elements.sideAResultLabel.textContent = `${state.sideATeam} Sends`;
+      if (elements.sideBResultLabel) elements.sideBResultLabel.textContent = `${state.sideBTeam} Sends`;
       elements.sideASearch.placeholder = `Search ${state.sideATeam} roster...`;
       elements.sideBSearch.placeholder = `Search ${state.sideBTeam} roster...`;
     }
