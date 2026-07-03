@@ -755,3 +755,404 @@
     font-size: 0.80rem;
   }
 }
+
+
+/* HARD mobile override: force readable one-column Top Pickups cards */
+@media screen and (max-width: 760px) {
+  #top-pickups,
+  #top-pickups * {
+    box-sizing: border-box;
+  }
+
+  #top-pickups .available-studs-grid {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  #top-pickups .pickup-group {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-bottom: 18px !important;
+  }
+
+  #top-pickups .pickup-group-grid,
+  #top-pickups .available-studs-grid .pickup-group-grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 12px !important;
+  }
+
+  #top-pickups .available-stud-card.pickup-card,
+  #top-pickups .pickup-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    min-height: auto !important;
+    padding: 14px !important;
+    gap: 10px !important;
+    border-radius: 16px !important;
+  }
+
+  #top-pickups .pickup-card-header {
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+  }
+
+  #top-pickups .pickup-player-main {
+    min-width: 0 !important;
+    flex: 1 1 auto !important;
+  }
+
+  #top-pickups .pickup-player-name {
+    font-size: 1rem !important;
+    line-height: 1.18 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    display: block !important;
+    -webkit-line-clamp: unset !important;
+    -webkit-box-orient: unset !important;
+    white-space: normal !important;
+  }
+
+  #top-pickups .pickup-player-meta {
+    font-size: 0.72rem !important;
+    line-height: 1.25 !important;
+  }
+
+  #top-pickups .pickup-position-line,
+  #top-pickups .pickup-info-tags {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+    margin-top: 7px !important;
+  }
+
+  #top-pickups .pickup-age-tag,
+  #top-pickups .pickup-position-chip,
+  #top-pickups .pickup-rookie-tag {
+    padding: 5px 8px !important;
+    font-size: 0.62rem !important;
+    line-height: 1 !important;
+  }
+
+  #top-pickups .pickup-score-box {
+    min-width: 54px !important;
+    padding: 8px 7px !important;
+    border-radius: 12px !important;
+  }
+
+  #top-pickups .pickup-score-number {
+    font-size: 1.05rem !important;
+    line-height: 1 !important;
+  }
+
+  #top-pickups .pickup-score-label {
+    display: block !important;
+    font-size: 0.46rem !important;
+  }
+
+  #top-pickups .pickup-card-tags {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 7px !important;
+  }
+
+  #top-pickups .pickup-group-tag,
+  #top-pickups .pickup-reason-tag,
+  #top-pickups .pickup-range-tag,
+  #top-pickups .pickup-volume-tag {
+    width: auto !important;
+    padding: 6px 8px !important;
+    font-size: 0.62rem !important;
+    line-height: 1 !important;
+    text-align: center !important;
+  }
+
+  #top-pickups .pickup-primary-stats,
+  #top-pickups .pickup-secondary-stats {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+
+  #top-pickups .pickup-primary-stat {
+    padding: 10px 7px !important;
+    border-radius: 11px !important;
+  }
+
+  #top-pickups .pickup-primary-value {
+    font-size: 1rem !important;
+    line-height: 1 !important;
+  }
+
+  #top-pickups .pickup-primary-label {
+    font-size: 0.58rem !important;
+    margin-top: 5px !important;
+  }
+
+  #top-pickups .pickup-secondary-stat {
+    padding: 8px 7px !important;
+    border-radius: 10px !important;
+  }
+
+  #top-pickups .pickup-secondary-label {
+    font-size: 0.55rem !important;
+  }
+
+  #top-pickups .pickup-secondary-value {
+    font-size: 0.82rem !important;
+  }
+
+  #top-pickups .pickup-card-footer {
+    display: flex !important;
+    font-size: 0.68rem !important;
+    line-height: 1.25 !important;
+  }
+
+  #top-pickups .leader-mode-toggle {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  #top-pickups .leader-mode-btn {
+    min-height: 38px !important;
+    padding: 9px 8px !important;
+    font-size: 0.78rem !important;
+    text-align: center !important;
+  }
+}
+
+@media screen and (max-width: 380px) {
+  #top-pickups .available-stud-card.pickup-card,
+  #top-pickups .pickup-card {
+    padding: 12px !important;
+  }
+
+  #top-pickups .pickup-player-name {
+    font-size: 0.92rem !important;
+  }
+
+  #top-pickups .pickup-primary-value {
+    font-size: 0.92rem !important;
+  }
+}
+
+
+/* Mobile horizontal-scroll Top Pickups layout */
+@media screen and (max-width: 760px) {
+  #top-pickups .available-studs-grid {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  #top-pickups .pickup-group {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-bottom: 18px !important;
+  }
+
+  #top-pickups .pickup-group-grid,
+  #top-pickups .available-studs-grid .pickup-group-grid {
+    display: grid !important;
+    grid-auto-flow: column !important;
+    grid-auto-columns: minmax(255px, 78vw) !important;
+    grid-template-columns: none !important;
+    gap: 12px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    overscroll-behavior-inline: contain !important;
+    scroll-snap-type: inline mandatory !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding: 2px 4px 12px !important;
+    margin-inline: -4px !important;
+  }
+
+  #top-pickups .pickup-group-grid::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  #top-pickups .pickup-group-grid::-webkit-scrollbar-track {
+    background: rgba(15, 23, 42, 0.06);
+    border-radius: 999px;
+  }
+
+  #top-pickups .pickup-group-grid::-webkit-scrollbar-thumb {
+    background: rgba(11, 94, 215, 0.28);
+    border-radius: 999px;
+  }
+
+  #top-pickups .available-stud-card.pickup-card,
+  #top-pickups .pickup-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    min-height: auto !important;
+    padding: 12px !important;
+    gap: 9px !important;
+    border-radius: 16px !important;
+    scroll-snap-align: start !important;
+  }
+
+  #top-pickups .pickup-card-header {
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 9px !important;
+  }
+
+  #top-pickups .pickup-player-main {
+    min-width: 0 !important;
+    flex: 1 1 auto !important;
+  }
+
+  #top-pickups .pickup-player-name {
+    font-size: 0.92rem !important;
+    line-height: 1.14 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    white-space: normal !important;
+  }
+
+  #top-pickups .pickup-player-meta {
+    font-size: 0.66rem !important;
+    line-height: 1.2 !important;
+  }
+
+  #top-pickups .pickup-position-line,
+  #top-pickups .pickup-info-tags {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 5px !important;
+    margin-top: 6px !important;
+  }
+
+  #top-pickups .pickup-age-tag,
+  #top-pickups .pickup-position-chip,
+  #top-pickups .pickup-rookie-tag {
+    padding: 4px 7px !important;
+    font-size: 0.56rem !important;
+    line-height: 1 !important;
+  }
+
+  #top-pickups .pickup-score-box {
+    min-width: 48px !important;
+    padding: 7px 6px !important;
+    border-radius: 12px !important;
+  }
+
+  #top-pickups .pickup-score-number {
+    font-size: 0.95rem !important;
+    line-height: 1 !important;
+  }
+
+  #top-pickups .pickup-score-label {
+    display: block !important;
+    font-size: 0.43rem !important;
+  }
+
+  #top-pickups .pickup-card-tags {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+
+  #top-pickups .pickup-group-tag,
+  #top-pickups .pickup-reason-tag,
+  #top-pickups .pickup-range-tag,
+  #top-pickups .pickup-volume-tag {
+    width: auto !important;
+    padding: 5px 7px !important;
+    font-size: 0.55rem !important;
+    line-height: 1 !important;
+    text-align: center !important;
+  }
+
+  #top-pickups .pickup-primary-stats,
+  #top-pickups .pickup-secondary-stats {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 5px !important;
+    width: 100% !important;
+  }
+
+  #top-pickups .pickup-primary-stat {
+    padding: 7px 3px !important;
+    border-radius: 10px !important;
+  }
+
+  #top-pickups .pickup-primary-value {
+    font-size: 0.76rem !important;
+    line-height: 1 !important;
+  }
+
+  #top-pickups .pickup-primary-label {
+    font-size: 0.46rem !important;
+    margin-top: 4px !important;
+  }
+
+  #top-pickups .pickup-secondary-stat {
+    padding: 6px 3px !important;
+    border-radius: 9px !important;
+  }
+
+  #top-pickups .pickup-secondary-label {
+    font-size: 0.42rem !important;
+  }
+
+  #top-pickups .pickup-secondary-value {
+    font-size: 0.62rem !important;
+  }
+
+  #top-pickups .pickup-card-footer {
+    display: flex !important;
+    font-size: 0.60rem !important;
+    line-height: 1.22 !important;
+  }
+
+  #top-pickups .leader-mode-toggle {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+  }
+
+  #top-pickups .leader-mode-btn {
+    min-height: 34px !important;
+    padding: 7px 5px !important;
+    font-size: 0.66rem !important;
+    text-align: center !important;
+  }
+}
+
+@media screen and (max-width: 430px) {
+  #top-pickups .pickup-group-grid,
+  #top-pickups .available-studs-grid .pickup-group-grid {
+    grid-auto-columns: minmax(245px, 84vw) !important;
+  }
+
+  #top-pickups .leader-mode-toggle {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  #top-pickups .leader-mode-btn {
+    font-size: 0.74rem !important;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  #top-pickups .pickup-group-grid,
+  #top-pickups .available-studs-grid .pickup-group-grid {
+    grid-auto-columns: minmax(230px, 86vw) !important;
+  }
+
+  #top-pickups .pickup-card-footer {
+    display: none !important;
+  }
+}
