@@ -41,6 +41,8 @@ let leaderRangeMode = "weekly";
 let selectedPastWeek = null;
 let pickupRangeMode = "weekly";
 let fantasyOwnersLookupCache = null;
+let playerEligibilityLookupCache = null;
+let playerInfoLookupCache = null;
 
 function formatDate(date) {
   const year = date.getFullYear();
@@ -282,6 +284,293 @@ async function fetchSeasonStats(group) {
 
   const data = await response.json();
   return data.stats?.[0]?.splits || [];
+}
+
+
+
+async function fetchPlayerInfoLookup(playerIds) {
+  const uniqueIds = [...new Set((playerIds || []).filter(Boolean).map(String))];
+
+  if (!uniqueIds.length) {
+    return {};
+  }
+
+  const cache = playerInfoLookupCache || {};
+  const missingIds = uniqueIds.filter(id => !cache[id]);
+
+  if (missingIds.length) {
+    const chunkSize = 75;
+
+    for (let i = 0; i < missingIds.length; i += chunkSize) {
+      const chunk = missingIds.slice(i, i + chunkSize);
+      const url = `https://statsapi.mlb.com/api/v1/people?personIds=${chunk.join(",")}`;
+
+      try {
+        const response = await fetch(url);
+
+        if (!response.ok) {
+          throw new Error("Could not load player info");
+        }
+
+        const data = await response.json();
+
+        (data.people || []).forEach(person => {
+          const id = person.id ? String(person.id) : "";
+
+          if (!id) return;
+
+          cache[id] = {
+            age: person.currentAge ?? "",
+            rookie: Boolean(person.rookie)
+          };
+        });
+      } catch (error) {
+        console.warn("Player age/rookie info could not load.", error);
+      }
+    }
+  }
+
+  playerInfoLookupCache = cache;
+
+  const lookup = {};
+  uniqueIds.forEach(id => {
+    lookup[id] = cache[id] || {};
+  });
+
+  return lookup;
+}
+
+function renderPickupAgeTag(stud) {
+  const info = stud.playerInfo || {};
+
+  if (info.age === undefined || info.age === null || info.age === "") {
+    return "";
+  }
+
+  return `<span class="pickup-age-tag">Age ${escapeHtml(info.age)}</span>`;
+}
+
+function renderPickupRookieTag(stud) {
+  const info = stud.playerInfo || {};
+
+  if (!info.rookie) {
+    return "";
+  }
+
+  return `<span class="pickup-rookie-tag">Rookie</span>`;
+}
+
+async function fetchSeasonFieldingStats() {
+  const season = getCurrentSeason();
+  const url =
+    `https://statsapi.mlb.com/api/v1/stats` +
+    `?stats=season` +
+    `&group=fielding` +
+    `&playerPool=all` +
+    `&sportIds=1` +
+    `&gameType=R` +
+    `&season=${season}` +
+    `&limit=10000`;
+
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    throw new Error("Could not load fielding eligibility stats");
+  }
+
+  const data = await response.json();
+  return data.stats?.[0]?.splits || [];
+}
+
+function normalizeEligibilityPosition(position) {
+  const value = String(position || "").trim().toUpperCase();
+
+  if (!value) return "";
+
+  if (["LF", "CF", "RF"].includes(value)) {
+    return "OF";
+  }
+
+  if (value === "OUTFIELD" || value === "OUTFIELDER") {
+    return "OF";
+  }
+
+  if (value === "FIRST BASE") return "1B";
+  if (value === "SECOND BASE") return "2B";
+  if (value === "THIRD BASE") return "3B";
+  if (value === "SHORTSTOP") return "SS";
+  if (value === "CATCHER") return "C";
+  if (value === "PITCHER") return "P";
+
+  return value;
+}
+
+
+function getPitcherRolesFromStats(split) {
+  const stat = split?.stat || {};
+  const gamesStarted = Number(stat.gamesStarted ?? stat.gamesStartedPitching ?? stat.starts ?? 0);
+  const gamesPitched = Number(stat.gamesPitched ?? stat.gamesPlayed ?? stat.games ?? 0);
+  const reliefAppearances = Math.max(gamesPitched - gamesStarted, 0);
+  const roles = [];
+
+  if (gamesStarted >= 3) {
+    roles.push("SP");
+  }
+
+  if (reliefAppearances >= 3) {
+    roles.push("RP");
+  }
+
+  return roles;
+}
+
+function normalizePitcherDisplayPositions(split, positions) {
+  const normalizedPositions = sortEligibilityPositions((positions || []).map(normalizeEligibilityPosition));
+  const hasPitcherPosition = normalizedPositions.some(position => ["P", "SP", "RP"].includes(position));
+
+  if (!hasPitcherPosition) {
+    return [];
+  }
+
+  const statRoles = getPitcherRolesFromStats(split);
+
+  if (statRoles.length) {
+    return sortEligibilityPositions(statRoles);
+  }
+
+  const explicitRoles = normalizedPositions.filter(position => ["SP", "RP"].includes(position));
+
+  return explicitRoles;
+}
+
+function getFieldingGamesAtPosition(split) {
+  const stat = split?.stat || {};
+
+  return Number(
+    stat.gamesPlayed ??
+    stat.games ??
+    stat.g ??
+    stat.gamesAtPosition ??
+    0
+  );
+}
+
+function sortEligibilityPositions(positions) {
+  const order = ["C", "1B", "2B", "3B", "SS", "OF", "UTIL", "SP", "RP", "P"];
+  const uniquePositions = [...new Set(positions.filter(Boolean))];
+
+  return uniquePositions.sort((a, b) => {
+    const aIndex = order.indexOf(a);
+    const bIndex = order.indexOf(b);
+
+    if (aIndex === -1 && bIndex === -1) return a.localeCompare(b);
+    if (aIndex === -1) return 1;
+    if (bIndex === -1) return -1;
+
+    return aIndex - bIndex;
+  });
+}
+
+function buildPlayerEligibilityLookup(fieldingStats) {
+  const byId = {};
+  const byNameTeam = {};
+  const byName = {};
+
+  (fieldingStats || []).forEach(split => {
+    const playerName = split.player?.fullName || "";
+    const playerId = split.player?.id ? String(split.player.id) : "";
+    const teamName = split.team?.name || "";
+    const normalizedName = normalizePlayerName(playerName);
+    const normalizedTeam = normalizePlayerName(teamName);
+    const games = getFieldingGamesAtPosition(split);
+
+    const rawPosition =
+      split.position?.abbreviation ||
+      split.position?.name ||
+      split.player?.primaryPosition?.abbreviation ||
+      split.player?.primaryPosition?.name ||
+      "";
+
+    let position = normalizeEligibilityPosition(rawPosition);
+
+    let positionsToAdd = [position];
+
+    if (["P", "SP", "RP"].includes(position)) {
+      positionsToAdd = getPitcherRolesFromStats(split);
+    }
+
+    if (!normalizedName || !positionsToAdd.length || games < 3) {
+      return;
+    }
+
+    positionsToAdd.forEach(positionToAdd => {
+      if (playerId) {
+        if (!byId[playerId]) byId[playerId] = new Set();
+        byId[playerId].add(positionToAdd);
+      }
+
+      if (normalizedTeam) {
+        const nameTeamKey = `${normalizedName}|${normalizedTeam}`;
+        if (!byNameTeam[nameTeamKey]) byNameTeam[nameTeamKey] = new Set();
+        byNameTeam[nameTeamKey].add(positionToAdd);
+      }
+
+      if (!byName[normalizedName]) byName[normalizedName] = new Set();
+      byName[normalizedName].add(positionToAdd);
+    });
+  });
+
+  const convertSetMap = map => {
+    const converted = {};
+
+    Object.keys(map).forEach(key => {
+      converted[key] = sortEligibilityPositions([...map[key]]);
+    });
+
+    return converted;
+  };
+
+  return {
+    byId: convertSetMap(byId),
+    byNameTeam: convertSetMap(byNameTeam),
+    byName: convertSetMap(byName)
+  };
+}
+
+function getEligibilityForStatSplit(split, eligibilityLookup = {}) {
+  const playerId = split?.player?.id ? String(split.player.id) : "";
+  const normalizedName = normalizePlayerName(split?.player?.fullName || "");
+  const normalizedTeam = normalizePlayerName(split?.team?.name || "");
+
+  if (playerId && eligibilityLookup.byId?.[playerId]) {
+    return eligibilityLookup.byId[playerId];
+  }
+
+  if (normalizedName && normalizedTeam) {
+    const nameTeamKey = `${normalizedName}|${normalizedTeam}`;
+
+    if (eligibilityLookup.byNameTeam?.[nameTeamKey]) {
+      return eligibilityLookup.byNameTeam[nameTeamKey];
+    }
+  }
+
+  return eligibilityLookup.byName?.[normalizedName] || [];
+}
+
+async function getPlayerEligibilityLookup() {
+  if (playerEligibilityLookupCache) {
+    return playerEligibilityLookupCache;
+  }
+
+  try {
+    const fieldingStats = await fetchSeasonFieldingStats();
+    playerEligibilityLookupCache = buildPlayerEligibilityLookup(fieldingStats);
+  } catch (error) {
+    console.warn("Position eligibility could not load, falling back to primary position.", error);
+    playerEligibilityLookupCache = { byId: {}, byNameTeam: {}, byName: {} };
+  }
+
+  return playerEligibilityLookupCache;
 }
 
 function findLeader(players, category) {
@@ -702,6 +991,80 @@ function renderPickupSecondaryStat(label, value) {
   `;
 }
 
+
+function isPitcherPrimaryPosition(splitOrStud) {
+  const split = splitOrStud?.rawPlayer || splitOrStud || {};
+  const player = split.player || {};
+
+  const rawPosition =
+    player.primaryPosition?.abbreviation ||
+    player.primaryPosition?.name ||
+    split.position?.abbreviation ||
+    split.position?.name ||
+    split.primaryPosition?.abbreviation ||
+    split.primaryPosition?.name ||
+    "";
+
+  const normalizedPosition = normalizeEligibilityPosition(rawPosition);
+
+  return ["P", "SP", "RP"].includes(normalizedPosition);
+}
+
+function filterDisplayedEligibilityPositions(stud, positions) {
+  const safePositions = sortEligibilityPositions((positions || []).map(normalizeEligibilityPosition));
+
+  if (stud.group === "hitting") {
+    return safePositions.filter(position => !["P", "SP", "RP"].includes(position));
+  }
+
+  if (stud.group === "pitching") {
+    if (!isPitcherPrimaryPosition(stud)) {
+      return [];
+    }
+
+    return normalizePitcherDisplayPositions(stud.rawPlayer, safePositions);
+  }
+
+  return safePositions;
+}
+
+function getPickupPositionText(stud) {
+  const eligiblePositions = filterDisplayedEligibilityPositions(stud, stud.eligiblePositions || []);
+
+  if (eligiblePositions.length) {
+    return eligiblePositions.join("/");
+  }
+
+  const player = stud.rawPlayer?.player || {};
+  const rawPlayer = stud.rawPlayer || {};
+
+  const possiblePositions = [
+    player.primaryPosition?.abbreviation,
+    player.primaryPosition?.name,
+    rawPlayer.position?.abbreviation,
+    rawPlayer.position?.name,
+    rawPlayer.primaryPosition?.abbreviation,
+    rawPlayer.primaryPosition?.name,
+    rawPlayer.stat?.position,
+    stud.position,
+    stud.positions
+  ];
+
+  const value = possiblePositions.find(item => {
+    if (Array.isArray(item)) return item.length;
+    return item !== undefined && item !== null && String(item).trim() !== "";
+  });
+
+  if (Array.isArray(value)) {
+    return filterDisplayedEligibilityPositions(stud, value).join("/");
+  }
+
+  const fallbackPosition = normalizeEligibilityPosition(value);
+  const filteredFallback = filterDisplayedEligibilityPositions(stud, [fallbackPosition]);
+
+  return filteredFallback.join("/");
+}
+
 function renderPickupCard(stud) {
   const isPitcher = stud.group === "pitching";
   const rangeLabel = getPickupRangeLabel(pickupRangeMode);
@@ -710,6 +1073,7 @@ function renderPickupCard(stud) {
   const volumeLabel = isPitcher
     ? `${formatPickupStat(getPlayerStatValue(stud, "IP"))} IP`
     : `${formatPickupStat(getPlayerStatValue(stud, "AB"))} AB`;
+  const positionText = getPickupPositionText(stud);
 
   const primaryStats = isPitcher
     ? [
@@ -752,6 +1116,13 @@ function renderPickupCard(stud) {
         <div class="pickup-player-main">
           <div class="pickup-player-name">${escapeHtml(stud.name)}</div>
           <div class="pickup-player-meta">${escapeHtml(stud.team || "Available player")}</div>
+          ${(renderPickupAgeTag(stud) || positionText) ? `
+            <div class="pickup-position-line">
+              ${renderPickupAgeTag(stud)}
+              ${positionText ? `<span class="pickup-position-chip">${escapeHtml(positionText)}</span>` : ""}
+            </div>
+          ` : ""}
+          ${renderPickupRookieTag(stud) ? `<div class="pickup-info-tags">${renderPickupRookieTag(stud)}</div>` : ""}
         </div>
 
         <div class="pickup-score-box">
@@ -808,7 +1179,7 @@ function renderPickupGroup(title, subtitle, studs, emptyText) {
   `;
 }
 
-function renderAvailableStuds(hittingStats, pitchingStats) {
+async function renderAvailableStuds(hittingStats, pitchingStats, eligibilityLookup = {}) {
   const grid = document.getElementById("availableStudsGrid");
   const tag = document.getElementById("availableStudsModeTag");
 
@@ -830,8 +1201,17 @@ function renderAvailableStuds(hittingStats, pitchingStats) {
 
       if (owner) return;
 
+      // position-player-pitcher guard: do not rank position players as pitching pickups.
+      if (category.group === "pitching" && !isPitcherPrimaryPosition(item.player)) {
+        return;
+      }
+
       const rank = index + 1;
-      const playerKey = `${category.group}-${normalizePlayerName(name)}`;
+      const playerId = item.player.player?.id ? String(item.player.player.id) : "";
+      const teamName = item.player.team?.name || "";
+      const playerKey = playerId
+        ? `${category.group}-${playerId}`
+        : `${category.group}-${normalizePlayerName(name)}-${normalizePlayerName(teamName)}`;
       const score = getPickupScore(rank, category);
       const categoryResult = {
         category: category.label,
@@ -846,9 +1226,12 @@ function renderAvailableStuds(hittingStats, pitchingStats) {
       if (!existing) {
         candidateMap.set(playerKey, {
           name,
-          team: item.player.team?.name || "",
+          team: teamName,
           group: category.group,
           rawPlayer: item.player,
+          playerId,
+          eligiblePositions: getEligibilityForStatSplit(item.player, eligibilityLookup),
+          playerInfo: {},
           totalScore: score,
           bestRank: rank,
           bestCategory: categoryResult,
@@ -880,6 +1263,12 @@ function renderAvailableStuds(hittingStats, pitchingStats) {
       a.bestRank - b.bestRank ||
       a.name.localeCompare(b.name)
     );
+
+  const playerInfoLookup = await fetchPlayerInfoLookup(candidates.map(candidate => candidate.playerId));
+
+  candidates.forEach(candidate => {
+    candidate.playerInfo = playerInfoLookup[candidate.playerId] || {};
+  });
 
   const hittingPickups = candidates
     .filter(candidate => candidate.group === "hitting")
@@ -1062,6 +1451,7 @@ async function loadTopPickups() {
   try {
     let hittingStats = [];
     let pitchingStats = [];
+    const eligibilityLookup = await getPlayerEligibilityLookup();
 
     if (pickupRangeMode === "season") {
       [hittingStats, pitchingStats] = await Promise.all([
@@ -1084,7 +1474,7 @@ async function loadTopPickups() {
       ]);
     }
 
-    renderAvailableStuds(hittingStats, pitchingStats);
+    await renderAvailableStuds(hittingStats, pitchingStats, eligibilityLookup);
   } catch (error) {
     console.error("Top pickups failed:", error);
 

@@ -420,6 +420,232 @@
   }
 
   .available-stud-card.pickup-card {
-    min-height: 150px;
+    min-height: 152px;
+  }
+}
+
+
+/* Eligible position display */
+.pickup-position-line {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 5px;
+  min-width: 0;
+}
+
+.pickup-position-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  padding: 3px 6px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.06);
+  color: var(--muted);
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  font-size: 0.54rem;
+  font-weight: 950;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 520px) {
+  .pickup-position-line {
+    margin-top: 3px;
+  }
+
+  .pickup-position-chip {
+    padding: 2px 5px;
+    font-size: 0.43rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .pickup-position-line {
+    display: none;
+  }
+}
+
+
+/* Extra compact Top Pickups on mobile */
+@media (max-width: 520px) {
+  #top-pickups .available-studs-grid {
+    gap: 14px;
+  }
+
+  .pickup-group-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .available-stud-card.pickup-card {
+    min-height: 142px;
+    padding: 7px;
+    gap: 5px;
+    border-radius: 12px;
+  }
+
+  .pickup-player-name {
+    font-size: 0.68rem;
+    -webkit-line-clamp: 1;
+  }
+
+  .pickup-player-meta {
+    font-size: 0.50rem;
+  }
+
+  .pickup-score-box {
+    min-width: 34px;
+    padding: 4px;
+  }
+
+  .pickup-score-number {
+    font-size: 0.68rem;
+  }
+
+  .pickup-score-label {
+    display: none;
+  }
+
+  .pickup-card-tags {
+    gap: 4px;
+  }
+
+  .pickup-group-tag,
+  .pickup-range-tag,
+  .pickup-volume-tag {
+    font-size: 0.42rem;
+    padding: 3px 4px;
+  }
+
+  .pickup-reason-tag {
+    display: none;
+  }
+
+  .pickup-primary-stats,
+  .pickup-secondary-stats {
+    gap: 3px;
+  }
+
+  .pickup-primary-stat {
+    padding: 4px 2px;
+    border-radius: 8px;
+  }
+
+  .pickup-primary-value {
+    font-size: 0.56rem;
+  }
+
+  .pickup-primary-label {
+    font-size: 0.34rem;
+    margin-top: 2px;
+  }
+
+  .pickup-secondary-stat {
+    padding: 3px 2px;
+    border-radius: 7px;
+  }
+
+  .pickup-secondary-label {
+    font-size: 0.32rem;
+  }
+
+  .pickup-secondary-value {
+    font-size: 0.43rem;
+  }
+
+  .pickup-card-footer {
+    display: none;
+  }
+}
+
+@media (max-width: 380px) {
+  .available-stud-card.pickup-card {
+    min-height: 126px;
+  }
+
+  .pickup-volume-tag {
+    display: none;
+  }
+
+  .pickup-secondary-stats {
+    display: none;
+  }
+}
+
+
+/* Age and rookie tags */
+.pickup-position-line {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-top: 5px;
+  min-width: 0;
+}
+
+.pickup-info-tags {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-top: 5px;
+  min-width: 0;
+}
+
+.pickup-age-tag,
+.pickup-rookie-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  padding: 3px 6px;
+  border-radius: 999px;
+  font-size: 0.52rem;
+  font-weight: 950;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.pickup-age-tag {
+  background: rgba(132, 32, 41, 0.11);
+  color: #842029;
+  border: 1px solid rgba(132, 32, 41, 0.22);
+}
+
+.pickup-position-chip {
+  background: rgba(11, 94, 215, 0.09);
+  color: var(--accent-dark);
+  border: 1px solid rgba(11, 94, 215, 0.16);
+}
+
+.pickup-rookie-tag {
+  background: rgba(255, 193, 7, 0.18);
+  color: #7a5200;
+  border: 1px solid rgba(255, 193, 7, 0.28);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+@media (max-width: 520px) {
+  .pickup-info-tags {
+    margin-top: 3px;
+    gap: 3px;
+  }
+
+  .pickup-age-tag,
+  .pickup-position-chip,
+  .pickup-rookie-tag {
+    padding: 2px 5px;
+    font-size: 0.41rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .pickup-info-tags {
+    display: none;
   }
 }
