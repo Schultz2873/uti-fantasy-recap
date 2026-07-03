@@ -470,112 +470,6 @@
 }
 
 
-/* Extra compact Top Pickups on mobile */
-@media (max-width: 520px) {
-  #top-pickups .available-studs-grid {
-    gap: 14px;
-  }
-
-  .pickup-group-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 7px;
-  }
-
-  .available-stud-card.pickup-card {
-    min-height: 142px;
-    padding: 7px;
-    gap: 5px;
-    border-radius: 12px;
-  }
-
-  .pickup-player-name {
-    font-size: 0.68rem;
-    -webkit-line-clamp: 1;
-  }
-
-  .pickup-player-meta {
-    font-size: 0.50rem;
-  }
-
-  .pickup-score-box {
-    min-width: 34px;
-    padding: 4px;
-  }
-
-  .pickup-score-number {
-    font-size: 0.68rem;
-  }
-
-  .pickup-score-label {
-    display: none;
-  }
-
-  .pickup-card-tags {
-    gap: 4px;
-  }
-
-  .pickup-group-tag,
-  .pickup-range-tag,
-  .pickup-volume-tag {
-    font-size: 0.42rem;
-    padding: 3px 4px;
-  }
-
-  .pickup-reason-tag {
-    display: none;
-  }
-
-  .pickup-primary-stats,
-  .pickup-secondary-stats {
-    gap: 3px;
-  }
-
-  .pickup-primary-stat {
-    padding: 4px 2px;
-    border-radius: 8px;
-  }
-
-  .pickup-primary-value {
-    font-size: 0.56rem;
-  }
-
-  .pickup-primary-label {
-    font-size: 0.34rem;
-    margin-top: 2px;
-  }
-
-  .pickup-secondary-stat {
-    padding: 3px 2px;
-    border-radius: 7px;
-  }
-
-  .pickup-secondary-label {
-    font-size: 0.32rem;
-  }
-
-  .pickup-secondary-value {
-    font-size: 0.43rem;
-  }
-
-  .pickup-card-footer {
-    display: none;
-  }
-}
-
-@media (max-width: 380px) {
-  .available-stud-card.pickup-card {
-    min-height: 126px;
-  }
-
-  .pickup-volume-tag {
-    display: none;
-  }
-
-  .pickup-secondary-stats {
-    display: none;
-  }
-}
-
 
 /* Age and rookie tags */
 .pickup-position-line {
@@ -647,5 +541,217 @@
 @media (max-width: 380px) {
   .pickup-info-tags {
     display: none;
+  }
+}
+
+
+/* Mobile readability fix for Top Pickups */
+@media (max-width: 680px) {
+  #top-pickups .section-heading {
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  #top-pickups .leader-mode-toggle {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  #top-pickups .leader-mode-btn {
+    min-height: 34px;
+    padding: 7px 6px;
+    font-size: 0.66rem;
+    line-height: 1;
+    text-align: center;
+  }
+
+  .pickup-group-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .available-stud-card.pickup-card {
+    min-height: auto;
+    padding: 12px;
+    gap: 10px;
+    border-radius: 16px;
+  }
+
+  .pickup-card-header {
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .pickup-player-name {
+    font-size: 0.92rem;
+    line-height: 1.16;
+    -webkit-line-clamp: 2;
+  }
+
+  .pickup-player-meta {
+    font-size: 0.68rem;
+    line-height: 1.2;
+  }
+
+  .pickup-position-line,
+  .pickup-info-tags {
+    margin-top: 6px;
+    gap: 5px;
+  }
+
+  .pickup-age-tag,
+  .pickup-position-chip,
+  .pickup-rookie-tag {
+    padding: 4px 7px;
+    font-size: 0.58rem;
+  }
+
+  .pickup-score-box {
+    min-width: 48px;
+    padding: 8px 7px;
+    border-radius: 12px;
+  }
+
+  .pickup-score-number {
+    font-size: 0.95rem;
+  }
+
+  .pickup-score-label {
+    display: block;
+    font-size: 0.43rem;
+  }
+
+  .pickup-card-tags {
+    gap: 6px;
+  }
+
+  .pickup-group-tag,
+  .pickup-reason-tag,
+  .pickup-range-tag,
+  .pickup-volume-tag {
+    padding: 5px 7px;
+    font-size: 0.56rem;
+    line-height: 1;
+  }
+
+  .pickup-primary-stats {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .pickup-primary-stat {
+    padding: 8px 4px;
+    border-radius: 10px;
+  }
+
+  .pickup-primary-value {
+    font-size: 0.78rem;
+    line-height: 1;
+  }
+
+  .pickup-primary-label {
+    font-size: 0.48rem;
+    margin-top: 4px;
+  }
+
+  .pickup-secondary-stats {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 5px;
+  }
+
+  .pickup-secondary-stat {
+    padding: 6px 4px;
+    border-radius: 9px;
+  }
+
+  .pickup-secondary-label {
+    font-size: 0.45rem;
+  }
+
+  .pickup-secondary-value {
+    font-size: 0.64rem;
+  }
+
+  .pickup-card-footer {
+    display: flex;
+    font-size: 0.62rem;
+    line-height: 1.25;
+  }
+}
+
+@media (max-width: 430px) {
+  #top-pickups .leader-mode-toggle {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #top-pickups .leader-mode-btn {
+    font-size: 0.72rem;
+  }
+
+  .available-stud-card.pickup-card {
+    padding: 11px;
+  }
+
+  .pickup-player-name {
+    font-size: 0.88rem;
+  }
+
+  .pickup-card-tags {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pickup-group-tag,
+  .pickup-reason-tag,
+  .pickup-range-tag,
+  .pickup-volume-tag {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+    font-size: 0.54rem;
+  }
+
+  .pickup-primary-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pickup-primary-value {
+    font-size: 0.86rem;
+  }
+
+  .pickup-primary-label {
+    font-size: 0.52rem;
+  }
+
+  .pickup-secondary-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pickup-secondary-value {
+    font-size: 0.70rem;
+  }
+
+  .pickup-secondary-label {
+    font-size: 0.48rem;
+  }
+
+  .pickup-score-box {
+    min-width: 44px;
+  }
+}
+
+@media (max-width: 360px) {
+  .pickup-card-footer {
+    display: none;
+  }
+
+  .pickup-player-name {
+    font-size: 0.82rem;
+  }
+
+  .pickup-primary-value {
+    font-size: 0.80rem;
   }
 }
