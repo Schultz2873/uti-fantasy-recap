@@ -27,6 +27,8 @@ const topPickupCategories = [
   { label: "BB", group: "hitting", stat: "baseOnBalls", type: "max", pickupMinStat: "atBats", pickupMinValue: 10, pickupLast30MinValue: 40, pickupSeasonMinValue: 80 },
 
   { label: "SV+H-BS", group: "pitching", custom: "svhbs", type: "max", pickupMinStat: "inningsPitched", pickupMinValue: 1, pickupLast30MinValue: 4, pickupSeasonMinValue: 12 },
+  { label: "W", group: "pitching", stat: "wins", type: "max", pickupMinStat: "inningsPitched", pickupMinValue: 5, pickupLast30MinValue: 15, pickupSeasonMinValue: 40 },
+  { label: "QS", group: "pitching", stat: "qualityStarts", type: "max", pickupMinStat: "inningsPitched", pickupMinValue: 5, pickupLast30MinValue: 15, pickupSeasonMinValue: 40 },
   { label: "K", group: "pitching", stat: "strikeOuts", type: "max", pickupMinStat: "inningsPitched", pickupMinValue: 3, pickupLast30MinValue: 12, pickupSeasonMinValue: 30 },
   { label: "ERA", group: "pitching", stat: "era", type: "min", decimals: 2, pickupMinStat: "inningsPitched", pickupMinValue: 5, pickupLast30MinValue: 15, pickupSeasonMinValue: 40 },
   { label: "WHIP", group: "pitching", stat: "whip", type: "min", decimals: 3, pickupMinStat: "inningsPitched", pickupMinValue: 5, pickupLast30MinValue: 15, pickupSeasonMinValue: 40 },
@@ -560,6 +562,8 @@ function getPickupScore(rank, category) {
     BB: 0.95,
     NSB: 0.95,
     K: 1.2,
+    W: 1.15,
+    QS: 1.25,
     "SV+H-BS": 1.05,
     ERA: 1.0,
     WHIP: 1.0,
@@ -590,6 +594,220 @@ function formatPickupSample(sample) {
   return `${sample.label}: ${sample.value}`;
 }
 
+
+function getLast14DateRange() {
+  const endDate = new Date();
+  endDate.setHours(23, 59, 59, 999);
+
+  const startDate = new Date(endDate);
+  startDate.setDate(endDate.getDate() - 13);
+  startDate.setHours(0, 0, 0, 0);
+
+  return {
+    startDate,
+    endDate,
+    start: formatDate(startDate),
+    end: formatDate(endDate)
+  };
+}
+
+function getPickupRangeLabel(mode) {
+  if (mode === "last30") return "Last 30 days";
+  if (mode === "season") return "Season";
+  return "Last 14 days";
+}
+
+function getPickupGroupLabel(stud) {
+  return stud.group === "pitching" ? "Pitching Pickup" : "Hitting Pickup";
+}
+
+function getPickupReasonFromStud(stud) {
+  const category = stud.bestCategory?.category || "";
+
+  if (stud.group === "pitching") {
+    if (category === "SV+H-BS") return "Saves/Holds";
+    if (category === "W") return "Wins";
+    if (category === "QS") return "Quality Starts";
+    if (category === "K") return "Strikeouts";
+    if (category === "ERA" || category === "WHIP" || category === "BAA") return "Ratio Help";
+    return "Pitching Depth";
+  }
+
+  if (category === "HR" || category === "TB") return "Power";
+  if (category === "NSB") return "Speed";
+  if (category === "BB") return "Walks";
+  if (category === "RBI" || category === "R") return "Run Production";
+  if (category === "AVG") return "Average";
+  return "Volume Bat";
+}
+
+function formatPickupStat(value, fallback = "-") {
+  if (value === undefined || value === null || value === "") return fallback;
+
+  const numericValue = Number(value);
+
+  if (Number.isNaN(numericValue)) return escapeHtml(value);
+
+  if (Math.abs(numericValue) < 1 && numericValue !== 0) {
+    return numericValue.toFixed(3).replace(/^0/, "");
+  }
+
+  if (!Number.isInteger(numericValue)) {
+    return numericValue.toFixed(2).replace(/\.00$/, "");
+  }
+
+  return String(numericValue);
+}
+
+function getPlayerStatValue(stud, statName) {
+  const stat = stud.rawPlayer?.stat || {};
+
+  if (statName === "IP") return stat.inningsPitched || "0";
+  if (statName === "AB") return Number(stat.atBats || 0);
+  if (statName === "R") return Number(stat.runs || 0);
+  if (statName === "HR") return Number(stat.homeRuns || 0);
+  if (statName === "RBI") return Number(stat.rbi || 0);
+  if (statName === "NSB") return Number(stat.stolenBases || 0) - Number(stat.caughtStealing || 0);
+  if (statName === "AVG") return stat.avg ?? 0;
+  if (statName === "TB") return Number(stat.totalBases || 0);
+  if (statName === "BB") return Number(stat.baseOnBalls || 0);
+  if (statName === "SO") return Number(stat.strikeOuts || 0);
+
+  if (statName === "W") return Number(stat.wins || 0);
+  if (statName === "QS") return Number(stat.qualityStarts || 0);
+  if (statName === "SV+H") return Number(stat.saves || 0) + Number(stat.holds || 0);
+  if (statName === "K") return Number(stat.strikeOuts || 0);
+  if (statName === "ERA") return stat.era ?? 0;
+  if (statName === "WHIP") return stat.whip ?? 0;
+  if (statName === "BAA") return stat.avg ?? 0;
+
+  return "-";
+}
+
+function renderPickupPrimaryStat(label, value) {
+  return `
+    <div class="pickup-primary-stat">
+      <span class="pickup-primary-value">${formatPickupStat(value)}</span>
+      <span class="pickup-primary-label">${escapeHtml(label)}</span>
+    </div>
+  `;
+}
+
+function renderPickupSecondaryStat(label, value) {
+  return `
+    <div class="pickup-secondary-stat">
+      <span class="pickup-secondary-label">${escapeHtml(label)}</span>
+      <span class="pickup-secondary-value">${formatPickupStat(value)}</span>
+    </div>
+  `;
+}
+
+function renderPickupCard(stud) {
+  const isPitcher = stud.group === "pitching";
+  const rangeLabel = getPickupRangeLabel(pickupRangeMode);
+  const pickupScore = Math.round(stud.totalScore || 0);
+  const reason = getPickupReasonFromStud(stud);
+  const volumeLabel = isPitcher
+    ? `${formatPickupStat(getPlayerStatValue(stud, "IP"))} IP`
+    : `${formatPickupStat(getPlayerStatValue(stud, "AB"))} AB`;
+
+  const primaryStats = isPitcher
+    ? [
+        ["K", getPlayerStatValue(stud, "K")],
+        ["ERA", getPlayerStatValue(stud, "ERA")],
+        ["WHIP", getPlayerStatValue(stud, "WHIP")],
+        ["BAA", getPlayerStatValue(stud, "BAA")]
+      ]
+    : [
+        ["HR", getPlayerStatValue(stud, "HR")],
+        ["RBI", getPlayerStatValue(stud, "RBI")],
+        ["R", getPlayerStatValue(stud, "R")],
+        ["AVG", getPlayerStatValue(stud, "AVG")]
+      ];
+
+  const secondaryStats = isPitcher
+    ? [
+        ["IP", getPlayerStatValue(stud, "IP")],
+        ["W", getPlayerStatValue(stud, "W")],
+        ["QS", getPlayerStatValue(stud, "QS")],
+        ["SV+H", getPlayerStatValue(stud, "SV+H")]
+      ]
+    : [
+        ["AB", getPlayerStatValue(stud, "AB")],
+        ["BB", getPlayerStatValue(stud, "BB")],
+        ["SO", getPlayerStatValue(stud, "SO")],
+        ["TB", getPlayerStatValue(stud, "TB")]
+      ];
+
+  const extraCategories = stud.categories
+    .filter(item => item.category !== stud.bestCategory.category)
+    .sort((a, b) => a.rank - b.rank)
+    .slice(0, 2)
+    .map(item => `${escapeHtml(item.category)} #${escapeHtml(item.rank)}`)
+    .join(" · ");
+
+  return `
+    <article class="available-stud-card pickup-card ${isPitcher ? "pitching-pickup-card" : "hitting-pickup-card"}">
+      <div class="pickup-card-top">
+        <div class="pickup-player-main">
+          <div class="pickup-player-name">${escapeHtml(stud.name)}</div>
+          <div class="pickup-player-meta">${escapeHtml(stud.team || "Available player")}</div>
+        </div>
+
+        <div class="pickup-score-box">
+          <span class="pickup-score-number">${escapeHtml(pickupScore)}</span>
+          <span class="pickup-score-label">Score</span>
+        </div>
+      </div>
+
+      <div class="pickup-card-tags">
+        <span class="pickup-group-tag ${isPitcher ? "pickup-group-tag-pitching" : "pickup-group-tag-hitting"}">${getPickupGroupLabel(stud)}</span>
+        <span class="pickup-reason-tag">${escapeHtml(reason)}</span>
+        <span class="pickup-range-tag">${escapeHtml(rangeLabel)}</span>
+        <span class="pickup-volume-tag">${escapeHtml(volumeLabel)}</span>
+      </div>
+
+      <div class="pickup-primary-stats">
+        ${primaryStats.map(([label, value]) => renderPickupPrimaryStat(label, value)).join("")}
+      </div>
+
+      <div class="pickup-secondary-stats">
+        ${secondaryStats.map(([label, value]) => renderPickupSecondaryStat(label, value)).join("")}
+      </div>
+
+      <div class="pickup-card-footer">
+        <span class="pickup-owned-status">Available</span>
+        <span class="pickup-mini-note">${extraCategories || (isPitcher ? "Pitching pickup profile" : "Hitting pickup profile")}</span>
+      </div>
+    </article>
+  `;
+}
+
+function renderPickupGroup(title, subtitle, studs, emptyText) {
+  return `
+    <div class="pickup-group-block">
+      <div class="pickup-group-header">
+        <div>
+          <h3 class="pickup-group-title">${escapeHtml(title)}</h3>
+          <p class="pickup-group-subtitle">${escapeHtml(subtitle)}</p>
+        </div>
+        <span class="pickup-group-count">${studs.length} shown</span>
+      </div>
+
+      <div class="pickup-group-grid">
+        ${studs.length
+          ? studs.map(stud => renderPickupCard(stud)).join("")
+          : `
+            <article class="article-card">
+              <p class="article-summary">${escapeHtml(emptyText)}</p>
+            </article>
+          `
+        }
+      </div>
+    </div>
+  `;
+}
+
 function renderAvailableStuds(hittingStats, pitchingStats) {
   const grid = document.getElementById("availableStudsGrid");
   const tag = document.getElementById("availableStudsModeTag");
@@ -597,7 +815,7 @@ function renderAvailableStuds(hittingStats, pitchingStats) {
   if (!grid) return;
 
   if (tag) {
-    tag.textContent = pickupRangeMode === "season" ? "Season" : pickupRangeMode === "last30" ? "Last 30" : "Weekly";
+    tag.textContent = pickupRangeMode === "season" ? "Season" : pickupRangeMode === "last30" ? "Last 30" : "Last 14";
   }
 
   const candidateMap = new Map();
@@ -613,7 +831,7 @@ function renderAvailableStuds(hittingStats, pitchingStats) {
       if (owner) return;
 
       const rank = index + 1;
-      const playerKey = normalizePlayerName(name);
+      const playerKey = `${category.group}-${normalizePlayerName(name)}`;
       const score = getPickupScore(rank, category);
       const categoryResult = {
         category: category.label,
@@ -629,6 +847,8 @@ function renderAvailableStuds(hittingStats, pitchingStats) {
         candidateMap.set(playerKey, {
           name,
           team: item.player.team?.name || "",
+          group: category.group,
+          rawPlayer: item.player,
           totalScore: score,
           bestRank: rank,
           bestCategory: categoryResult,
@@ -661,9 +881,15 @@ function renderAvailableStuds(hittingStats, pitchingStats) {
       a.name.localeCompare(b.name)
     );
 
-  const studs = candidates.slice(0, 4);
+  const hittingPickups = candidates
+    .filter(candidate => candidate.group === "hitting")
+    .slice(0, 4);
 
-  if (!studs.length) {
+  const pitchingPickups = candidates
+    .filter(candidate => candidate.group === "pitching")
+    .slice(0, 4);
+
+  if (!hittingPickups.length && !pitchingPickups.length) {
     grid.innerHTML = `
       <article class="article-card">
         <p class="article-summary">
@@ -674,33 +900,21 @@ function renderAvailableStuds(hittingStats, pitchingStats) {
     return;
   }
 
-  grid.innerHTML = studs.map(stud => {
-    const secondaryCategories = stud.categories
-      .filter(item => item.category !== stud.bestCategory.category)
-      .sort((a, b) => a.rank - b.rank)
-      .slice(0, 2)
-      .map(item => `${escapeHtml(item.category)} #${escapeHtml(item.rank)}`)
-      .join(" · ");
+  grid.innerHTML = `
+    ${renderPickupGroup(
+      "Top Hitting Pickups",
+      "Bats with enough AB volume to actually matter.",
+      hittingPickups,
+      "No hitting pickups met the playing-time minimums."
+    )}
 
-    return `
-      <article class="available-stud-card">
-        <div class="available-stud-top">
-          <div class="available-stud-category">${escapeHtml(stud.bestCategory.category)}</div>
-          <div class="available-stud-rank">#${escapeHtml(stud.bestCategory.rank)}</div>
-        </div>
-        <div class="available-stud-name">${escapeHtml(stud.name)}</div>
-        <div class="available-stud-team">${escapeHtml(stud.team)}</div>
-        <div class="available-stud-team">
-          ${escapeHtml(formatPickupSample(stud.bestCategory.sample))}
-          ${secondaryCategories ? ` · ${secondaryCategories}` : ""}
-        </div>
-        <div class="available-stud-bottom">
-          <div class="available-stud-value">${escapeHtml(stud.bestCategory.value)}</div>
-          <span class="available-stud-label">Pickup</span>
-        </div>
-      </article>
-    `;
-  }).join("");
+    ${renderPickupGroup(
+      "Top Pitching Pickups",
+      "Arms helping with wins, QS, strikeouts, ratios, or saves/holds.",
+      pitchingPickups,
+      "No pitching pickups met the innings minimums."
+    )}
+  `;
 }
 
 function resetLeaderLoadingCards() {
@@ -842,7 +1056,7 @@ async function loadTopPickups() {
   `;
 
   if (tag) {
-    tag.textContent = pickupRangeMode === "season" ? "Season" : pickupRangeMode === "last30" ? "Last 30" : "Weekly";
+    tag.textContent = pickupRangeMode === "season" ? "Season" : pickupRangeMode === "last30" ? "Last 30" : "Last 14";
   }
 
   try {
@@ -862,7 +1076,7 @@ async function loadTopPickups() {
         fetchWeeklyStats("pitching", start, end)
       ]);
     } else {
-      const { start, end } = getWeeklyDateRange();
+      const { start, end } = getLast14DateRange();
 
       [hittingStats, pitchingStats] = await Promise.all([
         fetchWeeklyStats("hitting", start, end),
