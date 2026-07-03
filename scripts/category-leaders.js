@@ -428,7 +428,7 @@ function normalizePitcherDisplayPositions(split, positions) {
   const normalizedPositions = sortEligibilityPositions((positions || []).map(normalizeEligibilityPosition));
   const hasPitcherPosition = normalizedPositions.some(position => ["P", "SP", "RP"].includes(position));
 
-  if (!hasPitcherPosition) {
+  if (!hasPitcherPosition && !isActualPitcherForPickup(split)) {
     return [];
   }
 
@@ -440,7 +440,23 @@ function normalizePitcherDisplayPositions(split, positions) {
 
   const explicitRoles = normalizedPositions.filter(position => ["SP", "RP"].includes(position));
 
-  return explicitRoles;
+  if (explicitRoles.length) {
+    return explicitRoles;
+  }
+
+  const stat = split?.stat || {};
+  const gamesStarted = Number(stat.gamesStarted ?? stat.gamesStartedPitching ?? stat.starts ?? 0);
+  const gamesPitched = Number(stat.gamesPitched ?? stat.gamesPlayed ?? stat.games ?? 0);
+
+  if (gamesStarted > 0) {
+    return ["SP"];
+  }
+
+  if (gamesPitched > 0 || isActualPitcherForPickup(split)) {
+    return ["RP"];
+  }
+
+  return [];
 }
 
 function getFieldingGamesAtPosition(split) {
@@ -841,6 +857,58 @@ function getSortedPickupPlayers(players, category) {
     });
 }
 
+
+function getPitchingImpactStats(studOrSplit) {
+  const split = studOrSplit?.rawPlayer || studOrSplit || {};
+  const stat = split.stat || {};
+  const saves = Number(stat.saves || 0);
+  const holds = Number(stat.holds || 0);
+  const blownSaves = Number(stat.blownSaves || 0);
+
+  return {
+    inningsPitched: Number(stat.inningsPitched || 0),
+    strikeouts: Number(stat.strikeOuts || 0),
+    wins: Number(stat.wins || 0),
+    qualityStarts: Number(stat.qualityStarts || 0),
+    svh: saves + holds,
+    svhbs: saves + holds - blownSaves,
+    gamesStarted: Number(stat.gamesStarted ?? stat.gamesStartedPitching ?? stat.starts ?? 0),
+    gamesPitched: Number(stat.gamesPitched ?? stat.gamesPlayed ?? stat.games ?? 0)
+  };
+}
+
+function hasPitchingPickupImpact(stud) {
+  if (stud.group !== "pitching") {
+    return true;
+  }
+
+  const impact = getPitchingImpactStats(stud);
+
+  return (
+    impact.wins >= 1 ||
+    impact.qualityStarts >= 1 ||
+    impact.svh >= 2 ||
+    impact.strikeouts >= 10 ||
+    (impact.gamesStarted >= 1 && impact.inningsPitched >= 5 && impact.strikeouts >= 6)
+  );
+}
+
+function getPitchingImpactBonus(stud) {
+  if (stud.group !== "pitching") {
+    return 0;
+  }
+
+  const impact = getPitchingImpactStats(stud);
+
+  return (
+    impact.svh * 3.5 +
+    impact.wins * 4 +
+    impact.qualityStarts * 3 +
+    Math.min(impact.strikeouts, 18) * 0.25 +
+    Math.min(impact.inningsPitched, 18) * 0.15
+  );
+}
+
 function getPickupScore(rank, category) {
   const categoryWeight = {
     HR: 1.25,
@@ -850,13 +918,18 @@ function getPickupScore(rank, category) {
     AVG: 1.0,
     BB: 0.95,
     NSB: 0.95,
-    K: 1.2,
-    W: 1.15,
-    QS: 1.25,
-    "SV+H-BS": 1.05,
-    ERA: 1.0,
-    WHIP: 1.0,
-    BAA: 0.95
+
+    // Pitching pickup priority:
+    // category winners should be pitchers who can actually move W, QS, SV+H, and K.
+    "SV+H-BS": 2.0,
+    W: 1.8,
+    QS: 1.55,
+    K: 1.05,
+
+    // Ratios are useful, but they should not let random middle relievers dominate.
+    ERA: 0.35,
+    WHIP: 0.35,
+    BAA: 0.30
   }[category.label] || 1;
 
   return Math.max(0, 13 - rank) * categoryWeight;
@@ -884,6 +957,17 @@ function formatPickupSample(sample) {
 }
 
 
+function getLast7DateRange() {
+  const endDate = new Date();
+  endDate.setHours(23, 59, 59, 999);
+
+  const startDate = new Date(endDate);
+  startDate.setDate(endDate.getDate() - 6);
+  startDate.setHours(0, 0, 0, 0);
+
+  return { startDate, endDate, start: formatDate(startDate), end: formatDate(endDate) };
+}
+
 function getLast14DateRange() {
   const endDate = new Date();
   endDate.setHours(23, 59, 59, 999);
@@ -901,6 +985,7 @@ function getLast14DateRange() {
 }
 
 function getPickupRangeLabel(mode) {
+  if (mode === "last7") return "Last 7 days";
   if (mode === "last30") return "Last 30 days";
   if (mode === "season") return "Season";
   return "Last 14 days";
@@ -914,12 +999,12 @@ function getPickupReasonFromStud(stud) {
   const category = stud.bestCategory?.category || "";
 
   if (stud.group === "pitching") {
-    if (category === "SV+H-BS") return "Saves/Holds";
-    if (category === "W") return "Wins";
+    if (category === "SV+H-BS") return "SV+H Priority";
+    if (category === "W") return "Wins Priority";
     if (category === "QS") return "Quality Starts";
     if (category === "K") return "Strikeouts";
-    if (category === "ERA" || category === "WHIP" || category === "BAA") return "Ratio Help";
-    return "Pitching Depth";
+    if (category === "ERA" || category === "WHIP" || category === "BAA") return "Ratio Support";
+    return "Pitching Impact";
   }
 
   if (category === "HR" || category === "TB") return "Power";
@@ -992,6 +1077,42 @@ function renderPickupSecondaryStat(label, value) {
 }
 
 
+
+function isActualPitcherForPickup(split) {
+  const player = split?.player || {};
+  const stat = split?.stat || {};
+
+  const rawPosition =
+    player.primaryPosition?.abbreviation ||
+    player.primaryPosition?.name ||
+    split?.position?.abbreviation ||
+    split?.position?.name ||
+    "";
+
+  const normalizedPosition = normalizeEligibilityPosition(rawPosition);
+
+  const gamesStarted = Number(stat.gamesStarted ?? stat.gamesStartedPitching ?? stat.starts ?? 0);
+  const gamesPitched = Number(stat.gamesPitched ?? stat.gamesPlayed ?? stat.games ?? 0);
+  const inningsPitched = Number(stat.inningsPitched || 0);
+  const strikeouts = Number(stat.strikeOuts || 0);
+  const wins = Number(stat.wins || 0);
+  const qualityStarts = Number(stat.qualityStarts || 0);
+  const saves = Number(stat.saves || 0);
+  const holds = Number(stat.holds || 0);
+
+  return (
+    ["P", "SP", "RP"].includes(normalizedPosition) ||
+    gamesStarted > 0 ||
+    gamesPitched > 0 ||
+    inningsPitched > 0 ||
+    strikeouts > 0 ||
+    wins > 0 ||
+    qualityStarts > 0 ||
+    saves > 0 ||
+    holds > 0
+  );
+}
+
 function isPitcherPrimaryPosition(splitOrStud) {
   const split = splitOrStud?.rawPlayer || splitOrStud || {};
   const player = split.player || {};
@@ -1018,7 +1139,7 @@ function filterDisplayedEligibilityPositions(stud, positions) {
   }
 
   if (stud.group === "pitching") {
-    if (!isPitcherPrimaryPosition(stud)) {
+    if (!isActualPitcherForPickup(stud.rawPlayer)) {
       return [];
     }
 
@@ -1186,7 +1307,7 @@ async function renderAvailableStuds(hittingStats, pitchingStats, eligibilityLook
   if (!grid) return;
 
   if (tag) {
-    tag.textContent = pickupRangeMode === "season" ? "Season" : pickupRangeMode === "last30" ? "Last 30" : "Last 14";
+    tag.textContent = getPickupRangeLabel(pickupRangeMode).replace(" days", "");
   }
 
   const candidateMap = new Map();
@@ -1201,8 +1322,8 @@ async function renderAvailableStuds(hittingStats, pitchingStats, eligibilityLook
 
       if (owner) return;
 
-      // position-player-pitcher guard: do not rank position players as pitching pickups.
-      if (category.group === "pitching" && !isPitcherPrimaryPosition(item.player)) {
+      // position-player-pitcher guard: allow real pitchers from pitching stats, but block true position players.
+      if (category.group === "pitching" && !isActualPitcherForPickup(item.player)) {
         return;
       }
 
@@ -1445,7 +1566,7 @@ async function loadTopPickups() {
   `;
 
   if (tag) {
-    tag.textContent = pickupRangeMode === "season" ? "Season" : pickupRangeMode === "last30" ? "Last 30" : "Last 14";
+    tag.textContent = getPickupRangeLabel(pickupRangeMode).replace(" days", "");
   }
 
   try {
@@ -1457,6 +1578,13 @@ async function loadTopPickups() {
       [hittingStats, pitchingStats] = await Promise.all([
         fetchSeasonStats("hitting"),
         fetchSeasonStats("pitching")
+      ]);
+    } else if (pickupRangeMode === "last7") {
+      const { start, end } = getLast7DateRange();
+
+      [hittingStats, pitchingStats] = await Promise.all([
+        fetchWeeklyStats("hitting", start, end),
+        fetchWeeklyStats("pitching", start, end)
       ]);
     } else if (pickupRangeMode === "last30") {
       const { start, end } = getLast30DateRange();
