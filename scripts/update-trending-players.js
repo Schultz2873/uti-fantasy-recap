@@ -247,6 +247,7 @@ function buildTrendPlayer(rawPlayer, source = "ESPN") {
 
   const trendScore = Math.round((addedPercent * 3) + (rosteredPercent * 0.75) - (droppedPercent * 2));
   const isPitcher = positions.some(position => ["P", "SP", "RP"].includes(position));
+  const isTrueAddTrend = addedPercent > 0;
 
   return {
     name,
@@ -258,10 +259,15 @@ function buildTrendPlayer(rawPlayer, source = "ESPN") {
     trendScore,
     source,
     timeWindow: "Last 7 days",
-    tags: [addedPercent >= 10 ? "Hot Add" : "Rising", isPitcher ? "Arm Watch" : "Bat Watch"],
-    reason: isPitcher
-      ? "Popular pitching add across other fantasy leagues."
-      : "Popular hitting add across other fantasy leagues."
+    tags: [
+      isTrueAddTrend ? (addedPercent >= 10 ? "Hot Add" : "Rising") : "Popular Available",
+      isPitcher ? "Arm Watch" : "Bat Watch"
+    ],
+    reason: isTrueAddTrend
+      ? (isPitcher
+        ? "Popular pitching add across other fantasy leagues."
+        : "Popular hitting add across other fantasy leagues.")
+      : "Highly rostered in other leagues and still available in UTI."
   };
 }
 
@@ -372,11 +378,11 @@ function dedupePlayers(players) {
   return [...map.values()];
 }
 
-function getEspnApiFilter(sortKey = "sortPercChange", limit = MAX_PLAYERS) {
+function getEspnApiFilter(sortKey = "sortPercChange", limit = MAX_PLAYERS, offset = 0) {
   return {
     players: {
       limit,
-      offset: 0,
+      offset,
       sortPercChange: sortKey === "sortPercChange" ? { sortAsc: false, sortPriority: 1 } : undefined,
       sortPercentChange: sortKey === "sortPercentChange" ? { sortAsc: false, sortPriority: 1 } : undefined,
       sortPercOwned: sortKey === "sortPercOwned" ? { sortAsc: false, sortPriority: 1 } : undefined
@@ -415,27 +421,41 @@ function parseEspnApiPlayers(data) {
 async function fetchEspnApiTrendPlayers() {
   const sortAttempts = ["sortPercChange", "sortPercentChange", "sortPercOwned"];
   const allPlayers = [];
+  const pageLimit = 200;
 
   for (const sortKey of sortAttempts) {
-    const filter = JSON.stringify(cleanUndefinedForJson(getEspnApiFilter(sortKey, Math.max(MAX_PLAYERS * 2, 150))));
+    // ESPN currently rejects some add/drop sort keys for baseball, but sortPercOwned works.
+    // For dynasty leagues, the first page of most-rostered players is usually all owned,
+    // so pull deeper pages too and let the UTI owner filter find available names.
+    const offsets = sortKey === "sortPercOwned"
+      ? [0, 200, 400, 600, 800, 1000, 1200]
+      : [0];
 
-    const response = await fetch(ESPN_FANTASY_API_URL, {
-      headers: {
-        "User-Agent": "Mozilla/5.0 UTI-Fantasy-Baseball-Trending-Updater/1.0",
-        "Accept": "application/json,text/plain,*/*",
-        "x-fantasy-filter": filter
+    for (const offset of offsets) {
+      const filter = JSON.stringify(cleanUndefinedForJson(getEspnApiFilter(sortKey, pageLimit, offset)));
+
+      const response = await fetch(ESPN_FANTASY_API_URL, {
+        headers: {
+          "User-Agent": "Mozilla/5.0 UTI-Fantasy-Baseball-Trending-Updater/1.0",
+          "Accept": "application/json,text/plain,*/*",
+          "x-fantasy-filter": filter
+        }
+      });
+
+      if (!response.ok) {
+        console.warn(`ESPN API ${sortKey} offset ${offset} request failed: ${response.status} ${response.statusText}`);
+        continue;
       }
-    });
 
-    if (!response.ok) {
-      console.warn(`ESPN API ${sortKey} request failed: ${response.status} ${response.statusText}`);
-      continue;
+      const data = await response.json();
+      const players = parseEspnApiPlayers(data);
+      console.log(`Fetched ${players.length} candidates from ESPN API using ${sortKey} offset ${offset}`);
+      allPlayers.push(...players);
+
+      if (players.length < pageLimit) {
+        break;
+      }
     }
-
-    const data = await response.json();
-    const players = parseEspnApiPlayers(data);
-    console.log(`Fetched ${players.length} candidates from ESPN API using ${sortKey}`);
-    allPlayers.push(...players);
   }
 
   return dedupePlayers(allPlayers);
@@ -496,7 +516,11 @@ async function main() {
 
   const availablePlayers = dedupePlayers(rawPlayers)
     .filter(player => player.name && !getFantasyOwner(player.name, ownersLookup))
-    .filter(player => player.addedPercent > 0 || player.trendScore > 0)
+    .filter(player =>
+      Number(player.addedPercent || 0) > 0 ||
+      Number(player.rosteredPercent || 0) > 0 ||
+      Number(player.trendScore || 0) > 0
+    )
     .sort((a, b) =>
       b.addedPercent - a.addedPercent ||
       b.trendScore - a.trendScore ||
@@ -507,7 +531,7 @@ async function main() {
 
   if (!availablePlayers.length) {
     throw new Error(
-      "No available trend players were parsed. ESPN API/page data may have changed or returned no public candidates. Existing trending-players.js was not overwritten."
+      "No available/popular players were parsed after filtering against fantasy-owners.js. Existing trending-players.js was not overwritten."
     );
   }
 
