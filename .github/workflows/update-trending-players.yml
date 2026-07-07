@@ -1,0 +1,33 @@
+name: Update Trending Available Players
+
+on:
+  schedule:
+    # Runs every morning at 8:15 AM Central during the MLB season-ish.
+    # GitHub cron uses UTC.
+    - cron: "15 13 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-trending-players:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Update trending players
+        run: node scripts/update-trending-players.js
+
+      - name: Commit updated trend data
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Update trending available players"
+          file_pattern: data/trending-players.js
