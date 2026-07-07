@@ -1794,6 +1794,13 @@ async function loadTopPickups() {
     tag.textContent = getPickupRangeLabel(pickupRangeMode).replace(" days", "");
   }
 
+  // If the GitHub Action generated market trend data, render it immediately.
+  // Do not wait on MLB Stats API fallback calls, because those are only needed when
+  // there is no usable data/trending-players.js file.
+  if (renderMarketTrendPlayers()) {
+    return;
+  }
+
   try {
     let hittingStats = [];
     let pitchingStats = [];
@@ -1831,10 +1838,14 @@ async function loadTopPickups() {
   } catch (error) {
     console.error("Top pickups failed:", error);
 
+    if (renderMarketTrendPlayers()) {
+      return;
+    }
+
     grid.innerHTML = `
       <article class="article-card">
         <p class="article-summary">
-          Top pickups could not load right now.
+          Trending Available could not load right now.
         </p>
       </article>
     `;
