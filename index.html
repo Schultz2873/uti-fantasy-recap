@@ -985,10 +985,13 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
 </script>
 <script src="data/fantasy-owners.js?v=owners-updated-shohei-latz"></script>
-<script src="data/trending-players.js?v=market-v1"></script>
+<script>
+  // Always load the newest generated trend file after the GitHub Action updates it.
+  document.write(`<script src="data/trending-players.js?v=${Date.now()}"><\/script>`);
+</script>
 <script src="data/team-logos.js"></script>
 <script src="data/homerun-pool.js"></script>
-<script src="scripts/category-leaders.js?v=lite-v2"></script>
+<script src="scripts/category-leaders.js?v=market-v6"></script>
 
 <script src="scripts/homerun-pool.js?v=logos"></script>
 
@@ -1077,7 +1080,7 @@
         <div>
           <h2 class="section-title" style="margin-bottom:4px;">Trending Available</h2>
           <p class="section-subtitle">
-            Available UTI players getting added in other fantasy leagues. If no add/drop market file is loaded, this falls back to a lighter stat-based wire score.
+            Popular players from other fantasy leagues, filtered against UTI rosters so only available guys show.
           </p>
         </div>
         <div class="leader-header-actions">
