@@ -23,6 +23,8 @@ const OUTPUT_PATH = path.join(ROOT_DIR, "data", "trending-players.js");
 
 const SEASON = process.env.FANTASY_SEASON || String(new Date().getFullYear());
 const ESPN_ADDED_DROPPED_URL = process.env.ESPN_ADDED_DROPPED_URL || "https://fantasy.espn.com/baseball/addeddropped";
+const ESPN_FANTASY_API_URL = process.env.ESPN_FANTASY_API_URL ||
+  `https://lm-api-reads.fantasy.espn.com/apis/v3/games/flb/seasons/${SEASON}/segments/0/leaguedefaults/1?view=kona_player_info`;
 const MAX_PLAYERS = Number(process.env.TRENDING_PLAYER_LIMIT || 80);
 
 const PLAYER_NAME_ALIASES = {
@@ -109,6 +111,38 @@ function getFantasyOwner(playerName, ownersLookup) {
   );
 }
 
+const ESPN_SLOT_POSITION_MAP = {
+  0: "C",
+  1: "1B",
+  2: "2B",
+  3: "3B",
+  4: "SS",
+  5: "OF",
+  6: "MI",
+  7: "CI",
+  8: "OF",
+  9: "OF",
+  10: "OF",
+  11: "UTIL",
+  12: "UTIL",
+  13: "P",
+  14: "SP",
+  15: "RP",
+  16: "BE"
+};
+
+const ESPN_DEFAULT_POSITION_MAP = {
+  1: "SP",
+  2: "RP",
+  3: "C",
+  4: "1B",
+  5: "2B",
+  6: "3B",
+  7: "SS",
+  8: "OF",
+  9: "DH"
+};
+
 function normalizePositions(rawValue) {
   const rawPositions = Array.isArray(rawValue)
     ? rawValue
@@ -116,11 +150,22 @@ function normalizePositions(rawValue) {
       .replace(/[()]/g, "")
       .split(/[\/|,\s]+/g);
 
-  const order = ["C", "1B", "2B", "3B", "SS", "OF", "UTIL", "SP", "RP", "P"];
+  const order = ["C", "1B", "2B", "3B", "SS", "MI", "CI", "OF", "UTIL", "SP", "RP", "P"];
   const positions = [...new Set(rawPositions
-    .map(position => String(position || "").trim().toUpperCase())
+    .map(position => {
+      if (typeof position === "number") {
+        return ESPN_SLOT_POSITION_MAP[position] || ESPN_DEFAULT_POSITION_MAP[position] || "";
+      }
+
+      const stringValue = String(position || "").trim().toUpperCase();
+      if (/^\d+$/.test(stringValue)) {
+        return ESPN_SLOT_POSITION_MAP[Number(stringValue)] || ESPN_DEFAULT_POSITION_MAP[Number(stringValue)] || "";
+      }
+
+      return stringValue;
+    })
     .map(position => ["LF", "CF", "RF"].includes(position) ? "OF" : position)
-    .filter(position => order.includes(position))
+    .filter(position => order.includes(position) && position !== "BE")
   )];
 
   return positions.sort((a, b) => order.indexOf(a) - order.indexOf(b));
@@ -144,6 +189,7 @@ function buildTrendPlayer(rawPlayer, source = "ESPN") {
   const team = getFirstValue(rawPlayer, [
     "player.proTeamAbbreviation",
     "player.proTeam",
+    "player.proTeamId",
     "player.team.abbreviation",
     "player.team.name",
     "proTeamAbbreviation",
@@ -170,6 +216,7 @@ function buildTrendPlayer(rawPlayer, source = "ESPN") {
     "addPercent",
     "percentChange",
     "percentChange7Day",
+    "percentChangeLast7Days",
     "ownership.percentChange",
     "ownership.percentChange7Day",
     "player.ownership.percentChange",
@@ -325,7 +372,76 @@ function dedupePlayers(players) {
   return [...map.values()];
 }
 
-async function fetchEspnTrendPlayers() {
+function getEspnApiFilter(sortKey = "sortPercChange", limit = MAX_PLAYERS) {
+  return {
+    players: {
+      limit,
+      offset: 0,
+      sortPercChange: sortKey === "sortPercChange" ? { sortAsc: false, sortPriority: 1 } : undefined,
+      sortPercentChange: sortKey === "sortPercentChange" ? { sortAsc: false, sortPriority: 1 } : undefined,
+      sortPercOwned: sortKey === "sortPercOwned" ? { sortAsc: false, sortPriority: 1 } : undefined
+    }
+  };
+}
+
+function cleanUndefinedForJson(value) {
+  if (Array.isArray(value)) {
+    return value.map(cleanUndefinedForJson);
+  }
+
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value)
+        .filter(([, entryValue]) => entryValue !== undefined)
+        .map(([key, entryValue]) => [key, cleanUndefinedForJson(entryValue)])
+    );
+  }
+
+  return value;
+}
+
+function parseEspnApiPlayers(data) {
+  const rawPlayers = Array.isArray(data?.players)
+    ? data.players
+    : Array.isArray(data)
+      ? data
+      : [];
+
+  return rawPlayers
+    .map(item => buildTrendPlayer(item, "ESPN API"))
+    .filter(player => player && (player.addedPercent > 0 || player.rosteredPercent > 0));
+}
+
+async function fetchEspnApiTrendPlayers() {
+  const sortAttempts = ["sortPercChange", "sortPercentChange", "sortPercOwned"];
+  const allPlayers = [];
+
+  for (const sortKey of sortAttempts) {
+    const filter = JSON.stringify(cleanUndefinedForJson(getEspnApiFilter(sortKey, Math.max(MAX_PLAYERS * 2, 150))));
+
+    const response = await fetch(ESPN_FANTASY_API_URL, {
+      headers: {
+        "User-Agent": "Mozilla/5.0 UTI-Fantasy-Baseball-Trending-Updater/1.0",
+        "Accept": "application/json,text/plain,*/*",
+        "x-fantasy-filter": filter
+      }
+    });
+
+    if (!response.ok) {
+      console.warn(`ESPN API ${sortKey} request failed: ${response.status} ${response.statusText}`);
+      continue;
+    }
+
+    const data = await response.json();
+    const players = parseEspnApiPlayers(data);
+    console.log(`Fetched ${players.length} candidates from ESPN API using ${sortKey}`);
+    allPlayers.push(...players);
+  }
+
+  return dedupePlayers(allPlayers);
+}
+
+async function fetchEspnPageTrendPlayers() {
   const response = await fetch(ESPN_ADDED_DROPPED_URL, {
     headers: {
       "User-Agent": "Mozilla/5.0 UTI-Fantasy-Baseball-Trending-Updater/1.0",
@@ -334,7 +450,7 @@ async function fetchEspnTrendPlayers() {
   });
 
   if (!response.ok) {
-    throw new Error(`ESPN request failed: ${response.status} ${response.statusText}`);
+    throw new Error(`ESPN page request failed: ${response.status} ${response.statusText}`);
   }
 
   const html = await response.text();
@@ -342,6 +458,19 @@ async function fetchEspnTrendPlayers() {
   const renderedPlayers = parseRenderedRows(html);
 
   return dedupePlayers([...jsonPlayers, ...renderedPlayers]);
+}
+
+async function fetchEspnTrendPlayers() {
+  const apiPlayers = await fetchEspnApiTrendPlayers();
+
+  if (apiPlayers.length) {
+    return apiPlayers;
+  }
+
+  console.warn("ESPN API returned 0 candidates. Trying ESPN rendered page fallback...");
+
+  const pagePlayers = await fetchEspnPageTrendPlayers();
+  return dedupePlayers(pagePlayers);
 }
 
 function writeTrendingPlayers(players) {
@@ -378,7 +507,7 @@ async function main() {
 
   if (!availablePlayers.length) {
     throw new Error(
-      "No available trend players were parsed. ESPN may have changed its page markup. Existing trending-players.js was not overwritten."
+      "No available trend players were parsed. ESPN API/page data may have changed or returned no public candidates. Existing trending-players.js was not overwritten."
     );
   }
 
