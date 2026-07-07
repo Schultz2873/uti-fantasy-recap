@@ -1186,93 +1186,276 @@ function getPickupPositionText(stud) {
   return filteredFallback.join("/");
 }
 
-function renderPickupCard(stud) {
+function getFirstDefinedValue(source, keys, fallback = "") {
+  for (const key of keys) {
+    if (source && source[key] !== undefined && source[key] !== null && source[key] !== "") {
+      return source[key];
+    }
+  }
+
+  return fallback;
+}
+
+function parsePercentValue(value, fallback = 0) {
+  if (value === undefined || value === null || value === "") return fallback;
+
+  if (typeof value === "string") {
+    const cleanedValue = value.replace("%", "").replace("+", "").trim();
+    const parsedValue = Number(cleanedValue);
+    return Number.isFinite(parsedValue) ? parsedValue : fallback;
+  }
+
+  const parsedValue = Number(value);
+  return Number.isFinite(parsedValue) ? parsedValue : fallback;
+}
+
+function formatPercentChange(value) {
+  const numericValue = parsePercentValue(value);
+  const prefix = numericValue > 0 ? "+" : "";
+
+  return `${prefix}${numericValue.toFixed(1).replace(/\.0$/, "")}%`;
+}
+
+function formatPercentValue(value) {
+  const numericValue = parsePercentValue(value);
+  return `${numericValue.toFixed(1).replace(/\.0$/, "")}%`;
+}
+
+function getMarketTrendSourcePlayers() {
+  const possibleSources = [
+    // Broad market list from Yahoo/ESPN/Fantrax/etc.
+    // This can include owned players; getAvailableMarketTrendPlayers() filters them out with fantasy-owners.js.
+    window.TRENDING_PLAYERS,
+    window.FANTASY_TRENDING_PLAYERS,
+    window.TRENDING_AVAILABLE_PLAYERS,
+    window.TOP_PICKUP_TRENDS,
+    window.AVAILABLE_PLAYER_TRENDS
+  ];
+
+  return possibleSources.find(source => Array.isArray(source)) || [];
+}
+
+function normalizeTrendPositions(player) {
+  const rawPositions = getFirstDefinedValue(player, ["positions", "eligiblePositions", "position", "pos"], []);
+  const positions = Array.isArray(rawPositions)
+    ? rawPositions
+    : String(rawPositions || "").split(/[\/|,]/g);
+
+  return sortEligibilityPositions(
+    positions
+      .map(position => normalizeEligibilityPosition(position))
+      .filter(Boolean)
+  );
+}
+
+function getTrendPlayerGroup(player, positions) {
+  const rawGroup = String(getFirstDefinedValue(player, ["group", "type", "playerType"], "")).toLowerCase();
+
+  if (rawGroup.includes("pitch")) return "pitching";
+  if (rawGroup.includes("hit") || rawGroup.includes("bat")) return "hitting";
+
+  return positions.some(position => ["P", "SP", "RP"].includes(position)) ? "pitching" : "hitting";
+}
+
+function getTrendPlayerReason(player, group, addedPercent, droppedPercent) {
+  const explicitReason = getFirstDefinedValue(player, ["reason", "fantasyNote", "note", "summary", "why"], "");
+
+  if (explicitReason) return explicitReason;
+
+  const tags = getTrendPlayerTags(player, group, addedPercent, droppedPercent);
+
+  if (tags.length) {
+    return tags[0];
+  }
+
+  return group === "pitching" ? "Market is chasing this arm" : "Market is chasing this bat";
+}
+
+function getTrendPlayerTags(player, group, addedPercent, droppedPercent) {
+  const explicitTags = getFirstDefinedValue(player, ["tags", "labels"], []);
+
+  if (Array.isArray(explicitTags) && explicitTags.length) {
+    return explicitTags.slice(0, 3);
+  }
+
+  const tags = [];
+
+  if (addedPercent >= 20) tags.push("Nuclear Add Spike");
+  else if (addedPercent >= 10) tags.push("Hot Add");
+  else if (addedPercent >= 5) tags.push("Rising");
+
+  if (droppedPercent >= 8) tags.push("Volatile");
+
+  if (group === "pitching") {
+    tags.push("Arm Watch");
+  } else {
+    tags.push("Bat Watch");
+  }
+
+  return tags.slice(0, 3);
+}
+
+function normalizeMarketTrendPlayer(player) {
+  const name = getFirstDefinedValue(player, ["name", "playerName", "fullName", "player"], "");
+  const team = getFirstDefinedValue(player, ["team", "mlbTeam", "teamName", "club"], "");
+  const positions = normalizeTrendPositions(player);
+  const group = getTrendPlayerGroup(player, positions);
+  const addedPercent = parsePercentValue(getFirstDefinedValue(player, ["addedPercent", "addPercent", "addsPercent", "addsPct", "percentAdded", "added", "add"], 0));
+  const droppedPercent = parsePercentValue(getFirstDefinedValue(player, ["droppedPercent", "dropPercent", "dropsPercent", "dropsPct", "percentDropped", "dropped", "drop"], 0));
+  const rosteredPercent = parsePercentValue(getFirstDefinedValue(player, ["rosteredPercent", "rosterPercent", "percentRostered", "ownedPercent", "percentOwned", "owned", "rostered"], 0));
+  const manualScore = parsePercentValue(getFirstDefinedValue(player, ["trendScore", "score"], 0));
+  const trendScore = manualScore || Math.round((addedPercent * 3) + (rosteredPercent * 0.75) - (droppedPercent * 2));
+  const source = getFirstDefinedValue(player, ["source", "platform"], "Market trend");
+  const timeWindow = getFirstDefinedValue(player, ["timeWindow", "range", "period"], "Current");
+  const tags = getTrendPlayerTags(player, group, addedPercent, droppedPercent);
+
+  return {
+    ...player,
+    name,
+    team,
+    positions,
+    group,
+    addedPercent,
+    droppedPercent,
+    rosteredPercent,
+    trendScore,
+    source,
+    timeWindow,
+    tags,
+    reason: getTrendPlayerReason(player, group, addedPercent, droppedPercent)
+  };
+}
+
+function getAvailableMarketTrendPlayers() {
+  return getMarketTrendSourcePlayers()
+    .map(normalizeMarketTrendPlayer)
+    .filter(player => player.name && !getFantasyOwner(player.name))
+    .sort((a, b) =>
+      b.addedPercent - a.addedPercent ||
+      b.trendScore - a.trendScore ||
+      b.rosteredPercent - a.rosteredPercent ||
+      a.name.localeCompare(b.name)
+    );
+}
+
+function renderMarketStat(label, value, emphasisClass = "") {
+  return `
+    <div class="pickup-market-stat ${emphasisClass}">
+      <span class="pickup-market-value">${escapeHtml(value)}</span>
+      <span class="pickup-market-label">${escapeHtml(label)}</span>
+    </div>
+  `;
+}
+
+function renderTrendTags(tags) {
+  return (tags || [])
+    .slice(0, 3)
+    .map(tag => `<span class="pickup-reason-tag">${escapeHtml(tag)}</span>`)
+    .join("");
+}
+
+function renderMarketTrendCard(player) {
+  const isPitcher = player.group === "pitching";
+  const positionText = player.positions?.length ? player.positions.join("/") : (isPitcher ? "P" : "UTIL");
+  const addedText = formatPercentChange(player.addedPercent);
+  const rosteredText = formatPercentValue(player.rosteredPercent);
+  const droppedText = formatPercentValue(player.droppedPercent);
+
+  return `
+    <article class="available-stud-card pickup-card pickup-trend-card ${isPitcher ? "pitching-pickup-card" : "hitting-pickup-card"}">
+      <div class="pickup-card-top">
+        <div class="pickup-player-main">
+          <div class="pickup-player-name">${escapeHtml(player.name)}</div>
+          <div class="pickup-player-meta">${escapeHtml(positionText)} • ${escapeHtml(player.team || "MLB")}</div>
+        </div>
+
+        <div class="pickup-score-box pickup-add-box">
+          <span class="pickup-score-number">${escapeHtml(addedText)}</span>
+          <span class="pickup-score-label">Added</span>
+        </div>
+      </div>
+
+      <div class="pickup-card-tags">
+        <span class="pickup-group-tag ${isPitcher ? "pickup-group-tag-pitching" : "pickup-group-tag-hitting"}">${isPitcher ? "Pitching Trend" : "Hitting Trend"}</span>
+        ${renderTrendTags(player.tags)}
+      </div>
+
+      <div class="pickup-market-grid">
+        ${renderMarketStat("Added", addedText, "pickup-market-stat-hot")}
+        ${renderMarketStat("Rostered", rosteredText)}
+        ${renderMarketStat("Dropped", droppedText)}
+        ${renderMarketStat("Trend", Math.round(player.trendScore || 0))}
+      </div>
+
+      <p class="pickup-trend-note">${escapeHtml(player.reason)}</p>
+
+      <div class="pickup-card-footer">
+        <span class="pickup-owned-status">Available in UTI</span>
+        <span class="pickup-mini-note">${escapeHtml(player.source)} • ${escapeHtml(player.timeWindow)}</span>
+      </div>
+    </article>
+  `;
+}
+
+function renderFallbackPickupCard(stud) {
   const isPitcher = stud.group === "pitching";
-  const rangeLabel = getPickupRangeLabel(pickupRangeMode);
   const pickupScore = Math.round(stud.totalScore || 0);
   const reason = getPickupReasonFromStud(stud);
+  const positionText = getPickupPositionText(stud);
+  const bestCategory = stud.bestCategory?.category || "Wire";
+  const bestRank = stud.bestCategory?.rank ? `#${stud.bestCategory.rank}` : "";
   const volumeLabel = isPitcher
     ? `${formatPickupStat(getPlayerStatValue(stud, "IP"))} IP`
     : `${formatPickupStat(getPlayerStatValue(stud, "AB"))} AB`;
-  const positionText = getPickupPositionText(stud);
-
-  const primaryStats = isPitcher
-    ? [
-        ["K", getPlayerStatValue(stud, "K")],
-        ["ERA", getPlayerStatValue(stud, "ERA")],
-        ["WHIP", getPlayerStatValue(stud, "WHIP")],
-        ["BAA", getPlayerStatValue(stud, "BAA")]
-      ]
-    : [
-        ["HR", getPlayerStatValue(stud, "HR")],
-        ["RBI", getPlayerStatValue(stud, "RBI")],
-        ["R", getPlayerStatValue(stud, "R")],
-        ["AVG", getPlayerStatValue(stud, "AVG")]
-      ];
-
-  const secondaryStats = isPitcher
-    ? [
-        ["IP", getPlayerStatValue(stud, "IP")],
-        ["W", getPlayerStatValue(stud, "W")],
-        ["QS", getPlayerStatValue(stud, "QS")],
-        ["SV+H", getPlayerStatValue(stud, "SV+H")]
-      ]
-    : [
-        ["AB", getPlayerStatValue(stud, "AB")],
-        ["BB", getPlayerStatValue(stud, "BB")],
-        ["SO", getPlayerStatValue(stud, "SO")],
-        ["TB", getPlayerStatValue(stud, "TB")]
-      ];
-
-  const extraCategories = stud.categories
-    .filter(item => item.category !== stud.bestCategory.category)
+  const extraCategories = (stud.categories || [])
+    .filter(item => item.category !== bestCategory)
     .sort((a, b) => a.rank - b.rank)
     .slice(0, 2)
     .map(item => `${escapeHtml(item.category)} #${escapeHtml(item.rank)}`)
     .join(" · ");
 
   return `
-    <article class="available-stud-card pickup-card ${isPitcher ? "pitching-pickup-card" : "hitting-pickup-card"}">
+    <article class="available-stud-card pickup-card pickup-trend-card ${isPitcher ? "pitching-pickup-card" : "hitting-pickup-card"}">
       <div class="pickup-card-top">
         <div class="pickup-player-main">
           <div class="pickup-player-name">${escapeHtml(stud.name)}</div>
-          <div class="pickup-player-meta">${escapeHtml(stud.team || "Available player")}</div>
-          ${(renderPickupAgeTag(stud) || positionText) ? `
-            <div class="pickup-position-line">
-              ${renderPickupAgeTag(stud)}
-              ${positionText ? `<span class="pickup-position-chip">${escapeHtml(positionText)}</span>` : ""}
-            </div>
-          ` : ""}
-          ${renderPickupRookieTag(stud) ? `<div class="pickup-info-tags">${renderPickupRookieTag(stud)}</div>` : ""}
+          <div class="pickup-player-meta">${positionText ? `${escapeHtml(positionText)} • ` : ""}${escapeHtml(stud.team || "Available player")}</div>
         </div>
 
         <div class="pickup-score-box">
           <span class="pickup-score-number">${escapeHtml(pickupScore)}</span>
-          <span class="pickup-score-label">Score</span>
+          <span class="pickup-score-label">Wire</span>
         </div>
       </div>
 
       <div class="pickup-card-tags">
-        <span class="pickup-group-tag ${isPitcher ? "pickup-group-tag-pitching" : "pickup-group-tag-hitting"}">${getPickupGroupLabel(stud)}</span>
+        <span class="pickup-group-tag ${isPitcher ? "pickup-group-tag-pitching" : "pickup-group-tag-hitting"}">${isPitcher ? "Pitching Pickup" : "Hitting Pickup"}</span>
         <span class="pickup-reason-tag">${escapeHtml(reason)}</span>
-        <span class="pickup-range-tag">${escapeHtml(rangeLabel)}</span>
-        <span class="pickup-volume-tag">${escapeHtml(volumeLabel)}</span>
+        <span class="pickup-range-tag">${escapeHtml(getPickupRangeLabel(pickupRangeMode))}</span>
       </div>
 
-      <div class="pickup-primary-stats">
-        ${primaryStats.map(([label, value]) => renderPickupPrimaryStat(label, value)).join("")}
+      <div class="pickup-market-grid pickup-fallback-grid">
+        ${renderMarketStat("Best Cat", `${bestCategory} ${bestRank}`.trim())}
+        ${renderMarketStat("Volume", volumeLabel)}
+        ${renderMarketStat("Score", pickupScore)}
       </div>
 
-      <div class="pickup-secondary-stats">
-        ${secondaryStats.map(([label, value]) => renderPickupSecondaryStat(label, value)).join("")}
-      </div>
+      <p class="pickup-trend-note">${extraCategories || "No broad add/drop market list found yet, so this is ranked from MLB stat impact."}</p>
 
       <div class="pickup-card-footer">
-        <span class="pickup-owned-status">Available</span>
-        <span class="pickup-mini-note">${extraCategories || (isPitcher ? "Pitching pickup profile" : "Hitting pickup profile")}</span>
+        <span class="pickup-owned-status">Available in UTI</span>
+        <span class="pickup-mini-note">Fallback stat score</span>
       </div>
     </article>
   `;
+}
+
+function renderPickupCard(stud) {
+  if (stud.addedPercent !== undefined) {
+    return renderMarketTrendCard(stud);
+  }
+
+  return renderFallbackPickupCard(stud);
 }
 
 function renderPickupGroup(title, subtitle, studs, emptyText) {
@@ -1300,11 +1483,53 @@ function renderPickupGroup(title, subtitle, studs, emptyText) {
   `;
 }
 
+function renderMarketTrendPlayers() {
+  const grid = document.getElementById("availableStudsGrid");
+  const tag = document.getElementById("availableStudsModeTag");
+  const availableMarketPlayers = getAvailableMarketTrendPlayers();
+
+  if (!grid || !availableMarketPlayers.length) return false;
+
+  if (tag) {
+    tag.textContent = "Market Trends";
+  }
+
+  const hittingPickups = availableMarketPlayers
+    .filter(player => player.group === "hitting")
+    .slice(0, 4);
+
+  const pitchingPickups = availableMarketPlayers
+    .filter(player => player.group === "pitching")
+    .slice(0, 4);
+
+  grid.innerHTML = `
+    ${renderPickupGroup(
+      "Trending Available Bats",
+      "Available UTI hitters getting added in other fantasy leagues.",
+      hittingPickups,
+      "No available trending hitters found in the market file."
+    )}
+
+    ${renderPickupGroup(
+      "Trending Available Arms",
+      "Available UTI pitchers getting added in other fantasy leagues.",
+      pitchingPickups,
+      "No available trending pitchers found in the market file."
+    )}
+  `;
+
+  return true;
+}
+
 async function renderAvailableStuds(hittingStats, pitchingStats, eligibilityLookup = {}) {
   const grid = document.getElementById("availableStudsGrid");
   const tag = document.getElementById("availableStudsModeTag");
 
   if (!grid) return;
+
+  if (renderMarketTrendPlayers()) {
+    return;
+  }
 
   if (tag) {
     tag.textContent = getPickupRangeLabel(pickupRangeMode).replace(" days", "");
@@ -1412,15 +1637,15 @@ async function renderAvailableStuds(hittingStats, pitchingStats, eligibilityLook
 
   grid.innerHTML = `
     ${renderPickupGroup(
-      "Top Hitting Pickups",
-      "Bats with enough AB volume to actually matter.",
+      "Available Bats",
+      "Best available UTI hitters from current MLB stat impact.",
       hittingPickups,
       "No hitting pickups met the playing-time minimums."
     )}
 
     ${renderPickupGroup(
-      "Top Pitching Pickups",
-      "Arms helping with wins, QS, strikeouts, ratios, or saves/holds.",
+      "Available Arms",
+      "Best available UTI pitchers from current MLB stat impact.",
       pitchingPickups,
       "No pitching pickups met the innings minimums."
     )}
