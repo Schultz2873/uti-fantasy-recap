@@ -43,6 +43,7 @@ let pickupRangeMode = "weekly";
 let fantasyOwnersLookupCache = null;
 let playerEligibilityLookupCache = null;
 let playerInfoLookupCache = null;
+let marketTrendStatsLookupCache = null;
 
 function formatDate(date) {
   const year = date.getFullYear();
@@ -274,7 +275,7 @@ async function fetchSeasonStats(group) {
     `&sportIds=1` +
     `&gameType=R` +
     `&season=${season}` +
-    `&limit=1000`;
+    `&limit=5000`;
 
   const response = await fetch(url);
 
@@ -1339,25 +1340,182 @@ function getAvailableMarketTrendPlayers() {
 }
 
 
+function getNestedTrendValue(source, key, fallback = "") {
+  if (!source || !key) return fallback;
+
+  if (!String(key).includes(".")) {
+    const value = source[key];
+    return value === undefined || value === null || value === "" ? fallback : value;
+  }
+
+  const value = String(key)
+    .split(".")
+    .reduce((current, part) => current && current[part] !== undefined ? current[part] : undefined, source);
+
+  return value === undefined || value === null || value === "" ? fallback : value;
+}
+
+function getFirstNestedTrendValue(source, keys, fallback = "") {
+  for (const key of keys) {
+    const value = getNestedTrendValue(source, key, undefined);
+
+    if (value !== undefined && value !== null && value !== "") {
+      return value;
+    }
+  }
+
+  return fallback;
+}
+
 function getTrendAge(player) {
-  const age = getFirstDefinedValue(player, ["age", "currentAge", "playerInfo.age", "info.age"], "");
+  const age = getFirstNestedTrendValue(player, ["age", "currentAge", "playerInfo.age", "info.age"], "");
   return age === undefined || age === null ? "" : String(age).trim();
 }
 
 function isTrendRookie(player) {
-  const value = getFirstDefinedValue(player, ["rookie", "isRookie", "playerInfo.rookie", "info.rookie"], false);
+  const value = getFirstNestedTrendValue(player, ["rookie", "isRookie", "playerInfo.rookie", "info.rookie"], false);
   return value === true || String(value).toLowerCase() === "true" || String(value).toLowerCase() === "yes";
 }
 
 function getTrendStats(player) {
-  const stats = getFirstDefinedValue(player, ["stats", "seasonStats", "stat"], {}) || {};
-  return stats && typeof stats === "object" ? stats : {};
+  const stats = getFirstNestedTrendValue(player, ["stats", "seasonStats", "stat"], {}) || {};
+
+  if (stats && typeof stats === "object" && Object.keys(stats).length) {
+    return stats;
+  }
+
+  // Fallback for generated or manually pasted files that put stats at the top level.
+  return player && typeof player === "object" ? player : {};
 }
 
 function getTrendStatValue(player, keys, fallback = "-") {
   const stats = getTrendStats(player);
-  const value = getFirstDefinedValue(stats, keys, fallback);
+  const value = getFirstNestedTrendValue(stats, keys, fallback);
   return value === undefined || value === null || value === "" ? fallback : value;
+}
+
+function trendHasDisplayStats(player) {
+  return getTrendPrimaryStats(player).some(([, value]) => value !== "-" && value !== undefined && value !== null && value !== "");
+}
+
+function getMarketStatsFromSplit(split, group) {
+  const stat = split?.stat || {};
+
+  if (group === "pitching") {
+    return {
+      IP: stat.inningsPitched || "0",
+      K: Number(stat.strikeOuts || 0),
+      ERA: stat.era ?? "-",
+      WHIP: stat.whip ?? "-",
+      W: Number(stat.wins || 0),
+      QS: Number(stat.qualityStarts || 0),
+      BAA: stat.avg ?? "-",
+      SVH: Number(stat.saves || 0) + Number(stat.holds || 0)
+    };
+  }
+
+  return {
+    AB: Number(stat.atBats || 0),
+    HR: Number(stat.homeRuns || 0),
+    RBI: Number(stat.rbi || 0),
+    AVG: stat.avg ?? "-",
+    R: Number(stat.runs || 0),
+    TB: Number(stat.totalBases || 0),
+    BB: Number(stat.baseOnBalls || 0),
+    NSB: Number(stat.stolenBases || 0) - Number(stat.caughtStealing || 0)
+  };
+}
+
+function buildMarketTrendStatsLookup(hittingStats = [], pitchingStats = []) {
+  const lookup = {};
+
+  function addSplit(split, group) {
+    const name = split?.player?.fullName || "";
+    const key = normalizePlayerName(name);
+
+    if (!key) return;
+
+    if (!lookup[key]) lookup[key] = {};
+
+    lookup[key][group] = {
+      playerId: split?.player?.id ? String(split.player.id) : "",
+      team: split?.team?.abbreviation || split?.team?.name || "",
+      stats: getMarketStatsFromSplit(split, group)
+    };
+  }
+
+  hittingStats.forEach(split => addSplit(split, "hitting"));
+  pitchingStats.forEach(split => addSplit(split, "pitching"));
+
+  return lookup;
+}
+
+async function getMarketTrendStatsLookup() {
+  if (marketTrendStatsLookupCache) {
+    return marketTrendStatsLookupCache;
+  }
+
+  try {
+    const [hittingStats, pitchingStats] = await Promise.all([
+      fetchSeasonStats("hitting"),
+      fetchSeasonStats("pitching")
+    ]);
+
+    marketTrendStatsLookupCache = buildMarketTrendStatsLookup(hittingStats, pitchingStats);
+  } catch (error) {
+    console.warn("Trending card stat enrichment failed. Showing market data without stats.", error);
+    marketTrendStatsLookupCache = {};
+  }
+
+  return marketTrendStatsLookupCache;
+}
+
+async function enrichMarketTrendPlayersForDisplay(players) {
+  const playersNeedingStats = players.filter(player => !trendHasDisplayStats(player));
+
+  if (!playersNeedingStats.length) {
+    return players;
+  }
+
+  const lookup = await getMarketTrendStatsLookup();
+  const playerIds = [];
+
+  const enriched = players.map(player => {
+    if (trendHasDisplayStats(player)) return player;
+
+    const key = normalizePlayerName(player.name);
+    const preferredGroup = player.group === "pitching" ? "pitching" : "hitting";
+    const fallbackGroup = preferredGroup === "pitching" ? "hitting" : "pitching";
+    const match = lookup[key]?.[preferredGroup] || lookup[key]?.[fallbackGroup];
+
+    if (!match) return player;
+
+    if (match.playerId) playerIds.push(match.playerId);
+
+    return {
+      ...player,
+      team: player.team || match.team,
+      group: match.stats?.IP !== undefined ? "pitching" : player.group,
+      mlbPlayerId: match.playerId || player.mlbPlayerId,
+      stats: match.stats
+    };
+  });
+
+  if (!playerIds.length) {
+    return enriched;
+  }
+
+  const peopleLookup = await fetchPlayerInfoLookup(playerIds);
+
+  return enriched.map(player => {
+    const info = peopleLookup[player.mlbPlayerId] || {};
+
+    return {
+      ...player,
+      age: player.age || info.age || "",
+      rookie: player.rookie || Boolean(info.rookie)
+    };
+  });
 }
 
 function renderTrendV7Stat(label, value) {
@@ -1571,22 +1729,30 @@ function renderPickupGroup(title, subtitle, studs, emptyText) {
   `;
 }
 
-function renderMarketTrendPlayers() {
+async function renderMarketTrendPlayers() {
   const grid = document.getElementById("availableStudsGrid");
   const tag = document.getElementById("availableStudsModeTag");
   const availableMarketPlayers = getAvailableMarketTrendPlayers();
 
   if (!grid || !availableMarketPlayers.length) return false;
 
+  grid.innerHTML = `
+    <article class="article-card">
+      <p class="article-summary">Loading trending player stats...</p>
+    </article>
+  `;
+
+  const enrichedMarketPlayers = await enrichMarketTrendPlayersForDisplay(availableMarketPlayers);
+
   if (tag) {
     tag.textContent = "Auto Updated";
   }
 
-  const hittingPickups = availableMarketPlayers
+  const hittingPickups = enrichedMarketPlayers
     .filter(player => player.group === "hitting")
     .slice(0, 6);
 
-  const pitchingPickups = availableMarketPlayers
+  const pitchingPickups = enrichedMarketPlayers
     .filter(player => player.group === "pitching")
     .slice(0, 6);
 
@@ -1615,7 +1781,7 @@ async function renderAvailableStuds(hittingStats, pitchingStats, eligibilityLook
 
   if (!grid) return;
 
-  if (renderMarketTrendPlayers()) {
+  if (await renderMarketTrendPlayers()) {
     return;
   }
 
@@ -1885,7 +2051,7 @@ async function loadTopPickups() {
   // If the GitHub Action generated market trend data, render it immediately.
   // Do not wait on MLB Stats API fallback calls, because those are only needed when
   // there is no usable data/trending-players.js file.
-  if (renderMarketTrendPlayers()) {
+  if (await renderMarketTrendPlayers()) {
     return;
   }
 
