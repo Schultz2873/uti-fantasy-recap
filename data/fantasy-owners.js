@@ -1,6 +1,6 @@
 // Generated from Fantrax roster CSV exports.
 // Player names are matched in index.html with accent/punctuation-insensitive normalization.
-// Updated July 5, 2026: full owner map with latest CSV updates for Gunnarrhea, BB's Bold Team, Dixon Cider, Goodyear Gila Monsters, John's Super Team, and Me So Heorny.
+// Updated July 7, 2026: refreshed rosters from latest Fantrax CSV uploads for Gunnarrhea, John's Super Team, and Me So Heorny.
 window.FANTASY_OWNERS = {
   "A.J. Ewing": "Me So Heorny",
   "Aaron Ashby": "Mactown MacDaddies",
@@ -59,7 +59,6 @@ window.FANTASY_OWNERS = {
   "Cade Smith": "This Is Mizerable",
   "Cal Raleigh": "Dixon Cider",
   "Caleb Bonemer": "BTA Boyz",
-  "Caleb Durbin": "Me So Heorny",
   "Cam Caminiti": "BTA Boyz",
   "Cam Schlittler": "Dixon Cider",
   "Cam Smith": "Me So Heorny",
@@ -72,6 +71,7 @@ window.FANTASY_OWNERS = {
   "Casey Mize": "BTA Boyz",
   "Casey Schmitt": "BB's Bold Team",
   "Ceddanne Rafaela": "Dixon Cider",
+  "Cedric Mullins": "John's Super Team",
   "Chandler Simpson": "You Don't Know Bo",
   "Charlie Condon": "BB's Bold Team",
   "Chase Burns": "John's Super Team",
@@ -159,6 +159,7 @@ window.FANTASY_OWNERS = {
   "Isaac Paredes": "BTA Boyz",
   "Ivan Herrera": "John's Super Team",
   "J.R. Ritchie": "Me So Heorny",
+  "J.T. Ginn": "Gunnarrhea",
   "J.T. Realmuto": "Mactown MacDaddies",
   "Jac Caglianone": "Gunnarrhea",
   "Jack Flaherty": "BTA Boyz",
@@ -263,7 +264,6 @@ window.FANTASY_OWNERS = {
   "Maikel Garcia": "This Is Mizerable",
   "Manny Machado": "John's Super Team",
   "Marcelo Mayer": "Dixon Cider",
-  "Martin Perez": "John's Super Team",
   "Mason Miller": "Me So Heorny",
   "Masyn Winn": "BTA Boyz",
   "Matt Chapman": "Goodyear Gila Monsters",
