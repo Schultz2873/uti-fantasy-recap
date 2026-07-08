@@ -1338,6 +1338,83 @@ function getAvailableMarketTrendPlayers() {
     );
 }
 
+
+function getTrendAge(player) {
+  const age = getFirstDefinedValue(player, ["age", "currentAge", "playerInfo.age", "info.age"], "");
+  return age === undefined || age === null ? "" : String(age).trim();
+}
+
+function isTrendRookie(player) {
+  const value = getFirstDefinedValue(player, ["rookie", "isRookie", "playerInfo.rookie", "info.rookie"], false);
+  return value === true || String(value).toLowerCase() === "true" || String(value).toLowerCase() === "yes";
+}
+
+function getTrendStats(player) {
+  const stats = getFirstDefinedValue(player, ["stats", "seasonStats", "stat"], {}) || {};
+  return stats && typeof stats === "object" ? stats : {};
+}
+
+function getTrendStatValue(player, keys, fallback = "-") {
+  const stats = getTrendStats(player);
+  const value = getFirstDefinedValue(stats, keys, fallback);
+  return value === undefined || value === null || value === "" ? fallback : value;
+}
+
+function renderTrendV7Stat(label, value) {
+  return `
+    <div class="trend-v7-stat">
+      <span class="trend-v7-stat-value">${formatPickupStat(value)}</span>
+      <span class="trend-v7-stat-label">${escapeHtml(label)}</span>
+    </div>
+  `;
+}
+
+function getTrendPrimaryStats(player) {
+  const isPitcher = player.group === "pitching";
+
+  if (isPitcher) {
+    return [
+      ["IP", getTrendStatValue(player, ["IP", "ip", "inningsPitched"], "-")],
+      ["K", getTrendStatValue(player, ["K", "k", "strikeouts", "strikeOuts"], "-")],
+      ["ERA", getTrendStatValue(player, ["ERA", "era"], "-")],
+      ["WHIP", getTrendStatValue(player, ["WHIP", "whip"], "-")]
+    ];
+  }
+
+  return [
+    ["AB", getTrendStatValue(player, ["AB", "ab", "atBats"], "-")],
+    ["HR", getTrendStatValue(player, ["HR", "hr", "homeRuns"], "-")],
+    ["RBI", getTrendStatValue(player, ["RBI", "rbi"], "-")],
+    ["AVG", getTrendStatValue(player, ["AVG", "avg"], "-")]
+  ];
+}
+
+function getTrendMarketLabel(player) {
+  if (Number(player.addedPercent || 0) > 0) {
+    return "Added";
+  }
+
+  return "Rostered";
+}
+
+function getTrendMarketValue(player) {
+  if (Number(player.addedPercent || 0) > 0) {
+    return formatPercentChange(player.addedPercent);
+  }
+
+  return formatPercentValue(player.rosteredPercent);
+}
+
+function renderTrendMetaChips(player, positionText) {
+  const age = getTrendAge(player);
+  const chips = [];
+
+  if (positionText) chips.push(`<span class="trend-v7-chip">${escapeHtml(positionText)}</span>`);
+  if (age) chips.push(`<span class="trend-v7-chip">Age ${escapeHtml(age)}</span>`);
+  if (isTrendRookie(player)) chips.push(`<span class="trend-v7-chip gold">Rookie</span>`);
+  return chips.join("");
+}
+
 function renderMarketStat(label, value, emphasisClass = "") {
   return `
     <div class="pickup-market-stat ${emphasisClass}">
@@ -1357,41 +1434,41 @@ function renderTrendTags(tags) {
 function renderMarketTrendCard(player) {
   const isPitcher = player.group === "pitching";
   const positionText = player.positions?.length ? player.positions.join("/") : (isPitcher ? "P" : "UTIL");
-  const addedText = formatPercentChange(player.addedPercent);
+  const marketValue = getTrendMarketValue(player);
+  const marketLabel = getTrendMarketLabel(player);
   const rosteredText = formatPercentValue(player.rosteredPercent);
   const droppedText = formatPercentValue(player.droppedPercent);
+  const trendStats = getTrendPrimaryStats(player);
+  const sourceLine = `${escapeHtml(player.source)}${player.timeWindow ? ` • ${escapeHtml(player.timeWindow)}` : ""}`;
 
   return `
-    <article class="available-stud-card pickup-card pickup-trend-card ${isPitcher ? "pitching-pickup-card" : "hitting-pickup-card"}">
-      <div class="pickup-card-top">
+    <article class="available-stud-card pickup-card pickup-trend-card trend-v7-card ${isPitcher ? "pitching-pickup-card" : "hitting-pickup-card"}">
+      <div class="trend-v7-top">
         <div class="pickup-player-main">
-          <div class="pickup-player-name">${escapeHtml(player.name)}</div>
-          <div class="pickup-player-meta">${escapeHtml(positionText)} • ${escapeHtml(player.team || "MLB")}</div>
+          <div class="trend-v7-kicker">
+            <span class="pickup-group-tag ${isPitcher ? "pickup-group-tag-pitching" : "pickup-group-tag-hitting"}">${isPitcher ? "Arm Watch" : "Bat Watch"}</span>
+            ${renderTrendMetaChips(player, positionText)}
+          </div>
+          <div class="trend-v7-name">${escapeHtml(player.name)}</div>
+          <div class="trend-v7-meta">${escapeHtml(player.team || "MLB")} • ${sourceLine}</div>
         </div>
 
-        <div class="pickup-score-box pickup-add-box">
-          <span class="pickup-score-number">${escapeHtml(addedText)}</span>
-          <span class="pickup-score-label">Added</span>
+        <div class="trend-v7-add-box">
+          <span class="trend-v7-add-number">${escapeHtml(marketValue)}</span>
+          <span class="trend-v7-add-label">${escapeHtml(marketLabel)}</span>
         </div>
       </div>
 
-      <div class="pickup-card-tags">
-        <span class="pickup-group-tag ${isPitcher ? "pickup-group-tag-pitching" : "pickup-group-tag-hitting"}">${isPitcher ? "Pitching Trend" : "Hitting Trend"}</span>
-        ${renderTrendTags(player.tags)}
+      <div class="trend-v7-stats">
+        ${trendStats.map(([label, value]) => renderTrendV7Stat(label, value)).join("")}
       </div>
 
-      <div class="pickup-market-grid">
-        ${renderMarketStat("Added", addedText, "pickup-market-stat-hot")}
-        ${renderMarketStat("Rostered", rosteredText)}
-        ${renderMarketStat("Dropped", droppedText)}
-        ${renderMarketStat("Trend", Math.round(player.trendScore || 0))}
-      </div>
-
-      <p class="pickup-trend-note">${escapeHtml(player.reason)}</p>
-
-      <div class="pickup-card-footer">
-        <span class="pickup-owned-status">Available in UTI</span>
-        <span class="pickup-mini-note">${escapeHtml(player.source)} • ${escapeHtml(player.timeWindow)}</span>
+      <div class="trend-v7-note-row">
+        <p class="trend-v7-note">${escapeHtml(player.reason)}</p>
+        <div class="trend-v7-kicker" style="margin-bottom:0; justify-content:flex-end;">
+          <span class="trend-v7-chip">Rostered ${escapeHtml(rosteredText)}</span>
+          ${Number(player.droppedPercent || 0) > 0 ? `<span class="trend-v7-chip">Dropped ${escapeHtml(droppedText)}</span>` : ""}
+        </div>
       </div>
     </article>
   `;
@@ -1402,49 +1479,60 @@ function renderFallbackPickupCard(stud) {
   const pickupScore = Math.round(stud.totalScore || 0);
   const reason = getPickupReasonFromStud(stud);
   const positionText = getPickupPositionText(stud);
-  const bestCategory = stud.bestCategory?.category || "Wire";
-  const bestRank = stud.bestCategory?.rank ? `#${stud.bestCategory.rank}` : "";
-  const volumeLabel = isPitcher
-    ? `${formatPickupStat(getPlayerStatValue(stud, "IP"))} IP`
-    : `${formatPickupStat(getPlayerStatValue(stud, "AB"))} AB`;
+  const age = stud.playerInfo?.age ? String(stud.playerInfo.age) : "";
+  const rookie = Boolean(stud.playerInfo?.rookie);
+  const chips = [
+    positionText ? `<span class="trend-v7-chip">${escapeHtml(positionText)}</span>` : "",
+    age ? `<span class="trend-v7-chip">Age ${escapeHtml(age)}</span>` : "",
+    rookie ? `<span class="trend-v7-chip gold">Rookie</span>` : "",
+  ].filter(Boolean).join("");
+  const trendStats = isPitcher
+    ? [
+        ["IP", getPlayerStatValue(stud, "IP")],
+        ["K", getPlayerStatValue(stud, "K")],
+        ["ERA", getPlayerStatValue(stud, "ERA")],
+        ["WHIP", getPlayerStatValue(stud, "WHIP")]
+      ]
+    : [
+        ["AB", getPlayerStatValue(stud, "AB")],
+        ["HR", getPlayerStatValue(stud, "HR")],
+        ["RBI", getPlayerStatValue(stud, "RBI")],
+        ["AVG", getPlayerStatValue(stud, "AVG")]
+      ];
   const extraCategories = (stud.categories || [])
-    .filter(item => item.category !== bestCategory)
+    .filter(item => item.category !== (stud.bestCategory?.category || ""))
     .sort((a, b) => a.rank - b.rank)
     .slice(0, 2)
     .map(item => `${escapeHtml(item.category)} #${escapeHtml(item.rank)}`)
     .join(" · ");
 
   return `
-    <article class="available-stud-card pickup-card pickup-trend-card ${isPitcher ? "pitching-pickup-card" : "hitting-pickup-card"}">
-      <div class="pickup-card-top">
+    <article class="available-stud-card pickup-card pickup-trend-card trend-v7-card ${isPitcher ? "pitching-pickup-card" : "hitting-pickup-card"}">
+      <div class="trend-v7-top">
         <div class="pickup-player-main">
-          <div class="pickup-player-name">${escapeHtml(stud.name)}</div>
-          <div class="pickup-player-meta">${positionText ? `${escapeHtml(positionText)} • ` : ""}${escapeHtml(stud.team || "Available player")}</div>
+          <div class="trend-v7-kicker">
+            <span class="pickup-group-tag ${isPitcher ? "pickup-group-tag-pitching" : "pickup-group-tag-hitting"}">${isPitcher ? "Pitching Pickup" : "Hitting Pickup"}</span>
+            ${chips}
+          </div>
+          <div class="trend-v7-name">${escapeHtml(stud.name)}</div>
+          <div class="trend-v7-meta">${escapeHtml(stud.team || "Available player")} • Stat fallback</div>
         </div>
 
-        <div class="pickup-score-box">
-          <span class="pickup-score-number">${escapeHtml(pickupScore)}</span>
-          <span class="pickup-score-label">Wire</span>
+        <div class="trend-v7-add-box">
+          <span class="trend-v7-add-number">${escapeHtml(pickupScore)}</span>
+          <span class="trend-v7-add-label">Wire</span>
         </div>
       </div>
 
-      <div class="pickup-card-tags">
-        <span class="pickup-group-tag ${isPitcher ? "pickup-group-tag-pitching" : "pickup-group-tag-hitting"}">${isPitcher ? "Pitching Pickup" : "Hitting Pickup"}</span>
-        <span class="pickup-reason-tag">${escapeHtml(reason)}</span>
-        <span class="pickup-range-tag">${escapeHtml(getPickupRangeLabel(pickupRangeMode))}</span>
+      <div class="trend-v7-stats">
+        ${trendStats.map(([label, value]) => renderTrendV7Stat(label, value)).join("")}
       </div>
 
-      <div class="pickup-market-grid pickup-fallback-grid">
-        ${renderMarketStat("Best Cat", `${bestCategory} ${bestRank}`.trim())}
-        ${renderMarketStat("Volume", volumeLabel)}
-        ${renderMarketStat("Score", pickupScore)}
-      </div>
-
-      <p class="pickup-trend-note">${extraCategories || "No broad add/drop market list found yet, so this is ranked from MLB stat impact."}</p>
-
-      <div class="pickup-card-footer">
-        <span class="pickup-owned-status">Available in UTI</span>
-        <span class="pickup-mini-note">Fallback stat score</span>
+      <div class="trend-v7-note-row">
+        <p class="trend-v7-note">${extraCategories || reason}</p>
+        <div class="trend-v7-kicker" style="margin-bottom:0; justify-content:flex-end;">
+          <span class="trend-v7-chip">${escapeHtml(reason)}</span>
+        </div>
       </div>
     </article>
   `;
@@ -1491,16 +1579,16 @@ function renderMarketTrendPlayers() {
   if (!grid || !availableMarketPlayers.length) return false;
 
   if (tag) {
-    tag.textContent = "Market Trends";
+    tag.textContent = "Auto Updated";
   }
 
   const hittingPickups = availableMarketPlayers
     .filter(player => player.group === "hitting")
-    .slice(0, 4);
+    .slice(0, 6);
 
   const pitchingPickups = availableMarketPlayers
     .filter(player => player.group === "pitching")
-    .slice(0, 4);
+    .slice(0, 6);
 
   grid.innerHTML = `
     ${renderPickupGroup(
