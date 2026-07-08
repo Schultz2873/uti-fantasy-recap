@@ -986,6 +986,18 @@
       align-items: center;
     }
 
+    #top-pickups .trend-stat-toggle {
+      width: auto;
+      padding: 3px;
+      gap: 4px;
+    }
+
+    #top-pickups .trend-stat-toggle .leader-mode-btn {
+      flex: 0 0 auto;
+      padding: 5px 9px;
+      font-size: 0.62rem;
+    }
+
     #top-pickups .available-studs-grid {
       grid-template-columns: 1fr;
     }
@@ -1093,7 +1105,7 @@
     .trend-v7-stats-head {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-start;
       gap: 8px;
       margin-top: 10px;
       color: var(--muted);
@@ -1233,7 +1245,7 @@
 </script>
 <script src="data/team-logos.js"></script>
 <script src="data/homerun-pool.js"></script>
-<script src="scripts/category-leaders.js?v=market-v8"></script>
+<script src="scripts/category-leaders.js?v=market-v12"></script>
 
 <script src="scripts/homerun-pool.js?v=logos"></script>
 
@@ -1326,7 +1338,12 @@
           </p>
         </div>
         <div class="leader-header-actions trending-header-actions">
-          <span class="tag" id="availableStudsModeTag">Auto Updated</span>
+          <div class="leader-mode-toggle trend-stat-toggle" aria-label="Trending card stat range">
+            <button class="leader-mode-btn active" type="button" data-trend-stat-range="last7" aria-pressed="true">7</button>
+            <button class="leader-mode-btn" type="button" data-trend-stat-range="last14" aria-pressed="false">14</button>
+            <button class="leader-mode-btn" type="button" data-trend-stat-range="season" aria-pressed="false">Season</button>
+          </div>
+          <span class="tag" id="availableStudsModeTag">Last 7</span>
         </div>
       </div>
       <div class="available-studs-grid" id="availableStudsGrid">

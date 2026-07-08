@@ -43,7 +43,8 @@ let pickupRangeMode = "weekly";
 let fantasyOwnersLookupCache = null;
 let playerEligibilityLookupCache = null;
 let playerInfoLookupCache = null;
-let marketTrendStatsLookupCache = null;
+let marketTrendStatsLookupCache = {};
+let trendStatRangeMode = "last7";
 
 function formatDate(date) {
   const year = date.getFullYear();
@@ -992,6 +993,20 @@ function getPickupRangeLabel(mode) {
   return "Last 14 days";
 }
 
+function getTrendStatsRangeLabel(mode = trendStatRangeMode) {
+  if (mode === "last7") return "Last 7";
+  if (mode === "last14") return "Last 14";
+  if (mode === "season") return "Season";
+  return "Last 7";
+}
+
+function getTrendStatsLoadingLabel(mode = trendStatRangeMode) {
+  if (mode === "last7") return "Loading last 7 day stats...";
+  if (mode === "last14") return "Loading last 14 day stats...";
+  if (mode === "season") return "Loading season stats...";
+  return "Loading stats...";
+}
+
 function getPickupGroupLabel(stud) {
   return stud.group === "pitching" ? "Pitching Pickup" : "Hitting Pickup";
 }
@@ -1426,7 +1441,7 @@ function getMarketStatsFromSplit(split, group) {
   };
 }
 
-function buildMarketTrendStatsLookup(hittingStats = [], pitchingStats = []) {
+function buildMarketTrendStatsLookup(hittingStats = [], pitchingStats = [], statsWindow = getTrendStatsRangeLabel()) {
   const lookup = {};
 
   function addSplit(split, group) {
@@ -1441,7 +1456,7 @@ function buildMarketTrendStatsLookup(hittingStats = [], pitchingStats = []) {
       playerId: split?.player?.id ? String(split.player.id) : "",
       team: split?.team?.abbreviation || split?.team?.name || "",
       stats: getMarketStatsFromSplit(split, group),
-      statsWindow: "Season stats"
+      statsWindow
     };
   }
 
@@ -1451,45 +1466,54 @@ function buildMarketTrendStatsLookup(hittingStats = [], pitchingStats = []) {
   return lookup;
 }
 
-async function getMarketTrendStatsLookup() {
-  if (marketTrendStatsLookupCache) {
-    return marketTrendStatsLookupCache;
-  }
-
-  try {
-    const [hittingStats, pitchingStats] = await Promise.all([
+async function fetchTrendStatsForRange(mode = trendStatRangeMode) {
+  if (mode === "season") {
+    return Promise.all([
       fetchSeasonStats("hitting"),
       fetchSeasonStats("pitching")
     ]);
-
-    marketTrendStatsLookupCache = buildMarketTrendStatsLookup(hittingStats, pitchingStats);
-  } catch (error) {
-    console.warn("Trending card stat enrichment failed. Showing market data without stats.", error);
-    marketTrendStatsLookupCache = {};
   }
 
-  return marketTrendStatsLookupCache;
+  const range = mode === "last14" ? getLast14DateRange() : getLast7DateRange();
+
+  return Promise.all([
+    fetchWeeklyStats("hitting", range.start, range.end),
+    fetchWeeklyStats("pitching", range.start, range.end)
+  ]);
+}
+
+async function getMarketTrendStatsLookup(mode = trendStatRangeMode) {
+  if (marketTrendStatsLookupCache[mode]) {
+    return marketTrendStatsLookupCache[mode];
+  }
+
+  try {
+    const [hittingStats, pitchingStats] = await fetchTrendStatsForRange(mode);
+    marketTrendStatsLookupCache[mode] = buildMarketTrendStatsLookup(hittingStats, pitchingStats, getTrendStatsRangeLabel(mode));
+  } catch (error) {
+    console.warn("Trending card stat enrichment failed. Showing market data without stats.", error);
+    marketTrendStatsLookupCache[mode] = {};
+  }
+
+  return marketTrendStatsLookupCache[mode];
 }
 
 async function enrichMarketTrendPlayersForDisplay(players) {
-  const playersNeedingStats = players.filter(player => !trendHasDisplayStats(player));
-
-  if (!playersNeedingStats.length) {
-    return players;
-  }
-
-  const lookup = await getMarketTrendStatsLookup();
+  const lookup = await getMarketTrendStatsLookup(trendStatRangeMode);
   const playerIds = [];
 
   const enriched = players.map(player => {
-    if (trendHasDisplayStats(player)) return player;
-
     const key = normalizePlayerName(player.name);
     const preferredGroup = player.group === "pitching" ? "pitching" : "hitting";
     const fallbackGroup = preferredGroup === "pitching" ? "hitting" : "pitching";
     const match = lookup[key]?.[preferredGroup] || lookup[key]?.[fallbackGroup];
 
-    if (!match) return player;
+    if (!match) {
+      return {
+        ...player,
+        statsWindow: getTrendStatsRangeLabel(trendStatRangeMode)
+      };
+    }
 
     if (match.playerId) playerIds.push(match.playerId);
 
@@ -1499,7 +1523,7 @@ async function enrichMarketTrendPlayersForDisplay(players) {
       group: match.stats?.IP !== undefined ? "pitching" : player.group,
       mlbPlayerId: match.playerId || player.mlbPlayerId,
       stats: match.stats,
-      statsWindow: player.statsWindow || match.statsWindow || "Season stats"
+      statsWindow: match.statsWindow
     };
   });
 
@@ -1623,7 +1647,6 @@ function renderMarketTrendCard(player) {
 
       <div class="trend-v7-stats-head">
         <span>${escapeHtml(statsWindow)}</span>
-        <span>Stats</span>
       </div>
 
       <div class="trend-v7-stats">
@@ -1748,14 +1771,14 @@ async function renderMarketTrendPlayers() {
 
   grid.innerHTML = `
     <article class="article-card">
-      <p class="article-summary">Loading trending player stats...</p>
+      <p class="article-summary">${escapeHtml(getTrendStatsLoadingLabel())}</p>
     </article>
   `;
 
   const enrichedMarketPlayers = await enrichMarketTrendPlayersForDisplay(availableMarketPlayers);
 
   if (tag) {
-    tag.textContent = "Auto Updated";
+    tag.textContent = getTrendStatsRangeLabel(trendStatRangeMode);
   }
 
   const hittingPickups = enrichedMarketPlayers
@@ -2116,6 +2139,22 @@ async function loadTopPickups() {
   }
 }
 
+function setupTrendStatsRangeToggle() {
+  document.querySelectorAll("[data-trend-stat-range]").forEach(button => {
+    button.addEventListener("click", () => {
+      trendStatRangeMode = button.dataset.trendStatRange || "last7";
+
+      document.querySelectorAll("[data-trend-stat-range]").forEach(rangeButton => {
+        const isActive = rangeButton.dataset.trendStatRange === trendStatRangeMode;
+        rangeButton.classList.toggle("active", isActive);
+        rangeButton.setAttribute("aria-pressed", String(isActive));
+      });
+
+      loadTopPickups();
+    });
+  });
+}
+
 function setupPickupModeToggle() {
   document.querySelectorAll("[data-pickup-mode]").forEach(button => {
     button.addEventListener("click", () => {
@@ -2159,6 +2198,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupPastWeekSelect();
   setupLeaderModeToggle();
   setupPickupModeToggle();
+  setupTrendStatsRangeToggle();
   loadWeeklyLeaders();
   loadTopPickups();
 });
