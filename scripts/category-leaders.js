@@ -1440,7 +1440,8 @@ function buildMarketTrendStatsLookup(hittingStats = [], pitchingStats = []) {
     lookup[key][group] = {
       playerId: split?.player?.id ? String(split.player.id) : "",
       team: split?.team?.abbreviation || split?.team?.name || "",
-      stats: getMarketStatsFromSplit(split, group)
+      stats: getMarketStatsFromSplit(split, group),
+      statsWindow: "Season stats"
     };
   }
 
@@ -1497,7 +1498,8 @@ async function enrichMarketTrendPlayersForDisplay(players) {
       team: player.team || match.team,
       group: match.stats?.IP !== undefined ? "pitching" : player.group,
       mlbPlayerId: match.playerId || player.mlbPlayerId,
-      stats: match.stats
+      stats: match.stats,
+      statsWindow: player.statsWindow || match.statsWindow || "Season stats"
     };
   });
 
@@ -1548,8 +1550,10 @@ function getTrendPrimaryStats(player) {
 }
 
 function getTrendMarketLabel(player) {
+  const windowText = String(player.timeWindow || "").toLowerCase().includes("7") ? "7-day" : "Market";
+
   if (Number(player.addedPercent || 0) > 0) {
-    return "Added";
+    return `${windowText} Added`;
   }
 
   return "Rostered";
@@ -1597,7 +1601,8 @@ function renderMarketTrendCard(player) {
   const rosteredText = formatPercentValue(player.rosteredPercent);
   const droppedText = formatPercentValue(player.droppedPercent);
   const trendStats = getTrendPrimaryStats(player);
-  const sourceLine = `${escapeHtml(player.source)}${player.timeWindow ? ` • ${escapeHtml(player.timeWindow)}` : ""}`;
+  const sourceLine = escapeHtml(player.source || "Market");
+  const statsWindow = getFirstNestedTrendValue(player, ["statsWindow", "statWindow", "stats.window", "seasonStats.window"], "Season stats");
 
   return `
     <article class="available-stud-card pickup-card pickup-trend-card trend-v7-card ${isPitcher ? "pitching-pickup-card" : "hitting-pickup-card"}">
@@ -1615,6 +1620,16 @@ function renderMarketTrendCard(player) {
           <span class="trend-v7-add-number">${escapeHtml(marketValue)}</span>
           <span class="trend-v7-add-label">${escapeHtml(marketLabel)}</span>
         </div>
+      </div>
+
+      <div class="trend-v7-stats-head">
+        <span>${escapeHtml(statsWindow)}</span>
+        <span>MLB stat line</span>
+      </div>
+
+      <div class="trend-v7-stats-head">
+        <span>${escapeHtml(statsWindow)}</span>
+        <span>MLB stat line</span>
       </div>
 
       <div class="trend-v7-stats">
@@ -1657,6 +1672,7 @@ function renderFallbackPickupCard(stud) {
         ["RBI", getPlayerStatValue(stud, "RBI")],
         ["AVG", getPlayerStatValue(stud, "AVG")]
       ];
+  const statsWindow = pickupRangeMode === "last7" ? "Last 7 stats" : pickupRangeMode === "last30" ? "Last 30 stats" : pickupRangeMode === "season" ? "Season stats" : "Last 14 stats";
   const extraCategories = (stud.categories || [])
     .filter(item => item.category !== (stud.bestCategory?.category || ""))
     .sort((a, b) => a.rank - b.rank)
