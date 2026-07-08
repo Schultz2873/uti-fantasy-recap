@@ -1601,7 +1601,6 @@ function renderMarketTrendCard(player) {
   const rosteredText = formatPercentValue(player.rosteredPercent);
   const droppedText = formatPercentValue(player.droppedPercent);
   const trendStats = getTrendPrimaryStats(player);
-  const sourceLine = escapeHtml(player.source || "Market");
   const statsWindow = getFirstNestedTrendValue(player, ["statsWindow", "statWindow", "stats.window", "seasonStats.window"], "Season stats");
 
   return `
@@ -1613,7 +1612,7 @@ function renderMarketTrendCard(player) {
             ${renderTrendMetaChips(player, positionText)}
           </div>
           <div class="trend-v7-name">${escapeHtml(player.name)}</div>
-          <div class="trend-v7-meta">${escapeHtml(player.team || "MLB")} • ${sourceLine}</div>
+          <div class="trend-v7-meta">${escapeHtml(player.team || "MLB")}</div>
         </div>
 
         <div class="trend-v7-add-box">
@@ -1624,12 +1623,7 @@ function renderMarketTrendCard(player) {
 
       <div class="trend-v7-stats-head">
         <span>${escapeHtml(statsWindow)}</span>
-        <span>MLB stat line</span>
-      </div>
-
-      <div class="trend-v7-stats-head">
-        <span>${escapeHtml(statsWindow)}</span>
-        <span>MLB stat line</span>
+        <span>Stats</span>
       </div>
 
       <div class="trend-v7-stats">
@@ -1689,7 +1683,7 @@ function renderFallbackPickupCard(stud) {
             ${chips}
           </div>
           <div class="trend-v7-name">${escapeHtml(stud.name)}</div>
-          <div class="trend-v7-meta">${escapeHtml(stud.team || "Available player")} • Stat fallback</div>
+          <div class="trend-v7-meta">${escapeHtml(stud.team || "Available player")}</div>
         </div>
 
         <div class="trend-v7-add-box">
