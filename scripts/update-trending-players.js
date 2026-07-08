@@ -249,10 +249,26 @@ function buildTrendPlayer(rawPlayer, source = "ESPN") {
   const isPitcher = positions.some(position => ["P", "SP", "RP"].includes(position));
   const isTrueAddTrend = addedPercent > 0;
 
+  const age = getFirstValue(rawPlayer, [
+    "player.age",
+    "player.currentAge",
+    "athlete.age",
+    "age",
+    "currentAge"
+  ], "");
+  const rookie = getFirstValue(rawPlayer, [
+    "player.rookie",
+    "player.isRookie",
+    "rookie",
+    "isRookie"
+  ], false);
+
   return {
     name,
     team: String(team || "").toUpperCase(),
     positions: positions.length ? positions : [],
+    age,
+    rookie: rookie === true || String(rookie).toLowerCase() === "true",
     addedPercent,
     rosteredPercent,
     droppedPercent,
@@ -493,6 +509,157 @@ async function fetchEspnTrendPlayers() {
   return dedupePlayers(pagePlayers);
 }
 
+
+function inningsToNumber(value) {
+  if (!value) return 0;
+  const [whole, partial] = String(value).split(".");
+  const outs = Number(whole || 0) * 3 + Number(partial || 0);
+  return outs / 3;
+}
+
+async function fetchMlbSeasonStats(group) {
+  const url =
+    `https://statsapi.mlb.com/api/v1/stats` +
+    `?stats=season` +
+    `&group=${group}` +
+    `&playerPool=all` +
+    `&sportIds=1` +
+    `&gameType=R` +
+    `&season=${SEASON}` +
+    `&limit=5000`;
+
+  const response = await fetch(url, {
+    headers: { "User-Agent": "Mozilla/5.0 UTI-Fantasy-Baseball-Trending-Updater/1.0" }
+  });
+
+  if (!response.ok) {
+    throw new Error(`MLB Stats API ${group} request failed: ${response.status} ${response.statusText}`);
+  }
+
+  const data = await response.json();
+  return data.stats?.[0]?.splits || [];
+}
+
+function buildMlbStatsLookup(hittingStats, pitchingStats) {
+  const lookup = {};
+
+  function setEntry(split, group) {
+    const name = split.player?.fullName || "";
+    const key = normalizePlayerName(name);
+    if (!key) return;
+
+    const stat = split.stat || {};
+    const team = split.team?.name || split.team?.abbreviation || "";
+    const playerId = split.player?.id ? String(split.player.id) : "";
+
+    const stats = group === "pitching"
+      ? {
+          IP: stat.inningsPitched || "0",
+          K: parseNumber(stat.strikeOuts),
+          W: parseNumber(stat.wins),
+          QS: parseNumber(stat.qualityStarts),
+          ERA: stat.era ?? "-",
+          WHIP: stat.whip ?? "-",
+          BAA: stat.avg ?? "-",
+          SVH: parseNumber(stat.saves) + parseNumber(stat.holds)
+        }
+      : {
+          AB: parseNumber(stat.atBats),
+          R: parseNumber(stat.runs),
+          HR: parseNumber(stat.homeRuns),
+          RBI: parseNumber(stat.rbi),
+          AVG: stat.avg ?? "-",
+          TB: parseNumber(stat.totalBases),
+          BB: parseNumber(stat.baseOnBalls),
+          SB: parseNumber(stat.stolenBases)
+        };
+
+    if (!lookup[key]) lookup[key] = {};
+    lookup[key][group] = { playerId, team, stats };
+  }
+
+  hittingStats.forEach(split => setEntry(split, "hitting"));
+  pitchingStats.forEach(split => setEntry(split, "pitching"));
+
+  return lookup;
+}
+
+async function fetchMlbPeopleInfo(playerIds) {
+  const uniqueIds = [...new Set((playerIds || []).filter(Boolean).map(String))];
+  const lookup = {};
+
+  for (let i = 0; i < uniqueIds.length; i += 75) {
+    const chunk = uniqueIds.slice(i, i + 75);
+    const url = `https://statsapi.mlb.com/api/v1/people?personIds=${chunk.join(",")}`;
+
+    try {
+      const response = await fetch(url, {
+        headers: { "User-Agent": "Mozilla/5.0 UTI-Fantasy-Baseball-Trending-Updater/1.0" }
+      });
+
+      if (!response.ok) continue;
+
+      const data = await response.json();
+      (data.people || []).forEach(person => {
+        if (!person.id) return;
+        lookup[String(person.id)] = {
+          age: person.currentAge ?? "",
+          rookie: Boolean(person.rookie)
+        };
+      });
+    } catch (error) {
+      console.warn(`Could not enrich MLB people info for chunk ${i / 75 + 1}:`, error.message);
+    }
+  }
+
+  return lookup;
+}
+
+async function enrichPlayersWithMlbStats(players) {
+  if (!players.length) return players;
+
+  try {
+    const [hittingStats, pitchingStats] = await Promise.all([
+      fetchMlbSeasonStats("hitting"),
+      fetchMlbSeasonStats("pitching")
+    ]);
+    const mlbLookup = buildMlbStatsLookup(hittingStats, pitchingStats);
+    const playerIds = [];
+
+    const enriched = players.map(player => {
+      const key = normalizePlayerName(player.name);
+      const group = player.positions?.some(position => ["P", "SP", "RP"].includes(position)) ? "pitching" : "hitting";
+      const oppositeGroup = group === "pitching" ? "hitting" : "pitching";
+      const match = mlbLookup[key]?.[group] || mlbLookup[key]?.[oppositeGroup];
+
+      if (!match) return player;
+
+      if (match.playerId) playerIds.push(match.playerId);
+
+      return {
+        ...player,
+        team: player.team || match.team,
+        mlbPlayerId: match.playerId,
+        stats: match.stats
+      };
+    });
+
+    const peopleLookup = await fetchMlbPeopleInfo(playerIds);
+
+    return enriched.map(player => {
+      const info = peopleLookup[player.mlbPlayerId] || {};
+      return {
+        ...player,
+        age: player.age ?? info.age ?? "",
+        rookie: player.rookie ?? info.rookie ?? false
+      };
+    });
+  } catch (error) {
+    console.warn("Could not enrich trend players with MLB season stats:", error.message);
+    return players;
+  }
+}
+
 function writeTrendingPlayers(players) {
   const generatedAt = new Date().toISOString();
   const output = `// Auto-generated by scripts/update-trending-players.js\n` +
@@ -535,8 +702,10 @@ async function main() {
     );
   }
 
-  writeTrendingPlayers(availablePlayers);
-  console.log(`Wrote ${availablePlayers.length} available trending players to data/trending-players.js`);
+  const enrichedPlayers = await enrichPlayersWithMlbStats(availablePlayers);
+
+  writeTrendingPlayers(enrichedPlayers);
+  console.log(`Wrote ${enrichedPlayers.length} available trending players to data/trending-players.js`);
 }
 
 main().catch(error => {
