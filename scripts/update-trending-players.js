@@ -638,7 +638,7 @@ async function enrichPlayersWithMlbStats(players) {
 
       return {
         ...player,
-        team: player.team || match.team,
+        team: (!player.team || /^\d+$/.test(String(player.team))) ? match.team : player.team,
         mlbPlayerId: match.playerId,
         stats: match.stats
       };
