@@ -275,6 +275,7 @@ function buildTrendPlayer(rawPlayer, source = "ESPN") {
     trendScore,
     source,
     timeWindow: "Last 7 days",
+    statsWindow: "Season stats",
     tags: [
       isTrueAddTrend ? (addedPercent >= 10 ? "Hot Add" : "Rising") : "Popular Available",
       isPitcher ? "Arm Watch" : "Bat Watch"
@@ -640,7 +641,8 @@ async function enrichPlayersWithMlbStats(players) {
         ...player,
         team: (!player.team || /^\d+$/.test(String(player.team))) ? match.team : player.team,
         mlbPlayerId: match.playerId,
-        stats: match.stats
+        stats: match.stats,
+        statsWindow: "Season stats"
       };
     });
 
