@@ -1884,44 +1884,25 @@
 
 
   <script>
-    /* ===== Trending Available true split renderer v2 =====
-       Reads the real 7D / 14D / SEA split from the generated player object.
-       Important: it now unwraps nested batting/pitching/totals objects, which is
-       where many generated files store last7 and last14 stats.
+    /* ===== Safe Trending highlight enhancer =====
+       This version does NOT blank 7D/14D cards when range data is not found.
+       It first tries the player data object, then the stats already rendered on the card.
     */
     (function () {
       const RANGE_LABELS = { last7: 'Last 7', last14: 'Last 14', season: 'Season' };
       const RANGE_ALIASES = {
-        last7: ['last7', 'last7days', 'last_7', 'last_7_days', 'lastSeven', 'lastSevenDays', 'stats7', 'stats7days', 'statsLast7', 'last7Stats', 'sevenDayStats', 'recent7', 'recent7Stats', 'rolling7', 'rolling7days', 'period7', 'split7', '7day', '7days', '7', 'week', 'last week', 'last 7', 'last 7 days'],
-        last14: ['last14', 'last14days', 'last_14', 'last_14_days', 'lastFourteen', 'lastFourteenDays', 'stats14', 'stats14days', 'statsLast14', 'last14Stats', 'fourteenDayStats', 'recent14', 'recent14Stats', 'rolling14', 'rolling14days', 'period14', 'split14', '14day', '14days', '14', 'twoweek', 'twoWeek', 'twoWeeks', 'last two weeks', 'last 14', 'last 14 days'],
-        season: ['season', 'seasonStats', 'statsSeason', 'fullSeason', 'year', 'ytd', '2026', 'total', 'totals']
+        last7: ['last7', 'last7days', 'last_7', 'last_7_days', 'lastSeven', 'lastSevenDays', 'stats7', 'stats7days', 'statsLast7', 'last7Stats', 'sevenDayStats', 'recent7', 'recent7Stats', 'rolling7', 'rolling7days', 'period7', 'split7', '7day', '7days', '7', 'week'],
+        last14: ['last14', 'last14days', 'last_14', 'last_14_days', 'lastFourteen', 'lastFourteenDays', 'stats14', 'stats14days', 'statsLast14', 'last14Stats', 'fourteenDayStats', 'recent14', 'recent14Stats', 'rolling14', 'rolling14days', 'period14', 'split14', '14day', '14days', '14', 'twoweek', 'twoWeek', 'twoWeeks'],
+        season: ['season', 'seasonStats', 'statsSeason', 'fullSeason', 'year', 'ytd', '2026']
       };
 
-      const STAT_KEYS = [
-        'AB','PA','R','HR','RBI','NSB','SB','TB','AVG','OPS','OBP','BB',
-        'IP','ERA','WHIP','BAA','K','SO','QS','REC','W','L','SV+H','SVH','SV','HLD','HD',
-        'homeRuns','home_runs','runsBattedIn','runs_batted_in','totalBases','total_bases',
-        'stolenBases','stolen_bases','atBats','at_bats','inningsPitched','innings_pitched',
-        'earnedRunAverage','earned_run_average','walksHitsPerInningPitched','walks_hits_per_inning_pitched',
-        'battingAverage','batting_average','opponentAverage','opponent_average',
-        'wins','win','losses','loss','pitchingWins','pitchingLosses','gamesWon','gamesLost'
-      ];
-
+      const STAT_KEYS = ['AB','PA','R','HR','RBI','NSB','SB','TB','AVG','OPS','OBP','BB','IP','ERA','WHIP','BAA','K','SO','QS','REC','W','L','SV+H','SVH','SV','HLD','HD','holds','saves','wins','losses','homeRuns','runsBattedIn','totalBases','stolenBases','atBats','inningsPitched','earnedRunAverage','walksHitsPerInningPitched','battingAverage','opponentAverage'];
       const NAME_KEYS = ['name', 'playerName', 'fullName', 'displayName'];
       const POSITION_KEYS = ['position', 'positions', 'eligiblePositions', 'pos'];
-      const STAT_CONTAINER_KEYS = [
-        'stats','stat','line','statLine','mlbStats','fantasyStats','standard','standardStats',
-        'hitting','hittingStats','batting','battingStats','offense','offensiveStats',
-        'pitching','pitchingStats','pitcher','pitcherStats',
-        'totals','total','season','summary'
-      ];
+      const NESTED_STAT_KEYS = ['stats', 'stat', 'line', 'totals', 'total', 'values', 'hitting', 'batting', 'battingStats', 'hittingStats', 'pitching', 'pitchingStats', 'mlbStats', 'fantasyStats', 'standard', 'standardStats', 'seasonStats'];
 
       function norm(value) {
-        return String(value || '')
-          .toLowerCase()
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '')
-          .replace(/[^a-z0-9]/g, '');
+        return String(value || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/g, '');
       }
 
       function getPlayerName(player) {
@@ -1938,23 +1919,17 @@
         return '';
       }
 
-      function isPitcher(player) {
-        return /(^|[^A-Z])(P|SP|RP|CL)([^A-Z]|$)/i.test(getPositionText(player));
+      function isPitcher(player, stats) {
+        return /(^|[^A-Z])(P|SP|RP|CL)([^A-Z]|$)/i.test(getPositionText(player)) || valueFromStats(stats, ['IP', 'ERA', 'WHIP', 'BAA', 'SV', 'HLD', 'K', 'QS', 'W', 'L']) !== undefined;
       }
-
-      function isReliever(player) {
-        return /(^|[^A-Z])(RP|CL)([^A-Z]|$)/i.test(getPositionText(player));
-      }
-
-      function isStarter(player) {
-        return /(^|[^A-Z])SP([^A-Z]|$)/i.test(getPositionText(player));
-      }
+      function isReliever(player) { return /(^|[^A-Z])(RP|CL)([^A-Z]|$)/i.test(getPositionText(player)); }
+      function isStarter(player) { return /(^|[^A-Z])SP([^A-Z]|$)/i.test(getPositionText(player)); }
 
       function toNumber(value) {
         if (value === undefined || value === null || value === '') return null;
         if (typeof value === 'number') return Number.isFinite(value) ? value : null;
         const cleaned = String(value).replace(/,/g, '').replace('%', '').trim();
-        if (!cleaned || cleaned === '-') return null;
+        if (!cleaned || cleaned === '-' || cleaned === '—') return null;
         const parsed = Number(cleaned);
         return Number.isFinite(parsed) ? parsed : null;
       }
@@ -1962,10 +1937,8 @@
       function formatValue(label, value) {
         const n = toNumber(value);
         if (n === null) return value ?? '-';
-        if (['AVG', 'OBP', 'OPS', 'ERA', 'WHIP', 'BAA'].includes(label)) {
-          if (['ERA', 'WHIP'].includes(label)) return n.toFixed(2);
-          return n.toFixed(3).replace(/^0/, '');
-        }
+        if (['AVG', 'OBP', 'OPS', 'BAA'].includes(label)) return n.toFixed(3).replace(/^0/, '');
+        if (['ERA', 'WHIP'].includes(label)) return n.toFixed(2);
         if (label === 'IP') return Number.isInteger(n) ? String(n) : n.toFixed(1);
         return String(Math.round(n * 10) / 10).replace(/\.0$/, '');
       }
@@ -1976,116 +1949,31 @@
         return STAT_KEYS.some(key => keys.includes(norm(key)));
       }
 
-      function unwrapStatsObject(obj, depth = 0) {
-        if (!obj || typeof obj !== 'object' || Array.isArray(obj) || depth > 3) return {};
-        const merged = {};
+      function mergeDeepStats(obj, depth = 0, visited = new Set()) {
+        if (!obj || typeof obj !== 'object' || Array.isArray(obj) || visited.has(obj) || depth > 5) return {};
+        visited.add(obj);
 
-        // Keep direct stat keys first.
+        const merged = {};
+        let foundDirect = false;
+
         Object.entries(obj).forEach(([key, value]) => {
-          if (STAT_KEYS.some(statKey => norm(statKey) === norm(key))) {
+          if (value === undefined || value === null || typeof value === 'object') return;
+          const cleanKey = norm(key);
+          if (STAT_KEYS.some(statKey => norm(statKey) === cleanKey)) {
             merged[key] = value;
+            foundDirect = true;
           }
         });
 
-        // Then unwrap common nested containers like battingStats / pitchingStats / totals.
         Object.entries(obj).forEach(([key, value]) => {
           if (!value || typeof value !== 'object' || Array.isArray(value)) return;
-          const isContainer = STAT_CONTAINER_KEYS.some(containerKey => norm(containerKey) === norm(key) || norm(key).includes(norm(containerKey)));
-          if (isContainer || hasDirectStatKey(value)) {
-            Object.assign(merged, unwrapStatsObject(value, depth + 1));
-          }
+          const shouldSearch = NESTED_STAT_KEYS.includes(key) || NESTED_STAT_KEYS.map(norm).includes(norm(key)) || hasDirectStatKey(value);
+          if (!shouldSearch && depth > 1) return;
+          const nested = mergeDeepStats(value, depth + 1, visited);
+          if (Object.keys(nested).length) Object.assign(merged, nested);
         });
 
-        return merged;
-      }
-
-      function looksLikeStatsObject(obj) {
-        return Object.keys(unwrapStatsObject(obj)).length > 0;
-      }
-
-      function directCaseInsensitive(obj, aliases) {
-        if (!obj || typeof obj !== 'object') return undefined;
-        const normalized = aliases.map(norm);
-        for (const [key, value] of Object.entries(obj)) {
-          const keyNorm = norm(key);
-          if (normalized.includes(keyNorm)) return value;
-        }
-        return undefined;
-      }
-
-      function rangeMatchesKey(key, range) {
-        const keyNorm = norm(key);
-        return (RANGE_ALIASES[range] || [range]).some(alias => keyNorm === norm(alias) || keyNorm.includes(norm(alias)));
-      }
-
-      function itemMatchesRange(item, range) {
-        if (!item || typeof item !== 'object') return false;
-        const aliases = RANGE_ALIASES[range] || [range];
-        const rangeText = norm(item.range || item.period || item.label || item.name || item.type || item.key || item.statRange || item.split || item.window || item.windowName || '');
-        if (rangeText && aliases.some(alias => rangeText === norm(alias) || rangeText.includes(norm(alias)))) return true;
-
-        const days = toNumber(item.days ?? item.dayCount ?? item.windowDays ?? item.rangeDays);
-        if (range === 'last7' && days === 7) return true;
-        if (range === 'last14' && days === 14) return true;
-        if (range === 'season' && (rangeText === norm('season') || days === null)) return false;
-        return false;
-      }
-
-      function findRangeStats(player, range) {
-        if (!player || typeof player !== 'object') return {};
-
-        // 1) Arrays such as splits: [{ days: 7, battingStats: {...} }]
-        for (const arrayKey of ['statSplits', 'splits', 'ranges', 'rangeStats', 'periods', 'statLines', 'statsByRange']) {
-          const arr = player[arrayKey];
-          if (!Array.isArray(arr)) continue;
-
-          for (const item of arr) {
-            if (!itemMatchesRange(item, range)) continue;
-            const unwrappedItem = unwrapStatsObject(item);
-            if (Object.keys(unwrappedItem).length) return unwrappedItem;
-
-            for (const key of STAT_CONTAINER_KEYS) {
-              const unwrapped = unwrapStatsObject(item[key]);
-              if (Object.keys(unwrapped).length) return unwrapped;
-            }
-          }
-        }
-
-        // 2) Direct shapes: player.last7, player.stats.last7, player.batting.last14, etc.
-        const topDirect = directCaseInsensitive(player, RANGE_ALIASES[range] || [range]);
-        const topUnwrapped = unwrapStatsObject(topDirect);
-        if (Object.keys(topUnwrapped).length) return topUnwrapped;
-
-        // 3) Deep search for range keys. This catches stats.batting.last7 and stats.pitching.last14.
-        const queue = [{ obj: player, depth: 0 }];
-        const visited = new Set();
-
-        while (queue.length) {
-          const { obj, depth } = queue.shift();
-          if (!obj || typeof obj !== 'object' || visited.has(obj) || depth > 5) continue;
-          visited.add(obj);
-
-          for (const [key, value] of Object.entries(obj)) {
-            if (rangeMatchesKey(key, range)) {
-              const unwrapped = unwrapStatsObject(value);
-              if (Object.keys(unwrapped).length) return unwrapped;
-            }
-
-            if (value && typeof value === 'object' && !Array.isArray(value)) {
-              queue.push({ obj: value, depth: depth + 1 });
-            }
-          }
-        }
-
-        // 4) Season fallback can use broad totals. Never do this for last7/last14.
-        if (range === 'season') {
-          const unwrappedStats = unwrapStatsObject(player.stats);
-          if (Object.keys(unwrappedStats).length) return unwrappedStats;
-          const unwrappedPlayer = unwrapStatsObject(player);
-          if (Object.keys(unwrappedPlayer).length) return unwrappedPlayer;
-        }
-
-        return {};
+        return foundDirect || Object.keys(merged).length ? merged : {};
       }
 
       function valueFromStats(stats, keys) {
@@ -2097,6 +1985,81 @@
         return undefined;
       }
 
+      function directCaseInsensitive(obj, aliases) {
+        if (!obj || typeof obj !== 'object') return undefined;
+        const normalized = aliases.map(norm);
+        for (const [key, value] of Object.entries(obj)) {
+          if (normalized.includes(norm(key))) return value;
+        }
+        return undefined;
+      }
+
+      function findRangeStats(player, range) {
+        if (!player || typeof player !== 'object') return {};
+        const aliases = RANGE_ALIASES[range] || [range];
+
+        // Array split shapes.
+        for (const arrayKey of ['statSplits', 'splits', 'ranges', 'rangeStats', 'periods', 'statLines']) {
+          const arr = player[arrayKey];
+          if (Array.isArray(arr)) {
+            for (const item of arr) {
+              if (!item || typeof item !== 'object') continue;
+              const rangeText = norm(item.range || item.period || item.label || item.name || item.type || item.key || item.statRange || item.days || '');
+              const isMatch = aliases.some(alias => rangeText === norm(alias) || rangeText.includes(norm(alias)));
+              if (!isMatch) continue;
+              const merged = mergeDeepStats(item);
+              if (Object.keys(merged).length) return merged;
+            }
+          }
+        }
+
+        // Direct split objects.
+        const topDirect = directCaseInsensitive(player, aliases);
+        let merged = mergeDeepStats(topDirect);
+        if (Object.keys(merged).length) return merged;
+
+        for (const containerKey of ['stats', 'statLines', 'ranges', 'splits', 'fantasyStats', 'mlbStats', 'hitting', 'pitching']) {
+          const found = directCaseInsensitive(player[containerKey], aliases);
+          merged = mergeDeepStats(found);
+          if (Object.keys(merged).length) return merged;
+        }
+
+        // Combined keys like last7BattingStats / pitchingLast14 / seasonTotals.
+        const stack = [{ obj: player, depth: 0 }];
+        const visited = new Set();
+        while (stack.length) {
+          const { obj, depth } = stack.shift();
+          if (!obj || typeof obj !== 'object' || visited.has(obj) || depth > 5) continue;
+          visited.add(obj);
+          for (const [key, value] of Object.entries(obj)) {
+            const nk = norm(key);
+            const isRangeKey = aliases.some(alias => nk === norm(alias) || nk.includes(norm(alias)));
+            if (isRangeKey) {
+              merged = mergeDeepStats(value);
+              if (Object.keys(merged).length) return merged;
+            }
+            if (value && typeof value === 'object' && !Array.isArray(value)) stack.push({ obj: value, depth: depth + 1 });
+          }
+        }
+
+        if (range === 'season') {
+          merged = mergeDeepStats(player.season || player.stats || player);
+          if (Object.keys(merged).length) return merged;
+        }
+        return {};
+      }
+
+      function readRenderedStats(card) {
+        const stats = {};
+        card.querySelectorAll('.trend-v7-stat, .pickup-primary-stat, .pickup-secondary-stat, .pickup-market-stat').forEach(stat => {
+          const label = (stat.querySelector('.trend-v7-stat-label, .pickup-primary-label, .pickup-secondary-label, .pickup-market-label')?.textContent || '').trim();
+          const value = (stat.querySelector('.trend-v7-stat-value, .pickup-primary-value, .pickup-secondary-value, .pickup-market-value')?.textContent || '').trim();
+          if (!label || !value || value === '—' || value === '-') return;
+          stats[label] = value;
+        });
+        return stats;
+      }
+
       function makeStat(label, keys, stats, weight, formatterLabel = label, group = '') {
         const raw = valueFromStats(stats, keys);
         const num = toNumber(raw);
@@ -2104,25 +2067,19 @@
       }
 
       function chooseTop(items) {
-        const good = items
-          .filter(item => item.num !== null && Number.isFinite(item.score) && item.score > 0)
-          .sort((a, b) => b.score - a.score);
-
+        const good = items.filter(item => item.num !== null && Number.isFinite(item.score) && item.score > 0).sort((a, b) => b.score - a.score);
         const chosen = [];
         const usedGroups = new Set();
-
         good.forEach(item => {
           if (chosen.length >= 4) return;
           if (item.group && usedGroups.has(item.group)) return;
           chosen.push(item);
           if (item.group) usedGroups.add(item.group);
         });
-
         good.forEach(item => {
           if (chosen.length >= 4) return;
           if (!chosen.some(existing => existing.label === item.label)) chosen.push(item);
         });
-
         if (chosen.length) return chosen.slice(0, 4);
         return items.filter(item => item.num !== null).sort((a, b) => b.score - a.score).slice(0, 4);
       }
@@ -2145,37 +2102,17 @@
       }
 
       function makeRecordStat(stats) {
-        const rawRecord = valueFromStats(stats, ['REC', 'record', 'pitchingRecord', 'winLossRecord', 'winLoss', 'wl', 'wL']);
+        const rawRecord = valueFromStats(stats, ['REC', 'record', 'pitchingRecord', 'winLossRecord', 'win_loss_record', 'wLRecord']);
         if (rawRecord !== undefined && rawRecord !== null && String(rawRecord).trim()) {
-          const recordText = String(rawRecord).trim();
-          const match = recordText.match(/(\d+)\s*[-–]\s*(\d+)/);
+          const match = String(rawRecord).match(/(\d+)\s*[-–]\s*(\d+)/);
           const wins = match ? Number(match[1]) : 0;
           const losses = match ? Number(match[2]) : 0;
-          return {
-            label: 'REC',
-            value: recordText,
-            num: wins,
-            group: 'record',
-            score: wins >= 2 ? 104 + wins * 8 - losses * 4 : wins >= 1 ? 70 + wins * 8 - losses * 4 : losses > 0 ? 12 : 0
-          };
+          return { label: 'REC', value: String(rawRecord).trim(), num: wins + losses, group: 'record', score: wins >= 2 ? 104 + wins * 8 - losses * 4 : wins >= 1 ? 70 + wins * 8 - losses * 4 : 0 };
         }
-
-        const winsRaw = valueFromStats(stats, ['W', 'w', 'wins', 'win', 'pitchingWins', 'gamesWon']);
-        const lossesRaw = valueFromStats(stats, ['L', 'l', 'losses', 'loss', 'pitchingLosses', 'gamesLost']);
-        const wins = toNumber(winsRaw);
-        const losses = toNumber(lossesRaw);
-
-        if (wins === null && losses === null) return { label: 'REC', value: '', num: null, group: 'record', score: -999 };
-
-        const safeWins = wins ?? 0;
-        const safeLosses = losses ?? 0;
-        return {
-          label: 'REC',
-          value: `${safeWins}-${safeLosses}`,
-          num: safeWins,
-          group: 'record',
-          score: safeWins >= 2 ? 104 + safeWins * 8 - safeLosses * 4 : safeWins >= 1 ? 70 + safeWins * 8 - safeLosses * 4 : safeLosses > 0 ? 12 : 0
-        };
+        const wins = toNumber(valueFromStats(stats, ['W', 'w', 'wins', 'win', 'pitchingWins', 'pitcherWins', 'gamesWon'])) || 0;
+        const losses = toNumber(valueFromStats(stats, ['L', 'l', 'losses', 'loss', 'pitchingLosses', 'pitcherLosses', 'gamesLost'])) || 0;
+        if (!wins && !losses) return { label: 'REC', value: '', num: null, group: 'record', score: -999 };
+        return { label: 'REC', value: `${wins}-${losses}`, num: wins + losses, group: 'record', score: wins >= 2 ? 104 + wins * 8 - losses * 4 : wins >= 1 ? 70 + wins * 8 - losses * 4 : losses ? 8 - losses * 4 : 0 };
       }
 
       function choosePitcherStats(stats, player) {
@@ -2187,7 +2124,6 @@
         const hld = toNumber(valueFromStats(stats, ['HLD', 'HD', 'holds'])) || 0;
         const svh = valueFromStats(stats, ['SV+H', 'SVH', 'svh', 'savesHolds', 'savesPlusHolds']) ?? (sv + hld || undefined);
         const withSvh = { ...stats, 'SV+H': svh };
-
         return chooseTop([
           makeStat('SV+H', ['SV+H', 'SVH', 'svh', 'savesHolds', 'savesPlusHolds'], withSvh, n => n >= 4 ? 172 + n * 8 : n >= 2 ? 132 + n * 8 : n >= 1 ? 90 + n * 8 : 0, 'SV+H', 'leverage'),
           makeStat('SV', ['SV', 'sv', 'saves'], stats, n => n >= 3 ? 160 + n * 8 : n >= 1 ? 106 + n * 8 : 0, 'SV', 'leverage'),
@@ -2202,9 +2138,7 @@
         ]);
       }
 
-      function trendPlayers() {
-        return Array.isArray(window.TRENDING_AVAILABLE_PLAYERS) ? window.TRENDING_AVAILABLE_PLAYERS : [];
-      }
+      function trendPlayers() { return Array.isArray(window.TRENDING_AVAILABLE_PLAYERS) ? window.TRENDING_AVAILABLE_PLAYERS : []; }
 
       function findPlayerForCard(card, index) {
         const list = trendPlayers();
@@ -2235,33 +2169,34 @@
 
       function renderCard(card, player, range) {
         const statsEl = card.querySelector('.trend-v7-stats');
-        if (!statsEl || !player) return;
+        if (!statsEl) return;
 
-        const stats = findRangeStats(player, range);
-        const chosen = isPitcher(player) ? choosePitcherStats(stats, player) : chooseHitterStats(stats);
-        const rangeLabel = RANGE_LABELS[range] || 'Stats';
-
-        let nextHtml = '';
-        if (chosen.length) {
-          nextHtml = chosen.map(item => `
-            <div class="trend-v7-stat trend-v7-stat-smart">
-              <span class="trend-v7-stat-value">${item.value}</span>
-              <span class="trend-v7-stat-label">${item.label}</span>
-            </div>
-          `).join('');
-        } else {
-          nextHtml = `
-            <div class="trend-v7-stat trend-v7-stat-smart">
-              <span class="trend-v7-stat-value">—</span>
-              <span class="trend-v7-stat-label">${range === 'last7' ? '7D' : range === 'last14' ? '14D' : 'SEA'}</span>
-            </div>
-          `;
+        let stats = findRangeStats(player, range);
+        let source = Object.keys(stats).length ? 'data' : '';
+        if (!Object.keys(stats).length) {
+          stats = readRenderedStats(card);
+          source = Object.keys(stats).length ? 'rendered' : '';
         }
+
+        // Critical: never overwrite a 7D/14D card with a dash if we cannot find stats.
+        // Let the original trending script output remain visible.
+        if (!Object.keys(stats).length) return;
+
+        const chosen = isPitcher(player, stats) ? choosePitcherStats(stats, player) : chooseHitterStats(stats);
+        if (!chosen.length) return;
+
+        const nextHtml = chosen.map(item => `
+          <div class="trend-v7-stat trend-v7-stat-smart">
+            <span class="trend-v7-stat-value">${item.value}</span>
+            <span class="trend-v7-stat-label">${item.label}</span>
+          </div>
+        `).join('');
 
         if (statsEl.innerHTML.trim() !== nextHtml.trim()) statsEl.innerHTML = nextHtml;
         const head = card.querySelector('.trend-v7-stats-head');
-        const nextHeadText = chosen.length ? `Best-fit highlights • ${rangeLabel}` : `No ${rangeLabel} split found`;
+        const nextHeadText = `Best-fit highlights • ${RANGE_LABELS[range] || 'Stats'}`;
         if (head && head.textContent.trim() !== nextHeadText) head.textContent = nextHeadText;
+        card.dataset.smartStatsSource = source;
       }
 
       function apply() {
@@ -2276,24 +2211,17 @@
         const button = event.target.closest('#top-pickups [data-trend-stat-range]');
         if (!button) return;
         setActiveRange(button.dataset.trendStatRange || 'last7');
-        setTimeout(apply, 0);
-        setTimeout(apply, 80);
-        setTimeout(apply, 200);
-        setTimeout(apply, 500);
+        // Let the original script render that range, then enhance what it rendered.
+        [150, 350, 700, 1200].forEach(ms => setTimeout(apply, ms));
       });
 
       let timer;
       function schedule() {
         clearTimeout(timer);
-        timer = setTimeout(apply, 90);
+        timer = setTimeout(apply, 140);
       }
 
-      window.addEventListener('load', () => {
-        apply();
-        setTimeout(apply, 300);
-        setTimeout(apply, 900);
-      });
-
+      window.addEventListener('load', () => [250, 800, 1600].forEach(ms => setTimeout(apply, ms)));
       document.addEventListener('DOMContentLoaded', () => {
         setActiveRange(activeRange());
         const grid = document.getElementById('availableStudsGrid');
@@ -2303,9 +2231,9 @@
 
       window.applyTrendingBestRangeStats = apply;
       window.debugTrendingRangeStats = function () {
-        return trendPlayers().map(player => ({
+        return trendPlayers().map((player, index) => ({
+          index,
           name: getPlayerName(player),
-          position: getPositionText(player),
           last7: findRangeStats(player, 'last7'),
           last14: findRangeStats(player, 'last14'),
           season: findRangeStats(player, 'season')
@@ -2313,6 +2241,7 @@
       };
     })();
   </script>
+
 
 </body>
 
