@@ -1891,8 +1891,8 @@
     (function () {
       const RANGE_LABELS = { last7: 'Last 7', last14: 'Last 14', season: 'Season' };
       const RANGE_ALIASES = {
-        last7: ['last7', 'last7days', 'last_7', 'stats7', 'sevenDayStats', 'recent7', '7day', '7days', '7', 'week'],
-        last14: ['last14', 'last14days', 'last_14', 'stats14', 'fourteenDayStats', 'recent14', '14day', '14days', '14', 'twoweek', 'twoWeek'],
+        last7: ['last7', 'last7days', 'last_7', 'last_7_days', 'lastSeven', 'lastSevenDays', 'stats7', 'stats7days', 'statsLast7', 'sevenDayStats', 'recent7', 'rolling7', 'rolling7days', 'period7', 'split7', '7day', '7days', '7', 'week'],
+        last14: ['last14', 'last14days', 'last_14', 'last_14_days', 'lastFourteen', 'lastFourteenDays', 'stats14', 'stats14days', 'statsLast14', 'fourteenDayStats', 'recent14', 'rolling14', 'rolling14days', 'period14', 'split14', '14day', '14days', '14', 'twoweek', 'twoWeek', 'twoWeeks'],
         season: ['season', 'seasonStats', 'statsSeason', 'fullSeason', 'year', 'ytd', '2026']
       };
 
@@ -1988,6 +1988,23 @@
       function findRangeStats(player, range) {
         if (!player || typeof player !== 'object') return {};
         const aliases = RANGE_ALIASES[range] || [range];
+
+        // 0) Array shapes: player.statSplits = [{ range: 'last7', stats: {...} }]
+        for (const arrayKey of ['statSplits', 'splits', 'ranges', 'rangeStats', 'periods', 'statLines']) {
+          const arr = player[arrayKey];
+          if (Array.isArray(arr)) {
+            for (const item of arr) {
+              if (!item || typeof item !== 'object') continue;
+              const rangeText = norm(item.range || item.period || item.label || item.name || item.type || item.key || item.statRange || item.days || '');
+              const isMatch = aliases.some(alias => rangeText === norm(alias) || rangeText.includes(norm(alias)));
+              if (!isMatch) continue;
+              for (const statKey of ['stats', 'hitting', 'pitching', 'mlbStats', 'fantasyStats', 'line']) {
+                if (looksLikeStatsObject(item[statKey])) return mergeNestedStats(item[statKey]);
+              }
+              if (looksLikeStatsObject(item)) return mergeNestedStats(item);
+            }
+          }
+        }
 
         // 1) Common direct shapes: player.last7, player.stats.last7, player.ranges.last7, etc.
         const topDirect = directCaseInsensitive(player, aliases);
@@ -2176,11 +2193,20 @@
       document.addEventListener('click', event => {
         const button = event.target.closest('#top-pickups [data-trend-stat-range]');
         if (!button) return;
+
+        // Own this click completely. The original category-leaders script also listens
+        // to these buttons and was re-rendering the card back to season stats.
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+
         setActiveRange(button.dataset.trendStatRange || 'last7');
         apply();
-        setTimeout(apply, 80);
-        setTimeout(apply, 300);
-        setTimeout(apply, 700);
+        setTimeout(apply, 50);
+        setTimeout(apply, 150);
+        setTimeout(apply, 350);
+        setTimeout(apply, 800);
+        setTimeout(apply, 1400);
       }, true);
 
       let timer;
@@ -2202,6 +2228,14 @@
         apply();
       });
       window.applyTrendingBestRangeStats = apply;
+      window.debugTrendingRangeStats = function () {
+        return trendPlayers().map(player => ({
+          name: getPlayerName(player),
+          last7: Object.keys(findRangeStats(player, 'last7') || {}),
+          last14: Object.keys(findRangeStats(player, 'last14') || {}),
+          season: Object.keys(findRangeStats(player, 'season') || {})
+        }));
+      };
     })();
   </script>
 
