@@ -1884,25 +1884,37 @@
 
 
   <script>
-    /* ===== Definitive Trending range stat renderer =====
-       Fixes 7D / 14D / SEA showing season-only stats by reading a real
-       range-specific stat object first, then running the best-highlight picker.
+    /* ===== Trending Available true split renderer v2 =====
+       Reads the real 7D / 14D / SEA split from the generated player object.
+       Important: it now unwraps nested batting/pitching/totals objects, which is
+       where many generated files store last7 and last14 stats.
     */
     (function () {
       const RANGE_LABELS = { last7: 'Last 7', last14: 'Last 14', season: 'Season' };
       const RANGE_ALIASES = {
-        last7: ['last7', 'last7days', 'last_7', 'last_7_days', 'lastSeven', 'lastSevenDays', 'stats7', 'stats7days', 'statsLast7', 'last7Stats', 'sevenDayStats', 'recent7', 'recent7Stats', 'rolling7', 'rolling7days', 'period7', 'split7', '7day', '7days', '7', 'week'],
-        last14: ['last14', 'last14days', 'last_14', 'last_14_days', 'lastFourteen', 'lastFourteenDays', 'stats14', 'stats14days', 'statsLast14', 'last14Stats', 'fourteenDayStats', 'recent14', 'recent14Stats', 'rolling14', 'rolling14days', 'period14', 'split14', '14day', '14days', '14', 'twoweek', 'twoWeek', 'twoWeeks'],
-        season: ['season', 'seasonStats', 'statsSeason', 'fullSeason', 'year', 'ytd', '2026']
+        last7: ['last7', 'last7days', 'last_7', 'last_7_days', 'lastSeven', 'lastSevenDays', 'stats7', 'stats7days', 'statsLast7', 'last7Stats', 'sevenDayStats', 'recent7', 'recent7Stats', 'rolling7', 'rolling7days', 'period7', 'split7', '7day', '7days', '7', 'week', 'last week', 'last 7', 'last 7 days'],
+        last14: ['last14', 'last14days', 'last_14', 'last_14_days', 'lastFourteen', 'lastFourteenDays', 'stats14', 'stats14days', 'statsLast14', 'last14Stats', 'fourteenDayStats', 'recent14', 'recent14Stats', 'rolling14', 'rolling14days', 'period14', 'split14', '14day', '14days', '14', 'twoweek', 'twoWeek', 'twoWeeks', 'last two weeks', 'last 14', 'last 14 days'],
+        season: ['season', 'seasonStats', 'statsSeason', 'fullSeason', 'year', 'ytd', '2026', 'total', 'totals']
       };
 
       const STAT_KEYS = [
         'AB','PA','R','HR','RBI','NSB','SB','TB','AVG','OPS','OBP','BB',
-        'IP','ERA','WHIP','BAA','K','SO','QS','REC','W','L','SV+H','SVH','SV','HLD','HD','home_runs','runs_batted_in','total_bases','stolen_bases','at_bats','innings_pitched','earned_run_average','walks_hits_per_inning_pitched','batting_average','opponent_average'
+        'IP','ERA','WHIP','BAA','K','SO','QS','REC','W','L','SV+H','SVH','SV','HLD','HD',
+        'homeRuns','home_runs','runsBattedIn','runs_batted_in','totalBases','total_bases',
+        'stolenBases','stolen_bases','atBats','at_bats','inningsPitched','innings_pitched',
+        'earnedRunAverage','earned_run_average','walksHitsPerInningPitched','walks_hits_per_inning_pitched',
+        'battingAverage','batting_average','opponentAverage','opponent_average',
+        'wins','win','losses','loss','pitchingWins','pitchingLosses','gamesWon','gamesLost'
       ];
+
       const NAME_KEYS = ['name', 'playerName', 'fullName', 'displayName'];
       const POSITION_KEYS = ['position', 'positions', 'eligiblePositions', 'pos'];
-      const NESTED_STAT_KEYS = ['hitting', 'pitching', 'stats', 'mlbStats', 'fantasyStats', 'standard', 'standardStats', 'line'];
+      const STAT_CONTAINER_KEYS = [
+        'stats','stat','line','statLine','mlbStats','fantasyStats','standard','standardStats',
+        'hitting','hittingStats','batting','battingStats','offense','offensiveStats',
+        'pitching','pitchingStats','pitcher','pitcherStats',
+        'totals','total','season','summary'
+      ];
 
       function norm(value) {
         return String(value || '')
@@ -1958,85 +1970,119 @@
         return String(Math.round(n * 10) / 10).replace(/\.0$/, '');
       }
 
-      function looksLikeStatsObject(obj) {
+      function hasDirectStatKey(obj) {
         if (!obj || typeof obj !== 'object' || Array.isArray(obj)) return false;
         const keys = Object.keys(obj).map(norm);
-        return STAT_KEYS.some(key => keys.includes(norm(key)) || keys.some(k => k === norm(key)));
+        return STAT_KEYS.some(key => keys.includes(norm(key)));
       }
 
-      function mergeNestedStats(obj) {
-        if (!obj || typeof obj !== 'object') return {};
-        const merged = { ...obj };
-        NESTED_STAT_KEYS.forEach(key => {
-          const nested = obj[key];
-          if (nested && typeof nested === 'object' && !Array.isArray(nested)) {
-            Object.assign(merged, nested);
+      function unwrapStatsObject(obj, depth = 0) {
+        if (!obj || typeof obj !== 'object' || Array.isArray(obj) || depth > 3) return {};
+        const merged = {};
+
+        // Keep direct stat keys first.
+        Object.entries(obj).forEach(([key, value]) => {
+          if (STAT_KEYS.some(statKey => norm(statKey) === norm(key))) {
+            merged[key] = value;
           }
         });
+
+        // Then unwrap common nested containers like battingStats / pitchingStats / totals.
+        Object.entries(obj).forEach(([key, value]) => {
+          if (!value || typeof value !== 'object' || Array.isArray(value)) return;
+          const isContainer = STAT_CONTAINER_KEYS.some(containerKey => norm(containerKey) === norm(key) || norm(key).includes(norm(containerKey)));
+          if (isContainer || hasDirectStatKey(value)) {
+            Object.assign(merged, unwrapStatsObject(value, depth + 1));
+          }
+        });
+
         return merged;
+      }
+
+      function looksLikeStatsObject(obj) {
+        return Object.keys(unwrapStatsObject(obj)).length > 0;
       }
 
       function directCaseInsensitive(obj, aliases) {
         if (!obj || typeof obj !== 'object') return undefined;
         const normalized = aliases.map(norm);
         for (const [key, value] of Object.entries(obj)) {
-          if (normalized.includes(norm(key))) return value;
+          const keyNorm = norm(key);
+          if (normalized.includes(keyNorm)) return value;
         }
         return undefined;
       }
 
+      function rangeMatchesKey(key, range) {
+        const keyNorm = norm(key);
+        return (RANGE_ALIASES[range] || [range]).some(alias => keyNorm === norm(alias) || keyNorm.includes(norm(alias)));
+      }
+
+      function itemMatchesRange(item, range) {
+        if (!item || typeof item !== 'object') return false;
+        const aliases = RANGE_ALIASES[range] || [range];
+        const rangeText = norm(item.range || item.period || item.label || item.name || item.type || item.key || item.statRange || item.split || item.window || item.windowName || '');
+        if (rangeText && aliases.some(alias => rangeText === norm(alias) || rangeText.includes(norm(alias)))) return true;
+
+        const days = toNumber(item.days ?? item.dayCount ?? item.windowDays ?? item.rangeDays);
+        if (range === 'last7' && days === 7) return true;
+        if (range === 'last14' && days === 14) return true;
+        if (range === 'season' && (rangeText === norm('season') || days === null)) return false;
+        return false;
+      }
+
       function findRangeStats(player, range) {
         if (!player || typeof player !== 'object') return {};
-        const aliases = RANGE_ALIASES[range] || [range];
 
-        // 0) Array shapes: player.statSplits = [{ range: 'last7', stats: {...} }]
-        for (const arrayKey of ['statSplits', 'splits', 'ranges', 'rangeStats', 'periods', 'statLines']) {
+        // 1) Arrays such as splits: [{ days: 7, battingStats: {...} }]
+        for (const arrayKey of ['statSplits', 'splits', 'ranges', 'rangeStats', 'periods', 'statLines', 'statsByRange']) {
           const arr = player[arrayKey];
-          if (Array.isArray(arr)) {
-            for (const item of arr) {
-              if (!item || typeof item !== 'object') continue;
-              const rangeText = norm(item.range || item.period || item.label || item.name || item.type || item.key || item.statRange || item.days || '');
-              const isMatch = aliases.some(alias => rangeText === norm(alias) || rangeText.includes(norm(alias)));
-              if (!isMatch) continue;
-              for (const statKey of ['stats', 'hitting', 'pitching', 'mlbStats', 'fantasyStats', 'line']) {
-                if (looksLikeStatsObject(item[statKey])) return mergeNestedStats(item[statKey]);
-              }
-              if (looksLikeStatsObject(item)) return mergeNestedStats(item);
+          if (!Array.isArray(arr)) continue;
+
+          for (const item of arr) {
+            if (!itemMatchesRange(item, range)) continue;
+            const unwrappedItem = unwrapStatsObject(item);
+            if (Object.keys(unwrappedItem).length) return unwrappedItem;
+
+            for (const key of STAT_CONTAINER_KEYS) {
+              const unwrapped = unwrapStatsObject(item[key]);
+              if (Object.keys(unwrapped).length) return unwrapped;
             }
           }
         }
 
-        // 1) Common direct shapes: player.last7, player.stats.last7, player.ranges.last7, etc.
-        const topDirect = directCaseInsensitive(player, aliases);
-        if (looksLikeStatsObject(topDirect)) return mergeNestedStats(topDirect);
+        // 2) Direct shapes: player.last7, player.stats.last7, player.batting.last14, etc.
+        const topDirect = directCaseInsensitive(player, RANGE_ALIASES[range] || [range]);
+        const topUnwrapped = unwrapStatsObject(topDirect);
+        if (Object.keys(topUnwrapped).length) return topUnwrapped;
 
-        for (const containerKey of ['stats', 'statLines', 'ranges', 'splits', 'fantasyStats', 'mlbStats', 'hitting', 'pitching']) {
-          const container = player[containerKey];
-          const found = directCaseInsensitive(container, aliases);
-          if (looksLikeStatsObject(found)) return mergeNestedStats(found);
-        }
-
-        // 2) Combined keys: last7Stats, statsLast14, seasonHitting, etc.
-        const stack = [{ obj: player, depth: 0 }];
+        // 3) Deep search for range keys. This catches stats.batting.last7 and stats.pitching.last14.
+        const queue = [{ obj: player, depth: 0 }];
         const visited = new Set();
-        while (stack.length) {
-          const { obj, depth } = stack.shift();
-          if (!obj || typeof obj !== 'object' || visited.has(obj) || depth > 4) continue;
+
+        while (queue.length) {
+          const { obj, depth } = queue.shift();
+          if (!obj || typeof obj !== 'object' || visited.has(obj) || depth > 5) continue;
           visited.add(obj);
 
           for (const [key, value] of Object.entries(obj)) {
-            const nk = norm(key);
-            const isRangeKey = aliases.some(alias => nk === norm(alias) || nk.includes(norm(alias)));
-            if (isRangeKey && looksLikeStatsObject(value)) return mergeNestedStats(value);
-            if (value && typeof value === 'object' && !Array.isArray(value)) stack.push({ obj: value, depth: depth + 1 });
+            if (rangeMatchesKey(key, range)) {
+              const unwrapped = unwrapStatsObject(value);
+              if (Object.keys(unwrapped).length) return unwrapped;
+            }
+
+            if (value && typeof value === 'object' && !Array.isArray(value)) {
+              queue.push({ obj: value, depth: depth + 1 });
+            }
           }
         }
 
-        // 3) Season can safely use a broad stats object. Do NOT use this fallback for 7D/14D,
-        // because that is what made every button look like season stats.
+        // 4) Season fallback can use broad totals. Never do this for last7/last14.
         if (range === 'season') {
-          if (looksLikeStatsObject(player.stats)) return mergeNestedStats(player.stats);
-          if (looksLikeStatsObject(player)) return mergeNestedStats(player);
+          const unwrappedStats = unwrapStatsObject(player.stats);
+          if (Object.keys(unwrappedStats).length) return unwrappedStats;
+          const unwrappedPlayer = unwrapStatsObject(player);
+          if (Object.keys(unwrappedPlayer).length) return unwrappedPlayer;
         }
 
         return {};
@@ -2064,12 +2110,14 @@
 
         const chosen = [];
         const usedGroups = new Set();
+
         good.forEach(item => {
           if (chosen.length >= 4) return;
           if (item.group && usedGroups.has(item.group)) return;
           chosen.push(item);
           if (item.group) usedGroups.add(item.group);
         });
+
         good.forEach(item => {
           if (chosen.length >= 4) return;
           if (!chosen.some(existing => existing.label === item.label)) chosen.push(item);
@@ -2097,29 +2145,36 @@
       }
 
       function makeRecordStat(stats) {
-        const rawRecord = valueFromStats(stats, ['REC', 'record', 'pitchingRecord', 'winLossRecord']);
+        const rawRecord = valueFromStats(stats, ['REC', 'record', 'pitchingRecord', 'winLossRecord', 'winLoss', 'wl', 'wL']);
         if (rawRecord !== undefined && rawRecord !== null && String(rawRecord).trim()) {
-          const match = String(rawRecord).match(/(\d+)\s*[-–]\s*(\d+)/);
+          const recordText = String(rawRecord).trim();
+          const match = recordText.match(/(\d+)\s*[-–]\s*(\d+)/);
           const wins = match ? Number(match[1]) : 0;
           const losses = match ? Number(match[2]) : 0;
           return {
             label: 'REC',
-            value: String(rawRecord).trim(),
+            value: recordText,
             num: wins,
             group: 'record',
-            score: wins >= 2 ? 104 + wins * 8 - losses * 4 : wins >= 1 ? 70 + wins * 8 - losses * 4 : 0
+            score: wins >= 2 ? 104 + wins * 8 - losses * 4 : wins >= 1 ? 70 + wins * 8 - losses * 4 : losses > 0 ? 12 : 0
           };
         }
 
-        const wins = toNumber(valueFromStats(stats, ['W', 'wins', 'win'])) || 0;
-        const losses = toNumber(valueFromStats(stats, ['L', 'losses', 'loss'])) || 0;
-        if (!wins && !losses) return { label: 'REC', value: '', num: null, group: 'record', score: -999 };
+        const winsRaw = valueFromStats(stats, ['W', 'w', 'wins', 'win', 'pitchingWins', 'gamesWon']);
+        const lossesRaw = valueFromStats(stats, ['L', 'l', 'losses', 'loss', 'pitchingLosses', 'gamesLost']);
+        const wins = toNumber(winsRaw);
+        const losses = toNumber(lossesRaw);
+
+        if (wins === null && losses === null) return { label: 'REC', value: '', num: null, group: 'record', score: -999 };
+
+        const safeWins = wins ?? 0;
+        const safeLosses = losses ?? 0;
         return {
           label: 'REC',
-          value: `${wins}-${losses}`,
-          num: wins,
+          value: `${safeWins}-${safeLosses}`,
+          num: safeWins,
           group: 'record',
-          score: wins >= 2 ? 104 + wins * 8 - losses * 4 : wins >= 1 ? 70 + wins * 8 - losses * 4 : 0
+          score: safeWins >= 2 ? 104 + safeWins * 8 - safeLosses * 4 : safeWins >= 1 ? 70 + safeWins * 8 - safeLosses * 4 : safeLosses > 0 ? 12 : 0
         };
       }
 
@@ -2220,16 +2275,11 @@
       document.addEventListener('click', event => {
         const button = event.target.closest('#top-pickups [data-trend-stat-range]');
         if (!button) return;
-
-        // Let scripts/category-leaders.js handle the range change first.
-        // Then re-apply the smart highlight picker to the new active range.
-        const nextRange = button.dataset.trendStatRange || 'last7';
-        setActiveRange(nextRange);
+        setActiveRange(button.dataset.trendStatRange || 'last7');
         setTimeout(apply, 0);
         setTimeout(apply, 80);
         setTimeout(apply, 200);
         setTimeout(apply, 500);
-        setTimeout(apply, 1000);
       });
 
       let timer;
@@ -2242,21 +2292,23 @@
         apply();
         setTimeout(apply, 300);
         setTimeout(apply, 900);
-        setTimeout(apply, 1600);
       });
+
       document.addEventListener('DOMContentLoaded', () => {
         setActiveRange(activeRange());
         const grid = document.getElementById('availableStudsGrid');
         if (grid) new MutationObserver(schedule).observe(grid, { childList: true, subtree: true });
         apply();
       });
+
       window.applyTrendingBestRangeStats = apply;
       window.debugTrendingRangeStats = function () {
         return trendPlayers().map(player => ({
           name: getPlayerName(player),
-          last7: Object.keys(findRangeStats(player, 'last7') || {}),
-          last14: Object.keys(findRangeStats(player, 'last14') || {}),
-          season: Object.keys(findRangeStats(player, 'season') || {})
+          position: getPositionText(player),
+          last7: findRangeStats(player, 'last7'),
+          last14: findRangeStats(player, 'last14'),
+          season: findRangeStats(player, 'season')
         }));
       };
     })();
