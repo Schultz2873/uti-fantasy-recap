@@ -1234,6 +1234,68 @@
       }
     }
 
+
+    /* ===== Mobile compact trending stat toggle ===== */
+    #top-pickups .trend-stat-toggle {
+      display: inline-grid;
+      grid-template-columns: repeat(3, auto);
+      align-items: center;
+      width: auto;
+      padding: 3px;
+      gap: 3px;
+      border-radius: 999px;
+    }
+
+    #top-pickups .trend-stat-toggle .leader-mode-btn {
+      min-width: 34px;
+      padding: 5px 8px;
+      font-size: 0.62rem;
+      line-height: 1;
+      text-align: center;
+    }
+
+    @media (max-width: 520px) {
+      #top-pickups .trending-header-actions {
+        width: 100%;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 7px;
+      }
+
+      #top-pickups .trend-stat-toggle {
+        width: 100%;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 3px;
+        padding: 3px;
+      }
+
+      #top-pickups .trend-stat-toggle .leader-mode-btn {
+        width: 100%;
+        min-width: 0;
+        padding: 6px 0;
+        font-size: 0.56rem;
+      }
+
+      #availableStudsModeTag {
+        width: auto;
+        justify-self: end;
+        font-size: 0.54rem;
+        padding: 5px 7px;
+        white-space: nowrap;
+      }
+    }
+
+    @media (max-width: 360px) {
+      #top-pickups .trending-header-actions {
+        grid-template-columns: 1fr;
+      }
+
+      #availableStudsModeTag {
+        justify-self: start;
+      }
+    }
+
   </style>
 </head>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
@@ -1339,8 +1401,8 @@
         </div>
         <div class="leader-header-actions trending-header-actions">
           <div class="leader-mode-toggle trend-stat-toggle" aria-label="Trending card stat range">
-            <button class="leader-mode-btn active" type="button" data-trend-stat-range="last7" aria-pressed="true">7</button>
-            <button class="leader-mode-btn" type="button" data-trend-stat-range="last14" aria-pressed="false">14</button>
+            <button class="leader-mode-btn active" type="button" data-trend-stat-range="last7" aria-pressed="true">7 Days</button>
+            <button class="leader-mode-btn" type="button" data-trend-stat-range="last14" aria-pressed="false">14 Days</button>
             <button class="leader-mode-btn" type="button" data-trend-stat-range="season" aria-pressed="false">Season</button>
           </div>
           <span class="tag" id="availableStudsModeTag">Last 7</span>
