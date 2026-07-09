@@ -2225,6 +2225,299 @@
     })();
   </script>
 
+
+
+  <script>
+    /* ===== Trending range + best-highlight stat fix =====
+       Makes 7D / 14D / SEA update every rendered trending card.
+       Uses each player's own range data when available and falls back safely
+       instead of leaving some cards stuck on the previous stat row.
+    */
+    (function () {
+      const RANGE_LABELS = { last7: 'Last 7', last14: 'Last 14', season: 'Season' };
+      const RANGE_ALIASES = {
+        last7: ['last7', 'last7days', 'last_7', 'stats7', 'sevenDayStats', 'recent7', '7day', '7days', 'week'],
+        last14: ['last14', 'last14days', 'last_14', 'stats14', 'fourteenDayStats', 'recent14', '14day', '14days', 'twoweek'],
+        season: ['season', 'seasonStats', 'statsSeason', 'fullSeason', 'year', 'ytd']
+      };
+      const CONTAINER_KEYS = ['stats', 'statLines', 'ranges', 'splits', 'fantasyStats', 'mlbStats', 'hitting', 'pitching'];
+      const NAME_KEYS = ['name', 'playerName', 'fullName', 'displayName'];
+      const POSITION_KEYS = ['position', 'positions', 'eligiblePositions', 'pos'];
+
+      function norm(value) {
+        return String(value || '')
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/[^a-z0-9]/g, '');
+      }
+
+      function getPlayerName(player) {
+        for (const key of NAME_KEYS) if (player?.[key]) return String(player[key]);
+        return '';
+      }
+
+      function getPositionText(player) {
+        for (const key of POSITION_KEYS) {
+          const value = player?.[key];
+          if (Array.isArray(value)) return value.join('/');
+          if (value) return String(value);
+        }
+        return '';
+      }
+
+      function isPitcher(player) {
+        return /(^|[\/ ,])(SP|RP|P)([\/ ,]|$)/.test(getPositionText(player).toUpperCase());
+      }
+
+      function isReliever(player) {
+        return /(^|[\/ ,])RP([\/ ,]|$)/.test(getPositionText(player).toUpperCase());
+      }
+
+      function isStarter(player) {
+        return /(^|[\/ ,])SP([\/ ,]|$)/.test(getPositionText(player).toUpperCase());
+      }
+
+      function toNumber(value) {
+        if (value === undefined || value === null || value === '') return null;
+        const n = Number(String(value).replace('%', '').replace(',', ''));
+        return Number.isFinite(n) ? n : null;
+      }
+
+      function formatValue(label, value) {
+        if (value === undefined || value === null || value === '') return '—';
+        const numeric = toNumber(value);
+        if (numeric === null) return String(value);
+        if (['AVG', 'BAA', 'OBP'].includes(label)) return numeric < 1 ? numeric.toFixed(3).replace(/^0/, '') : numeric.toFixed(3);
+        if (['ERA', 'WHIP', 'OPS'].includes(label)) return numeric.toFixed(label === 'OPS' ? 3 : 2).replace(/^0(?=\.)/, '');
+        if (label === 'IP') return numeric % 1 === 0 ? String(numeric) : numeric.toFixed(1);
+        return String(Math.round(numeric));
+      }
+
+      function directCaseInsensitiveValue(obj, keys) {
+        if (!obj || typeof obj !== 'object') return undefined;
+        const wanted = keys.map(norm);
+        for (const [key, value] of Object.entries(obj)) {
+          if (value === undefined || value === null || value === '') continue;
+          if (wanted.includes(norm(key))) return value;
+        }
+        return undefined;
+      }
+
+      function findRangeObject(player, range) {
+        if (!player || typeof player !== 'object') return null;
+        const aliases = (RANGE_ALIASES[range] || []).map(norm);
+
+        for (const [key, value] of Object.entries(player)) {
+          if (value && typeof value === 'object' && !Array.isArray(value) && aliases.includes(norm(key))) return value;
+        }
+
+        for (const containerKey of CONTAINER_KEYS) {
+          const container = player[containerKey];
+          if (!container || typeof container !== 'object') continue;
+
+          if (Array.isArray(container)) {
+            const match = container.find(row => {
+              const marker = norm(row?.range || row?.window || row?.period || row?.split || row?.label || row?.name || row?.days);
+              return aliases.some(alias => marker.includes(alias) || alias.includes(marker));
+            });
+            if (match && typeof match === 'object') return match;
+          } else {
+            for (const [key, value] of Object.entries(container)) {
+              if (value && typeof value === 'object' && aliases.includes(norm(key))) return value;
+            }
+          }
+        }
+
+        return null;
+      }
+
+      function statRaw(player, range, keys) {
+        const ranged = findRangeObject(player, range);
+        const rangedValue = directCaseInsensitiveValue(ranged, keys);
+        if (rangedValue !== undefined) return rangedValue;
+
+        const aliases = (RANGE_ALIASES[range] || []).map(norm);
+        const statAliases = keys.map(norm);
+        const objects = [player, player?.stats, player?.fantasyStats, player?.mlbStats, player?.hitting, player?.pitching].filter(Boolean);
+
+        for (const obj of objects) {
+          if (!obj || typeof obj !== 'object' || Array.isArray(obj)) continue;
+          for (const [key, value] of Object.entries(obj)) {
+            if (value === undefined || value === null || value === '') continue;
+            const nk = norm(key);
+            const hasRange = aliases.some(alias => nk.includes(alias));
+            const hasStat = statAliases.some(alias => nk === alias || nk.includes(alias));
+            if (hasRange && hasStat) return value;
+          }
+        }
+
+        // Safe fallback: if that exact range is missing for a player, use the broad stat object
+        // instead of leaving the card frozen on another player's previous range.
+        return directCaseInsensitiveValue(player?.stats, keys) ?? directCaseInsensitiveValue(player, keys);
+      }
+
+      function stat(label, keys, player, range, weight, formatterLabel = label, group = '') {
+        const raw = statRaw(player, range, keys);
+        const num = toNumber(raw);
+        return { label, value: formatValue(formatterLabel, raw), raw, num, group, score: num === null ? -999 : weight(num, player, range) };
+      }
+
+      function positiveOnly(items) {
+        const sortedGood = items
+          .filter(item => item.num !== null && Number.isFinite(item.score) && item.score > 0)
+          .sort((a, b) => b.score - a.score);
+
+        const chosen = [];
+        const usedGroups = new Set();
+        sortedGood.forEach(item => {
+          if (chosen.length >= 4) return;
+          if (item.group && usedGroups.has(item.group)) return;
+          chosen.push(item);
+          if (item.group) usedGroups.add(item.group);
+        });
+        sortedGood.forEach(item => {
+          if (chosen.length >= 4) return;
+          if (!chosen.some(g => g.label === item.label)) chosen.push(item);
+        });
+
+        if (chosen.length >= 4) return chosen.slice(0, 4);
+        const fallback = items.filter(item => item.num !== null).sort((a, b) => b.score - a.score);
+        return [...chosen, ...fallback.filter(item => !chosen.some(g => g.label === item.label))].slice(0, 4);
+      }
+
+      function chooseHitterStats(player, range) {
+        const ab = toNumber(statRaw(player, range, ['AB', 'ab', 'atBats'])) || 0;
+        const pa = toNumber(statRaw(player, range, ['PA', 'pa', 'plateAppearances'])) || ab;
+        const candidates = [
+          stat('NSB', ['NSB', 'nsb', 'SB', 'sb', 'stolenBases'], player, range, n => n >= 5 ? 170 + n * 8 : n >= 3 ? 135 + n * 8 : n >= 1 ? 88 + n * 8 : 0),
+          stat('HR', ['HR', 'hr', 'homeRuns'], player, range, n => n >= 4 ? 165 + n * 8 : n >= 2 ? 130 + n * 8 : n >= 1 ? 86 + n * 8 : 0),
+          stat('RBI', ['RBI', 'rbi', 'runsBattedIn'], player, range, n => n >= 10 ? 142 + n * 3 : n >= 6 ? 108 + n * 3 : n >= 3 ? 65 + n * 3 : n * 4),
+          stat('R', ['R', 'runs', 'run'], player, range, n => n >= 10 ? 136 + n * 3 : n >= 6 ? 100 + n * 3 : n >= 3 ? 62 + n * 3 : n * 4),
+          stat('TB', ['TB', 'tb', 'totalBases'], player, range, n => n >= 24 ? 132 + n : n >= 14 ? 92 + n : n >= 8 ? 55 + n : n * 2),
+          stat('AVG', ['AVG', 'avg', 'battingAverage'], player, range, n => ab < 8 ? 0 : n >= .380 ? 145 + n * 100 : n >= .330 ? 112 + n * 100 : n >= .290 ? 78 + n * 80 : n >= .260 ? 36 + n * 60 : 0, 'AVG'),
+          stat('OPS', ['OPS', 'ops'], player, range, n => ab < 8 ? 0 : n >= 1.000 ? 138 + n * 40 : n >= .850 ? 96 + n * 35 : n >= .760 ? 55 + n * 25 : 0, 'OPS'),
+          stat('OBP', ['OBP', 'obp', 'onBasePercentage'], player, range, n => pa < 8 ? 0 : n >= .420 ? 118 + n * 70 : n >= .370 ? 82 + n * 60 : n >= .330 ? 44 + n * 45 : 0, 'OBP'),
+          stat('BB', ['BB', 'bb', 'walks'], player, range, n => n >= 7 ? 104 + n * 4 : n >= 4 ? 76 + n * 4 : n >= 2 ? 38 + n * 4 : n * 3),
+          stat('AB', ['AB', 'ab', 'atBats'], player, range, n => n >= 28 ? 48 + n / 2 : n >= 18 ? 34 + n / 2 : n / 2)
+        ];
+        return positiveOnly(candidates);
+      }
+
+      function choosePitcherStats(player, range) {
+        const ip = toNumber(statRaw(player, range, ['IP', 'ip', 'inningsPitched'])) || 0;
+        const reliever = isReliever(player);
+        const starter = isStarter(player);
+        const minRatioIp = reliever ? 2 : 3;
+        const sv = toNumber(statRaw(player, range, ['SV', 'sv', 'saves'])) || 0;
+        const hld = toNumber(statRaw(player, range, ['HLD', 'HD', 'holds'])) || 0;
+        const svhValue = statRaw(player, range, ['SV+H', 'SVH', 'svh', 'savesHolds', 'savesPlusHolds']) ?? (sv + hld || undefined);
+        const svhPlayer = { ...player, 'SV+H': svhValue };
+
+        const candidates = [
+          stat('SV+H', ['SV+H', 'SVH', 'svh', 'savesHolds', 'savesPlusHolds'], svhPlayer, range, n => n >= 4 ? 172 + n * 8 : n >= 2 ? 132 + n * 8 : n >= 1 ? 90 + n * 8 : 0, 'SV+H', 'leverage'),
+          stat('SV', ['SV', 'sv', 'saves'], player, range, n => n >= 3 ? 160 + n * 8 : n >= 1 ? 106 + n * 8 : 0, 'SV', 'leverage'),
+          stat('HLD', ['HLD', 'HD', 'holds'], player, range, n => n >= 4 ? 145 + n * 7 : n >= 2 ? 104 + n * 7 : n >= 1 ? 66 + n * 7 : 0, 'HLD', 'leverage'),
+          stat('K', ['K', 'SO', 'strikeouts', 'pitchingStrikeouts'], player, range, n => starter ? (n >= 18 ? 150 + n * 2 : n >= 10 ? 108 + n * 2 : n >= 5 ? 58 + n * 2 : n * 3) : (n >= 10 ? 142 + n * 2 : n >= 6 ? 98 + n * 2 : n >= 3 ? 54 + n * 2 : n * 3)),
+          stat('QS', ['QS', 'qualityStarts'], player, range, n => n >= 2 ? 118 + n * 8 : n >= 1 ? 80 + n * 8 : 0),
+          stat('W', ['W', 'wins'], player, range, n => n >= 2 ? 104 + n * 8 : n >= 1 ? 70 + n * 8 : 0),
+          stat('IP', ['IP', 'ip', 'inningsPitched'], player, range, n => reliever ? (n >= 6 ? 110 + n : n >= 4 ? 82 + n : n >= 2 ? 48 + n : n >= 1 ? 26 + n : 0) : (n >= 13 ? 92 + n : n >= 7 ? 62 + n : n >= 3 ? 28 + n : 0)),
+          stat('ERA', ['ERA', 'era'], player, range, n => ip < minRatioIp ? 0 : n <= 0.75 ? 158 - n * 8 : n <= 1.50 ? 136 - n * 8 : n <= 2.50 ? 104 - n * 6 : n <= 3.25 ? 66 - n * 4 : 0, 'ERA'),
+          stat('WHIP', ['WHIP', 'whip'], player, range, n => ip < minRatioIp ? 0 : n <= .75 ? 154 - n * 20 : n <= .95 ? 124 - n * 18 : n <= 1.10 ? 92 - n * 16 : n <= 1.20 ? 62 - n * 12 : 0, 'WHIP'),
+          stat('BAA', ['BAA', 'baa', 'opponentAverage'], player, range, n => ip < minRatioIp ? 0 : n <= .160 ? 148 - n * 100 : n <= .200 ? 112 - n * 80 : n <= .230 ? 78 - n * 65 : n <= .250 ? 50 - n * 55 : 0, 'BAA')
+        ];
+        return positiveOnly(candidates);
+      }
+
+      function players() {
+        return Array.isArray(window.TRENDING_AVAILABLE_PLAYERS) ? window.TRENDING_AVAILABLE_PLAYERS : [];
+      }
+
+      function findPlayerForCard(card, index) {
+        const list = players();
+        const cardName = norm(card.querySelector('.trend-v7-name')?.textContent || card.querySelector('.pickup-player-name')?.textContent || '');
+        if (!cardName) return list[index];
+
+        const exact = list.find(player => norm(getPlayerName(player)) === cardName);
+        if (exact) return exact;
+
+        const loose = list
+          .map(player => ({ player, name: norm(getPlayerName(player)) }))
+          .filter(item => item.name && (item.name.includes(cardName) || cardName.includes(item.name)))
+          .sort((a, b) => Math.abs(a.name.length - cardName.length) - Math.abs(b.name.length - cardName.length))[0];
+
+        return loose?.player || list[index];
+      }
+
+      function activeRange() {
+        return window.__TRENDING_ACTIVE_RANGE || document.querySelector('#top-pickups [data-trend-stat-range].active')?.dataset.trendStatRange || 'last7';
+      }
+
+      function setActiveRange(range) {
+        window.__TRENDING_ACTIVE_RANGE = range;
+        document.querySelectorAll('#top-pickups [data-trend-stat-range]').forEach(button => {
+          const active = button.dataset.trendStatRange === range;
+          button.classList.toggle('active', active);
+          button.setAttribute('aria-pressed', active ? 'true' : 'false');
+        });
+        const tag = document.getElementById('availableStudsModeTag');
+        if (tag) tag.textContent = RANGE_LABELS[range] || 'Stats';
+      }
+
+      function renderCard(card, player, range) {
+        const statsEl = card.querySelector('.trend-v7-stats');
+        if (!statsEl || !player) return;
+        const chosen = isPitcher(player) ? choosePitcherStats(player, range) : chooseHitterStats(player, range);
+        if (!chosen.length) return;
+        const nextHtml = chosen.map(item => `
+          <div class="trend-v7-stat trend-v7-stat-smart">
+            <span class="trend-v7-stat-value">${item.value}</span>
+            <span class="trend-v7-stat-label">${item.label}</span>
+          </div>
+        `).join('');
+        if (statsEl.innerHTML.trim() !== nextHtml.trim()) statsEl.innerHTML = nextHtml;
+        const head = card.querySelector('.trend-v7-stats-head');
+        const nextHeadText = `Best-fit highlights • ${RANGE_LABELS[range] || 'Stats'}`;
+        if (head && head.textContent.trim() !== nextHeadText) head.textContent = nextHeadText;
+      }
+
+      function apply() {
+        const range = activeRange();
+        setActiveRange(range);
+        document.querySelectorAll('#availableStudsGrid .trend-v7-card').forEach((card, index) => {
+          renderCard(card, findPlayerForCard(card, index), range);
+        });
+      }
+
+      document.addEventListener('click', event => {
+        const button = event.target.closest('#top-pickups [data-trend-stat-range]');
+        if (!button) return;
+        setActiveRange(button.dataset.trendStatRange || 'last7');
+        apply();
+        setTimeout(apply, 60);
+        setTimeout(apply, 250);
+      }, true);
+
+      let timer;
+      const schedule = () => {
+        clearTimeout(timer);
+        timer = setTimeout(apply, 80);
+      };
+
+      window.addEventListener('load', () => {
+        apply();
+        setTimeout(apply, 300);
+        setTimeout(apply, 900);
+      });
+      document.addEventListener('DOMContentLoaded', () => {
+        setActiveRange(activeRange());
+        const grid = document.getElementById('availableStudsGrid');
+        if (grid) new MutationObserver(schedule).observe(grid, { childList: true, subtree: true });
+        apply();
+      });
+    })();
+  </script>
+
 </body>
 
 </html>
