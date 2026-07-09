@@ -1212,17 +1212,17 @@
       }
 
       .trend-v7-stat {
-        padding: 5px 2px;
+        padding: 5px 1px;
         border-radius: 8px;
       }
 
-      .trend-v7-stat-value {
-        font-size: 0.54rem;
+       .trend-v7-stat-value {
+        font-size: 0.62rem;
       }
 
       .trend-v7-stat-label {
         margin-top: 2px;
-        font-size: 0.31rem;
+        font-size: 0.34rem;
         letter-spacing: 0.02em;
       }
 
@@ -1322,12 +1322,12 @@
         padding: 4px 1px;
       }
 
-      .trend-v7-stat-value {
-        font-size: 0.49rem;
+       .trend-v7-stat-value {
+        font-size: 0.56rem;
       }
 
       .trend-v7-stat-label {
-        font-size: 0.28rem;
+        font-size: 0.31rem;
       }
     }
 
@@ -1881,6 +1881,337 @@
       viewMoreArticlesBtn.textContent = isExpanded ? 'View More Recaps' : 'Show Less Articles';
     });
   </script>
+
+
+  <script>
+    /* ===== Smart complimentary stats for Trending Available cards =====
+       This layer reads window.TRENDING_AVAILABLE_PLAYERS and swaps each card's
+       stat row to the best fantasy stats for that player/range.
+       Hitters and pitchers are not locked into one role bucket.
+       The picker ranks the strongest actual stat lines first, so speed guys
+       can still show HR/TB/AVG, and relievers can still show IP/ERA/WHIP/BAA.
+    */
+    (function () {
+      const RANGE_LABELS = {
+        last7: 'Last 7',
+        last14: 'Last 14',
+        season: 'Season'
+      };
+
+      const RANGE_KEYS = {
+        last7: ['last7', 'last7Days', 'last_7', 'stats7', 'sevenDayStats', 'recent7'],
+        last14: ['last14', 'last14Days', 'last_14', 'stats14', 'fourteenDayStats', 'recent14'],
+        season: ['season', 'seasonStats', 'statsSeason', 'fullSeason']
+      };
+
+      const NAME_KEYS = ['name', 'playerName', 'fullName', 'displayName'];
+      const POSITION_KEYS = ['position', 'positions', 'eligiblePositions', 'pos'];
+
+      function normalizeName(value) {
+        return String(value || '')
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/[^a-z0-9]/g, '');
+      }
+
+      function getPlayerName(player) {
+        for (const key of NAME_KEYS) {
+          if (player && player[key]) return String(player[key]);
+        }
+        return '';
+      }
+
+      function getPositionText(player) {
+        for (const key of POSITION_KEYS) {
+          const value = player?.[key];
+          if (Array.isArray(value)) return value.join('/');
+          if (value) return String(value);
+        }
+        return '';
+      }
+
+      function isPitcher(player) {
+        const pos = getPositionText(player).toUpperCase();
+        return /(^|[\/ ,])(SP|RP|P)([\/ ,]|$)/.test(pos);
+      }
+
+      function isReliever(player) {
+        const pos = getPositionText(player).toUpperCase();
+        return /(^|[\/ ,])RP([\/ ,]|$)/.test(pos);
+      }
+
+      function isStarter(player) {
+        const pos = getPositionText(player).toUpperCase();
+        return /(^|[\/ ,])SP([\/ ,]|$)/.test(pos);
+      }
+
+      function getFirstValue(obj, keys) {
+        if (!obj) return undefined;
+        for (const key of keys) {
+          if (obj[key] !== undefined && obj[key] !== null && obj[key] !== '') return obj[key];
+        }
+        return undefined;
+      }
+
+      function toNumber(value) {
+        if (value === undefined || value === null || value === '') return null;
+        const n = Number(String(value).replace('%', '').replace(',', ''));
+        return Number.isFinite(n) ? n : null;
+      }
+
+      function formatValue(label, value) {
+        if (value === undefined || value === null || value === '') return '—';
+        const numeric = toNumber(value);
+        if (numeric === null) return String(value);
+
+        if (['AVG', 'ERA', 'WHIP', 'BAA', 'OBP', 'OPS'].includes(label)) {
+          if (label === 'AVG' || label === 'BAA' || label === 'OBP') {
+            return numeric < 1 ? numeric.toFixed(3).replace(/^0/, '') : numeric.toFixed(3);
+          }
+          return numeric.toFixed(2);
+        }
+
+        if (label === 'IP') {
+          return numeric % 1 === 0 ? String(numeric) : numeric.toFixed(1);
+        }
+
+        return String(Math.round(numeric));
+      }
+
+      function getRangeStats(player, range) {
+        if (!player) return {};
+
+        const directKeys = RANGE_KEYS[range] || [];
+        for (const key of directKeys) {
+          if (player[key] && typeof player[key] === 'object') return player[key];
+        }
+
+        const containers = ['stats', 'statLines', 'ranges', 'splits', 'fantasyStats'];
+        for (const containerKey of containers) {
+          const container = player[containerKey];
+          if (!container || typeof container !== 'object') continue;
+
+          for (const key of directKeys) {
+            if (container[key] && typeof container[key] === 'object') return container[key];
+          }
+        }
+
+        return player.stats && typeof player.stats === 'object' ? player.stats : player;
+      }
+
+      function stat(label, keys, stats, weight, formatterLabel = label, group = '') {
+        const raw = getFirstValue(stats, keys);
+        const num = toNumber(raw);
+        return {
+          label,
+          value: formatValue(formatterLabel, raw),
+          raw,
+          num,
+          group,
+          score: num === null ? -999 : weight(num, stats)
+        };
+      }
+
+      function positiveOnly(items, fallbackItems) {
+        const sortedGood = items
+          .filter(item => item.num !== null && Number.isFinite(item.score) && item.score > 0)
+          .sort((a, b) => b.score - a.score);
+
+        const chosen = [];
+        const usedGroups = new Set();
+
+        // First pass: take the best stats while avoiding duplicate save/hold labels.
+        // This keeps reliever cards from wasting space on SV+H and SV when ERA/WHIP/IP are also strong.
+        sortedGood.forEach(item => {
+          if (chosen.length >= 4) return;
+          if (item.group && usedGroups.has(item.group)) return;
+          chosen.push(item);
+          if (item.group) usedGroups.add(item.group);
+        });
+
+        // Second pass: fill any open slots with the next-best stats, even if the group repeats.
+        sortedGood.forEach(item => {
+          if (chosen.length >= 4) return;
+          if (!chosen.some(g => g.label === item.label)) chosen.push(item);
+        });
+
+        if (chosen.length >= 4) return chosen.slice(0, 4);
+
+        const fallback = fallbackItems
+          .filter(item => item.num !== null)
+          .sort((a, b) => b.score - a.score);
+
+        return [...chosen, ...fallback.filter(item => !chosen.some(g => g.label === item.label))].slice(0, 4);
+      }
+
+      function chooseHitterStats(stats) {
+        const ab = toNumber(getFirstValue(stats, ['AB', 'ab', 'atBats'])) || 0;
+        const pa = toNumber(getFirstValue(stats, ['PA', 'pa', 'plateAppearances'])) || ab;
+
+        const candidates = [
+          stat('NSB', ['NSB', 'nsb', 'SB', 'sb', 'stolenBases'], stats, n => n >= 5 ? 170 + n * 8 : n >= 3 ? 135 + n * 8 : n >= 1 ? 88 + n * 8 : 0),
+          stat('HR', ['HR', 'hr', 'homeRuns'], stats, n => n >= 4 ? 165 + n * 8 : n >= 2 ? 130 + n * 8 : n >= 1 ? 86 + n * 8 : 0),
+          stat('RBI', ['RBI', 'rbi', 'runsBattedIn'], stats, n => n >= 10 ? 142 + n * 3 : n >= 6 ? 108 + n * 3 : n >= 3 ? 65 + n * 3 : n * 4),
+          stat('R', ['R', 'runs', 'run'], stats, n => n >= 10 ? 136 + n * 3 : n >= 6 ? 100 + n * 3 : n >= 3 ? 62 + n * 3 : n * 4),
+          stat('TB', ['TB', 'tb', 'totalBases'], stats, n => n >= 24 ? 132 + n : n >= 14 ? 92 + n : n >= 8 ? 55 + n : n * 2),
+          stat('AVG', ['AVG', 'avg', 'battingAverage'], stats, n => {
+            if (ab < 8) return 0;
+            if (n >= .380) return 145 + n * 100;
+            if (n >= .330) return 112 + n * 100;
+            if (n >= .290) return 78 + n * 80;
+            if (n >= .260) return 36 + n * 60;
+            return 0;
+          }, 'AVG'),
+          stat('OPS', ['OPS', 'ops'], stats, n => {
+            if (ab < 8) return 0;
+            if (n >= 1.000) return 138 + n * 40;
+            if (n >= .850) return 96 + n * 35;
+            if (n >= .760) return 55 + n * 25;
+            return 0;
+          }, 'OPS'),
+          stat('OBP', ['OBP', 'obp', 'onBasePercentage'], stats, n => {
+            if (pa < 8) return 0;
+            if (n >= .420) return 118 + n * 70;
+            if (n >= .370) return 82 + n * 60;
+            if (n >= .330) return 44 + n * 45;
+            return 0;
+          }, 'OBP'),
+          stat('BB', ['BB', 'bb', 'walks'], stats, n => n >= 7 ? 104 + n * 4 : n >= 4 ? 76 + n * 4 : n >= 2 ? 38 + n * 4 : n * 3),
+          stat('AB', ['AB', 'ab', 'atBats'], stats, n => n >= 28 ? 48 + n / 2 : n >= 18 ? 34 + n / 2 : n / 2)
+        ];
+
+        return positiveOnly(candidates, candidates);
+      }
+
+      function choosePitcherStats(stats, player) {
+        const ip = toNumber(getFirstValue(stats, ['IP', 'ip', 'inningsPitched'])) || 0;
+        const reliever = isReliever(player);
+        const starter = isStarter(player);
+        const minRatioIp = reliever ? 2 : 3;
+        const svhRaw = getFirstValue(stats, ['SV+H', 'SVH', 'svh', 'savesHolds', 'savesPlusHolds']);
+        const sv = toNumber(getFirstValue(stats, ['SV', 'sv', 'saves'])) || 0;
+        const hld = toNumber(getFirstValue(stats, ['HLD', 'HD', 'holds'])) || 0;
+        const svh = svhRaw !== undefined ? svhRaw : (sv + hld || undefined);
+        const withSvh = { ...stats, 'SV+H': svh };
+
+        const candidates = [
+          stat('SV+H', ['SV+H', 'SVH', 'svh', 'savesHolds', 'savesPlusHolds'], withSvh, n => n >= 4 ? 172 + n * 8 : n >= 2 ? 132 + n * 8 : n >= 1 ? 90 + n * 8 : 0, 'SV+H', 'leverage'),
+          stat('SV', ['SV', 'sv', 'saves'], stats, n => n >= 3 ? 160 + n * 8 : n >= 1 ? 106 + n * 8 : 0, 'SV', 'leverage'),
+          stat('HLD', ['HLD', 'HD', 'holds'], stats, n => n >= 4 ? 145 + n * 7 : n >= 2 ? 104 + n * 7 : n >= 1 ? 66 + n * 7 : 0, 'HLD', 'leverage'),
+          stat('K', ['K', 'SO', 'strikeouts', 'pitchingStrikeouts'], stats, n => {
+            if (starter) return n >= 18 ? 150 + n * 2 : n >= 10 ? 108 + n * 2 : n >= 5 ? 58 + n * 2 : n * 3;
+            return n >= 10 ? 142 + n * 2 : n >= 6 ? 98 + n * 2 : n >= 3 ? 54 + n * 2 : n * 3;
+          }),
+          stat('QS', ['QS', 'qualityStarts'], stats, n => n >= 2 ? 118 + n * 8 : n >= 1 ? 80 + n * 8 : 0),
+          stat('W', ['W', 'wins'], stats, n => n >= 2 ? 104 + n * 8 : n >= 1 ? 70 + n * 8 : 0),
+          stat('IP', ['IP', 'ip', 'inningsPitched'], stats, n => {
+            if (reliever) return n >= 6 ? 110 + n : n >= 4 ? 82 + n : n >= 2 ? 48 + n : n >= 1 ? 26 + n : 0;
+            return n >= 13 ? 92 + n : n >= 7 ? 62 + n : n >= 3 ? 28 + n : 0;
+          }),
+          stat('ERA', ['ERA', 'era'], stats, n => {
+            if (ip < minRatioIp) return 0;
+            if (n <= 0.75) return 158 - n * 8;
+            if (n <= 1.50) return 136 - n * 8;
+            if (n <= 2.50) return 104 - n * 6;
+            if (n <= 3.25) return 66 - n * 4;
+            return 0;
+          }, 'ERA'),
+          stat('WHIP', ['WHIP', 'whip'], stats, n => {
+            if (ip < minRatioIp) return 0;
+            if (n <= .75) return 154 - n * 20;
+            if (n <= .95) return 124 - n * 18;
+            if (n <= 1.10) return 92 - n * 16;
+            if (n <= 1.20) return 62 - n * 12;
+            return 0;
+          }, 'WHIP'),
+          stat('BAA', ['BAA', 'baa', 'opponentAverage'], stats, n => {
+            if (ip < minRatioIp) return 0;
+            if (n <= .160) return 148 - n * 100;
+            if (n <= .200) return 112 - n * 80;
+            if (n <= .230) return 78 - n * 65;
+            if (n <= .250) return 50 - n * 55;
+            return 0;
+          }, 'BAA')
+        ];
+
+        return positiveOnly(candidates, candidates);
+      }
+
+      function getActiveTrendRange() {
+        return document.querySelector('[data-trend-stat-range].active')?.dataset.trendStatRange || 'last7';
+      }
+
+      function getTrendPlayers() {
+        return Array.isArray(window.TRENDING_AVAILABLE_PLAYERS) ? window.TRENDING_AVAILABLE_PLAYERS : [];
+      }
+
+      function buildPlayerMap() {
+        const map = new Map();
+        getTrendPlayers().forEach(player => {
+          const name = normalizeName(getPlayerName(player));
+          if (name) map.set(name, player);
+        });
+        return map;
+      }
+
+      function renderSmartStatsForCard(card, player, range) {
+        const statsEl = card.querySelector('.trend-v7-stats');
+        if (!statsEl || !player) return;
+
+        const stats = getRangeStats(player, range);
+        const chosen = isPitcher(player) ? choosePitcherStats(stats, player) : chooseHitterStats(stats);
+        if (!chosen.length) return;
+
+        statsEl.innerHTML = chosen.map(item => `
+          <div class="trend-v7-stat trend-v7-stat-smart">
+            <span class="trend-v7-stat-value">${item.value}</span>
+            <span class="trend-v7-stat-label">${item.label}</span>
+          </div>
+        `).join('');
+
+        const head = card.querySelector('.trend-v7-stats-head');
+        if (head) head.textContent = `Best-fit highlights • ${RANGE_LABELS[range] || 'Stats'}`;
+      }
+
+      function applySmartTrendingStats() {
+        const playersByName = buildPlayerMap();
+        if (!playersByName.size) return;
+
+        const range = getActiveTrendRange();
+        document.querySelectorAll('.trend-v7-card').forEach(card => {
+          const nameText = card.querySelector('.trend-v7-name')?.textContent || '';
+          const player = playersByName.get(normalizeName(nameText));
+          renderSmartStatsForCard(card, player, range);
+        });
+      }
+
+      document.addEventListener('click', event => {
+        if (event.target.closest('[data-trend-stat-range]')) {
+          setTimeout(applySmartTrendingStats, 50);
+          setTimeout(applySmartTrendingStats, 250);
+        }
+      });
+
+      window.addEventListener('load', () => {
+        applySmartTrendingStats();
+        setTimeout(applySmartTrendingStats, 300);
+        setTimeout(applySmartTrendingStats, 900);
+      });
+
+      const observer = new MutationObserver(() => applySmartTrendingStats());
+      const startObserver = () => {
+        const grid = document.getElementById('availableStudsGrid');
+        if (grid) observer.observe(grid, { childList: true, subtree: true });
+      };
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', startObserver);
+      } else {
+        startObserver();
+      }
+    })();
+  </script>
+
 </body>
 
 </html>
