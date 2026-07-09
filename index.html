@@ -2163,15 +2163,22 @@
         const chosen = isPitcher(player) ? choosePitcherStats(stats, player) : chooseHitterStats(stats);
         if (!chosen.length) return;
 
-        statsEl.innerHTML = chosen.map(item => `
+        const nextHtml = chosen.map(item => `
           <div class="trend-v7-stat trend-v7-stat-smart">
             <span class="trend-v7-stat-value">${item.value}</span>
             <span class="trend-v7-stat-label">${item.label}</span>
           </div>
         `).join('');
 
+        // Do not rewrite the stat row unless it actually changed.
+        // This prevents the MutationObserver from triggering itself in a loop.
+        if (statsEl.innerHTML.trim() !== nextHtml.trim()) {
+          statsEl.innerHTML = nextHtml;
+        }
+
         const head = card.querySelector('.trend-v7-stats-head');
-        if (head) head.textContent = `Best-fit highlights • ${RANGE_LABELS[range] || 'Stats'}`;
+        const nextHeadText = `Best-fit highlights • ${RANGE_LABELS[range] || 'Stats'}`;
+        if (head && head.textContent !== nextHeadText) head.textContent = nextHeadText;
       }
 
       function applySmartTrendingStats() {
@@ -2199,7 +2206,13 @@
         setTimeout(applySmartTrendingStats, 900);
       });
 
-      const observer = new MutationObserver(() => applySmartTrendingStats());
+      let smartStatsTimer;
+      const scheduleSmartTrendingStats = () => {
+        window.clearTimeout(smartStatsTimer);
+        smartStatsTimer = window.setTimeout(applySmartTrendingStats, 80);
+      };
+
+      const observer = new MutationObserver(scheduleSmartTrendingStats);
       const startObserver = () => {
         const grid = document.getElementById('availableStudsGrid');
         if (grid) observer.observe(grid, { childList: true, subtree: true });
