@@ -1852,6 +1852,111 @@
         flex-basis: 26px;
       }
     }
+
+
+    /* ===== All-Star team dropdowns: compact grouped owner view ===== */
+    .allstar-team-dropdowns {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .allstar-team-dropdown {
+      min-width: 0;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #ffffff;
+      box-shadow: 0 5px 14px rgba(15, 23, 42, 0.045);
+    }
+
+    .allstar-team-dropdown > summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 8px 10px;
+      cursor: pointer;
+      list-style: none;
+      background: #f7f9fc;
+      color: var(--ink);
+      font-size: 0.68rem;
+      font-weight: 950;
+    }
+
+    .allstar-team-dropdown > summary::-webkit-details-marker { display: none; }
+
+    .allstar-team-summary-main {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .allstar-team-summary-name {
+      min-width: 0;
+      overflow-wrap: anywhere;
+      line-height: 1.1;
+    }
+
+    .allstar-team-summary-count {
+      flex: 0 0 auto;
+      padding: 3px 7px;
+      border-radius: 999px;
+      background: rgba(11, 94, 215, 0.10);
+      color: var(--accent-dark);
+      font-size: 0.50rem;
+      font-weight: 950;
+      white-space: nowrap;
+      text-transform: uppercase;
+    }
+
+    .allstar-team-thumb-slot {
+      flex: 0 0 24px;
+      width: 24px;
+      height: 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .allstar-team-thumb-slot .allstar-owner-thumb,
+    .allstar-team-thumb-slot .allstar-owner-fallback {
+      width: 24px;
+      height: 24px;
+      min-width: 24px;
+      flex-basis: 24px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid rgba(11, 94, 215, 0.20);
+      background: #ffffff;
+    }
+
+    .allstar-team-player-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 5px;
+      padding: 7px;
+      background: #ffffff;
+    }
+
+    .allstar-team-player-grid .allstar-player-card {
+      padding: 5px 6px;
+      border-radius: 8px;
+      box-shadow: none;
+    }
+
+    @media (max-width: 760px) {
+      .allstar-team-dropdowns { grid-template-columns: 1fr; gap: 7px; }
+      .allstar-team-player-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 420px) {
+      .allstar-team-dropdown > summary { padding: 7px 8px; font-size: 0.60rem; }
+      .allstar-team-summary-count { font-size: 0.44rem; padding: 3px 6px; }
+      .allstar-team-player-grid { grid-template-columns: 1fr; padding: 6px; }
+    }
 </style>
 </head>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
@@ -1961,9 +2066,387 @@
 </article>
 </div>
 </section><section class="section-card allstar-compact-section" id="all-star-week">
-<div class="allstar-compact-head"><div><h2 class="section-title">2026 MLB All-Stars in UTI</h2><p class="section-subtitle">The original announced All-Star roster and the fantasy team that owns each player.</p></div><div class="allstar-total-pill"><b>65</b><span>All-Stars</span></div></div>
-<div aria-label="All-Star ownership ranking" class="allstar-owner-ranking" id="allStarOwnerRanking"></div>
-<details class="allstar-combined-dropdown"><summary><span>View All-Star List</span><span>65 players</span></summary><div class="allstar-combined-body"><section class="allstar-combined-league"><div class="allstar-combined-league-head"><span>American League</span><span>32 players</span></div><div class="allstar-cards-grid"><div class="allstar-player-card"><div class="allstar-name-row"><span class="allstar-compact-name">Shea Langeliers</span><span class="allstar-starter-tag">Original Starter</span></div><span class="allstar-compact-meta">ATH · C</span><span class="allstar-compact-owner">BB's Bold Team</span></div><div class="allstar-player-card"><div class="allstar-name-row"><span class="allstar-compact-name">Vladimir Guerrero Jr.</span><span class="allstar-starter-tag">Original Starter</span></div><span class="allstar-compact-meta">TOR · 1B</span><span class="allstar-compact-owner">This Is Mizerable</span></div><div class="allstar-player-card"><div class="allstar-name-row"><span class="allstar-compact-name">Ernie Clement</span><span class="allstar-starter-tag">Original Starter</span></div><span class="allstar-compact-meta">TOR · 2B</span><span class="allstar-compact-owner">BTA Boyz</span></div><div class="allstar-player-card"><div class="allstar-name-row"><span class="allstar-compact-name">Junior Caminero</span><span class="allstar-starter-tag">Original Starter</span></div><span class="allstar-compact-meta">TB · 3B</span><span class="allstar-compact-owner">You Don't Know Bo</span></div><div class="allstar-player-card"><div class="allstar-name-row"><span class="allstar-compact-name">Bobby Witt Jr.</span><span class="allstar-starter-tag">Original Starter</span></div><span class="allstar-compact-meta">KC · SS</span><span class="allstar-compact-owner">Goodyear Gila Monsters</span></div><div class="allstar-player-card"><div class="allstar-name-row"><span class="allstar-compact-name">Mike Trout</span><span class="allstar-starter-tag">Original Starter</span></div><span class="allstar-compact-meta">LAA · OF</span><span class="allstar-compact-owner">BTA Boyz</span></div><div class="allstar-player-card"><div class="allstar-name-row"><span class="allstar-compact-name">Byron Buxton</span><span class="allstar-starter-tag">Original Starter</span></div><span class="allstar-compact-meta">MIN · OF</span><span class="allstar-compact-owner">John's Super Team</span></div><div class="allstar-player-card"><div class="allstar-name-row"><span class="allstar-compact-name">Aaron Judge</span><span class="allstar-starter-tag">Original Starter</span></div><span class="allstar-compact-meta">NYY · OF</span><span class="allstar-compact-owner">Goodyear Gila Monsters</span></div><div class="allstar-player-card"><div class="allstar-name-row"><span class="allstar-compact-name">Yordan Alvarez</span><span class="allstar-starter-tag">Original Starter</span></div><span class="allstar-compact-meta">HOU · DH</span><span class="allstar-compact-owner">Dixon Cider</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Bryan Baker</span><span class="allstar-compact-meta">TB · RHP</span><span class="allstar-compact-owner">Gunnarrhea</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Dylan Cease</span><span class="allstar-compact-meta">TOR · RHP</span><span class="allstar-compact-owner">Gunnarrhea</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Aroldis Chapman</span><span class="allstar-compact-meta">BOS · LHP</span><span class="allstar-compact-owner">John's Super Team</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Jacob Latz</span><span class="allstar-compact-meta">TEX · LHP</span><span class="allstar-compact-owner">Goodyear Gila Monsters</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Parker Messick</span><span class="allstar-compact-meta">CLE · LHP</span><span class="allstar-compact-owner">This Is Mizerable</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Drew Rasmussen</span><span class="allstar-compact-meta">TB · RHP</span><span class="allstar-compact-owner">BTA Boyz</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Joe Ryan</span><span class="allstar-compact-meta">MIN · RHP</span><span class="allstar-compact-owner">Gunnarrhea</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Cam Schlittler</span><span class="allstar-compact-meta">NYY · RHP</span><span class="allstar-compact-owner">Dixon Cider</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Cade Smith</span><span class="allstar-compact-meta">CLE · RHP</span><span class="allstar-compact-owner">This Is Mizerable</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Ranger Suarez</span><span class="allstar-compact-meta">BOS · LHP</span><span class="allstar-compact-owner">John's Super Team</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Louis Varland</span><span class="allstar-compact-meta">TOR · RHP</span><span class="allstar-compact-owner">Goodyear Gila Monsters</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Michael Wacha</span><span class="allstar-compact-meta">KC · RHP</span><span class="allstar-compact-owner">BTA Boyz</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Dillon Dingler</span><span class="allstar-compact-meta">DET · C</span><span class="allstar-compact-owner">This Is Mizerable</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Adley Rutschman</span><span class="allstar-compact-meta">BAL · C</span><span class="allstar-compact-owner">BB's Bold Team</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Travis Bazzana</span><span class="allstar-compact-meta">CLE · INF</span><span class="allstar-compact-owner">This Is Mizerable</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Nick Kurtz</span><span class="allstar-compact-meta">ATH · INF</span><span class="allstar-compact-owner">You Don't Know Bo</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Kevin McGonigle</span><span class="allstar-compact-meta">DET · INF</span><span class="allstar-compact-owner">BTA Boyz</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Ben Rice</span><span class="allstar-compact-meta">NYY · INF</span><span class="allstar-compact-owner">Dixon Cider</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Miguel Vargas</span><span class="allstar-compact-meta">CWS · INF</span><span class="allstar-compact-owner">Gunnarrhea</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Randy Arozarena</span><span class="allstar-compact-meta">SEA · OF</span><span class="allstar-compact-owner">You Don't Know Bo</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Cody Bellinger</span><span class="allstar-compact-meta">NYY · OF</span><span class="allstar-compact-owner">Me So Heorny</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Riley Greene</span><span class="allstar-compact-meta">DET · OF</span><span class="allstar-compact-owner">Goodyear Gila Monsters</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Yandy Diaz</span><span class="allstar-compact-meta">TB · DH</span><span class="allstar-compact-owner">BB's Bold Team</span></div></div></section><section class="allstar-combined-league"><div class="allstar-combined-league-head"><span>National League</span><span>33 players</span></div><div class="allstar-cards-grid"><div class="allstar-player-card"><div class="allstar-name-row"><span class="allstar-compact-name">Drake Baldwin</span><span class="allstar-starter-tag">Original Starter</span></div><span class="allstar-compact-meta">ATL · C</span><span class="allstar-compact-owner">Me So Heorny</span></div><div class="allstar-player-card"><div class="allstar-name-row"><span class="allstar-compact-name">Freddie Freeman</span><span class="allstar-starter-tag">Original Starter</span></div><span class="allstar-compact-meta">LAD · 1B</span><span class="allstar-compact-owner">Mactown MacDaddies</span></div><div class="allstar-player-card"><div class="allstar-name-row"><span class="allstar-compact-name">Ozzie Albies</span><span class="allstar-starter-tag">Original Starter</span></div><span class="allstar-compact-meta">ATL · 2B</span><span class="allstar-compact-owner">Me So Heorny</span></div><div class="allstar-player-card"><div class="allstar-name-row"><span class="allstar-compact-name">Max Muncy</span><span class="allstar-starter-tag">Original Starter</span></div><span class="allstar-compact-meta">LAD · 3B</span><span class="allstar-compact-owner">Mactown MacDaddies</span></div><div class="allstar-player-card"><div class="allstar-name-row"><span class="allstar-compact-name">CJ Abrams</span><span class="allstar-starter-tag">Original Starter</span></div><span class="allstar-compact-meta">WSH · SS</span><span class="allstar-compact-owner">John's Super Team</span></div><div class="allstar-player-card"><div class="allstar-name-row"><span class="allstar-compact-name">Brandon Marsh</span><span class="allstar-starter-tag">Original Starter</span></div><span class="allstar-compact-meta">PHI · OF</span><span class="allstar-compact-owner">Goodyear Gila Monsters</span></div><div class="allstar-player-card"><div class="allstar-name-row"><span class="allstar-compact-name">Juan Soto</span><span class="allstar-starter-tag">Original Starter</span></div><span class="allstar-compact-meta">NYM · OF</span><span class="allstar-compact-owner">John's Super Team</span></div><div class="allstar-player-card"><div class="allstar-name-row"><span class="allstar-compact-name">Andy Pages</span><span class="allstar-starter-tag">Original Starter</span></div><span class="allstar-compact-meta">LAD · OF</span><span class="allstar-compact-owner">Me So Heorny</span></div><div class="allstar-player-card"><div class="allstar-name-row"><span class="allstar-compact-name">Shohei Ohtani</span><span class="allstar-starter-tag">Original Starter</span></div><span class="allstar-compact-meta">LAD · DH</span><span class="allstar-compact-owner">Dixon Cider</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Chase Burns</span><span class="allstar-compact-meta">CIN · RHP</span><span class="allstar-compact-owner">John's Super Team</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Jhoan Duran</span><span class="allstar-compact-meta">PHI · RHP</span><span class="allstar-compact-owner">BB's Bold Team</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Raisel Iglesias</span><span class="allstar-compact-meta">ATL · RHP</span><span class="allstar-compact-owner">Goodyear Gila Monsters</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Max Meyer</span><span class="allstar-compact-meta">MIA · RHP</span><span class="allstar-compact-owner">You Don't Know Bo</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Mason Miller</span><span class="allstar-compact-meta">SD · RHP</span><span class="allstar-compact-owner">Me So Heorny</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Jacob Misiorowski</span><span class="allstar-compact-meta">MIL · RHP</span><span class="allstar-compact-owner">This Is Mizerable</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Eduardo Rodriguez</span><span class="allstar-compact-meta">AZ · LHP</span><span class="allstar-compact-owner">Mactown MacDaddies</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Chris Sale</span><span class="allstar-compact-meta">ATL · LHP</span><span class="allstar-compact-owner">Goodyear Gila Monsters</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Cristopher Sanchez</span><span class="allstar-compact-meta">PHI · LHP</span><span class="allstar-compact-owner">BB's Bold Team</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Paul Skenes</span><span class="allstar-compact-meta">PIT · RHP</span><span class="allstar-compact-owner">BTA Boyz</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Logan Webb</span><span class="allstar-compact-meta">SF · RHP</span><span class="allstar-compact-owner">Goodyear Gila Monsters</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Yoshinobu Yamamoto</span><span class="allstar-compact-meta">LAD · RHP</span><span class="allstar-compact-owner">BB's Bold Team</span></div><div class="allstar-player-card"><span class="allstar-compact-name">William Contreras</span><span class="allstar-compact-meta">MIL · C</span><span class="allstar-compact-owner">BTA Boyz</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Hunter Goodman</span><span class="allstar-compact-meta">COL · C</span><span class="allstar-compact-owner">Me So Heorny</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Luis Arraez</span><span class="allstar-compact-meta">SF · INF</span><span class="allstar-compact-owner">Goodyear Gila Monsters</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Bryce Harper</span><span class="allstar-compact-meta">PHI · INF</span><span class="allstar-compact-owner">Mactown MacDaddies</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Otto Lopez</span><span class="allstar-compact-meta">MIA · INF</span><span class="allstar-compact-owner">You Don't Know Bo</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Matt Olson</span><span class="allstar-compact-meta">ATL · INF</span><span class="allstar-compact-owner">Goodyear Gila Monsters</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Sal Stewart</span><span class="allstar-compact-meta">CIN · INF</span><span class="allstar-compact-owner">Goodyear Gila Monsters</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Corbin Carroll</span><span class="allstar-compact-meta">AZ · OF</span><span class="allstar-compact-owner">Dixon Cider</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Pete Crow-Armstrong</span><span class="allstar-compact-meta">CHC · OF</span><span class="allstar-compact-owner">BB's Bold Team</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Jordan Walker</span><span class="allstar-compact-meta">STL · OF</span><span class="allstar-compact-owner">BB's Bold Team</span></div><div class="allstar-player-card"><span class="allstar-compact-name">James Wood</span><span class="allstar-compact-meta">WSH · OF</span><span class="allstar-compact-owner">Gunnarrhea</span></div><div class="allstar-player-card"><span class="allstar-compact-name">Kyle Schwarber</span><span class="allstar-compact-meta">PHI · DH</span><span class="allstar-compact-owner">Mactown MacDaddies</span></div></div></section></div></details></section>
+<div class="allstar-compact-head">
+<div>
+<h2 class="section-title">2026 MLB All-Stars in UTI</h2>
+<p class="section-subtitle">Original announced All-Stars grouped by fantasy team. Click a team to see its All-Stars.</p>
+</div>
+<div class="allstar-total-pill"><b>65</b><span>All-Stars</span></div>
+</div>
+<div class="allstar-team-dropdowns">
+<details class="allstar-team-dropdown">
+<summary>
+<span class="allstar-team-summary-main">
+<span class="allstar-team-thumb-slot" data-owner="Goodyear Gila Monsters"></span>
+<span class="allstar-team-summary-name">Goodyear Gila Monsters</span>
+</span>
+<span class="allstar-team-summary-count">12 All-Stars</span>
+</summary>
+<div class="allstar-team-player-grid">
+<div class="allstar-player-card">
+<div class="allstar-name-row"><span class="allstar-compact-name">Aaron Judge</span><span class="allstar-starter-tag">Starter</span></div>
+<span class="allstar-compact-meta">AL · NYY · OF</span>
+<span class="allstar-compact-owner">Goodyear Gila Monsters</span>
+</div><div class="allstar-player-card">
+<div class="allstar-name-row"><span class="allstar-compact-name">Bobby Witt Jr.</span><span class="allstar-starter-tag">Starter</span></div>
+<span class="allstar-compact-meta">AL · KC · SS</span>
+<span class="allstar-compact-owner">Goodyear Gila Monsters</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Jacob Latz</span>
+<span class="allstar-compact-meta">AL · TEX · LHP</span>
+<span class="allstar-compact-owner">Goodyear Gila Monsters</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Louis Varland</span>
+<span class="allstar-compact-meta">AL · TOR · RHP</span>
+<span class="allstar-compact-owner">Goodyear Gila Monsters</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Riley Greene</span>
+<span class="allstar-compact-meta">AL · DET · OF</span>
+<span class="allstar-compact-owner">Goodyear Gila Monsters</span>
+</div><div class="allstar-player-card">
+<div class="allstar-name-row"><span class="allstar-compact-name">Brandon Marsh</span><span class="allstar-starter-tag">Starter</span></div>
+<span class="allstar-compact-meta">NL · PHI · OF</span>
+<span class="allstar-compact-owner">Goodyear Gila Monsters</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Chris Sale</span>
+<span class="allstar-compact-meta">NL · ATL · LHP</span>
+<span class="allstar-compact-owner">Goodyear Gila Monsters</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Logan Webb</span>
+<span class="allstar-compact-meta">NL · SF · RHP</span>
+<span class="allstar-compact-owner">Goodyear Gila Monsters</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Luis Arraez</span>
+<span class="allstar-compact-meta">NL · SF · INF</span>
+<span class="allstar-compact-owner">Goodyear Gila Monsters</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Matt Olson</span>
+<span class="allstar-compact-meta">NL · ATL · INF</span>
+<span class="allstar-compact-owner">Goodyear Gila Monsters</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Raisel Iglesias</span>
+<span class="allstar-compact-meta">NL · ATL · RHP</span>
+<span class="allstar-compact-owner">Goodyear Gila Monsters</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Sal Stewart</span>
+<span class="allstar-compact-meta">NL · CIN · INF</span>
+<span class="allstar-compact-owner">Goodyear Gila Monsters</span>
+</div>
+</div>
+</details><details class="allstar-team-dropdown">
+<summary>
+<span class="allstar-team-summary-main">
+<span class="allstar-team-thumb-slot" data-owner="BB's Bold Team"></span>
+<span class="allstar-team-summary-name">BB's Bold Team</span>
+</span>
+<span class="allstar-team-summary-count">8 All-Stars</span>
+</summary>
+<div class="allstar-team-player-grid">
+<div class="allstar-player-card">
+<div class="allstar-name-row"><span class="allstar-compact-name">Shea Langeliers</span><span class="allstar-starter-tag">Starter</span></div>
+<span class="allstar-compact-meta">AL · ATH · C</span>
+<span class="allstar-compact-owner">BB's Bold Team</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Adley Rutschman</span>
+<span class="allstar-compact-meta">AL · BAL · C</span>
+<span class="allstar-compact-owner">BB's Bold Team</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Yandy Diaz</span>
+<span class="allstar-compact-meta">AL · TB · DH</span>
+<span class="allstar-compact-owner">BB's Bold Team</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Cristopher Sanchez</span>
+<span class="allstar-compact-meta">NL · PHI · LHP</span>
+<span class="allstar-compact-owner">BB's Bold Team</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Jhoan Duran</span>
+<span class="allstar-compact-meta">NL · PHI · RHP</span>
+<span class="allstar-compact-owner">BB's Bold Team</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Jordan Walker</span>
+<span class="allstar-compact-meta">NL · STL · OF</span>
+<span class="allstar-compact-owner">BB's Bold Team</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Pete Crow-Armstrong</span>
+<span class="allstar-compact-meta">NL · CHC · OF</span>
+<span class="allstar-compact-owner">BB's Bold Team</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Yoshinobu Yamamoto</span>
+<span class="allstar-compact-meta">NL · LAD · RHP</span>
+<span class="allstar-compact-owner">BB's Bold Team</span>
+</div>
+</div>
+</details><details class="allstar-team-dropdown">
+<summary>
+<span class="allstar-team-summary-main">
+<span class="allstar-team-thumb-slot" data-owner="BTA Boyz"></span>
+<span class="allstar-team-summary-name">BTA Boyz</span>
+</span>
+<span class="allstar-team-summary-count">7 All-Stars</span>
+</summary>
+<div class="allstar-team-player-grid">
+<div class="allstar-player-card">
+<div class="allstar-name-row"><span class="allstar-compact-name">Ernie Clement</span><span class="allstar-starter-tag">Starter</span></div>
+<span class="allstar-compact-meta">AL · TOR · 2B</span>
+<span class="allstar-compact-owner">BTA Boyz</span>
+</div><div class="allstar-player-card">
+<div class="allstar-name-row"><span class="allstar-compact-name">Mike Trout</span><span class="allstar-starter-tag">Starter</span></div>
+<span class="allstar-compact-meta">AL · LAA · OF</span>
+<span class="allstar-compact-owner">BTA Boyz</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Drew Rasmussen</span>
+<span class="allstar-compact-meta">AL · TB · RHP</span>
+<span class="allstar-compact-owner">BTA Boyz</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Kevin McGonigle</span>
+<span class="allstar-compact-meta">AL · DET · INF</span>
+<span class="allstar-compact-owner">BTA Boyz</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Michael Wacha</span>
+<span class="allstar-compact-meta">AL · KC · RHP</span>
+<span class="allstar-compact-owner">BTA Boyz</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Paul Skenes</span>
+<span class="allstar-compact-meta">NL · PIT · RHP</span>
+<span class="allstar-compact-owner">BTA Boyz</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">William Contreras</span>
+<span class="allstar-compact-meta">NL · MIL · C</span>
+<span class="allstar-compact-owner">BTA Boyz</span>
+</div>
+</div>
+</details><details class="allstar-team-dropdown">
+<summary>
+<span class="allstar-team-summary-main">
+<span class="allstar-team-thumb-slot" data-owner="John's Super Team"></span>
+<span class="allstar-team-summary-name">John's Super Team</span>
+</span>
+<span class="allstar-team-summary-count">6 All-Stars</span>
+</summary>
+<div class="allstar-team-player-grid">
+<div class="allstar-player-card">
+<div class="allstar-name-row"><span class="allstar-compact-name">Byron Buxton</span><span class="allstar-starter-tag">Starter</span></div>
+<span class="allstar-compact-meta">AL · MIN · OF</span>
+<span class="allstar-compact-owner">John's Super Team</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Aroldis Chapman</span>
+<span class="allstar-compact-meta">AL · BOS · LHP</span>
+<span class="allstar-compact-owner">John's Super Team</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Ranger Suarez</span>
+<span class="allstar-compact-meta">AL · BOS · LHP</span>
+<span class="allstar-compact-owner">John's Super Team</span>
+</div><div class="allstar-player-card">
+<div class="allstar-name-row"><span class="allstar-compact-name">CJ Abrams</span><span class="allstar-starter-tag">Starter</span></div>
+<span class="allstar-compact-meta">NL · WSH · SS</span>
+<span class="allstar-compact-owner">John's Super Team</span>
+</div><div class="allstar-player-card">
+<div class="allstar-name-row"><span class="allstar-compact-name">Juan Soto</span><span class="allstar-starter-tag">Starter</span></div>
+<span class="allstar-compact-meta">NL · NYM · OF</span>
+<span class="allstar-compact-owner">John's Super Team</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Chase Burns</span>
+<span class="allstar-compact-meta">NL · CIN · RHP</span>
+<span class="allstar-compact-owner">John's Super Team</span>
+</div>
+</div>
+</details><details class="allstar-team-dropdown">
+<summary>
+<span class="allstar-team-summary-main">
+<span class="allstar-team-thumb-slot" data-owner="Me So Heorny"></span>
+<span class="allstar-team-summary-name">Me So Heorny</span>
+</span>
+<span class="allstar-team-summary-count">6 All-Stars</span>
+</summary>
+<div class="allstar-team-player-grid">
+<div class="allstar-player-card">
+<span class="allstar-compact-name">Cody Bellinger</span>
+<span class="allstar-compact-meta">AL · NYY · OF</span>
+<span class="allstar-compact-owner">Me So Heorny</span>
+</div><div class="allstar-player-card">
+<div class="allstar-name-row"><span class="allstar-compact-name">Andy Pages</span><span class="allstar-starter-tag">Starter</span></div>
+<span class="allstar-compact-meta">NL · LAD · OF</span>
+<span class="allstar-compact-owner">Me So Heorny</span>
+</div><div class="allstar-player-card">
+<div class="allstar-name-row"><span class="allstar-compact-name">Drake Baldwin</span><span class="allstar-starter-tag">Starter</span></div>
+<span class="allstar-compact-meta">NL · ATL · C</span>
+<span class="allstar-compact-owner">Me So Heorny</span>
+</div><div class="allstar-player-card">
+<div class="allstar-name-row"><span class="allstar-compact-name">Ozzie Albies</span><span class="allstar-starter-tag">Starter</span></div>
+<span class="allstar-compact-meta">NL · ATL · 2B</span>
+<span class="allstar-compact-owner">Me So Heorny</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Hunter Goodman</span>
+<span class="allstar-compact-meta">NL · COL · C</span>
+<span class="allstar-compact-owner">Me So Heorny</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Mason Miller</span>
+<span class="allstar-compact-meta">NL · SD · RHP</span>
+<span class="allstar-compact-owner">Me So Heorny</span>
+</div>
+</div>
+</details><details class="allstar-team-dropdown">
+<summary>
+<span class="allstar-team-summary-main">
+<span class="allstar-team-thumb-slot" data-owner="This Is Mizerable"></span>
+<span class="allstar-team-summary-name">This Is Mizerable</span>
+</span>
+<span class="allstar-team-summary-count">6 All-Stars</span>
+</summary>
+<div class="allstar-team-player-grid">
+<div class="allstar-player-card">
+<div class="allstar-name-row"><span class="allstar-compact-name">Vladimir Guerrero Jr.</span><span class="allstar-starter-tag">Starter</span></div>
+<span class="allstar-compact-meta">AL · TOR · 1B</span>
+<span class="allstar-compact-owner">This Is Mizerable</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Cade Smith</span>
+<span class="allstar-compact-meta">AL · CLE · RHP</span>
+<span class="allstar-compact-owner">This Is Mizerable</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Dillon Dingler</span>
+<span class="allstar-compact-meta">AL · DET · C</span>
+<span class="allstar-compact-owner">This Is Mizerable</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Parker Messick</span>
+<span class="allstar-compact-meta">AL · CLE · LHP</span>
+<span class="allstar-compact-owner">This Is Mizerable</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Travis Bazzana</span>
+<span class="allstar-compact-meta">AL · CLE · INF</span>
+<span class="allstar-compact-owner">This Is Mizerable</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Jacob Misiorowski</span>
+<span class="allstar-compact-meta">NL · MIL · RHP</span>
+<span class="allstar-compact-owner">This Is Mizerable</span>
+</div>
+</div>
+</details><details class="allstar-team-dropdown">
+<summary>
+<span class="allstar-team-summary-main">
+<span class="allstar-team-thumb-slot" data-owner="Dixon Cider"></span>
+<span class="allstar-team-summary-name">Dixon Cider</span>
+</span>
+<span class="allstar-team-summary-count">5 All-Stars</span>
+</summary>
+<div class="allstar-team-player-grid">
+<div class="allstar-player-card">
+<div class="allstar-name-row"><span class="allstar-compact-name">Yordan Alvarez</span><span class="allstar-starter-tag">Starter</span></div>
+<span class="allstar-compact-meta">AL · HOU · DH</span>
+<span class="allstar-compact-owner">Dixon Cider</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Ben Rice</span>
+<span class="allstar-compact-meta">AL · NYY · INF</span>
+<span class="allstar-compact-owner">Dixon Cider</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Cam Schlittler</span>
+<span class="allstar-compact-meta">AL · NYY · RHP</span>
+<span class="allstar-compact-owner">Dixon Cider</span>
+</div><div class="allstar-player-card">
+<div class="allstar-name-row"><span class="allstar-compact-name">Shohei Ohtani</span><span class="allstar-starter-tag">Starter</span></div>
+<span class="allstar-compact-meta">NL · LAD · DH</span>
+<span class="allstar-compact-owner">Dixon Cider</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Corbin Carroll</span>
+<span class="allstar-compact-meta">NL · AZ · OF</span>
+<span class="allstar-compact-owner">Dixon Cider</span>
+</div>
+</div>
+</details><details class="allstar-team-dropdown">
+<summary>
+<span class="allstar-team-summary-main">
+<span class="allstar-team-thumb-slot" data-owner="Gunnarrhea"></span>
+<span class="allstar-team-summary-name">Gunnarrhea</span>
+</span>
+<span class="allstar-team-summary-count">5 All-Stars</span>
+</summary>
+<div class="allstar-team-player-grid">
+<div class="allstar-player-card">
+<span class="allstar-compact-name">Bryan Baker</span>
+<span class="allstar-compact-meta">AL · TB · RHP</span>
+<span class="allstar-compact-owner">Gunnarrhea</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Dylan Cease</span>
+<span class="allstar-compact-meta">AL · TOR · RHP</span>
+<span class="allstar-compact-owner">Gunnarrhea</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Joe Ryan</span>
+<span class="allstar-compact-meta">AL · MIN · RHP</span>
+<span class="allstar-compact-owner">Gunnarrhea</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Miguel Vargas</span>
+<span class="allstar-compact-meta">AL · CWS · INF</span>
+<span class="allstar-compact-owner">Gunnarrhea</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">James Wood</span>
+<span class="allstar-compact-meta">NL · WSH · OF</span>
+<span class="allstar-compact-owner">Gunnarrhea</span>
+</div>
+</div>
+</details><details class="allstar-team-dropdown">
+<summary>
+<span class="allstar-team-summary-main">
+<span class="allstar-team-thumb-slot" data-owner="Mactown MacDaddies"></span>
+<span class="allstar-team-summary-name">Mactown MacDaddies</span>
+</span>
+<span class="allstar-team-summary-count">5 All-Stars</span>
+</summary>
+<div class="allstar-team-player-grid">
+<div class="allstar-player-card">
+<div class="allstar-name-row"><span class="allstar-compact-name">Freddie Freeman</span><span class="allstar-starter-tag">Starter</span></div>
+<span class="allstar-compact-meta">NL · LAD · 1B</span>
+<span class="allstar-compact-owner">Mactown MacDaddies</span>
+</div><div class="allstar-player-card">
+<div class="allstar-name-row"><span class="allstar-compact-name">Max Muncy</span><span class="allstar-starter-tag">Starter</span></div>
+<span class="allstar-compact-meta">NL · LAD · 3B</span>
+<span class="allstar-compact-owner">Mactown MacDaddies</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Bryce Harper</span>
+<span class="allstar-compact-meta">NL · PHI · INF</span>
+<span class="allstar-compact-owner">Mactown MacDaddies</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Eduardo Rodriguez</span>
+<span class="allstar-compact-meta">NL · AZ · LHP</span>
+<span class="allstar-compact-owner">Mactown MacDaddies</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Kyle Schwarber</span>
+<span class="allstar-compact-meta">NL · PHI · DH</span>
+<span class="allstar-compact-owner">Mactown MacDaddies</span>
+</div>
+</div>
+</details><details class="allstar-team-dropdown">
+<summary>
+<span class="allstar-team-summary-main">
+<span class="allstar-team-thumb-slot" data-owner="You Don't Know Bo"></span>
+<span class="allstar-team-summary-name">You Don't Know Bo</span>
+</span>
+<span class="allstar-team-summary-count">5 All-Stars</span>
+</summary>
+<div class="allstar-team-player-grid">
+<div class="allstar-player-card">
+<div class="allstar-name-row"><span class="allstar-compact-name">Junior Caminero</span><span class="allstar-starter-tag">Starter</span></div>
+<span class="allstar-compact-meta">AL · TB · 3B</span>
+<span class="allstar-compact-owner">You Don't Know Bo</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Nick Kurtz</span>
+<span class="allstar-compact-meta">AL · ATH · INF</span>
+<span class="allstar-compact-owner">You Don't Know Bo</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Randy Arozarena</span>
+<span class="allstar-compact-meta">AL · SEA · OF</span>
+<span class="allstar-compact-owner">You Don't Know Bo</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Max Meyer</span>
+<span class="allstar-compact-meta">NL · MIA · RHP</span>
+<span class="allstar-compact-owner">You Don't Know Bo</span>
+</div><div class="allstar-player-card">
+<span class="allstar-compact-name">Otto Lopez</span>
+<span class="allstar-compact-meta">NL · MIA · INF</span>
+<span class="allstar-compact-owner">You Don't Know Bo</span>
+</div>
+</div>
+</details>
+</div>
+</section>
 <section class="section-card home-run-pool-preview" id="home-run-pool">
 <div class="section-heading home-run-pool-heading">
 <div>
@@ -2831,7 +3314,7 @@
         return String(value || '')
           .toLowerCase()
           .normalize('NFD')
-          .replace(/[\\u0300-\\u036f]/g, '')
+          .replace(/[\u0300-\u036f]/g, '')
           .replace(/[^a-z0-9]/g, '');
       }
 
@@ -2943,6 +3426,11 @@
           if (!card.querySelector('.allstar-owner-thumb, .allstar-owner-fallback')) {
             card.prepend(createTeamPicture(owner));
           }
+        });
+
+        document.querySelectorAll('.allstar-team-thumb-slot[data-owner]').forEach(slot => {
+          const owner = slot.getAttribute('data-owner') || '';
+          slot.replaceChildren(createTeamPicture(owner));
         });
 
         const ranking = document.getElementById('allStarOwnerRanking');
