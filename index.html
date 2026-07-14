@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 
 <html lang="en">
+
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>UTI Fantasy Baseball Recaps</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
-<link href="styles/styles.css" rel="stylesheet"/>
-<link href="styles/home-run-pool.css" rel="stylesheet"/>
-<link href="styles/baseball-banner.css" rel="stylesheet"/>
-<link href="styles/top-pickups-redesign.css?v=lite-v2" rel="stylesheet"/>
-<style>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>UTI Fantasy Baseball Recaps</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="styles/styles.css" rel="stylesheet" />
+  <link href="styles/home-run-pool.css" rel="stylesheet" />
+  <link href="styles/baseball-banner.css" rel="stylesheet" />
+  <link href="styles/top-pickups-redesign.css?v=lite-v2" rel="stylesheet" />
+  <style>
     .leader-section-header {
       display: flex;
       justify-content: space-between;
@@ -1329,7 +1330,7 @@
         font-size: 0.31rem;
       }
     }
-  
+
 
     /* ===== Compact temporary All-Star owner list ===== */
     .allstar-compact-section {
@@ -1368,8 +1369,8 @@
       padding: 8px 10px;
       border-radius: 13px;
       text-align: center;
-      background: rgba(255,255,255,.14);
-      border: 1px solid rgba(255,255,255,.24);
+      background: rgba(255, 255, 255, .14);
+      border: 1px solid rgba(255, 255, 255, .24);
     }
 
     .allstar-total-pill b {
@@ -1399,7 +1400,7 @@
       border: 1px solid var(--border);
       border-radius: 13px;
       background: #fff;
-      box-shadow: 0 5px 14px rgba(15,23,42,.045);
+      box-shadow: 0 5px 14px rgba(15, 23, 42, .045);
     }
 
     .allstar-compact-league summary {
@@ -1442,7 +1443,7 @@
       align-items: center;
       min-width: 0;
       padding: 5px 2px;
-      border-bottom: 1px solid rgba(226,232,240,.72);
+      border-bottom: 1px solid rgba(226, 232, 240, .72);
     }
 
     .allstar-compact-name {
@@ -1540,9 +1541,11 @@
       gap: 12px;
       margin-top: 12px;
     }
+
     .allstar-cards-league {
       min-width: 0;
     }
+
     .allstar-cards-league-head {
       display: flex;
       align-items: center;
@@ -1554,17 +1557,20 @@
       font-size: .72rem;
       font-weight: 950;
     }
+
     .allstar-cards-league-head span:last-child {
       color: var(--muted);
       font-size: .52rem;
       text-transform: uppercase;
       white-space: nowrap;
     }
+
     .allstar-cards-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 6px;
     }
+
     .allstar-player-card {
       display: grid;
       grid-template-columns: minmax(0, 1fr) auto;
@@ -1574,11 +1580,12 @@
       gap: 3px 6px;
       min-width: 0;
       padding: 7px 8px;
-      border: 1px solid rgba(226,232,240,.95);
+      border: 1px solid rgba(226, 232, 240, .95);
       border-radius: 10px;
       background: #fff;
-      box-shadow: 0 3px 10px rgba(15,23,42,.035);
+      box-shadow: 0 3px 10px rgba(15, 23, 42, .035);
     }
+
     .allstar-player-card .allstar-compact-name {
       grid-area: name;
       min-width: 0;
@@ -1589,6 +1596,7 @@
       font-size: .65rem;
       font-weight: 950;
     }
+
     .allstar-player-card .allstar-compact-meta {
       grid-area: meta;
       color: var(--muted);
@@ -1596,25 +1604,29 @@
       font-weight: 850;
       white-space: nowrap;
     }
+
     .allstar-player-card .allstar-compact-owner,
     .allstar-player-card .allstar-owner-wrap {
       grid-area: owner;
       min-width: 0;
     }
+
     .allstar-player-card .allstar-owner-wrap {
       display: flex;
       align-items: center;
       gap: 5px;
     }
+
     .allstar-player-card .allstar-owner-thumb {
       width: 18px;
       height: 18px;
       flex: 0 0 18px;
       border-radius: 50%;
       object-fit: cover;
-      border: 1px solid rgba(11,94,215,.18);
+      border: 1px solid rgba(11, 94, 215, .18);
       background: #fff;
     }
+
     .allstar-player-card .allstar-compact-owner {
       display: block;
       overflow: hidden;
@@ -1624,23 +1636,51 @@
       font-size: .49rem;
       font-weight: 900;
     }
-    .allstar-player-card .allstar-compact-owner.free-agent { color: #842029; }
-    @media (max-width: 900px) {
-      .allstar-cards-leagues { grid-template-columns: 1fr; }
-      .allstar-cards-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    }
-    @media (max-width: 640px) {
-      .allstar-cards-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; }
-      .allstar-player-card { padding: 6px 7px; }
-      .allstar-player-card .allstar-compact-name { font-size: .60rem; }
-      .allstar-player-card .allstar-compact-meta { font-size: .42rem; }
-      .allstar-player-card .allstar-compact-owner { font-size: .45rem; }
-    }
-    @media (max-width: 360px) {
-      .allstar-cards-grid { grid-template-columns: 1fr; }
+
+    .allstar-player-card .allstar-compact-owner.free-agent {
+      color: #842029;
     }
 
-  
+    @media (max-width: 900px) {
+      .allstar-cards-leagues {
+        grid-template-columns: 1fr;
+      }
+
+      .allstar-cards-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .allstar-cards-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 5px;
+      }
+
+      .allstar-player-card {
+        padding: 6px 7px;
+      }
+
+      .allstar-player-card .allstar-compact-name {
+        font-size: .60rem;
+      }
+
+      .allstar-player-card .allstar-compact-meta {
+        font-size: .42rem;
+      }
+
+      .allstar-player-card .allstar-compact-owner {
+        font-size: .45rem;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .allstar-cards-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+
     /* ===== Compact All-Star owner ranking and thumbnails ===== */
     .allstar-owner-ranking {
       display: grid;
@@ -1648,23 +1688,26 @@
       gap: 6px;
       margin: 9px 0 10px;
     }
+
     .allstar-owner-rank-item {
       display: flex;
       align-items: center;
       gap: 7px;
       min-width: 0;
       padding: 6px 8px;
-      border: 1px solid rgba(226,232,240,.95);
+      border: 1px solid rgba(226, 232, 240, .95);
       border-radius: 10px;
       background: #fff;
-      box-shadow: 0 3px 9px rgba(15,23,42,.035);
+      box-shadow: 0 3px 9px rgba(15, 23, 42, .035);
     }
+
     .allstar-owner-rank-number {
       flex: 0 0 auto;
       color: var(--muted);
       font-size: .50rem;
       font-weight: 950;
     }
+
     .allstar-owner-rank-name {
       min-width: 0;
       flex: 1;
@@ -1675,15 +1718,17 @@
       font-size: .56rem;
       font-weight: 900;
     }
+
     .allstar-owner-rank-count {
       flex: 0 0 auto;
       padding: 2px 6px;
       border-radius: 999px;
-      background: rgba(11,94,215,.10);
+      background: rgba(11, 94, 215, .10);
       color: var(--accent-dark);
       font-size: .52rem;
       font-weight: 950;
     }
+
     .allstar-owner-thumb {
       width: 20px;
       height: 20px;
@@ -1691,8 +1736,9 @@
       border-radius: 50%;
       object-fit: cover;
       background: #fff;
-      border: 1px solid rgba(11,94,215,.18);
+      border: 1px solid rgba(11, 94, 215, .18);
     }
+
     .allstar-owner-fallback {
       display: inline-flex;
       align-items: center;
@@ -1701,19 +1747,36 @@
       height: 20px;
       flex: 0 0 20px;
       border-radius: 50%;
-      background: rgba(11,94,215,.10);
+      background: rgba(11, 94, 215, .10);
       color: var(--accent-dark);
       font-size: .46rem;
       font-weight: 950;
     }
+
     @media (max-width: 520px) {
-      .allstar-owner-ranking { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; }
-      .allstar-owner-rank-item { padding: 5px 6px; gap: 5px; }
-      .allstar-owner-rank-name { font-size: .50rem; }
-      .allstar-owner-thumb, .allstar-owner-fallback { width: 18px; height: 18px; flex-basis: 18px; }
+      .allstar-owner-ranking {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 5px;
+      }
+
+      .allstar-owner-rank-item {
+        padding: 5px 6px;
+        gap: 5px;
+      }
+
+      .allstar-owner-rank-name {
+        font-size: .50rem;
+      }
+
+      .allstar-owner-thumb,
+      .allstar-owner-fallback {
+        width: 18px;
+        height: 18px;
+        flex-basis: 18px;
+      }
     }
 
-  
+
 
     /* ===== One All-Star dropdown with AL/NL sections ===== */
     .allstar-combined-dropdown {
@@ -1722,9 +1785,10 @@
       border: 1px solid var(--border);
       border-radius: 14px;
       background: #fff;
-      box-shadow: 0 5px 14px rgba(15,23,42,.045);
+      box-shadow: 0 5px 14px rgba(15, 23, 42, .045);
     }
-    .allstar-combined-dropdown > summary {
+
+    .allstar-combined-dropdown>summary {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -1737,20 +1801,29 @@
       font-size: .70rem;
       font-weight: 950;
     }
-    .allstar-combined-dropdown > summary::-webkit-details-marker { display: none; }
-    .allstar-combined-dropdown > summary span:last-child {
+
+    .allstar-combined-dropdown>summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .allstar-combined-dropdown>summary span:last-child {
       color: var(--muted);
       font-size: .50rem;
       text-transform: uppercase;
       white-space: nowrap;
     }
+
     .allstar-combined-body {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 10px;
       padding: 9px;
     }
-    .allstar-combined-league { min-width: 0; }
+
+    .allstar-combined-league {
+      min-width: 0;
+    }
+
     .allstar-combined-league-head {
       display: flex;
       align-items: center;
@@ -1762,23 +1835,42 @@
       font-size: .66rem;
       font-weight: 950;
     }
+
     .allstar-combined-league-head span:last-child {
       color: var(--muted);
       font-size: .46rem;
       text-transform: uppercase;
       white-space: nowrap;
     }
+
     .allstar-combined-league .allstar-cards-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+
     @media (max-width: 760px) {
-      .allstar-combined-body { grid-template-columns: 1fr; }
-      .allstar-combined-league .allstar-cards-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .allstar-combined-body {
+        grid-template-columns: 1fr;
+      }
+
+      .allstar-combined-league .allstar-cards-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
     }
+
     @media (max-width: 420px) {
-      .allstar-combined-dropdown > summary { padding: 9px 10px; font-size: .64rem; }
-      .allstar-combined-body { padding: 7px; gap: 9px; }
-      .allstar-combined-league .allstar-cards-grid { grid-template-columns: 1fr; }
+      .allstar-combined-dropdown>summary {
+        padding: 9px 10px;
+        font-size: .64rem;
+      }
+
+      .allstar-combined-body {
+        padding: 7px;
+        gap: 9px;
+      }
+
+      .allstar-combined-league .allstar-cards-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
     /* ===== Smaller All-Star cards + original starter badges ===== */
@@ -1792,6 +1884,7 @@
       padding: 5px 7px;
       border-radius: 8px;
     }
+
     .allstar-name-row {
       grid-area: name;
       min-width: 0;
@@ -1800,6 +1893,7 @@
       gap: 4px;
       flex-wrap: wrap;
     }
+
     .allstar-player-card .allstar-name-row .allstar-compact-name {
       grid-area: unset;
       min-width: 0;
@@ -1810,20 +1904,22 @@
       line-height: 1.08;
       font-size: .61rem;
     }
+
     .allstar-starter-tag {
       display: inline-flex;
       align-items: center;
       flex: 0 0 auto;
       padding: 2px 4px;
       border-radius: 999px;
-      background: rgba(255,193,7,.20);
+      background: rgba(255, 193, 7, .20);
       color: #795c00;
-      border: 1px solid rgba(255,193,7,.28);
+      border: 1px solid rgba(255, 193, 7, .28);
       font-size: .36rem;
       font-weight: 900;
       line-height: 1;
       white-space: nowrap;
     }
+
     .allstar-player-card .allstar-owner-thumb,
     .allstar-player-card .allstar-owner-fallback {
       grid-area: avatar;
@@ -1834,16 +1930,31 @@
       align-self: center;
       border-width: 1px;
     }
-    .allstar-player-card .allstar-compact-owner { font-size: .46rem; }
-    .allstar-player-card .allstar-compact-meta { font-size: .42rem; }
+
+    .allstar-player-card .allstar-compact-owner {
+      font-size: .46rem;
+    }
+
+    .allstar-player-card .allstar-compact-meta {
+      font-size: .42rem;
+    }
+
     @media (max-width: 640px) {
       .allstar-player-card {
         grid-template-columns: 26px minmax(0, 1fr) auto;
         padding: 4px 6px;
         gap: 2px 5px;
       }
-      .allstar-player-card .allstar-name-row .allstar-compact-name { font-size: .57rem; }
-      .allstar-starter-tag { font-size: .32rem; padding: 2px 3px; }
+
+      .allstar-player-card .allstar-name-row .allstar-compact-name {
+        font-size: .57rem;
+      }
+
+      .allstar-starter-tag {
+        font-size: .32rem;
+        padding: 2px 3px;
+      }
+
       .allstar-player-card .allstar-owner-thumb,
       .allstar-player-card .allstar-owner-fallback {
         width: 26px;
@@ -1871,7 +1982,7 @@
       box-shadow: 0 5px 14px rgba(15, 23, 42, 0.045);
     }
 
-    .allstar-team-dropdown > summary {
+    .allstar-team-dropdown>summary {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -1885,7 +1996,9 @@
       font-weight: 950;
     }
 
-    .allstar-team-dropdown > summary::-webkit-details-marker { display: none; }
+    .allstar-team-dropdown>summary::-webkit-details-marker {
+      display: none;
+    }
 
     .allstar-team-summary-main {
       min-width: 0;
@@ -1948,16 +2061,33 @@
     }
 
     @media (max-width: 760px) {
-      .allstar-team-dropdowns { grid-template-columns: 1fr; gap: 7px; }
-      .allstar-team-player-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .allstar-team-dropdowns {
+        grid-template-columns: 1fr;
+        gap: 7px;
+      }
+
+      .allstar-team-player-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
     }
 
     @media (max-width: 420px) {
-      .allstar-team-dropdown > summary { padding: 7px 8px; font-size: 0.60rem; }
-      .allstar-team-summary-count { font-size: 0.44rem; padding: 3px 6px; }
-      .allstar-team-player-grid { grid-template-columns: 1fr; padding: 6px; }
+      .allstar-team-dropdown>summary {
+        padding: 7px 8px;
+        font-size: 0.60rem;
+      }
+
+      .allstar-team-summary-count {
+        font-size: 0.44rem;
+        padding: 3px 6px;
+      }
+
+      .allstar-team-player-grid {
+        grid-template-columns: 1fr;
+        padding: 6px;
+      }
     }
-</style>
+  </style>
 </head>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
 </script>
@@ -1970,566 +2100,655 @@
 <script src="data/homerun-pool.js"></script>
 <script src="scripts/category-leaders.js?v=market-v12"></script>
 <script src="scripts/homerun-pool.js?v=logos"></script>
+
 <body>
-<div class="page">
-<div class="top-banner">UTI Fantasy Baseball HQ — Recaps, Leaders, HR Pool, and Weekly Chaos</div>
-<section class="hero">
-<div class="kicker">League Newsroom</div>
-<h1>Union of Ten Idiots Fantasy Baseball</h1>
-<p class="deck">
+  <div class="page">
+    <div class="top-banner">UTI Fantasy Baseball HQ — Recaps, Leaders, HR Pool, and Weekly Chaos</div>
+    <section class="hero">
+      <div class="kicker">League Newsroom</div>
+      <h1>Union of Ten Idiots Fantasy Baseball</h1>
+      <p class="deck">
         The Best Dang Fantasy League in the World
       </p>
-<p class="last-updated">Last updated: Week 13 Recap • MLB weekly leaders update automatically</p>
-</section>
-<section aria-label="League alerts" class="league-alert-strip">
-<article class="league-alert-card draft-alert" id="all-star-week-alert">
-<div class="league-alert-main">
-<div class="league-alert-kicker">All-Star Week</div>
-<div class="league-alert-title">Extended UTI Matchup Week</div>
-<div class="league-alert-subtitle">This matchup runs from July 13 through July 26.</div>
-</div>
-<div class="league-alert-count">
-<span class="league-alert-number">2</span>
-<span class="league-alert-label">Week matchup</span>
-</div>
-</article>
-<article class="league-alert-card trade-alert">
-<div class="league-alert-main">
-<div class="league-alert-kicker">Trade Deadline</div>
-<div class="league-alert-title">UTI deadline is August 12</div>
-<div class="league-alert-subtitle">Blockbusters, panic sells, and unserious offers due soon.</div>
-</div>
-<div class="league-alert-count">
-<span class="league-alert-number" id="tradeDeadlineCountdownNumber">--</span>
-<span class="league-alert-label" id="tradeDeadlineCountdownLabel">Days left</span>
-</div>
-</article>
-</section>
-<nav aria-label="Homepage sections" class="quick-nav">
-<a href="#all-star-week-alert">All-Star Week</a>
-<a href="#mlb-weekly-leaders">MLB Leaders</a>
-<a href="#top-pickups">Trending Adds</a><a href="#all-star-week">All-Stars</a>
-<a href="#home-run-pool">HR Pool</a>
-<a href="#fantasy-tools">Fantasy Tools</a>
-<a href="#featured-recap">Featured Recap</a>
-</nav>
-<section class="section-card" id="mlb-weekly-leaders">
-<div class="leader-section-header">
-<div>
-<h2 class="section-title" style="margin-bottom:4px;">MLB Category Leaders</h2>
-<p class="section-subtitle">
+      <p class="last-updated">Last updated: Week 13 Recap • MLB weekly leaders update automatically</p>
+    </section>
+    <section aria-label="League alerts" class="league-alert-strip">
+      <article class="league-alert-card draft-alert" id="all-star-week-alert">
+        <div class="league-alert-main">
+          <div class="league-alert-kicker">All-Star Week</div>
+          <div class="league-alert-title">Extended UTI Matchup Week</div>
+          <div class="league-alert-subtitle">This matchup runs from July 13 through July 26.</div>
+        </div>
+        <div class="league-alert-count">
+          <span class="league-alert-number">2</span>
+          <span class="league-alert-label">Week matchup</span>
+        </div>
+      </article>
+      <article class="league-alert-card trade-alert">
+        <div class="league-alert-main">
+          <div class="league-alert-kicker">Trade Deadline</div>
+          <div class="league-alert-title">UTI deadline is August 12</div>
+          <div class="league-alert-subtitle">Blockbusters, panic sells, and unserious offers due soon.</div>
+        </div>
+        <div class="league-alert-count">
+          <span class="league-alert-number" id="tradeDeadlineCountdownNumber">--</span>
+          <span class="league-alert-label" id="tradeDeadlineCountdownLabel">Days left</span>
+        </div>
+      </article>
+    </section>
+    <nav aria-label="Homepage sections" class="quick-nav">
+      <a href="#all-star-week-alert">All-Star Week</a>
+      <a href="#mlb-weekly-leaders">MLB Leaders</a>
+      <a href="#top-pickups">Trending Adds</a><a href="#all-star-week">All-Stars</a>
+      <a href="#home-run-pool">HR Pool</a>
+      <a href="#fantasy-tools">Fantasy Tools</a>
+      <a href="#featured-recap">Featured Recap</a>
+    </nav>
+    <section class="section-card" id="mlb-weekly-leaders">
+      <div class="leader-section-header">
+        <div>
+          <h2 class="section-title" style="margin-bottom:4px;">MLB Category Leaders</h2>
+          <p class="section-subtitle">
             Switch between the current week, any completed past week, and full-season leaders.
           </p>
-</div>
-<div class="leader-header-actions">
-<div aria-label="Leader range filter" class="leader-mode-toggle">
-<button aria-pressed="true" class="leader-mode-btn active" data-leader-mode="weekly" type="button">
+        </div>
+        <div class="leader-header-actions">
+          <div aria-label="Leader range filter" class="leader-mode-toggle">
+            <button aria-pressed="true" class="leader-mode-btn active" data-leader-mode="weekly" type="button">
               Current Week
             </button>
-<button aria-pressed="false" class="leader-mode-btn" data-leader-mode="past" type="button">
+            <button aria-pressed="false" class="leader-mode-btn" data-leader-mode="past" type="button">
               Past Weeks
             </button>
-<button aria-pressed="false" class="leader-mode-btn" data-leader-mode="season" type="button">
+            <button aria-pressed="false" class="leader-mode-btn" data-leader-mode="season" type="button">
               Season
             </button>
-</div>
-<select aria-label="Select past week" class="leader-week-select" hidden="" id="pastWeekSelect"></select>
-<span class="tag" id="weeklyLeaderRange">Loading...</span>
-</div>
-</div>
-<div class="weekly-leaders-grid" id="weeklyLeadersGrid">
-<article class="article-card">
-<p class="article-summary">Loading category leaders...</p>
-</article>
-</div>
-</section>
-<section class="section-card" id="top-pickups">
-<div class="leader-section-header">
-<div>
-<h2 class="section-title" style="margin-bottom:4px;">Trending Available</h2>
-<p class="section-subtitle">
+          </div>
+          <select aria-label="Select past week" class="leader-week-select" hidden="" id="pastWeekSelect"></select>
+          <span class="tag" id="weeklyLeaderRange">Loading...</span>
+        </div>
+      </div>
+      <div class="weekly-leaders-grid" id="weeklyLeadersGrid">
+        <article class="article-card">
+          <p class="article-summary">Loading category leaders...</p>
+        </article>
+      </div>
+    </section>
+    <section class="section-card" id="top-pickups">
+      <div class="leader-section-header">
+        <div>
+          <h2 class="section-title" style="margin-bottom:4px;">Trending Available</h2>
+          <p class="section-subtitle">
             Popular players from other fantasy leagues, filtered against UTI rosters so only available guys show.
           </p>
-</div>
-<div class="leader-header-actions trending-header-actions">
-<div aria-label="Trending card stat range" class="leader-mode-toggle trend-stat-toggle">
-<button aria-pressed="true" class="leader-mode-btn active" data-trend-stat-range="last7" type="button">7D</button>
-<button aria-pressed="false" class="leader-mode-btn" data-trend-stat-range="last14" type="button">14D</button>
-<button aria-pressed="false" class="leader-mode-btn" data-trend-stat-range="season" type="button">SEA</button>
-</div>
-<span class="tag" id="availableStudsModeTag">Last 7</span>
-</div>
-</div>
-<div class="available-studs-grid" id="availableStudsGrid">
-<article class="article-card">
-<p class="article-summary">Loading trending available players...</p>
-</article>
-</div>
-</section><section class="section-card allstar-compact-section" id="all-star-week">
-<div class="allstar-compact-head">
-<div>
-<h2 class="section-title">2026 MLB All-Stars in UTI</h2>
-<p class="section-subtitle">Original announced All-Stars grouped by fantasy team. Click a team to see its All-Stars.</p>
-</div>
-<div class="allstar-total-pill"><b>65</b><span>All-Stars</span></div>
-</div>
-<div class="allstar-team-dropdowns">
-<details class="allstar-team-dropdown">
-<summary>
-<span class="allstar-team-summary-main">
-<span class="allstar-team-thumb-slot" data-owner="Goodyear Gila Monsters"></span>
-<span class="allstar-team-summary-name">Goodyear Gila Monsters</span>
-</span>
-<span class="allstar-team-summary-count">12 All-Stars</span>
-</summary>
-<div class="allstar-team-player-grid">
-<div class="allstar-player-card">
-<div class="allstar-name-row"><span class="allstar-compact-name">Aaron Judge</span><span class="allstar-starter-tag">Starter</span></div>
-<span class="allstar-compact-meta">AL · NYY · OF</span>
-<span class="allstar-compact-owner">Goodyear Gila Monsters</span>
-</div><div class="allstar-player-card">
-<div class="allstar-name-row"><span class="allstar-compact-name">Bobby Witt Jr.</span><span class="allstar-starter-tag">Starter</span></div>
-<span class="allstar-compact-meta">AL · KC · SS</span>
-<span class="allstar-compact-owner">Goodyear Gila Monsters</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Jacob Latz</span>
-<span class="allstar-compact-meta">AL · TEX · LHP</span>
-<span class="allstar-compact-owner">Goodyear Gila Monsters</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Louis Varland</span>
-<span class="allstar-compact-meta">AL · TOR · RHP</span>
-<span class="allstar-compact-owner">Goodyear Gila Monsters</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Riley Greene</span>
-<span class="allstar-compact-meta">AL · DET · OF</span>
-<span class="allstar-compact-owner">Goodyear Gila Monsters</span>
-</div><div class="allstar-player-card">
-<div class="allstar-name-row"><span class="allstar-compact-name">Brandon Marsh</span><span class="allstar-starter-tag">Starter</span></div>
-<span class="allstar-compact-meta">NL · PHI · OF</span>
-<span class="allstar-compact-owner">Goodyear Gila Monsters</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Chris Sale</span>
-<span class="allstar-compact-meta">NL · ATL · LHP</span>
-<span class="allstar-compact-owner">Goodyear Gila Monsters</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Logan Webb</span>
-<span class="allstar-compact-meta">NL · SF · RHP</span>
-<span class="allstar-compact-owner">Goodyear Gila Monsters</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Luis Arraez</span>
-<span class="allstar-compact-meta">NL · SF · INF</span>
-<span class="allstar-compact-owner">Goodyear Gila Monsters</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Matt Olson</span>
-<span class="allstar-compact-meta">NL · ATL · INF</span>
-<span class="allstar-compact-owner">Goodyear Gila Monsters</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Raisel Iglesias</span>
-<span class="allstar-compact-meta">NL · ATL · RHP</span>
-<span class="allstar-compact-owner">Goodyear Gila Monsters</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Sal Stewart</span>
-<span class="allstar-compact-meta">NL · CIN · INF</span>
-<span class="allstar-compact-owner">Goodyear Gila Monsters</span>
-</div>
-</div>
-</details><details class="allstar-team-dropdown">
-<summary>
-<span class="allstar-team-summary-main">
-<span class="allstar-team-thumb-slot" data-owner="BB's Bold Team"></span>
-<span class="allstar-team-summary-name">BB's Bold Team</span>
-</span>
-<span class="allstar-team-summary-count">8 All-Stars</span>
-</summary>
-<div class="allstar-team-player-grid">
-<div class="allstar-player-card">
-<div class="allstar-name-row"><span class="allstar-compact-name">Shea Langeliers</span><span class="allstar-starter-tag">Starter</span></div>
-<span class="allstar-compact-meta">AL · ATH · C</span>
-<span class="allstar-compact-owner">BB's Bold Team</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Adley Rutschman</span>
-<span class="allstar-compact-meta">AL · BAL · C</span>
-<span class="allstar-compact-owner">BB's Bold Team</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Yandy Diaz</span>
-<span class="allstar-compact-meta">AL · TB · DH</span>
-<span class="allstar-compact-owner">BB's Bold Team</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Cristopher Sanchez</span>
-<span class="allstar-compact-meta">NL · PHI · LHP</span>
-<span class="allstar-compact-owner">BB's Bold Team</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Jhoan Duran</span>
-<span class="allstar-compact-meta">NL · PHI · RHP</span>
-<span class="allstar-compact-owner">BB's Bold Team</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Jordan Walker</span>
-<span class="allstar-compact-meta">NL · STL · OF</span>
-<span class="allstar-compact-owner">BB's Bold Team</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Pete Crow-Armstrong</span>
-<span class="allstar-compact-meta">NL · CHC · OF</span>
-<span class="allstar-compact-owner">BB's Bold Team</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Yoshinobu Yamamoto</span>
-<span class="allstar-compact-meta">NL · LAD · RHP</span>
-<span class="allstar-compact-owner">BB's Bold Team</span>
-</div>
-</div>
-</details><details class="allstar-team-dropdown">
-<summary>
-<span class="allstar-team-summary-main">
-<span class="allstar-team-thumb-slot" data-owner="BTA Boyz"></span>
-<span class="allstar-team-summary-name">BTA Boyz</span>
-</span>
-<span class="allstar-team-summary-count">7 All-Stars</span>
-</summary>
-<div class="allstar-team-player-grid">
-<div class="allstar-player-card">
-<div class="allstar-name-row"><span class="allstar-compact-name">Ernie Clement</span><span class="allstar-starter-tag">Starter</span></div>
-<span class="allstar-compact-meta">AL · TOR · 2B</span>
-<span class="allstar-compact-owner">BTA Boyz</span>
-</div><div class="allstar-player-card">
-<div class="allstar-name-row"><span class="allstar-compact-name">Mike Trout</span><span class="allstar-starter-tag">Starter</span></div>
-<span class="allstar-compact-meta">AL · LAA · OF</span>
-<span class="allstar-compact-owner">BTA Boyz</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Drew Rasmussen</span>
-<span class="allstar-compact-meta">AL · TB · RHP</span>
-<span class="allstar-compact-owner">BTA Boyz</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Kevin McGonigle</span>
-<span class="allstar-compact-meta">AL · DET · INF</span>
-<span class="allstar-compact-owner">BTA Boyz</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Michael Wacha</span>
-<span class="allstar-compact-meta">AL · KC · RHP</span>
-<span class="allstar-compact-owner">BTA Boyz</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Paul Skenes</span>
-<span class="allstar-compact-meta">NL · PIT · RHP</span>
-<span class="allstar-compact-owner">BTA Boyz</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">William Contreras</span>
-<span class="allstar-compact-meta">NL · MIL · C</span>
-<span class="allstar-compact-owner">BTA Boyz</span>
-</div>
-</div>
-</details><details class="allstar-team-dropdown">
-<summary>
-<span class="allstar-team-summary-main">
-<span class="allstar-team-thumb-slot" data-owner="John's Super Team"></span>
-<span class="allstar-team-summary-name">John's Super Team</span>
-</span>
-<span class="allstar-team-summary-count">6 All-Stars</span>
-</summary>
-<div class="allstar-team-player-grid">
-<div class="allstar-player-card">
-<div class="allstar-name-row"><span class="allstar-compact-name">Byron Buxton</span><span class="allstar-starter-tag">Starter</span></div>
-<span class="allstar-compact-meta">AL · MIN · OF</span>
-<span class="allstar-compact-owner">John's Super Team</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Aroldis Chapman</span>
-<span class="allstar-compact-meta">AL · BOS · LHP</span>
-<span class="allstar-compact-owner">John's Super Team</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Ranger Suarez</span>
-<span class="allstar-compact-meta">AL · BOS · LHP</span>
-<span class="allstar-compact-owner">John's Super Team</span>
-</div><div class="allstar-player-card">
-<div class="allstar-name-row"><span class="allstar-compact-name">CJ Abrams</span><span class="allstar-starter-tag">Starter</span></div>
-<span class="allstar-compact-meta">NL · WSH · SS</span>
-<span class="allstar-compact-owner">John's Super Team</span>
-</div><div class="allstar-player-card">
-<div class="allstar-name-row"><span class="allstar-compact-name">Juan Soto</span><span class="allstar-starter-tag">Starter</span></div>
-<span class="allstar-compact-meta">NL · NYM · OF</span>
-<span class="allstar-compact-owner">John's Super Team</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Chase Burns</span>
-<span class="allstar-compact-meta">NL · CIN · RHP</span>
-<span class="allstar-compact-owner">John's Super Team</span>
-</div>
-</div>
-</details><details class="allstar-team-dropdown">
-<summary>
-<span class="allstar-team-summary-main">
-<span class="allstar-team-thumb-slot" data-owner="Me So Heorny"></span>
-<span class="allstar-team-summary-name">Me So Heorny</span>
-</span>
-<span class="allstar-team-summary-count">6 All-Stars</span>
-</summary>
-<div class="allstar-team-player-grid">
-<div class="allstar-player-card">
-<span class="allstar-compact-name">Cody Bellinger</span>
-<span class="allstar-compact-meta">AL · NYY · OF</span>
-<span class="allstar-compact-owner">Me So Heorny</span>
-</div><div class="allstar-player-card">
-<div class="allstar-name-row"><span class="allstar-compact-name">Andy Pages</span><span class="allstar-starter-tag">Starter</span></div>
-<span class="allstar-compact-meta">NL · LAD · OF</span>
-<span class="allstar-compact-owner">Me So Heorny</span>
-</div><div class="allstar-player-card">
-<div class="allstar-name-row"><span class="allstar-compact-name">Drake Baldwin</span><span class="allstar-starter-tag">Starter</span></div>
-<span class="allstar-compact-meta">NL · ATL · C</span>
-<span class="allstar-compact-owner">Me So Heorny</span>
-</div><div class="allstar-player-card">
-<div class="allstar-name-row"><span class="allstar-compact-name">Ozzie Albies</span><span class="allstar-starter-tag">Starter</span></div>
-<span class="allstar-compact-meta">NL · ATL · 2B</span>
-<span class="allstar-compact-owner">Me So Heorny</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Hunter Goodman</span>
-<span class="allstar-compact-meta">NL · COL · C</span>
-<span class="allstar-compact-owner">Me So Heorny</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Mason Miller</span>
-<span class="allstar-compact-meta">NL · SD · RHP</span>
-<span class="allstar-compact-owner">Me So Heorny</span>
-</div>
-</div>
-</details><details class="allstar-team-dropdown">
-<summary>
-<span class="allstar-team-summary-main">
-<span class="allstar-team-thumb-slot" data-owner="This Is Mizerable"></span>
-<span class="allstar-team-summary-name">This Is Mizerable</span>
-</span>
-<span class="allstar-team-summary-count">6 All-Stars</span>
-</summary>
-<div class="allstar-team-player-grid">
-<div class="allstar-player-card">
-<div class="allstar-name-row"><span class="allstar-compact-name">Vladimir Guerrero Jr.</span><span class="allstar-starter-tag">Starter</span></div>
-<span class="allstar-compact-meta">AL · TOR · 1B</span>
-<span class="allstar-compact-owner">This Is Mizerable</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Cade Smith</span>
-<span class="allstar-compact-meta">AL · CLE · RHP</span>
-<span class="allstar-compact-owner">This Is Mizerable</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Dillon Dingler</span>
-<span class="allstar-compact-meta">AL · DET · C</span>
-<span class="allstar-compact-owner">This Is Mizerable</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Parker Messick</span>
-<span class="allstar-compact-meta">AL · CLE · LHP</span>
-<span class="allstar-compact-owner">This Is Mizerable</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Travis Bazzana</span>
-<span class="allstar-compact-meta">AL · CLE · INF</span>
-<span class="allstar-compact-owner">This Is Mizerable</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Jacob Misiorowski</span>
-<span class="allstar-compact-meta">NL · MIL · RHP</span>
-<span class="allstar-compact-owner">This Is Mizerable</span>
-</div>
-</div>
-</details><details class="allstar-team-dropdown">
-<summary>
-<span class="allstar-team-summary-main">
-<span class="allstar-team-thumb-slot" data-owner="Dixon Cider"></span>
-<span class="allstar-team-summary-name">Dixon Cider</span>
-</span>
-<span class="allstar-team-summary-count">5 All-Stars</span>
-</summary>
-<div class="allstar-team-player-grid">
-<div class="allstar-player-card">
-<div class="allstar-name-row"><span class="allstar-compact-name">Yordan Alvarez</span><span class="allstar-starter-tag">Starter</span></div>
-<span class="allstar-compact-meta">AL · HOU · DH</span>
-<span class="allstar-compact-owner">Dixon Cider</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Ben Rice</span>
-<span class="allstar-compact-meta">AL · NYY · INF</span>
-<span class="allstar-compact-owner">Dixon Cider</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Cam Schlittler</span>
-<span class="allstar-compact-meta">AL · NYY · RHP</span>
-<span class="allstar-compact-owner">Dixon Cider</span>
-</div><div class="allstar-player-card">
-<div class="allstar-name-row"><span class="allstar-compact-name">Shohei Ohtani</span><span class="allstar-starter-tag">Starter</span></div>
-<span class="allstar-compact-meta">NL · LAD · DH</span>
-<span class="allstar-compact-owner">Dixon Cider</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Corbin Carroll</span>
-<span class="allstar-compact-meta">NL · AZ · OF</span>
-<span class="allstar-compact-owner">Dixon Cider</span>
-</div>
-</div>
-</details><details class="allstar-team-dropdown">
-<summary>
-<span class="allstar-team-summary-main">
-<span class="allstar-team-thumb-slot" data-owner="Gunnarrhea"></span>
-<span class="allstar-team-summary-name">Gunnarrhea</span>
-</span>
-<span class="allstar-team-summary-count">5 All-Stars</span>
-</summary>
-<div class="allstar-team-player-grid">
-<div class="allstar-player-card">
-<span class="allstar-compact-name">Bryan Baker</span>
-<span class="allstar-compact-meta">AL · TB · RHP</span>
-<span class="allstar-compact-owner">Gunnarrhea</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Dylan Cease</span>
-<span class="allstar-compact-meta">AL · TOR · RHP</span>
-<span class="allstar-compact-owner">Gunnarrhea</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Joe Ryan</span>
-<span class="allstar-compact-meta">AL · MIN · RHP</span>
-<span class="allstar-compact-owner">Gunnarrhea</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Miguel Vargas</span>
-<span class="allstar-compact-meta">AL · CWS · INF</span>
-<span class="allstar-compact-owner">Gunnarrhea</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">James Wood</span>
-<span class="allstar-compact-meta">NL · WSH · OF</span>
-<span class="allstar-compact-owner">Gunnarrhea</span>
-</div>
-</div>
-</details><details class="allstar-team-dropdown">
-<summary>
-<span class="allstar-team-summary-main">
-<span class="allstar-team-thumb-slot" data-owner="Mactown MacDaddies"></span>
-<span class="allstar-team-summary-name">Mactown MacDaddies</span>
-</span>
-<span class="allstar-team-summary-count">5 All-Stars</span>
-</summary>
-<div class="allstar-team-player-grid">
-<div class="allstar-player-card">
-<div class="allstar-name-row"><span class="allstar-compact-name">Freddie Freeman</span><span class="allstar-starter-tag">Starter</span></div>
-<span class="allstar-compact-meta">NL · LAD · 1B</span>
-<span class="allstar-compact-owner">Mactown MacDaddies</span>
-</div><div class="allstar-player-card">
-<div class="allstar-name-row"><span class="allstar-compact-name">Max Muncy</span><span class="allstar-starter-tag">Starter</span></div>
-<span class="allstar-compact-meta">NL · LAD · 3B</span>
-<span class="allstar-compact-owner">Mactown MacDaddies</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Bryce Harper</span>
-<span class="allstar-compact-meta">NL · PHI · INF</span>
-<span class="allstar-compact-owner">Mactown MacDaddies</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Eduardo Rodriguez</span>
-<span class="allstar-compact-meta">NL · AZ · LHP</span>
-<span class="allstar-compact-owner">Mactown MacDaddies</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Kyle Schwarber</span>
-<span class="allstar-compact-meta">NL · PHI · DH</span>
-<span class="allstar-compact-owner">Mactown MacDaddies</span>
-</div>
-</div>
-</details><details class="allstar-team-dropdown">
-<summary>
-<span class="allstar-team-summary-main">
-<span class="allstar-team-thumb-slot" data-owner="You Don't Know Bo"></span>
-<span class="allstar-team-summary-name">You Don't Know Bo</span>
-</span>
-<span class="allstar-team-summary-count">5 All-Stars</span>
-</summary>
-<div class="allstar-team-player-grid">
-<div class="allstar-player-card">
-<div class="allstar-name-row"><span class="allstar-compact-name">Junior Caminero</span><span class="allstar-starter-tag">Starter</span></div>
-<span class="allstar-compact-meta">AL · TB · 3B</span>
-<span class="allstar-compact-owner">You Don't Know Bo</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Nick Kurtz</span>
-<span class="allstar-compact-meta">AL · ATH · INF</span>
-<span class="allstar-compact-owner">You Don't Know Bo</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Randy Arozarena</span>
-<span class="allstar-compact-meta">AL · SEA · OF</span>
-<span class="allstar-compact-owner">You Don't Know Bo</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Max Meyer</span>
-<span class="allstar-compact-meta">NL · MIA · RHP</span>
-<span class="allstar-compact-owner">You Don't Know Bo</span>
-</div><div class="allstar-player-card">
-<span class="allstar-compact-name">Otto Lopez</span>
-<span class="allstar-compact-meta">NL · MIA · INF</span>
-<span class="allstar-compact-owner">You Don't Know Bo</span>
-</div>
-</div>
-</details>
-</div>
-</section>
-<section class="section-card home-run-pool-preview" id="home-run-pool">
-<div class="section-heading home-run-pool-heading">
-<div>
-<h2 class="section-title">Home Run Pool</h2>
-<p class="section-subtitle">Season-long HR race. Top teams show here, full standings live on the pool page.
+        </div>
+        <div class="leader-header-actions trending-header-actions">
+          <div aria-label="Trending card stat range" class="leader-mode-toggle trend-stat-toggle">
+            <button aria-pressed="true" class="leader-mode-btn active" data-trend-stat-range="last7"
+              type="button">7D</button>
+            <button aria-pressed="false" class="leader-mode-btn" data-trend-stat-range="last14"
+              type="button">14D</button>
+            <button aria-pressed="false" class="leader-mode-btn" data-trend-stat-range="season"
+              type="button">SEA</button>
+          </div>
+          <span class="tag" id="availableStudsModeTag">Last 7</span>
+        </div>
+      </div>
+      <div class="available-studs-grid" id="availableStudsGrid">
+        <article class="article-card">
+          <p class="article-summary">Loading trending available players...</p>
+        </article>
+      </div>
+    </section>
+    <section class="section-card allstar-compact-section" id="all-star-week">
+      <div class="allstar-compact-head">
+        <div>
+          <h2 class="section-title">2026 MLB All-Stars in UTI</h2>
+          <p class="section-subtitle">Original announced All-Stars grouped by fantasy team. Click a team to see its
+            All-Stars.</p>
+        </div>
+        <div class="allstar-total-pill"><b>65</b><span>All-Stars</span></div>
+      </div>
+      <div class="allstar-team-dropdowns">
+        <details class="allstar-team-dropdown">
+          <summary>
+            <span class="allstar-team-summary-main">
+              <span class="allstar-team-thumb-slot" data-owner="Goodyear Gila Monsters"></span>
+              <span class="allstar-team-summary-name">Goodyear Gila Monsters</span>
+            </span>
+            <span class="allstar-team-summary-count">12 All-Stars</span>
+          </summary>
+          <div class="allstar-team-player-grid">
+            <div class="allstar-player-card">
+              <div class="allstar-name-row"><span class="allstar-compact-name">Aaron Judge</span><span
+                  class="allstar-starter-tag">Starter</span></div>
+              <span class="allstar-compact-meta">AL · NYY · OF</span>
+              <span class="allstar-compact-owner">Goodyear Gila Monsters</span>
+            </div>
+            <div class="allstar-player-card">
+              <div class="allstar-name-row"><span class="allstar-compact-name">Bobby Witt Jr.</span><span
+                  class="allstar-starter-tag">Starter</span></div>
+              <span class="allstar-compact-meta">AL · KC · SS</span>
+              <span class="allstar-compact-owner">Goodyear Gila Monsters</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Jacob Latz</span>
+              <span class="allstar-compact-meta">AL · TEX · LHP</span>
+              <span class="allstar-compact-owner">Goodyear Gila Monsters</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Louis Varland</span>
+              <span class="allstar-compact-meta">AL · TOR · RHP</span>
+              <span class="allstar-compact-owner">Goodyear Gila Monsters</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Riley Greene</span>
+              <span class="allstar-compact-meta">AL · DET · OF</span>
+              <span class="allstar-compact-owner">Goodyear Gila Monsters</span>
+            </div>
+            <div class="allstar-player-card">
+              <div class="allstar-name-row"><span class="allstar-compact-name">Brandon Marsh</span><span
+                  class="allstar-starter-tag">Starter</span></div>
+              <span class="allstar-compact-meta">NL · PHI · OF</span>
+              <span class="allstar-compact-owner">Goodyear Gila Monsters</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Chris Sale</span>
+              <span class="allstar-compact-meta">NL · ATL · LHP</span>
+              <span class="allstar-compact-owner">Goodyear Gila Monsters</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Logan Webb</span>
+              <span class="allstar-compact-meta">NL · SF · RHP</span>
+              <span class="allstar-compact-owner">Goodyear Gila Monsters</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Luis Arraez</span>
+              <span class="allstar-compact-meta">NL · SF · INF</span>
+              <span class="allstar-compact-owner">Goodyear Gila Monsters</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Matt Olson</span>
+              <span class="allstar-compact-meta">NL · ATL · INF</span>
+              <span class="allstar-compact-owner">Goodyear Gila Monsters</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Raisel Iglesias</span>
+              <span class="allstar-compact-meta">NL · ATL · RHP</span>
+              <span class="allstar-compact-owner">Goodyear Gila Monsters</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Sal Stewart</span>
+              <span class="allstar-compact-meta">NL · CIN · INF</span>
+              <span class="allstar-compact-owner">Goodyear Gila Monsters</span>
+            </div>
+          </div>
+        </details>
+        <details class="allstar-team-dropdown">
+          <summary>
+            <span class="allstar-team-summary-main">
+              <span class="allstar-team-thumb-slot" data-owner="BB's Bold Team"></span>
+              <span class="allstar-team-summary-name">BB's Bold Team</span>
+            </span>
+            <span class="allstar-team-summary-count">8 All-Stars</span>
+          </summary>
+          <div class="allstar-team-player-grid">
+            <div class="allstar-player-card">
+              <div class="allstar-name-row"><span class="allstar-compact-name">Shea Langeliers</span><span
+                  class="allstar-starter-tag">Starter</span></div>
+              <span class="allstar-compact-meta">AL · ATH · C</span>
+              <span class="allstar-compact-owner">BB's Bold Team</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Adley Rutschman</span>
+              <span class="allstar-compact-meta">AL · BAL · C</span>
+              <span class="allstar-compact-owner">BB's Bold Team</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Yandy Diaz</span>
+              <span class="allstar-compact-meta">AL · TB · DH</span>
+              <span class="allstar-compact-owner">BB's Bold Team</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Cristopher Sanchez</span>
+              <span class="allstar-compact-meta">NL · PHI · LHP</span>
+              <span class="allstar-compact-owner">BB's Bold Team</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Jhoan Duran</span>
+              <span class="allstar-compact-meta">NL · PHI · RHP</span>
+              <span class="allstar-compact-owner">BB's Bold Team</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Jordan Walker</span>
+              <span class="allstar-compact-meta">NL · STL · OF</span>
+              <span class="allstar-compact-owner">BB's Bold Team</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Pete Crow-Armstrong</span>
+              <span class="allstar-compact-meta">NL · CHC · OF</span>
+              <span class="allstar-compact-owner">BB's Bold Team</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Yoshinobu Yamamoto</span>
+              <span class="allstar-compact-meta">NL · LAD · RHP</span>
+              <span class="allstar-compact-owner">BB's Bold Team</span>
+            </div>
+          </div>
+        </details>
+        <details class="allstar-team-dropdown">
+          <summary>
+            <span class="allstar-team-summary-main">
+              <span class="allstar-team-thumb-slot" data-owner="BTA Boyz"></span>
+              <span class="allstar-team-summary-name">BTA Boyz</span>
+            </span>
+            <span class="allstar-team-summary-count">7 All-Stars</span>
+          </summary>
+          <div class="allstar-team-player-grid">
+            <div class="allstar-player-card">
+              <div class="allstar-name-row"><span class="allstar-compact-name">Ernie Clement</span><span
+                  class="allstar-starter-tag">Starter</span></div>
+              <span class="allstar-compact-meta">AL · TOR · 2B</span>
+              <span class="allstar-compact-owner">BTA Boyz</span>
+            </div>
+            <div class="allstar-player-card">
+              <div class="allstar-name-row"><span class="allstar-compact-name">Mike Trout</span><span
+                  class="allstar-starter-tag">Starter</span></div>
+              <span class="allstar-compact-meta">AL · LAA · OF</span>
+              <span class="allstar-compact-owner">BTA Boyz</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Drew Rasmussen</span>
+              <span class="allstar-compact-meta">AL · TB · RHP</span>
+              <span class="allstar-compact-owner">BTA Boyz</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Kevin McGonigle</span>
+              <span class="allstar-compact-meta">AL · DET · INF</span>
+              <span class="allstar-compact-owner">BTA Boyz</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Michael Wacha</span>
+              <span class="allstar-compact-meta">AL · KC · RHP</span>
+              <span class="allstar-compact-owner">BTA Boyz</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Paul Skenes</span>
+              <span class="allstar-compact-meta">NL · PIT · RHP</span>
+              <span class="allstar-compact-owner">BTA Boyz</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">William Contreras</span>
+              <span class="allstar-compact-meta">NL · MIL · C</span>
+              <span class="allstar-compact-owner">BTA Boyz</span>
+            </div>
+          </div>
+        </details>
+        <details class="allstar-team-dropdown">
+          <summary>
+            <span class="allstar-team-summary-main">
+              <span class="allstar-team-thumb-slot" data-owner="John's Super Team"></span>
+              <span class="allstar-team-summary-name">John's Super Team</span>
+            </span>
+            <span class="allstar-team-summary-count">6 All-Stars</span>
+          </summary>
+          <div class="allstar-team-player-grid">
+            <div class="allstar-player-card">
+              <div class="allstar-name-row"><span class="allstar-compact-name">Byron Buxton</span><span
+                  class="allstar-starter-tag">Starter</span></div>
+              <span class="allstar-compact-meta">AL · MIN · OF</span>
+              <span class="allstar-compact-owner">John's Super Team</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Aroldis Chapman</span>
+              <span class="allstar-compact-meta">AL · BOS · LHP</span>
+              <span class="allstar-compact-owner">John's Super Team</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Ranger Suarez</span>
+              <span class="allstar-compact-meta">AL · BOS · LHP</span>
+              <span class="allstar-compact-owner">John's Super Team</span>
+            </div>
+            <div class="allstar-player-card">
+              <div class="allstar-name-row"><span class="allstar-compact-name">CJ Abrams</span><span
+                  class="allstar-starter-tag">Starter</span></div>
+              <span class="allstar-compact-meta">NL · WSH · SS</span>
+              <span class="allstar-compact-owner">John's Super Team</span>
+            </div>
+            <div class="allstar-player-card">
+              <div class="allstar-name-row"><span class="allstar-compact-name">Juan Soto</span><span
+                  class="allstar-starter-tag">Starter</span></div>
+              <span class="allstar-compact-meta">NL · NYM · OF</span>
+              <span class="allstar-compact-owner">John's Super Team</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Chase Burns</span>
+              <span class="allstar-compact-meta">NL · CIN · RHP</span>
+              <span class="allstar-compact-owner">John's Super Team</span>
+            </div>
+          </div>
+        </details>
+        <details class="allstar-team-dropdown">
+          <summary>
+            <span class="allstar-team-summary-main">
+              <span class="allstar-team-thumb-slot" data-owner="Me So Heorny"></span>
+              <span class="allstar-team-summary-name">Me So Heorny</span>
+            </span>
+            <span class="allstar-team-summary-count">6 All-Stars</span>
+          </summary>
+          <div class="allstar-team-player-grid">
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Cody Bellinger</span>
+              <span class="allstar-compact-meta">AL · NYY · OF</span>
+              <span class="allstar-compact-owner">Me So Heorny</span>
+            </div>
+            <div class="allstar-player-card">
+              <div class="allstar-name-row"><span class="allstar-compact-name">Andy Pages</span><span
+                  class="allstar-starter-tag">Starter</span></div>
+              <span class="allstar-compact-meta">NL · LAD · OF</span>
+              <span class="allstar-compact-owner">Me So Heorny</span>
+            </div>
+            <div class="allstar-player-card">
+              <div class="allstar-name-row"><span class="allstar-compact-name">Drake Baldwin</span><span
+                  class="allstar-starter-tag">Starter</span></div>
+              <span class="allstar-compact-meta">NL · ATL · C</span>
+              <span class="allstar-compact-owner">Me So Heorny</span>
+            </div>
+            <div class="allstar-player-card">
+              <div class="allstar-name-row"><span class="allstar-compact-name">Ozzie Albies</span><span
+                  class="allstar-starter-tag">Starter</span></div>
+              <span class="allstar-compact-meta">NL · ATL · 2B</span>
+              <span class="allstar-compact-owner">Me So Heorny</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Hunter Goodman</span>
+              <span class="allstar-compact-meta">NL · COL · C</span>
+              <span class="allstar-compact-owner">Me So Heorny</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Mason Miller</span>
+              <span class="allstar-compact-meta">NL · SD · RHP</span>
+              <span class="allstar-compact-owner">Me So Heorny</span>
+            </div>
+          </div>
+        </details>
+        <details class="allstar-team-dropdown">
+          <summary>
+            <span class="allstar-team-summary-main">
+              <span class="allstar-team-thumb-slot" data-owner="This Is Mizerable"></span>
+              <span class="allstar-team-summary-name">This Is Mizerable</span>
+            </span>
+            <span class="allstar-team-summary-count">6 All-Stars</span>
+          </summary>
+          <div class="allstar-team-player-grid">
+            <div class="allstar-player-card">
+              <div class="allstar-name-row"><span class="allstar-compact-name">Vladimir Guerrero Jr.</span><span
+                  class="allstar-starter-tag">Starter</span></div>
+              <span class="allstar-compact-meta">AL · TOR · 1B</span>
+              <span class="allstar-compact-owner">This Is Mizerable</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Cade Smith</span>
+              <span class="allstar-compact-meta">AL · CLE · RHP</span>
+              <span class="allstar-compact-owner">This Is Mizerable</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Dillon Dingler</span>
+              <span class="allstar-compact-meta">AL · DET · C</span>
+              <span class="allstar-compact-owner">This Is Mizerable</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Parker Messick</span>
+              <span class="allstar-compact-meta">AL · CLE · LHP</span>
+              <span class="allstar-compact-owner">This Is Mizerable</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Travis Bazzana</span>
+              <span class="allstar-compact-meta">AL · CLE · INF</span>
+              <span class="allstar-compact-owner">This Is Mizerable</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Jacob Misiorowski</span>
+              <span class="allstar-compact-meta">NL · MIL · RHP</span>
+              <span class="allstar-compact-owner">This Is Mizerable</span>
+            </div>
+          </div>
+        </details>
+        <details class="allstar-team-dropdown">
+          <summary>
+            <span class="allstar-team-summary-main">
+              <span class="allstar-team-thumb-slot" data-owner="Dixon Cider"></span>
+              <span class="allstar-team-summary-name">Dixon Cider</span>
+            </span>
+            <span class="allstar-team-summary-count">5 All-Stars</span>
+          </summary>
+          <div class="allstar-team-player-grid">
+            <div class="allstar-player-card">
+              <div class="allstar-name-row"><span class="allstar-compact-name">Yordan Alvarez</span><span
+                  class="allstar-starter-tag">Starter</span></div>
+              <span class="allstar-compact-meta">AL · HOU · DH</span>
+              <span class="allstar-compact-owner">Dixon Cider</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Ben Rice</span>
+              <span class="allstar-compact-meta">AL · NYY · INF</span>
+              <span class="allstar-compact-owner">Dixon Cider</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Cam Schlittler</span>
+              <span class="allstar-compact-meta">AL · NYY · RHP</span>
+              <span class="allstar-compact-owner">Dixon Cider</span>
+            </div>
+            <div class="allstar-player-card">
+              <div class="allstar-name-row"><span class="allstar-compact-name">Shohei Ohtani</span><span
+                  class="allstar-starter-tag">Starter</span></div>
+              <span class="allstar-compact-meta">NL · LAD · DH</span>
+              <span class="allstar-compact-owner">Dixon Cider</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Corbin Carroll</span>
+              <span class="allstar-compact-meta">NL · AZ · OF</span>
+              <span class="allstar-compact-owner">Dixon Cider</span>
+            </div>
+          </div>
+        </details>
+        <details class="allstar-team-dropdown">
+          <summary>
+            <span class="allstar-team-summary-main">
+              <span class="allstar-team-thumb-slot" data-owner="Gunnarrhea"></span>
+              <span class="allstar-team-summary-name">Gunnarrhea</span>
+            </span>
+            <span class="allstar-team-summary-count">5 All-Stars</span>
+          </summary>
+          <div class="allstar-team-player-grid">
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Bryan Baker</span>
+              <span class="allstar-compact-meta">AL · TB · RHP</span>
+              <span class="allstar-compact-owner">Gunnarrhea</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Dylan Cease</span>
+              <span class="allstar-compact-meta">AL · TOR · RHP</span>
+              <span class="allstar-compact-owner">Gunnarrhea</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Joe Ryan</span>
+              <span class="allstar-compact-meta">AL · MIN · RHP</span>
+              <span class="allstar-compact-owner">Gunnarrhea</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Miguel Vargas</span>
+              <span class="allstar-compact-meta">AL · CWS · INF</span>
+              <span class="allstar-compact-owner">Gunnarrhea</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">James Wood</span>
+              <span class="allstar-compact-meta">NL · WSH · OF</span>
+              <span class="allstar-compact-owner">Gunnarrhea</span>
+            </div>
+          </div>
+        </details>
+        <details class="allstar-team-dropdown">
+          <summary>
+            <span class="allstar-team-summary-main">
+              <span class="allstar-team-thumb-slot" data-owner="Mactown MacDaddies"></span>
+              <span class="allstar-team-summary-name">Mactown MacDaddies</span>
+            </span>
+            <span class="allstar-team-summary-count">5 All-Stars</span>
+          </summary>
+          <div class="allstar-team-player-grid">
+            <div class="allstar-player-card">
+              <div class="allstar-name-row"><span class="allstar-compact-name">Freddie Freeman</span><span
+                  class="allstar-starter-tag">Starter</span></div>
+              <span class="allstar-compact-meta">NL · LAD · 1B</span>
+              <span class="allstar-compact-owner">Mactown MacDaddies</span>
+            </div>
+            <div class="allstar-player-card">
+              <div class="allstar-name-row"><span class="allstar-compact-name">Max Muncy</span><span
+                  class="allstar-starter-tag">Starter</span></div>
+              <span class="allstar-compact-meta">NL · LAD · 3B</span>
+              <span class="allstar-compact-owner">Mactown MacDaddies</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Bryce Harper</span>
+              <span class="allstar-compact-meta">NL · PHI · INF</span>
+              <span class="allstar-compact-owner">Mactown MacDaddies</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Eduardo Rodriguez</span>
+              <span class="allstar-compact-meta">NL · AZ · LHP</span>
+              <span class="allstar-compact-owner">Mactown MacDaddies</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Kyle Schwarber</span>
+              <span class="allstar-compact-meta">NL · PHI · DH</span>
+              <span class="allstar-compact-owner">Mactown MacDaddies</span>
+            </div>
+          </div>
+        </details>
+        <details class="allstar-team-dropdown">
+          <summary>
+            <span class="allstar-team-summary-main">
+              <span class="allstar-team-thumb-slot" data-owner="You Don't Know Bo"></span>
+              <span class="allstar-team-summary-name">You Don't Know Bo</span>
+            </span>
+            <span class="allstar-team-summary-count">5 All-Stars</span>
+          </summary>
+          <div class="allstar-team-player-grid">
+            <div class="allstar-player-card">
+              <div class="allstar-name-row"><span class="allstar-compact-name">Junior Caminero</span><span
+                  class="allstar-starter-tag">Starter</span></div>
+              <span class="allstar-compact-meta">AL · TB · 3B</span>
+              <span class="allstar-compact-owner">You Don't Know Bo</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Nick Kurtz</span>
+              <span class="allstar-compact-meta">AL · ATH · INF</span>
+              <span class="allstar-compact-owner">You Don't Know Bo</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Randy Arozarena</span>
+              <span class="allstar-compact-meta">AL · SEA · OF</span>
+              <span class="allstar-compact-owner">You Don't Know Bo</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Max Meyer</span>
+              <span class="allstar-compact-meta">NL · MIA · RHP</span>
+              <span class="allstar-compact-owner">You Don't Know Bo</span>
+            </div>
+            <div class="allstar-player-card">
+              <span class="allstar-compact-name">Otto Lopez</span>
+              <span class="allstar-compact-meta">NL · MIA · INF</span>
+              <span class="allstar-compact-owner">You Don't Know Bo</span>
+            </div>
+          </div>
+        </details>
+      </div>
+    </section>
+    <section class="section-card home-run-pool-preview" id="home-run-pool">
+      <div class="section-heading home-run-pool-heading">
+        <div>
+          <h2 class="section-title">Home Run Pool</h2>
+          <p class="section-subtitle">Season-long HR race. Top teams show here, full standings live on the pool page.
           </p>
-</div>
-<span class="tag" id="homeRunPoolUpdatedAt">Loading...</span>
-</div>
-<div class="home-run-pool-grid home-run-pool-grid-preview" data-limit="3" id="homeRunPoolGrid">
-<article class="article-card">
-<p class="article-summary">Loading Home Run Pool...</p>
-</article>
-</div>
-<div class="view-more-wrap home-run-pool-link-wrap">
-<a class="article-link" href="tools/home-run-pool.html">View Full Home Run Pool</a>
-</div>
-</section>
-<section class="section-card" id="fantasy-tools">
-<div class="section-heading">
-<div>
-<h2 class="section-title">Fantasy Tools</h2>
-<p class="section-subtitle">Dynasty resources and league tools that are actually useful.</p>
-</div>
-</div>
-<div class="tools-grid">
-<article class="tool-card">
-<div>
-<div class="article-meta">Prospect Rankings • Dynasty Resource</div>
-<h3 class="article-title">MLB Top 100 Prospects</h3>
-<p class="article-summary">
+        </div>
+        <span class="tag" id="homeRunPoolUpdatedAt">Loading...</span>
+      </div>
+      <div class="home-run-pool-grid home-run-pool-grid-preview" data-limit="3" id="homeRunPoolGrid">
+        <article class="article-card">
+          <p class="article-summary">Loading Home Run Pool...</p>
+        </article>
+      </div>
+      <div class="view-more-wrap home-run-pool-link-wrap">
+        <a class="article-link" href="tools/home-run-pool.html">View Full Home Run Pool</a>
+      </div>
+    </section>
+    <section class="section-card" id="fantasy-tools">
+      <div class="section-heading">
+        <div>
+          <h2 class="section-title">Fantasy Tools</h2>
+          <p class="section-subtitle">Dynasty resources and league tools that are actually useful.</p>
+        </div>
+      </div>
+      <div class="tools-grid">
+        <article class="tool-card">
+          <div>
+            <div class="article-meta">Prospect Rankings • Dynasty Resource</div>
+            <h3 class="article-title">MLB Top 100 Prospects</h3>
+            <p class="article-summary">
               Search, filter, and sort the current Top 100 prospects by team, position, level, age, and ETA.
             </p>
-<div class="tag-row">
-<span class="tag">Prospects</span>
-<span class="tag">Dynasty</span>
-<span class="tag">Top 100</span>
-<span class="tag">Draft Prep</span>
-</div>
-</div>
-<div class="tool-actions">
-<a class="article-link" href="tools/mlb-top-100.html">View Top 100</a>
-</div>
-</article>
-<article class="tool-card">
-<div>
-<div class="article-meta">Dynasty Trade Tool • UTI League</div>
-<h3 class="article-title">UTI Trade Analyzer</h3>
-<p class="article-summary">
+            <div class="tag-row">
+              <span class="tag">Prospects</span>
+              <span class="tag">Dynasty</span>
+              <span class="tag">Top 100</span>
+              <span class="tag">Draft Prep</span>
+            </div>
+          </div>
+          <div class="tool-actions">
+            <a class="article-link" href="tools/mlb-top-100.html">View Top 100</a>
+          </div>
+        </article>
+        <article class="tool-card">
+          <div>
+            <div class="article-meta">Dynasty Trade Tool • UTI League</div>
+            <h3 class="article-title">UTI Trade Analyzer</h3>
+            <p class="article-summary">
               Check trade fairness using UTI dynasty values, team ownership, category fit, age, risk, and future upside.
             </p>
-<div class="tag-row">
-<span class="tag">Trades</span>
-<span class="tag">Dynasty Values</span>
-<span class="tag">Category Fit</span>
-<span class="tag">Deadline Prep</span>
-</div>
-</div>
-<div class="tool-actions">
-<a class="article-link" href="tools/uti-trade-analyzer.html">Open Trade Analyzer</a>
-</div>
-</article>
-</div>
-</section>
-<section class="section-card" id="featured-recap">
-<div class="section-heading">
-<div>
-<h2 class="section-title">Featured Recap</h2>
-<p class="section-subtitle">Newest recap up top. Use View More to open the recap archive.</p>
-</div>
-</div>
-<article class="article-card featured featured-recap-card">
-<div>
-<div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
-<span style="background:#198754;color:white;padding:6px 10px;border-radius:999px;font-size:0.75rem;font-weight:700;">NEW</span>
-<div class="article-meta" style="margin:0;">Week 15 • Matchup Recap</div>
-</div>
-<h3 class="article-title">Week 15 Recap: Coming soon </h3>
-<p class="article-summary">
-<!-- Week 14 brought 3 upsets, collapses, nail biters, and one team proving that the only thing worse than losing
+            <div class="tag-row">
+              <span class="tag">Trades</span>
+              <span class="tag">Dynasty Values</span>
+              <span class="tag">Category Fit</span>
+              <span class="tag">Deadline Prep</span>
+            </div>
+          </div>
+          <div class="tool-actions">
+            <a class="article-link" href="tools/uti-trade-analyzer.html">Open Trade Analyzer</a>
+          </div>
+        </article>
+      </div>
+    </section>
+    <section class="section-card" id="featured-recap">
+      <div class="section-heading">
+        <div>
+          <h2 class="section-title">Featured Recap</h2>
+          <p class="section-subtitle">Newest recap up top. Use View More to open the recap archive.</p>
+        </div>
+      </div>
+      <article class="article-card featured featured-recap-card">
+        <div>
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+            <span
+              style="background:#198754;color:white;padding:6px 10px;border-radius:999px;font-size:0.75rem;font-weight:700;">NEW</span>
+            <div class="article-meta" style="margin:0;">Week 15 • Matchup Recap</div>
+          </div>
+          <h3 class="article-title">Week 15 Recap: Coming soon </h3>
+          <p class="article-summary">
+            <!-- Week 14 brought 3 upsets, collapses, nail biters, and one team proving that the only thing worse than losing
             is losing while barely logging in. -->
-<div class="tag-row">
-<!-- <span class="tag">BTA: Barely Trying Again</span>
+          <div class="tag-row">
+            <!-- <span class="tag">BTA: Barely Trying Again</span>
             <span class="tag">Me So Heorny Back On Top</span>
             <span class="tag">Upset Week</span>
             <span class="tag">Gunnarrhea Is Spreading</span>
@@ -2537,301 +2756,304 @@
             <span class="tag">BB Panic Meter</span>
             <span class="tag">Dixon Survives</span>
             <span class="tag">Goodyear Fumbles the Win</span> -->
-</div>
-</p>
-</div>
-<div>
-<a class="article-link">Read Week 15</a>
-</div>
-</article>
-<div class="articles-grid featured-archive-grid" style="margin-top:16px;">
-<article class="hidden-article article-card featured">
-<div>
-<div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
-<div class="article-meta" style="margin:0;">Week 14 • Matchup Recap</div>
-</div>
-<h3 class="article-title">Week 14 Recap: BTA Boyz, You There?</h3>
-<p class="article-summary">
-              Week 14 brought 3 upsets, collapses, nail biters, and one team proving that the only thing worse than losing
-            is losing while barely logging in.
+          </div>
+          </p>
+        </div>
+        <div>
+          <a class="article-link" href="2026/week15.html">Read Week 15</a>
+        </div>
+      </article>
+      <div class="articles-grid featured-archive-grid" style="margin-top:16px;">
+        <article class="hidden-article article-card featured">
+          <div>
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+              <div class="article-meta" style="margin:0;">Week 14 • Matchup Recap</div>
+            </div>
+            <h3 class="article-title">Week 14 Recap: BTA Boyz, You There?</h3>
+            <p class="article-summary">
+              Week 14 brought 3 upsets, collapses, nail biters, and one team proving that the only thing worse than
+              losing
+              is losing while barely logging in.
             </p>
-<div class="tag-row">
-<span class="tag">BTA: Barely Trying Again</span>
-<span class="tag">Me So Heorny Back On Top</span>
-<span class="tag">Upset Week</span>
-<span class="tag">Gunnarrhea Is Spreading</span>
-<span class="tag">John’s Mid Team</span>
-<span class="tag">BB Panic Meter</span>
-<span class="tag">Dixon Survives</span>
-<span class="tag">Goodyear Fumbles the Win</span>
-</div>
-</div>
-<div>
-<a class="article-link" href="2026/week14.html">Read Week 14</a>
-</div>
-</article>
-<article class="hidden-article article-card featured">
-<div>
-<div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
-<div class="article-meta" style="margin:0;">Week 13 • Matchup Recap</div>
-</div>
-<h3 class="article-title">Week 13 Recap: Goodyear Cracks BB’s Armor</h3>
-<p class="article-summary">
+            <div class="tag-row">
+              <span class="tag">BTA: Barely Trying Again</span>
+              <span class="tag">Me So Heorny Back On Top</span>
+              <span class="tag">Upset Week</span>
+              <span class="tag">Gunnarrhea Is Spreading</span>
+              <span class="tag">John’s Mid Team</span>
+              <span class="tag">BB Panic Meter</span>
+              <span class="tag">Dixon Survives</span>
+              <span class="tag">Goodyear Fumbles the Win</span>
+            </div>
+          </div>
+          <div>
+            <a class="article-link" href="2026/week14.html">Read Week 14</a>
+          </div>
+        </article>
+        <article class="hidden-article article-card featured">
+          <div>
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+              <div class="article-meta" style="margin:0;">Week 13 • Matchup Recap</div>
+            </div>
+            <h3 class="article-title">Week 13 Recap: Goodyear Cracks BB’s Armor</h3>
+            <p class="article-summary">
               Week 13 gave us a heavyweight upset, a top-of-the-standings shakeup, and another brutal reminder
               that no lead is safe when Bo is involved.
             </p>
-<div class="tag-row">
-<span class="tag">Walks (36) - Dixon Cider</span>
-<span class="tag">BB Streak Snapped</span>
-<span class="tag">Gunnarrhea Outbreak</span>
-<span class="tag">Bo Blew It</span>
-<span class="tag">BTA L10</span>
-<span class="tag">Heorny Bounceback</span>
-<span class="tag">Dixon Escapes</span>
-<span class="tag">John’s Mid Team</span>
-<span class="tag">Mactown Survives</span>
-</div>
-</div>
-<div>
-<a class="article-link" href="2026/week13.html">Read Week 13</a>
-</div>
-</article>
-<article class="hidden-article article-card featured">
-<div>
-<div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
-<div class="article-meta" style="margin:0;">Week 12 • Matchup Recap</div>
-</div>
-<h3 class="article-title">Week 12 Recap: BB’s Bold Team Moves to 11-1 and Looks Unbeatable</h3>
-<p class="article-summary">
+            <div class="tag-row">
+              <span class="tag">Walks (36) - Dixon Cider</span>
+              <span class="tag">BB Streak Snapped</span>
+              <span class="tag">Gunnarrhea Outbreak</span>
+              <span class="tag">Bo Blew It</span>
+              <span class="tag">BTA L10</span>
+              <span class="tag">Heorny Bounceback</span>
+              <span class="tag">Dixon Escapes</span>
+              <span class="tag">John’s Mid Team</span>
+              <span class="tag">Mactown Survives</span>
+            </div>
+          </div>
+          <div>
+            <a class="article-link" href="2026/week13.html">Read Week 13</a>
+          </div>
+        </article>
+        <article class="hidden-article article-card featured">
+          <div>
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+              <div class="article-meta" style="margin:0;">Week 12 • Matchup Recap</div>
+            </div>
+            <h3 class="article-title">Week 12 Recap: BB’s Bold Team Moves to 11-1 and Looks Unbeatable</h3>
+            <p class="article-summary">
               BB’s Bold Team kept rolling, Goodyear sent a warning shot, Gunnarrhea pulled off the upset, and BTA
               Boyz officially became the league’s biggest concern.
             </p>
-<div class="tag-row">
-<span class="tag">Strikeouts (40) - BTA Boyz</span>
-<span class="tag">BB Final Boss Mode</span>
-<span class="tag">Gunnarrhea Outbreak</span>
-<span class="tag">Roch Watch Transfer</span>
-<span class="tag">Goodyear is Back</span>
-<span class="tag">Heorny Folded</span>
-<span class="tag">Dixon Forgot and Won</span>
-</div>
-</div>
-<div>
-<a class="article-link" href="2026/week12.html">Read Week 12</a>
-</div>
-</article>
-<article class="hidden-article article-card featured">
-<div>
-<div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
-<div class="article-meta" style="margin:0;">Week 11 • Matchup Recap</div>
-</div>
-<h3 class="article-title">Week 11 Recap: BB Stays on Top, Me So Heorny and Goodyear stay right beind, BTA
+            <div class="tag-row">
+              <span class="tag">Strikeouts (40) - BTA Boyz</span>
+              <span class="tag">BB Final Boss Mode</span>
+              <span class="tag">Gunnarrhea Outbreak</span>
+              <span class="tag">Roch Watch Transfer</span>
+              <span class="tag">Goodyear is Back</span>
+              <span class="tag">Heorny Folded</span>
+              <span class="tag">Dixon Forgot and Won</span>
+            </div>
+          </div>
+          <div>
+            <a class="article-link" href="2026/week12.html">Read Week 12</a>
+          </div>
+        </article>
+        <article class="hidden-article article-card featured">
+          <div>
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+              <div class="article-meta" style="margin:0;">Week 11 • Matchup Recap</div>
+            </div>
+            <h3 class="article-title">Week 11 Recap: BB Stays on Top, Me So Heorny and Goodyear stay right beind, BTA
               Keeps Sinking,
               and Gunnarrhea Loses Hope</h3>
-<p class="article-summary">
+            <p class="article-summary">
               Top teams handled business, bottom teams kept embarrassing themselves, and Week 11 gave the league
               plenty of bad pitching and worse excuses
             </p>
-<div class="tag-row">
-<span class="tag">BAA (.217) - This is Mizerable</span>
-<span class="tag">Checked Out</span>
-<span class="tag">Defending Champs Stomped</span>
-<span class="tag">Top Teams Rolling</span>
-<span class="tag">Bo Still Doesn’t Know</span>
-<span class="tag">Skenes Deserves Better</span>
-<span class="tag">Gunnarrhea Weekly Meltdown</span>
-</div>
-<div>
-<a class="article-link" href="2026/week11.html">Read Week 11</a>
-</div>
-</div></article>
-<article class="hidden-article article-card featured">
-<div>
-<div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
-<div class="article-meta" style="margin:0;">Week 10 • Matchup Recap</div>
-</div>
-<h3 class="article-title">Week 10 Recap: BB Keeps Rolling, Heorny Goes Nuclear, and Gunnarrhea Hits Rock
+            <div class="tag-row">
+              <span class="tag">BAA (.217) - This is Mizerable</span>
+              <span class="tag">Checked Out</span>
+              <span class="tag">Defending Champs Stomped</span>
+              <span class="tag">Top Teams Rolling</span>
+              <span class="tag">Bo Still Doesn’t Know</span>
+              <span class="tag">Skenes Deserves Better</span>
+              <span class="tag">Gunnarrhea Weekly Meltdown</span>
+            </div>
+            <div>
+              <a class="article-link" href="2026/week11.html">Read Week 11</a>
+            </div>
+          </div>
+        </article>
+        <article class="hidden-article article-card featured">
+          <div>
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+              <div class="article-meta" style="margin:0;">Week 10 • Matchup Recap</div>
+            </div>
+            <h3 class="article-title">Week 10 Recap: BB Keeps Rolling, Heorny Goes Nuclear, and Gunnarrhea Hits Rock
               Bottom</h3>
-<p class="article-summary">
+            <p class="article-summary">
               From close calls to brutal blowouts, and a few teams making very different statements. Here is the
               full league recap for Week 10 of UTI Fantasy Baseball.
             </p>
-<div class="tag-row">
-<span class="tag">Losses (1) - You Don't Know Bo</span>
-<span class="tag">Heorny Nukes Nuketown</span>
-<span class="tag">The Commish Curse Continues</span>
-<span class="tag">BTA Losing Streak</span>
-<span class="tag">BB Keeps Rolling</span>
-<span class="tag">Basement Bowl</span>
-</div>
-</div>
-<div>
-<a class="article-link" href="2026/week10.html">Read Week 10</a>
-</div>
-</article>
-<article class="hidden-article article-card featured">
-<div>
-<div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
-<div class="article-meta" style="margin:0;">Week 9 • Matchup Recap</div>
-</div>
-<h3 class="article-title">Week 9 Recap: Nuketown Made a Statement, Bo Made Excuses, and Gunnarrhea Made
+            <div class="tag-row">
+              <span class="tag">Losses (1) - You Don't Know Bo</span>
+              <span class="tag">Heorny Nukes Nuketown</span>
+              <span class="tag">The Commish Curse Continues</span>
+              <span class="tag">BTA Losing Streak</span>
+              <span class="tag">BB Keeps Rolling</span>
+              <span class="tag">Basement Bowl</span>
+            </div>
+          </div>
+          <div>
+            <a class="article-link" href="2026/week10.html">Read Week 10</a>
+          </div>
+        </article>
+        <article class="hidden-article article-card featured">
+          <div>
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+              <div class="article-meta" style="margin:0;">Week 9 • Matchup Recap</div>
+            </div>
+            <h3 class="article-title">Week 9 Recap: Nuketown Made a Statement, Bo Made Excuses, and Gunnarrhea Made
               Another Sad Recap</h3>
-<p class="article-summary">
+            <p class="article-summary">
               Comebacks got stolen, bad teams got buried, and the league learned real quick who can actually
               survive a full matchup.
             </p>
-<div class="tag-row">
-<span class="tag">Pitching Strikeouts (91) - BTA Boyz</span>
-<span class="tag">This Is Miraculous</span>
-<span class="tag">Nuketown is Back</span>
-<span class="tag">The Commish Curse Continues</span>
-<span class="tag">Tatis Finally Remembered</span>
-<span class="tag">BB Keeps Stealing Wins</span>
-</div>
-</div>
-<div>
-<a class="article-link" href="2026/week9.html">Read Week 9</a>
-</div>
-</article>
-<article class="hidden-article article-card featured">
-<div>
-<div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
-<div class="article-meta" style="margin:0;">Week 8 • Matchup Recap</div>
-</div>
-<h3 class="article-title">Week 8 Recap: Fantasy Baseball Weekly Recap</h3>
-<p class="article-summary">
+            <div class="tag-row">
+              <span class="tag">Pitching Strikeouts (91) - BTA Boyz</span>
+              <span class="tag">This Is Miraculous</span>
+              <span class="tag">Nuketown is Back</span>
+              <span class="tag">The Commish Curse Continues</span>
+              <span class="tag">Tatis Finally Remembered</span>
+              <span class="tag">BB Keeps Stealing Wins</span>
+            </div>
+          </div>
+          <div>
+            <a class="article-link" href="2026/week9.html">Read Week 9</a>
+          </div>
+        </article>
+        <article class="hidden-article article-card featured">
+          <div>
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+              <div class="article-meta" style="margin:0;">Week 8 • Matchup Recap</div>
+            </div>
+            <h3 class="article-title">Week 8 Recap: Fantasy Baseball Weekly Recap</h3>
+            <p class="article-summary">
               From half-point escapes to 12-4 beatdowns by a winless team, Week 8 was pure separation as the
               contenders kept climbing, the frauds started sweating, and the basement teams continued building
               their case for getting throwin in
               fantasy jail.
             </p>
-<div class="tag-row">
-<span class="tag">Wins (6) - Me So Heorny</span>
-<span class="tag">Mizerable Miracle</span>
-<span class="tag">First Place Panic</span>
-<span class="tag">Mactown Meltdown</span>
-<span class="tag">Sunday Collapse</span>
-<span class="tag">Pitching Problems</span>
-</div>
-</div>
-<div>
-<a class="article-link" href="2026/week8.html">Read Week 8</a>
-</div>
-</article>
-<article class="hidden-article article-card featured">
-<div>
-<div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
-<div class="article-meta" style="margin:0;">Week 7 • Matchup Recap</div>
-</div>
-<h3 class="article-title">Week 7 Recap: Undefeated No More, Winless Still</h3>
-<p class="article-summary">
+            <div class="tag-row">
+              <span class="tag">Wins (6) - Me So Heorny</span>
+              <span class="tag">Mizerable Miracle</span>
+              <span class="tag">First Place Panic</span>
+              <span class="tag">Mactown Meltdown</span>
+              <span class="tag">Sunday Collapse</span>
+              <span class="tag">Pitching Problems</span>
+            </div>
+          </div>
+          <div>
+            <a class="article-link" href="2026/week8.html">Read Week 8</a>
+          </div>
+        </article>
+        <article class="hidden-article article-card featured">
+          <div>
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+              <div class="article-meta" style="margin:0;">Week 7 • Matchup Recap</div>
+            </div>
+            <h3 class="article-title">Week 7 Recap: Undefeated No More, Winless Still</h3>
+            <p class="article-summary">
               From undefeated streaks ending to 14-2 massacres, Week 7 was choas as we witnessed our top 2 win
               streaks and top 2 losing streaks come to an end
             </p>
-<div class="tag-row">
-<span class="tag">SV+H (5) - This is Mizerable</span>
-<span class="tag">Winless Watch</span>
-<span class="tag">Nuketown</span>
-<span class="tag">Undefeated No More</span>
-<span class="tag">Change in 1st</span>
-<span class="tag">Back to Back Championships?</span>
-</div>
-</div>
-<div>
-<a class="article-link" href="2026/week7.html">Read Week 7</a>
-</div>
-</article>
-<article class="hidden-article article-card featured">
-<div>
-<div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
-<div class="article-meta" style="margin:0;">Week 6 • Matchup Recap</div>
-</div>
-<h3 class="article-title">Week 6 Recap: Perfect Runs and Complete Collapses Continue</h3>
-<p class="article-summary">
+            <div class="tag-row">
+              <span class="tag">SV+H (5) - This is Mizerable</span>
+              <span class="tag">Winless Watch</span>
+              <span class="tag">Nuketown</span>
+              <span class="tag">Undefeated No More</span>
+              <span class="tag">Change in 1st</span>
+              <span class="tag">Back to Back Championships?</span>
+            </div>
+          </div>
+          <div>
+            <a class="article-link" href="2026/week7.html">Read Week 7</a>
+          </div>
+        </article>
+        <article class="hidden-article article-card featured">
+          <div>
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+              <div class="article-meta" style="margin:0;">Week 6 • Matchup Recap</div>
+            </div>
+            <h3 class="article-title">Week 6 Recap: Perfect Runs and Complete Collapses Continue</h3>
+            <p class="article-summary">
               Perfect teams kept flexing, struggling teams kept spiraling, and the league split wide open.
             </p>
-<div class="tag-row">
-<span class="tag">WHIP (0.995) - Dixon Cider</span>
-<span class="tag">Pretenders Exposed</span>
-<span class="tag">Roch Watch</span>
-<span class="tag">Undefeated Watch</span>
-<span class="tag">Winless Watch</span>
-</div>
-</div>
-<div>
-<a class="article-link" href="2026/week6.html">Read Week 6</a>
-</div>
-</article>
-<article class="hidden-article article-card featured">
-<div>
-<div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
-<div class="article-meta" style="margin:0;">Week 5 • Matchup Recap</div>
-</div>
-<h3 class="article-title">Week 5 Recap: Separation Season Begins</h3>
-<p class="article-summary">
+            <div class="tag-row">
+              <span class="tag">WHIP (0.995) - Dixon Cider</span>
+              <span class="tag">Pretenders Exposed</span>
+              <span class="tag">Roch Watch</span>
+              <span class="tag">Undefeated Watch</span>
+              <span class="tag">Winless Watch</span>
+            </div>
+          </div>
+          <div>
+            <a class="article-link" href="2026/week6.html">Read Week 6</a>
+          </div>
+        </article>
+        <article class="hidden-article article-card featured">
+          <div>
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+              <div class="article-meta" style="margin:0;">Week 5 • Matchup Recap</div>
+            </div>
+            <h3 class="article-title">Week 5 Recap: Separation Season Begins</h3>
+            <p class="article-summary">
               Blowouts continue everywhere — the top teams are rolling, and the bottom teams are just trying to
               survive.
             </p>
-<div class="tag-row">
-<span class="tag">QS (7) - Me So Heorny</span>
-<span class="tag">Blowout</span>
-<span class="tag">Sunday Collapse</span>
-<span class="tag">Undefeated Watch</span>
-<span class="tag">Winless Watch</span>
-</div>
-</div>
-<div>
-<a class="article-link" href="2026/week5.html">Read Week 5</a>
-</div>
-</article>
-<article class="hidden-article article-card featured">
-<div>
-<div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
-<div class="article-meta" style="margin:0;">Week 4 • Matchup Recap</div>
-</div>
-<h3 class="article-title">Week 4 Recap: And Then There Was One</h3>
-<p class="article-summary">
+            <div class="tag-row">
+              <span class="tag">QS (7) - Me So Heorny</span>
+              <span class="tag">Blowout</span>
+              <span class="tag">Sunday Collapse</span>
+              <span class="tag">Undefeated Watch</span>
+              <span class="tag">Winless Watch</span>
+            </div>
+          </div>
+          <div>
+            <a class="article-link" href="2026/week5.html">Read Week 5</a>
+          </div>
+        </article>
+        <article class="hidden-article article-card featured">
+          <div>
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+              <div class="article-meta" style="margin:0;">Week 4 • Matchup Recap</div>
+            </div>
+            <h3 class="article-title">Week 4 Recap: And Then There Was One</h3>
+            <p class="article-summary">
               Undefeated teams dropped, big leads collapsed, and late-week chaos decided everything.
             </p>
-<div class="tag-row">
-<span class="tag">TB (182) - Goodyear Gila Monsters</span>
-<span class="tag">Blowout</span>
-<span class="tag">Weekly Recap</span>
-<span class="tag">Undefeated Watch</span>
-<span class="tag">Choke Job</span>
-</div>
-</div>
-<div>
-<a class="article-link" href="2026/week4.html">Read Week 4</a>
-</div>
-</article>
-<article class="hidden-article article-card">
-<div>
-<div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
-<div class="article-meta" style="margin:0;">Week 3 • Matchup Recap</div>
-</div>
-<h3 class="article-title">Week 3 Recap: Blowouts Everywhere</h3>
-<p class="article-summary">
+            <div class="tag-row">
+              <span class="tag">TB (182) - Goodyear Gila Monsters</span>
+              <span class="tag">Blowout</span>
+              <span class="tag">Weekly Recap</span>
+              <span class="tag">Undefeated Watch</span>
+              <span class="tag">Choke Job</span>
+            </div>
+          </div>
+          <div>
+            <a class="article-link" href="2026/week4.html">Read Week 4</a>
+          </div>
+        </article>
+        <article class="hidden-article article-card">
+          <div>
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+              <div class="article-meta" style="margin:0;">Week 3 • Matchup Recap</div>
+            </div>
+            <h3 class="article-title">Week 3 Recap: Blowouts Everywhere</h3>
+            <p class="article-summary">
               Big wins, ugly pitching lines, undefeated teams, and a full matchup-by-matchup rundown from the latest
               week in UTI fantasy baseball.
             </p>
-<div class="tag-row">
-<span class="tag">SB (10) - Gunnarrhea</span>
-<span class="tag">Undefeated Watch</span>
-<span class="tag">Weekly Recap</span>
-</div>
-</div>
-<div>
-<a class="article-link" href="2026/week3.html">Read Week 3</a>
-</div>
-</article>
-</div>
-<div class="view-more-wrap"><button class="view-more-btn" data-expanded="false" id="viewMoreArticlesBtn" type="button">View More Recaps</button></div>
-</section>
-<div class="footer-note">UTI Fantasy Baseball is powered by Busch Light, Malort, and weekly shots from your
+            <div class="tag-row">
+              <span class="tag">SB (10) - Gunnarrhea</span>
+              <span class="tag">Undefeated Watch</span>
+              <span class="tag">Weekly Recap</span>
+            </div>
+          </div>
+          <div>
+            <a class="article-link" href="2026/week3.html">Read Week 3</a>
+          </div>
+        </article>
+      </div>
+      <div class="view-more-wrap"><button class="view-more-btn" data-expanded="false" id="viewMoreArticlesBtn"
+          type="button">View More Recaps</button></div>
+    </section>
+    <div class="footer-note">UTI Fantasy Baseball is powered by Busch Light, Malort, and weekly shots from your
       weekly losers.</div>
-</div>
-<script>
+  </div>
+  <script>
 
 
 
@@ -2893,7 +3115,7 @@
       viewMoreArticlesBtn.textContent = isExpanded ? 'View More Recaps' : 'Show Less Articles';
     });
   </script>
-<script>
+  <script>
     /* ===== Definitive Trending range stat renderer =====
        Fixes 7D / 14D / SEA showing season-only stats by reading a real
        range-specific stat object first, then running the best-highlight picker.
@@ -3307,7 +3529,7 @@
       };
     })();
   </script>
-<script>
+  <script>
     /* Render fantasy-team pictures and compact ownership ranking for All-Stars. */
     (function () {
       function normalize(value) {
@@ -3460,4 +3682,5 @@
     })();
   </script>
 </body>
+
 </html>
