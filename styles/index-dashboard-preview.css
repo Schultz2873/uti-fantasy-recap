@@ -1,0 +1,1020 @@
+/* =========================================================
+   UTI Homepage Dashboard Preview
+   Keeps the original light-blue homepage theme.
+   Load AFTER the existing homepage styles.
+   ========================================================= */
+
+.page {
+  max-width: 1240px;
+}
+
+.hero {
+  margin-bottom: 16px;
+}
+
+.hero .deck {
+  max-width: 680px;
+}
+
+.last-updated {
+  margin-top: 10px;
+}
+
+/* --- League Pulse ------------------------------------------------ */
+
+.league-pulse {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0 0 16px;
+}
+
+.pulse-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 118px;
+  padding: 15px 16px;
+  overflow: hidden;
+  color: var(--text);
+  text-decoration: none;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: 0 10px 26px rgba(16, 24, 40, .07);
+  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+
+.pulse-card::after {
+  content: "→";
+  position: absolute;
+  right: 14px;
+  bottom: 12px;
+  color: var(--accent);
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.pulse-card:hover {
+  color: var(--text);
+  transform: translateY(-3px);
+  border-color: #b7d1ff;
+  box-shadow: 0 16px 32px rgba(16, 24, 40, .10);
+}
+
+.pulse-label,
+.section-eyebrow {
+  color: var(--accent);
+  font-size: .72rem;
+  font-weight: 900;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+
+.pulse-card strong {
+  display: block;
+  margin-top: 5px;
+  font-size: 1.6rem;
+  line-height: 1.05;
+  letter-spacing: -.035em;
+}
+
+.pulse-copy {
+  max-width: calc(100% - 22px);
+  margin-top: 7px;
+  color: var(--muted);
+  font-size: .82rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+/* --- Navigation -------------------------------------------------- */
+
+.quick-nav {
+  margin-bottom: 16px;
+}
+
+.quick-nav a {
+  min-height: 36px;
+  padding: 7px 12px;
+}
+
+/* --- Denser section hierarchy ----------------------------------- */
+
+.section-card {
+  margin-bottom: 16px;
+  padding: 18px;
+}
+
+.section-heading,
+.leader-section-header,
+.allstar-compact-head {
+  margin-bottom: 13px;
+}
+
+.section-eyebrow {
+  margin-bottom: 4px;
+}
+
+.section-title,
+.section-heading .section-title {
+  letter-spacing: -.02em;
+}
+
+.section-subtitle {
+  max-width: 700px;
+}
+
+/* --- Trending comes first and feels actionable ------------------ */
+
+#top-pickups {
+  border-color: #cfe0ff;
+  background:
+    radial-gradient(circle at top right, rgba(11, 94, 215, .055), transparent 22rem),
+    #ffffff;
+}
+
+#top-pickups .available-studs-grid {
+  margin-top: 14px;
+}
+
+/* --- Leaders / HR Pool slightly denser -------------------------- */
+
+#mlb-weekly-leaders .weekly-leaders-grid {
+  margin-top: 14px;
+}
+
+#mlb-weekly-leaders .leader-card {
+  min-height: 138px;
+  padding: 14px;
+}
+
+#home-run-pool .home-run-pool-grid {
+  margin-top: 12px;
+}
+
+#home-run-pool .home-run-pool-link-wrap {
+  margin-top: 14px;
+}
+
+/* --- Latest recap gets stronger prominence ---------------------- */
+
+#featured-recap {
+  padding: 20px;
+  background:
+    linear-gradient(135deg, rgba(11, 94, 215, .045), rgba(25, 135, 84, .025)),
+    #ffffff;
+  border-color: #cfe0ff;
+}
+
+.featured-recap-card {
+  padding: 20px;
+  border-color: #b9d2ff;
+  box-shadow: 0 16px 34px rgba(16, 24, 40, .09);
+}
+
+.featured-recap-card .article-title {
+  max-width: 900px;
+}
+
+.featured-archive-grid {
+  gap: 12px;
+}
+
+/* --- Tools stay useful but quieter ------------------------------ */
+
+#fantasy-tools .tools-grid {
+  gap: 12px;
+}
+
+#fantasy-tools .tool-card {
+  box-shadow: 0 10px 24px rgba(16, 24, 40, .07);
+}
+
+/* --- All-Stars become an archive instead of a giant section ----- */
+
+.allstar-archive-section {
+  background: #fbfcfe;
+}
+
+.allstar-archive-shell {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: #ffffff;
+}
+
+.allstar-archive-shell > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 15px 16px;
+  cursor: pointer;
+  list-style: none;
+  transition: background .16s ease;
+}
+
+.allstar-archive-shell > summary::-webkit-details-marker {
+  display: none;
+}
+
+.allstar-archive-shell > summary:hover {
+  background: #f7f9fc;
+}
+
+.allstar-archive-shell > summary > span:first-child {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.allstar-archive-shell > summary strong {
+  color: var(--text);
+  font-size: .95rem;
+}
+
+.allstar-archive-shell > summary small {
+  color: var(--muted);
+  font-size: .78rem;
+  line-height: 1.3;
+}
+
+.allstar-archive-action {
+  flex: 0 0 auto;
+  padding: 7px 10px;
+  color: var(--accent-dark);
+  background: #edf4ff;
+  border-radius: 999px;
+  font-size: .75rem;
+  font-weight: 900;
+}
+
+.allstar-archive-shell[open] .allstar-archive-action {
+  color: #ffffff;
+  background: var(--accent);
+}
+
+.allstar-archive-shell .allstar-team-dropdowns {
+  padding: 0 12px 12px;
+}
+
+/* --- Slightly less visual noise across cards -------------------- */
+
+.article-card,
+.tool-card,
+.leader-card {
+  box-shadow: 0 9px 22px rgba(16, 24, 40, .065);
+}
+
+.article-card:hover {
+  transform: translateY(-2px);
+}
+
+.tag-row {
+  margin-bottom: 14px;
+}
+
+.tag {
+  padding: 4px 9px;
+}
+
+/* --- Responsive -------------------------------------------------- */
+
+@media (max-width: 900px) {
+  .league-pulse {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pulse-card {
+    min-height: 108px;
+  }
+}
+
+@media (max-width: 520px) {
+  .league-pulse {
+    gap: 9px;
+    margin-bottom: 13px;
+  }
+
+  .pulse-card {
+    min-height: 100px;
+    padding: 12px;
+    border-radius: 15px;
+  }
+
+  .pulse-card strong {
+    font-size: 1.3rem;
+  }
+
+  .pulse-label {
+    font-size: .64rem;
+  }
+
+  .pulse-copy {
+    font-size: .74rem;
+  }
+
+  .section-card {
+    margin-bottom: 13px;
+    padding: 15px;
+  }
+
+  .allstar-archive-shell > summary {
+    align-items: flex-start;
+    padding: 13px;
+  }
+
+  .allstar-archive-action {
+    padding: 6px 8px;
+    font-size: .68rem;
+  }
+}
+
+
+/* --- Cleaner secondary navigation ------------------------------- */
+
+.quick-nav {
+  display: none !important;
+}
+
+.secondary-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: -2px 0 16px;
+  padding: 0 2px;
+}
+
+.secondary-nav-label {
+  color: var(--muted);
+  font-size: .72rem;
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-right: 2px;
+}
+
+.secondary-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 5px 9px;
+  color: var(--accent-dark);
+  text-decoration: none;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-size: .78rem;
+  font-weight: 850;
+  transition: background .16s ease, border-color .16s ease;
+}
+
+.secondary-nav a:hover {
+  background: #edf4ff;
+  border-color: #cfe0ff;
+}
+
+@media (max-width: 520px) {
+  .secondary-nav {
+    gap: 5px;
+    margin-bottom: 13px;
+  }
+
+  .secondary-nav-label {
+    width: 100%;
+    margin-bottom: 1px;
+  }
+
+  .secondary-nav a {
+    padding: 5px 8px;
+    font-size: .74rem;
+  }
+}
+
+
+/* =========================================================
+   Cleaner mobile-first Explore navigation
+   ========================================================= */
+
+.secondary-nav {
+  display: none !important;
+}
+
+.explore-nav {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  margin: 0 0 14px;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 7px 18px rgba(16, 24, 40, .055);
+}
+
+.explore-nav a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 42px;
+  padding: 8px 7px;
+  color: var(--accent-dark);
+  text-align: center;
+  text-decoration: none;
+  background: transparent;
+  border-right: 1px solid var(--border);
+  font-size: .74rem;
+  font-weight: 850;
+  line-height: 1.15;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.explore-nav a:last-child {
+  border-right: 0;
+}
+
+.explore-nav a:active {
+  background: #edf4ff;
+}
+
+@media (min-width: 600px) {
+  .explore-nav {
+    width: fit-content;
+    min-width: 390px;
+    margin-bottom: 16px;
+  }
+
+  .explore-nav a {
+    min-width: 130px;
+    padding: 9px 14px;
+    font-size: .80rem;
+  }
+}
+
+@media (min-width: 900px) {
+  .explore-nav a:hover {
+    background: #edf4ff;
+  }
+}
+
+
+/* =========================================================
+   Prize Pool + Weekly Category Winner
+   ========================================================= */
+
+.league-money-section {
+  border-color: #cfe0ff;
+  background:
+    radial-gradient(circle at top left, rgba(11, 94, 215, .055), transparent 20rem),
+    #ffffff;
+}
+
+.league-money-heading {
+  align-items: flex-start;
+}
+
+.money-updated-tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 5px 9px;
+  color: var(--accent-dark);
+  background: #edf4ff;
+  border: 1px solid #cfe0ff;
+  border-radius: 999px;
+  font-size: .70rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.league-money-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.money-card {
+  min-width: 0;
+  padding: 15px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(16, 24, 40, .065);
+}
+
+.prize-total-card {
+  background:
+    radial-gradient(circle at top right, rgba(25, 135, 84, .08), transparent 15rem),
+    linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+}
+
+.weekly-winner-card {
+  background:
+    radial-gradient(circle at top right, rgba(11, 94, 215, .07), transparent 15rem),
+    linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+}
+
+.money-card-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 9px;
+}
+
+.money-label {
+  color: var(--muted);
+  font-size: .68rem;
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.money-status,
+.weekly-week-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 4px 7px;
+  border-radius: 999px;
+  font-size: .64rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.money-status {
+  color: #087443;
+  background: #eaf8f0;
+  border: 1px solid #c9eed9;
+}
+
+.weekly-week-pill {
+  color: var(--accent-dark);
+  background: #edf4ff;
+  border: 1px solid #cfe0ff;
+}
+
+.money-total {
+  color: var(--green);
+  font-size: clamp(2rem, 12vw, 3rem);
+  font-weight: 950;
+  line-height: .95;
+  letter-spacing: -.055em;
+}
+
+.money-description {
+  margin: 9px 0 13px;
+  color: var(--muted);
+  font-size: .80rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.money-breakdown {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+}
+
+.money-breakdown-item {
+  min-width: 0;
+  padding: 9px;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+}
+
+.money-breakdown-item span {
+  display: block;
+  color: var(--muted);
+  font-size: .63rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.money-breakdown-item strong {
+  display: block;
+  margin-top: 3px;
+  color: var(--text);
+  font-size: .98rem;
+  line-height: 1.1;
+}
+
+.waiver-money-item strong {
+  color: var(--green);
+}
+
+.weekly-winner-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 11px;
+  align-items: center;
+}
+
+.weekly-category {
+  display: block;
+  margin-bottom: 3px;
+  color: var(--accent);
+  font-size: .68rem;
+  font-weight: 900;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.weekly-winner-name {
+  display: block;
+  color: var(--text);
+  font-size: 1.25rem;
+  line-height: 1.1;
+  letter-spacing: -.025em;
+  overflow-wrap: anywhere;
+}
+
+.weekly-result {
+  display: block;
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: .78rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.weekly-prize-box {
+  min-width: 74px;
+  padding: 10px 8px;
+  text-align: center;
+  background: #edf4ff;
+  border: 1px solid #cfe0ff;
+  border-radius: 12px;
+}
+
+.weekly-prize-box span {
+  display: block;
+  color: var(--muted);
+  font-size: .60rem;
+  font-weight: 900;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.weekly-prize-box strong {
+  display: block;
+  margin-top: 2px;
+  color: var(--accent-dark);
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.weekly-history {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.weekly-history summary {
+  color: var(--accent-dark);
+  cursor: pointer;
+  font-size: .76rem;
+  font-weight: 900;
+}
+
+.weekly-history-list {
+  display: grid;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.weekly-history-item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+  padding: 7px 8px;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  font-size: .72rem;
+}
+
+.weekly-history-item .history-week {
+  color: var(--muted);
+  font-weight: 900;
+}
+
+.weekly-history-item .history-winner {
+  min-width: 0;
+  font-weight: 900;
+  overflow-wrap: anywhere;
+}
+
+.weekly-history-item .history-prize {
+  color: var(--green);
+  font-weight: 900;
+}
+
+.pulse-money-card strong {
+  color: var(--green);
+}
+
+.pulse-winner-card strong {
+  font-size: 1.2rem;
+  overflow-wrap: anywhere;
+}
+
+@media (min-width: 700px) {
+  .league-money-grid {
+    grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+    gap: 12px;
+  }
+
+  .money-card {
+    padding: 17px;
+  }
+}
+
+
+/* =========================================================
+   Prize pool — three source breakdown
+   ========================================================= */
+
+.money-breakdown {
+  grid-template-columns: 1fr !important;
+}
+
+.money-breakdown-item {
+  min-width: 0;
+}
+
+.bid-money-item strong {
+  color: var(--accent-dark);
+}
+
+/* =========================================================
+   Weekly category winner season ledger
+   ========================================================= */
+
+.weekly-ledger-header {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-top: 15px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.weekly-ledger-header > div:first-child {
+  display: grid;
+  gap: 1px;
+}
+
+.weekly-ledger-subtitle {
+  color: var(--muted);
+  font-size: .72rem;
+  font-weight: 700;
+}
+
+.weekly-ledger-totals {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.weekly-ledger-totals span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 7px;
+  color: var(--muted);
+  background: var(--soft);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: .68rem;
+  font-weight: 800;
+}
+
+.weekly-ledger-totals b {
+  color: var(--text);
+}
+
+.weekly-winner-ledger {
+  display: grid;
+  gap: 7px;
+  margin-top: 9px;
+}
+
+.weekly-ledger-row {
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+  min-width: 0;
+  padding: 9px;
+  background: #f8fbff;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+}
+
+.weekly-ledger-row.is-latest {
+  background: #edf4ff;
+  border-color: #cfe0ff;
+}
+
+.weekly-ledger-week {
+  color: var(--accent-dark);
+  font-size: .70rem;
+  font-weight: 900;
+}
+
+.weekly-ledger-main {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+}
+
+.weekly-ledger-main strong {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: var(--text);
+  font-size: .78rem;
+  line-height: 1.15;
+}
+
+.weekly-ledger-main span {
+  min-width: 0;
+  color: var(--muted);
+  font-size: .68rem;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.weekly-ledger-prize {
+  color: var(--green);
+  font-size: .76rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.weekly-ledger-empty {
+  margin: 9px 0 0;
+  padding: 10px;
+  color: var(--muted);
+  background: #f8fbff;
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  font-size: .72rem;
+  line-height: 1.35;
+}
+
+.weekly-ledger-empty code {
+  color: var(--accent-dark);
+}
+
+@media (min-width: 600px) {
+  .money-breakdown {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  .weekly-ledger-header {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
+  .weekly-ledger-row {
+    grid-template-columns: 72px minmax(0, 1fr) 78px;
+    padding: 10px 11px;
+  }
+
+  .weekly-ledger-week,
+  .weekly-ledger-main strong,
+  .weekly-ledger-prize {
+    font-size: .82rem;
+  }
+
+  .weekly-ledger-main span {
+    font-size: .72rem;
+  }
+
+  .weekly-ledger-prize {
+    text-align: right;
+  }
+}
+
+
+/* =========================================================
+   Prize payout structure
+   ========================================================= */
+
+.payout-structure {
+  margin-top: 14px;
+  padding-top: 13px;
+  border-top: 1px solid var(--border);
+}
+
+.payout-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 8px;
+}
+
+.payout-note {
+  color: var(--muted);
+  font-size: .68rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.payout-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 7px;
+}
+
+.payout-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "place value"
+    "projected projected";
+  gap: 3px 8px;
+  align-items: center;
+  min-width: 0;
+  padding: 10px 11px;
+  overflow: hidden;
+  background: #f8fbff;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+}
+
+.payout-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+}
+
+.payout-first::before { background: #f5b700; }
+.payout-second::before { background: #94a3b8; }
+.payout-third::before { background: #b7791f; }
+
+.payout-place {
+  grid-area: place;
+  color: var(--muted);
+  font-size: .70rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .045em;
+}
+
+.payout-card strong {
+  grid-area: value;
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 900;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.payout-projected {
+  grid-area: projected;
+  color: var(--accent-dark);
+  font-size: .68rem;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+@media (min-width: 600px) {
+  .payout-heading {
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .payout-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .payout-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-height: 92px;
+  }
+
+  .payout-card strong {
+    font-size: 1.18rem;
+    text-align: left;
+  }
+
+  .payout-projected {
+    margin-top: auto;
+  }
+}

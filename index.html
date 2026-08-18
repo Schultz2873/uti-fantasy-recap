@@ -15,6 +15,7 @@
   <link href="styles/league-alerts.css" rel="stylesheet" />
   <link href="styles/index-top-pickups.css" rel="stylesheet" />
   <link href="styles/all-star-week.css" rel="stylesheet" />
+  <link href="styles/index-dashboard-preview.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -26,7 +27,7 @@
       <p class="deck">
         The Best Dang Fantasy League in the World
       </p>
-      <p class="last-updated">Last updated: Week 13 Recap • MLB weekly leaders update automatically</p>
+      <p class="last-updated">Last updated: Week 19 Recap • MLB weekly leaders update automatically</p>
     </section>
     <!-- <section aria-label="League alerts" class="league-alert-strip">
       <article class="league-alert-card trade-alert">
@@ -41,17 +42,131 @@
         </div>
       </article>
     </section> -->
-    <nav aria-label="Homepage sections" class="quick-nav">
-      <!-- <a href="#all-star-week-alert">All-Star Week</a> -->
+    <section class="league-pulse" aria-label="League pulse">
+      <a class="pulse-card" href="#featured-recap">
+        <span class="pulse-label">Latest Recap</span>
+        <strong>Week 19</strong>
+        <span class="pulse-copy">Newest matchup recap</span>
+      </a>
+
+      <a class="pulse-card" href="#home-run-pool">
+        <span class="pulse-label">Season Race</span>
+        <strong>HR Pool</strong>
+        <span class="pulse-copy">View the home run standings</span>
+      </a>
+
+      <a class="pulse-card pulse-money-card" href="#league-money">
+        <span class="pulse-label">Prize Pool</span>
+        <strong id="pulsePrizePoolTotal">—</strong>
+        <span class="pulse-copy">Grows with waiver activity</span>
+      </a>
+
+      <a class="pulse-card pulse-winner-card" href="#league-money">
+        <span class="pulse-label">Weekly Winner</span>
+        <strong id="pulseWeeklyWinner">TBD</strong>
+        <span class="pulse-copy" id="pulseWeeklyCategory">Category prize</span>
+      </a>
+    </section>
+    <nav aria-label="Explore homepage sections" class="explore-nav">
       <a href="#mlb-weekly-leaders">MLB Leaders</a>
-      <a href="#top-pickups">Trending Adds</a><a href="#all-star-week">All-Stars</a>
       <a href="#home-run-pool">HR Pool</a>
       <a href="#fantasy-tools">Fantasy Tools</a>
-      <a href="#featured-recap">Featured Recap</a>
     </nav>
+
+    <section class="section-card league-money-section" id="league-money">
+      <div class="section-heading league-money-heading">
+        <div>
+          <div class="section-eyebrow">League Money</div>
+          <h2 class="section-title">Prize Pool & Weekly Category Winner</h2>
+          <p class="section-subtitle">
+            Follow the live season prize pool as waiver money is added, plus the latest weekly category winner.
+          </p>
+        </div>
+        <span class="money-updated-tag" id="prizeMoneyUpdatedAt">Season total</span>
+      </div>
+
+      <div class="league-money-grid">
+        <article class="money-card prize-total-card">
+          <div class="money-card-topline">
+            <span class="money-label">Current Prize Pool</span>
+            <span class="money-status">Live Pot</span>
+          </div>
+          <div class="money-total" id="prizePoolTotal">—</div>
+          <p class="money-description" id="prizePoolRule">Prize pool grows based on waiver-wire spending.</p>
+
+          <div class="money-breakdown">
+            <div class="money-breakdown-item">
+              <span>Starting Pool</span>
+              <strong id="basePrizePool">—</strong>
+            </div>
+            <div class="money-breakdown-item waiver-money-item">
+              <span>Added From Waivers</span>
+              <strong id="waiverPrizeAdded">—</strong>
+            </div>
+            <div class="money-breakdown-item waiver-money-item">
+              <span>Added From Auction</span>
+              <strong >$86</strong>
+            </div>
+          </div>
+        </article>
+
+        <article class="money-card weekly-winner-card">
+          <div class="money-card-topline">
+            <span class="money-label">Weekly Category Winner</span>
+            <span class="weekly-week-pill" id="weeklyWinnerWeek">Latest</span>
+          </div>
+
+          <div class="weekly-winner-main">
+            <div>
+              <span class="weekly-category" id="weeklyWinnerCategory">Category TBD</span>
+              <strong class="weekly-winner-name" id="weeklyWinnerTeam">Winner TBD</strong>
+              <span class="weekly-result" id="weeklyWinnerResult">Result will appear here.</span>
+            </div>
+            <div class="weekly-prize-box">
+              <span>Prize</span>
+              <strong id="weeklyWinnerPrize">—</strong>
+            </div>
+          </div>
+
+          <details class="weekly-history" id="weeklyWinnerHistoryWrap" hidden>
+            <summary>Past weekly winners</summary>
+            <div class="weekly-history-list" id="weeklyWinnerHistory"></div>
+          </details>
+        </article>
+      </div>
+    </section>
+
+    <!-- <section class="section-card" id="top-pickups">
+      <div class="leader-section-header">
+        <div>
+          <div class="section-eyebrow">Waiver Wire</div>
+          <h2 class="section-title" style="margin-bottom:4px;">Trending Available</h2>
+          <p class="section-subtitle">
+            Popular players from other fantasy leagues, filtered against UTI rosters so only available guys show.
+          </p>
+        </div>
+        <div class="leader-header-actions trending-header-actions">
+          <div aria-label="Trending card stat range" class="leader-mode-toggle trend-stat-toggle">
+            <button aria-pressed="true" class="leader-mode-btn active" data-trend-stat-range="last7"
+              type="button">7D</button>
+            <button aria-pressed="false" class="leader-mode-btn" data-trend-stat-range="last14"
+              type="button">14D</button>
+            <button aria-pressed="false" class="leader-mode-btn" data-trend-stat-range="season"
+              type="button">SEA</button>
+          </div>
+          <span class="tag" id="availableStudsModeTag">Last 7</span>
+        </div>
+      </div>
+      <div class="available-studs-grid" id="availableStudsGrid">
+        <article class="article-card">
+          <p class="article-summary">Loading trending available players...</p>
+        </article>
+      </div>
+    </section> -->
     <section class="section-card" id="mlb-weekly-leaders">
       <div class="leader-section-header">
         <div>
+          <div class="section-eyebrow">Around MLB</div>
           <h2 class="section-title" style="margin-bottom:4px;">MLB Category Leaders</h2>
           <p class="section-subtitle">
             Switch between the current week, any completed past week, and full-season leaders.
@@ -79,48 +194,10 @@
         </article>
       </div>
     </section>
-    <section class="section-card" id="top-pickups">
-      <div class="leader-section-header">
-        <div>
-          <h2 class="section-title" style="margin-bottom:4px;">Trending Available</h2>
-          <p class="section-subtitle">
-            Popular players from other fantasy leagues, filtered against UTI rosters so only available guys show.
-          </p>
-        </div>
-        <div class="leader-header-actions trending-header-actions">
-          <div aria-label="Trending card stat range" class="leader-mode-toggle trend-stat-toggle">
-            <button aria-pressed="true" class="leader-mode-btn active" data-trend-stat-range="last7"
-              type="button">7D</button>
-            <button aria-pressed="false" class="leader-mode-btn" data-trend-stat-range="last14"
-              type="button">14D</button>
-            <button aria-pressed="false" class="leader-mode-btn" data-trend-stat-range="season"
-              type="button">SEA</button>
-          </div>
-          <span class="tag" id="availableStudsModeTag">Last 7</span>
-        </div>
-      </div>
-      <div class="available-studs-grid" id="availableStudsGrid">
-        <article class="article-card">
-          <p class="article-summary">Loading trending available players...</p>
-        </article>
-      </div>
-    </section>
-    <section class="section-card allstar-compact-section" id="all-star-week">
-      <div class="allstar-compact-head">
-        <div>
-          <h2 class="section-title">2026 MLB All-Stars in UTI</h2>
-          <p class="section-subtitle">
-            Original announced All-Stars grouped by fantasy team. Click a team to see its All-Stars.
-          </p>
-        </div>
-        <div class="allstar-total-pill"><b id="allStarTotal">0</b><span>All-Stars</span></div>
-      </div>
-
-      <div class="allstar-team-dropdowns" id="allStarTeamDropdowns"></div>
-    </section>
     <section class="section-card home-run-pool-preview" id="home-run-pool">
       <div class="section-heading home-run-pool-heading">
         <div>
+          <div class="section-eyebrow">Season Race</div>
           <h2 class="section-title">Home Run Pool</h2>
           <p class="section-subtitle">Season-long HR race. Top teams show here, full standings live on the pool page.
           </p>
@@ -139,6 +216,7 @@
     <section class="section-card" id="fantasy-tools">
       <div class="section-heading">
         <div>
+          <div class="section-eyebrow">League Resources</div>
           <h2 class="section-title">Fantasy Tools</h2>
           <p class="section-subtitle">Dynasty resources and league tools that are actually useful.</p>
         </div>
@@ -185,6 +263,7 @@
     <section class="section-card" id="featured-recap">
       <div class="section-heading">
         <div>
+          <div class="section-eyebrow">League Newsroom</div>
           <h2 class="section-title">Featured Recap</h2>
           <p class="section-subtitle">Newest recap up top. Use View More to open the recap archive.</p>
         </div>
@@ -196,15 +275,15 @@
               style="background:#198754;color:white;padding:6px 10px;border-radius:999px;font-size:0.75rem;font-weight:700;">NEW</span>
             <div class="article-meta" style="margin:0;">Week 19 • Matchup Recap</div>
           </div>
-          <h3 class="article-title">Week 19 Recap: Coming soon
+          <h3 class="article-title">Week 19 Recap: The Idiots Are Heating Up, Kinda
           </h3>
           <p class="article-summary">
-            <!-- The Gila Monsters keep steamrolling the league, two matchups end in completely useless ties,
-            John's offense gets betrayed by its own pitching staff, and Bo finds another way to stay
-            out of the playoff picture. -->
+            Gunnarrhea gives the defending champ a NAAASSSTTYY case, BTA somehow becomes competent, the Ice Man
+            stays frozen, the fake 3 seed survives by the skin of its ass, and $502 still can't buy Mizerable a
+            win.
           <div class="tag-row">
-            <!-- <span class="tag">Hitting Strikeouts (55) - You Don't Know Bo </span>
-            <span class="tag">ANTI-GUNNARRHEA</span>
+            <!-- <span class="tag">ERA (2.79) - Me So Heorny </span> -->
+            <!-- <span class="tag">ANTI-GUNNARRHEA</span>
             <span class="tag">WORTHLESS TIE</span>
             <span class="tag">MID-OFF</span>
             <span class="tag">NEEDS MORE PCA</span>
@@ -615,6 +694,30 @@
       <div class="view-more-wrap"><button class="view-more-btn" data-expanded="false" id="viewMoreArticlesBtn"
           type="button">View More Recaps</button></div>
     </section>
+
+    <section class="section-card allstar-compact-section allstar-archive-section" id="all-star-week">
+      <div class="allstar-compact-head">
+        <div>
+          <div class="section-eyebrow">Season Archive</div>
+          <h2 class="section-title">2026 MLB All-Stars in UTI</h2>
+          <p class="section-subtitle">
+            The full 2026 All-Star roster is still here, just tucked away so it does not dominate the homepage.
+          </p>
+        </div>
+        <div class="allstar-total-pill"><b id="allStarTotal">0</b><span>All-Stars</span></div>
+      </div>
+
+      <details class="allstar-archive-shell">
+        <summary>
+          <span>
+            <strong>Browse the full All-Star archive</strong>
+            <small>Fantasy teams, starters, leagues, positions and MLB teams</small>
+          </span>
+          <span class="allstar-archive-action">Open archive</span>
+        </summary>
+        <div class="allstar-team-dropdowns" id="allStarTeamDropdowns"></div>
+      </details>
+    </section>
     <div class="footer-note">UTI Fantasy Baseball is powered by Busch Light, Malort, and weekly shots from your
       weekly losers.</div>
   </div>
@@ -634,6 +737,8 @@
   <!-- Homepage-only behavior -->
   <script src="scripts/homepage.js"></script>
   <script src="scripts/trending-range-stats.js"></script>
+  <script src="data/prize-money.js"></script>
+  <script src="scripts/prize-money.js"></script>
   <script src="data/all-stars.js"></script>
   <script src="scripts/all-stars.js"></script>
   <script src="scripts/all-star-owner-ui.js"></script>
