@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>UTI Intelligence | Union of Ten Idiots</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="styles/styles.css" rel="stylesheet" />
+  <link href="styles/index-dashboard-preview.css" rel="stylesheet" />
+  <link href="styles/uti-intelligence.css" rel="stylesheet" />
+</head>
+
+<body class="uti-intelligence-page-body">
+  <main class="uti-intelligence-page-shell">
+    <nav class="uti-intelligence-page-nav" aria-label="UTI Intelligence navigation">
+      <a class="uti-intelligence-back-link" href="index.html">← Back to UTI Home</a>
+      <span class="uti-intelligence-page-badge">Union of Ten Idiots</span>
+    </nav>
+
+    <header class="uti-intelligence-page-hero">
+      <div class="kicker">The Stuff Fantrax Doesn't Show</div>
+      <h1>UTI Intelligence</h1>
+      <p>
+        All-play strength, schedule luck, power rankings, category dominance, historical Yahoo data,
+        and team profiles — the actual nerd department of the UTI.
+      </p>
+      <div class="uti-intelligence-page-hero-stats">
+        <span>2026 Fantrax · Weeks 1–19</span>
+        <span>2025 Yahoo history · importing now</span>
+        <span>Click any team to open its profile</span>
+      </div>
+    </header>
+
+    <section class="section-card uti-intelligence-section" id="uti-intelligence" data-uti-mode="full">
+      <div class="uti-intelligence-heading">
+        <div>
+          <div class="section-eyebrow">Current Season</div>
+          <h2 class="section-title">2026 Intelligence Board</h2>
+          <p class="section-subtitle">
+            Headline leaders up top, with the full league breakdown underneath.
+          </p>
+        </div>
+        <span class="tag" id="utiIntelligenceRange">Tracked weeks</span>
+      </div>
+
+      <div class="uti-intelligence-grid" id="utiIntelligenceGrid">
+        <article class="uti-intel-card">
+          <span class="uti-intel-label">Loading</span>
+          <strong class="uti-intel-team">UTI Intelligence</strong>
+          <span class="uti-intel-copy">Calculating league analytics...</span>
+        </article>
+      </div>
+
+      <details class="uti-intelligence-details" open>
+        <summary>
+          <span>
+            <strong>Full UTI analytics</strong>
+            <small>All-Play • Luck Index • Power Rankings • Category Kings</small>
+          </span>
+          <span class="uti-intelligence-toggle">Open</span>
+        </summary>
+
+        <div class="uti-analytics-inline-grid">
+          <section class="uti-analytics-panel">
+            <div class="uti-analytics-panel-head">
+              <h3>All-Play Record</h3>
+              <p>How every team performs against all nine opponents each tracked week.</p>
+            </div>
+            <div class="uti-analytics-table-wrap" id="utiAllPlayTable"></div>
+          </section>
+
+          <section class="uti-analytics-panel">
+            <div class="uti-analytics-panel-head">
+              <h3>Luck Index</h3>
+              <p>Actual tracked wins compared with all-play expected wins.</p>
+            </div>
+            <div class="uti-analytics-table-wrap" id="utiLuckTable"></div>
+          </section>
+
+          <section class="uti-analytics-panel">
+            <div class="uti-analytics-panel-head">
+              <h3>Power Rankings</h3>
+              <p>50% all-play, 30% category performance, 20% recent tracked form.</p>
+            </div>
+            <div class="uti-analytics-table-wrap" id="utiPowerTable"></div>
+          </section>
+
+          <section class="uti-analytics-panel">
+            <div class="uti-analytics-panel-head">
+              <h3>Category Kings</h3>
+              <p>Best league-wide head-to-head win rate in each category.</p>
+            </div>
+            <div class="uti-analytics-table-wrap" id="utiCategoryTable"></div>
+          </section>
+        </div>
+      </details>
+    </section>
+  </main>
+
+  <script src="data/team-logos.js"></script>
+  <script src="data/weekly-team-stats.js"></script>
+  <script src="scripts/league-analytics.js"></script>
+  <script src="scripts/uti-intelligence.js"></script>
+</body>
+
+</html>
