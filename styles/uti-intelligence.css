@@ -1,0 +1,1646 @@
+.uti-intelligence-section {
+  position: relative;
+  overflow: hidden;
+  padding: 22px;
+  border-color: rgba(15, 23, 42, .08);
+  background:
+    radial-gradient(circle at 90% 0%, rgba(13, 110, 253, .10), transparent 28%),
+    radial-gradient(circle at 0% 100%, rgba(25, 135, 84, .08), transparent 28%),
+    #fff;
+}
+
+.uti-intelligence-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.uti-intelligence-heading .section-title {
+  margin-bottom: 3px;
+}
+
+.uti-intelligence-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.uti-intel-card {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  padding: 15px 16px 14px;
+  border: 1px solid rgba(15, 23, 42, .08);
+  border-radius: 16px;
+  background: linear-gradient(145deg, rgba(255,255,255,.98), rgba(248,250,252,.94));
+  box-shadow: 0 8px 22px rgba(15, 23, 42, .07);
+}
+
+.uti-intel-card::after {
+  position: absolute;
+  right: -20px;
+  bottom: -36px;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  content: "";
+  opacity: .09;
+  background: currentColor;
+}
+
+.uti-intel-card-top {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 10px;
+}
+
+.uti-intel-icon {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border-radius: 9px;
+  background: rgba(15, 23, 42, .05);
+  font-size: 1rem;
+}
+
+.uti-intel-label,
+.uti-intel-copy {
+  display: block;
+}
+
+.uti-intel-label {
+  color: #64748b;
+  font-size: .68rem;
+  font-weight: 900;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+
+.uti-intel-card-team {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  margin-bottom: 8px;
+}
+
+.uti-intel-card-logo {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, .15);
+}
+
+.uti-intel-team {
+  min-width: 0;
+  overflow: hidden;
+  font-size: .96rem;
+  line-height: 1.15;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.uti-intel-value {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 1.55rem;
+  font-weight: 950;
+  line-height: 1;
+  letter-spacing: -.025em;
+}
+
+.uti-intel-copy {
+  color: #64748b;
+  font-size: .69rem;
+  line-height: 1.25;
+}
+
+.uti-intel-card.is-leader { color: #198754; border-top: 4px solid #198754; }
+.uti-intel-card.is-power { color: #0d6efd; border-top: 4px solid #0d6efd; }
+.uti-intel-card.is-lucky { color: #d58a00; border-top: 4px solid #f0ad4e; }
+.uti-intel-card.is-unlucky { color: #dc3545; border-top: 4px solid #dc3545; }
+
+.uti-intel-card .uti-intel-label,
+.uti-intel-card .uti-intel-team,
+.uti-intel-card .uti-intel-copy {
+  color: #172033;
+}
+
+.uti-intel-card .uti-intel-copy { color: #64748b; }
+.uti-intel-error { grid-column: 1 / -1; }
+
+.uti-intelligence-details {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(15, 23, 42, .08);
+}
+
+.uti-intelligence-details > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  cursor: pointer;
+  list-style: none;
+  padding: 8px 2px 12px;
+}
+
+.uti-intelligence-details > summary::-webkit-details-marker { display: none; }
+.uti-intelligence-details > summary strong,
+.uti-intelligence-details > summary small { display: block; }
+.uti-intelligence-details > summary strong { font-size: .94rem; }
+.uti-intelligence-details > summary small {
+  margin-top: 3px;
+  color: #64748b;
+  font-size: .72rem;
+}
+
+.uti-intelligence-toggle {
+  flex: 0 0 auto;
+  border: 1px solid rgba(15, 23, 42, .10);
+  border-radius: 999px;
+  padding: 7px 11px;
+  background: #fff;
+  box-shadow: 0 2px 7px rgba(15, 23, 42, .05);
+  font-size: .7rem;
+  font-weight: 900;
+}
+
+.uti-intelligence-details[open] .uti-intelligence-toggle { font-size: 0; }
+.uti-intelligence-details[open] .uti-intelligence-toggle::after {
+  content: "Close";
+  font-size: .7rem;
+}
+
+.uti-analytics-inline-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  padding-top: 8px;
+}
+
+.uti-analytics-panel {
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid rgba(15, 23, 42, .08);
+  border-radius: 16px;
+  background: rgba(248, 250, 252, .86);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.9);
+}
+
+.uti-analytics-panel-head {
+  margin-bottom: 13px;
+}
+
+.uti-analytics-panel-head h3 {
+  margin: 0 0 3px;
+  font-size: 1rem;
+  font-weight: 850;
+}
+
+.uti-analytics-panel-head p {
+  margin: 0;
+  color: #64748b;
+  font-size: .7rem;
+  line-height: 1.35;
+}
+
+.uti-analytics-table-wrap {
+  width: 100%;
+  overflow: visible;
+}
+
+/* Team identity */
+.uti-team-identity {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.uti-team-logo {
+  width: 27px;
+  height: 27px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #fff;
+  box-shadow: 0 2px 7px rgba(15, 23, 42, .14);
+}
+
+.uti-team-name {
+  min-width: 0;
+  overflow: hidden;
+  font-size: .75rem;
+  font-weight: 750;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.uti-team-identity.is-compact .uti-team-logo {
+  width: 24px;
+  height: 24px;
+}
+
+.uti-team-identity.is-compact .uti-team-name {
+  font-size: .72rem;
+}
+
+/* Ranked bar charts */
+.uti-rank-chart {
+  display: grid;
+  gap: 7px;
+}
+
+.uti-rank-row {
+  display: grid;
+  grid-template-columns: 22px minmax(128px, 1.05fr) minmax(125px, 1.35fr) 48px;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 7px 8px;
+  border-radius: 11px;
+  transition: transform .15s ease, background .15s ease;
+}
+
+.uti-rank-row:hover {
+  transform: translateY(-1px);
+  background: rgba(255,255,255,.82);
+}
+
+.uti-rank-row.is-top-1 {
+  background: linear-gradient(90deg, rgba(255,193,7,.12), transparent 70%);
+}
+.uti-rank-row.is-top-2 {
+  background: linear-gradient(90deg, rgba(148,163,184,.12), transparent 70%);
+}
+.uti-rank-row.is-top-3 {
+  background: linear-gradient(90deg, rgba(180,110,55,.10), transparent 70%);
+}
+
+.uti-rank-number {
+  display: grid;
+  width: 22px;
+  height: 22px;
+  place-items: center;
+  border-radius: 7px;
+  background: rgba(15,23,42,.06);
+  color: #64748b;
+  font-size: .65rem;
+  font-weight: 900;
+}
+
+.uti-rank-bar-zone {
+  min-width: 0;
+}
+
+.uti-rank-bar-track {
+  position: relative;
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(148,163,184,.20);
+}
+
+.uti-rank-bar {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  box-shadow: 0 1px 5px rgba(15,23,42,.10);
+}
+
+.uti-bar-allplay {
+  background: linear-gradient(90deg, #198754, #44c28a);
+}
+
+.uti-bar-power {
+  background: linear-gradient(90deg, #0d6efd, #54a1ff);
+}
+
+.uti-rank-sub {
+  display: block;
+  margin-top: 4px;
+  overflow: hidden;
+  color: #7b8798;
+  font-size: .58rem;
+  line-height: 1.15;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.uti-rank-value {
+  justify-self: end;
+  font-size: .76rem;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Luck diverging chart */
+.uti-luck-chart {
+  display: grid;
+  gap: 7px;
+}
+
+.uti-luck-scale {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 8px;
+  padding: 0 50px 1px 166px;
+  color: #94a3b8;
+  font-size: .55rem;
+  font-weight: 800;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.uti-luck-scale span:nth-child(2) { text-align: center; }
+.uti-luck-scale span:last-child { text-align: right; }
+
+.uti-luck-row {
+  display: grid;
+  grid-template-columns: 22px minmax(128px, 1.05fr) minmax(140px, 1.35fr) 50px;
+  grid-template-areas:
+    "rank team plot value"
+    ". detail detail detail";
+  align-items: center;
+  gap: 5px 8px;
+  padding: 7px 8px;
+  border-radius: 11px;
+}
+
+.uti-luck-row:hover {
+  background: rgba(255,255,255,.82);
+}
+
+.uti-luck-row > .uti-rank-number { grid-area: rank; }
+.uti-luck-row > .uti-team-identity { grid-area: team; }
+
+.uti-luck-plot {
+  grid-area: plot;
+  position: relative;
+  height: 10px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(148,163,184,.16);
+}
+
+.uti-luck-zero {
+  position: absolute;
+  top: -2px;
+  bottom: -2px;
+  left: 50%;
+  width: 2px;
+  transform: translateX(-1px);
+  background: rgba(71,85,105,.42);
+  z-index: 2;
+}
+
+.uti-luck-bar {
+  position: absolute;
+  top: 1px;
+  bottom: 1px;
+  border-radius: 999px;
+}
+
+.uti-luck-bar.is-positive {
+  background: linear-gradient(90deg, #f0ad4e, #ffd27d);
+}
+
+.uti-luck-bar.is-negative {
+  background: linear-gradient(90deg, #ff7b86, #dc3545);
+}
+
+.uti-luck-value {
+  grid-area: value;
+  justify-self: end;
+  font-size: .76rem;
+  font-weight: 950;
+  font-variant-numeric: tabular-nums;
+}
+
+.uti-luck-value.is-positive { color: #b87500; }
+.uti-luck-value.is-negative { color: #dc3545; }
+
+.uti-luck-detail {
+  grid-area: detail;
+  color: #7b8798;
+  font-size: .57rem;
+  text-align: right;
+}
+
+/* Category king cards */
+.uti-category-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.uti-category-card {
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid rgba(15,23,42,.07);
+  border-radius: 12px;
+  background: rgba(255,255,255,.76);
+}
+
+.uti-category-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.uti-category-name {
+  display: inline-grid;
+  min-width: 34px;
+  height: 24px;
+  place-items: center;
+  padding: 0 7px;
+  border-radius: 7px;
+  background: #172033;
+  color: #fff;
+  font-size: .61rem;
+  font-weight: 900;
+  letter-spacing: .03em;
+}
+
+.uti-category-top strong {
+  color: #172033;
+  font-size: .68rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.uti-category-team {
+  min-width: 0;
+  margin-bottom: 8px;
+}
+
+.uti-category-meter {
+  height: 6px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(148,163,184,.18);
+}
+
+.uti-category-meter span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #172033, #0d6efd);
+}
+
+@media (max-width: 1050px) {
+  .uti-rank-row,
+  .uti-luck-row {
+    grid-template-columns: 22px minmax(110px, 1fr) minmax(110px, 1.2fr) 46px;
+  }
+
+  .uti-luck-scale {
+    padding-left: 150px;
+  }
+}
+
+@media (max-width: 800px) {
+  .uti-intelligence-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .uti-intelligence-heading {
+    align-items: flex-start;
+  }
+
+  .uti-analytics-inline-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .uti-intelligence-section {
+    padding: 16px 13px;
+  }
+
+  .uti-intelligence-heading {
+    gap: 8px;
+  }
+
+  .uti-intelligence-heading .section-subtitle {
+    font-size: .78rem;
+  }
+
+  .uti-intelligence-grid {
+    gap: 8px;
+  }
+
+  .uti-intel-card {
+    padding: 12px;
+    border-radius: 13px;
+  }
+
+  .uti-intel-icon {
+    width: 24px;
+    height: 24px;
+    font-size: .85rem;
+  }
+
+  .uti-intel-card-logo {
+    width: 24px;
+    height: 24px;
+  }
+
+  .uti-intel-team {
+    font-size: .8rem;
+  }
+
+  .uti-intel-value {
+    font-size: 1.15rem;
+  }
+
+  .uti-intel-copy {
+    font-size: .62rem;
+  }
+
+  .uti-intelligence-details > summary {
+    align-items: flex-start;
+  }
+
+  .uti-intelligence-details > summary small {
+    max-width: 235px;
+  }
+
+  .uti-analytics-panel {
+    padding: 11px 9px;
+  }
+
+  .uti-rank-row {
+    grid-template-columns: 20px minmax(92px, 1fr) minmax(76px, 1fr) 42px;
+    gap: 6px;
+    padding: 6px 4px;
+  }
+
+  .uti-team-logo {
+    width: 23px;
+    height: 23px;
+  }
+
+  .uti-team-name {
+    font-size: .65rem;
+  }
+
+  .uti-rank-sub {
+    display: none;
+  }
+
+  .uti-rank-value {
+    font-size: .67rem;
+  }
+
+  .uti-luck-scale {
+    display: none;
+  }
+
+  .uti-luck-row {
+    grid-template-columns: 20px minmax(92px, 1fr) minmax(70px, 1fr) 43px;
+    gap: 4px 6px;
+    padding: 6px 4px;
+  }
+
+  .uti-luck-detail {
+    font-size: .53rem;
+  }
+
+  .uti-category-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+
+  .uti-category-card {
+    padding: 8px;
+  }
+
+  .uti-category-name {
+    min-width: 31px;
+    height: 22px;
+    font-size: .57rem;
+  }
+
+  .uti-team-identity.is-compact .uti-team-name {
+    font-size: .61rem;
+  }
+}
+
+/* ---------- Team profile interactions ---------- */
+.uti-team-profile-trigger {
+  cursor: pointer;
+}
+
+.uti-team-profile-trigger:focus-visible {
+  outline: 3px solid rgba(13, 110, 253, .25);
+  outline-offset: 2px;
+}
+
+.uti-intel-card.uti-team-profile-trigger {
+  transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+}
+
+.uti-intel-card.uti-team-profile-trigger:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 13px 30px rgba(15, 23, 42, .12);
+}
+
+.uti-team-identity.uti-team-profile-trigger:hover .uti-team-name {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ---------- Team profile modal ---------- */
+body.uti-profile-open {
+  overflow: hidden;
+}
+
+.uti-profile-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(15, 23, 42, .62);
+  backdrop-filter: blur(7px);
+}
+
+.uti-profile-backdrop[hidden] {
+  display: none !important;
+}
+
+.uti-profile-modal {
+  position: relative;
+  width: min(920px, 100%);
+  max-height: min(860px, calc(100vh - 48px));
+  overflow-y: auto;
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 85% 0%, rgba(13,110,253,.16), transparent 31%),
+    radial-gradient(circle at 0% 95%, rgba(25,135,84,.10), transparent 28%),
+    #f8fafc;
+  box-shadow: 0 28px 80px rgba(0,0,0,.34);
+}
+
+.uti-profile-close {
+  position: sticky;
+  top: 14px;
+  z-index: 5;
+  float: right;
+  width: 38px;
+  height: 38px;
+  margin: 14px 14px -52px 0;
+  border: 1px solid rgba(15,23,42,.10);
+  border-radius: 50%;
+  background: rgba(255,255,255,.92);
+  box-shadow: 0 4px 14px rgba(15,23,42,.12);
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+}
+
+#utiTeamProfileContent {
+  padding: 24px;
+}
+
+.uti-profile-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 8px 54px 20px 0;
+}
+
+.uti-profile-team-block {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.uti-profile-logo {
+  width: 68px;
+  height: 68px;
+  flex: 0 0 auto;
+  border-radius: 18px;
+  object-fit: cover;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(15,23,42,.16);
+}
+
+.uti-profile-kicker {
+  display: block;
+  margin-bottom: 4px;
+  color: #0d6efd;
+  font-size: .68rem;
+  font-weight: 950;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+
+.uti-profile-team-block h2 {
+  margin: 0 0 7px;
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  font-weight: 950;
+  line-height: 1;
+  letter-spacing: -.03em;
+}
+
+.uti-profile-verdict {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: #172033;
+  color: #fff;
+  font-size: .7rem;
+  font-weight: 900;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+}
+
+.uti-profile-power-badge {
+  flex: 0 0 auto;
+  min-width: 118px;
+  padding: 12px 14px;
+  border: 1px solid rgba(13,110,253,.12);
+  border-radius: 16px;
+  background: rgba(255,255,255,.84);
+  text-align: center;
+  box-shadow: 0 8px 22px rgba(15,23,42,.06);
+}
+
+.uti-profile-power-badge span,
+.uti-profile-power-badge small {
+  display: block;
+}
+
+.uti-profile-power-badge span {
+  color: #64748b;
+  font-size: .62rem;
+  font-weight: 900;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.uti-profile-power-badge strong {
+  display: block;
+  margin: 2px 0;
+  color: #0d6efd;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.uti-profile-power-badge small {
+  color: #64748b;
+  font-size: .62rem;
+  font-weight: 700;
+}
+
+.uti-profile-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.uti-profile-stat-grid article {
+  min-width: 0;
+  padding: 13px;
+  border: 1px solid rgba(15,23,42,.08);
+  border-radius: 14px;
+  background: rgba(255,255,255,.82);
+}
+
+.uti-profile-stat-grid span,
+.uti-profile-stat-grid small {
+  display: block;
+}
+
+.uti-profile-stat-grid span {
+  margin-bottom: 4px;
+  color: #64748b;
+  font-size: .62rem;
+  font-weight: 900;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+.uti-profile-stat-grid strong {
+  display: block;
+  margin-bottom: 3px;
+  font-size: 1.22rem;
+  font-weight: 950;
+}
+
+.uti-profile-stat-grid strong.is-positive {
+  color: #b87500;
+}
+
+.uti-profile-stat-grid strong.is-negative {
+  color: #dc3545;
+}
+
+.uti-profile-stat-grid small {
+  color: #7b8798;
+  font-size: .62rem;
+}
+
+.uti-profile-split-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.uti-profile-split-card {
+  padding: 14px;
+  border: 1px solid rgba(15,23,42,.08);
+  border-radius: 15px;
+  background: #fff;
+}
+
+.uti-profile-split-card.is-hitting {
+  background: linear-gradient(135deg, rgba(25,135,84,.08), #fff 58%);
+}
+
+.uti-profile-split-card.is-pitching {
+  background: linear-gradient(135deg, rgba(13,110,253,.08), #fff 58%);
+}
+
+.uti-profile-card-label {
+  color: #64748b;
+  font-size: .62rem;
+  font-weight: 950;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.uti-profile-rank-line {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 5px 0 8px;
+}
+
+.uti-profile-rank-line strong {
+  font-size: 1.55rem;
+  line-height: 1;
+}
+
+.uti-profile-rank-line span {
+  color: #64748b;
+  font-size: .74rem;
+  font-weight: 800;
+}
+
+.uti-profile-meter {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(148,163,184,.18);
+}
+
+.uti-profile-meter span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+}
+
+.uti-profile-split-card.is-hitting .uti-profile-meter span {
+  background: linear-gradient(90deg, #198754, #4cd69a);
+}
+
+.uti-profile-split-card.is-pitching .uti-profile-meter span {
+  background: linear-gradient(90deg, #0d6efd, #58a8ff);
+}
+
+.uti-profile-section {
+  margin-bottom: 12px;
+  padding: 15px;
+  border: 1px solid rgba(15,23,42,.08);
+  border-radius: 16px;
+  background: rgba(255,255,255,.78);
+}
+
+.uti-profile-section-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 13px;
+}
+
+.uti-profile-section-head h3 {
+  margin: 2px 0 0;
+  font-size: 1rem;
+}
+
+.uti-profile-form {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.uti-form-chip {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border-radius: 9px;
+  font-size: .72rem;
+  font-weight: 950;
+  line-height: .85;
+}
+
+.uti-form-chip small {
+  display: block;
+  font-size: .48rem;
+  font-weight: 800;
+}
+
+.uti-form-chip.is-w {
+  background: rgba(25,135,84,.12);
+  color: #198754;
+}
+
+.uti-form-chip.is-l {
+  background: rgba(220,53,69,.11);
+  color: #dc3545;
+}
+
+.uti-form-chip.is-t {
+  background: rgba(108,117,125,.12);
+  color: #6c757d;
+}
+
+.uti-profile-trend {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(34px, 1fr));
+  align-items: end;
+  gap: 5px;
+  min-height: 122px;
+  padding: 8px 3px 0;
+}
+
+.uti-profile-trend-item {
+  display: grid;
+  grid-template-rows: 74px auto auto;
+  gap: 3px;
+  align-items: end;
+  min-width: 0;
+  text-align: center;
+}
+
+.uti-profile-trend-bar-wrap {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: 74px;
+  overflow: hidden;
+  border-radius: 7px 7px 4px 4px;
+  background: rgba(148,163,184,.11);
+}
+
+.uti-profile-trend-bar {
+  display: block;
+  width: 100%;
+  min-height: 8px;
+  border-radius: 7px 7px 3px 3px;
+  background: linear-gradient(180deg, #0d6efd, #73b6ff);
+}
+
+.uti-profile-trend-item strong {
+  font-size: .64rem;
+}
+
+.uti-profile-trend-item small {
+  color: #94a3b8;
+  font-size: .52rem;
+}
+
+.uti-profile-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.uti-profile-detail-card {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid rgba(15,23,42,.07);
+  border-radius: 14px;
+  background: rgba(255,255,255,.82);
+}
+
+.uti-profile-detail-card span,
+.uti-profile-detail-card strong,
+.uti-profile-detail-card small {
+  display: block;
+}
+
+.uti-profile-detail-card span {
+  margin-bottom: 5px;
+  color: #64748b;
+  font-size: .61rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.uti-profile-detail-card strong {
+  margin-bottom: 3px;
+  overflow: hidden;
+  font-size: .88rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.uti-profile-detail-card small {
+  color: #7b8798;
+  font-size: .59rem;
+  line-height: 1.25;
+}
+
+.uti-profile-detail-card.is-best,
+.uti-profile-detail-card.is-best-cat {
+  border-top: 3px solid #198754;
+}
+
+.uti-profile-detail-card.is-worst,
+.uti-profile-detail-card.is-worst-cat {
+  border-top: 3px solid #dc3545;
+}
+
+.uti-profile-footer-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 11px;
+}
+
+.uti-profile-footer-stats span {
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: rgba(15,23,42,.06);
+  color: #64748b;
+  font-size: .65rem;
+  font-weight: 750;
+}
+
+.uti-profile-footer-stats strong {
+  color: #172033;
+}
+
+@media (max-width: 720px) {
+  .uti-profile-backdrop {
+    align-items: end;
+    padding: 0;
+  }
+
+  .uti-profile-modal {
+    width: 100%;
+    max-height: 92vh;
+    border-radius: 22px 22px 0 0;
+  }
+
+  #utiTeamProfileContent {
+    padding: 18px 14px 24px;
+  }
+
+  .uti-profile-hero {
+    align-items: flex-start;
+    padding-right: 42px;
+  }
+
+  .uti-profile-logo {
+    width: 54px;
+    height: 54px;
+    border-radius: 15px;
+  }
+
+  .uti-profile-team-block {
+    align-items: flex-start;
+  }
+
+  .uti-profile-power-badge {
+    min-width: 94px;
+    padding: 10px;
+  }
+
+  .uti-profile-power-badge strong {
+    font-size: 1.55rem;
+  }
+
+  .uti-profile-stat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .uti-profile-detail-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .uti-profile-hero {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .uti-profile-power-badge {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    align-items: baseline;
+    gap: 8px;
+    width: 100%;
+    text-align: left;
+  }
+
+  .uti-profile-power-badge strong {
+    margin-left: auto;
+  }
+
+  .uti-profile-split-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .uti-profile-section-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .uti-profile-trend {
+    overflow-x: auto;
+    grid-template-columns: repeat(var(--weeks, 16), 34px);
+    justify-content: start;
+  }
+
+  .uti-profile-detail-grid {
+    gap: 7px;
+  }
+}
+
+
+/* ---------- Historical season display ---------- */
+.uti-history-snapshot {
+  margin-top: 12px;
+  padding: 14px;
+  border: 1px solid rgba(13, 110, 253, .10);
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(13,110,253,.065), rgba(255,255,255,.96) 48%, rgba(25,135,84,.045));
+}
+
+.uti-history-snapshot-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.uti-history-snapshot-head strong,
+.uti-history-snapshot-head small,
+.uti-history-eyebrow {
+  display: block;
+}
+
+.uti-history-eyebrow {
+  margin-bottom: 2px;
+  color: #0d6efd;
+  font-size: .62rem;
+  font-weight: 950;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.uti-history-snapshot-head strong {
+  color: #172033;
+  font-size: .95rem;
+}
+
+.uti-history-snapshot-head small {
+  margin-top: 2px;
+  color: #64748b;
+  font-size: .64rem;
+}
+
+.uti-history-chip {
+  flex: 0 0 auto;
+  padding: 6px 9px;
+  border-radius: 999px;
+  background: #172033;
+  color: #fff;
+  font-size: .6rem;
+  font-weight: 850;
+}
+
+.uti-history-snapshot-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.uti-history-snapshot-grid article {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "label value"
+    "team value";
+  align-items: center;
+  gap: 4px 8px;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid rgba(15,23,42,.07);
+  border-radius: 12px;
+  background: rgba(255,255,255,.82);
+}
+
+.uti-history-snapshot-grid article > span {
+  grid-area: label;
+  color: #64748b;
+  font-size: .58rem;
+  font-weight: 900;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+}
+
+.uti-history-snapshot-grid article > .uti-team-identity {
+  grid-area: team;
+}
+
+.uti-history-snapshot-grid article > strong {
+  grid-area: value;
+  color: #0d6efd;
+  font-size: .84rem;
+  font-weight: 950;
+}
+
+.uti-history-snapshot > p {
+  margin: 10px 0 0;
+  color: #64748b;
+  font-size: .64rem;
+}
+
+.uti-profile-season-tabs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+  margin: 0 52px 14px 0;
+  padding: 5px;
+  border: 1px solid rgba(15,23,42,.08);
+  border-radius: 14px;
+  background: rgba(226,232,240,.55);
+}
+
+.uti-profile-season-tabs button {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 7px;
+  min-height: 42px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: #64748b;
+  cursor: pointer;
+}
+
+.uti-profile-season-tabs button strong {
+  font-size: .88rem;
+}
+
+.uti-profile-season-tabs button span {
+  font-size: .59rem;
+  font-weight: 750;
+}
+
+.uti-profile-season-tabs button.is-active {
+  background: #fff;
+  color: #172033;
+  box-shadow: 0 3px 10px rgba(15,23,42,.10);
+}
+
+.uti-profile-season-tabs button.is-active strong {
+  color: #0d6efd;
+}
+
+.uti-profile-source-note {
+  display: block;
+  margin-top: 6px;
+  color: #64748b;
+  font-size: .61rem;
+  font-weight: 700;
+}
+
+.uti-history-notice {
+  display: flex;
+  gap: 9px;
+  margin: -2px 0 12px;
+  padding: 9px 11px;
+  border: 1px solid rgba(13,110,253,.10);
+  border-radius: 11px;
+  background: rgba(13,110,253,.055);
+  color: #526174;
+  font-size: .62rem;
+  line-height: 1.35;
+}
+
+.uti-history-notice strong {
+  flex: 0 0 auto;
+  color: #0d6efd;
+}
+
+/* Keep team artwork compact everywhere in the analytics UI. */
+.uti-team-logo {
+  width: 22px !important;
+  height: 22px !important;
+  flex: 0 0 22px !important;
+  object-fit: cover !important;
+}
+
+.uti-team-identity.is-compact .uti-team-logo {
+  width: 20px !important;
+  height: 20px !important;
+  flex-basis: 20px !important;
+}
+
+.uti-intel-card-logo {
+  width: 24px !important;
+  height: 24px !important;
+  flex: 0 0 24px !important;
+  object-fit: cover !important;
+}
+
+.uti-profile-logo {
+  width: 48px !important;
+  height: 48px !important;
+  flex: 0 0 48px !important;
+  border-radius: 14px !important;
+  object-fit: cover !important;
+}
+
+@media (max-width: 620px) {
+  .uti-history-snapshot-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .uti-history-snapshot-grid article {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .uti-profile-season-tabs {
+    margin-right: 42px;
+  }
+
+  .uti-profile-season-tabs button {
+    align-items: center;
+    flex-direction: column;
+    gap: 0;
+    padding: 5px;
+  }
+
+  .uti-history-notice {
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .uti-profile-logo {
+    width: 42px !important;
+    height: 42px !important;
+    flex-basis: 42px !important;
+  }
+}
+
+
+/* ---------- Team names across the homepage ---------- */
+.uti-global-team-profile-link {
+  cursor: pointer !important;
+}
+
+a.uti-global-team-profile-link:hover,
+.uti-global-team-profile-link:not(.tag):hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.uti-global-team-profile-link:focus-visible {
+  outline: 3px solid rgba(13, 110, 253, .24);
+  outline-offset: 3px;
+  border-radius: 5px;
+}
+
+.tag.uti-global-team-profile-link:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, .10);
+}
+
+
+/* ---------- Homepage UTI Intelligence preview ---------- */
+.uti-intelligence-preview-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-top: 14px;
+  padding: 13px 14px;
+  border: 1px solid rgba(13,110,253,.12);
+  border-radius: 14px;
+  background: linear-gradient(90deg, rgba(13,110,253,.07), rgba(255,255,255,.92));
+}
+
+.uti-intelligence-preview-cta strong,
+.uti-intelligence-preview-cta span {
+  display: block;
+}
+
+.uti-intelligence-preview-cta strong {
+  color: #172033;
+  font-size: .88rem;
+}
+
+.uti-intelligence-preview-cta > div > span {
+  margin-top: 3px;
+  color: #64748b;
+  font-size: .68rem;
+  line-height: 1.35;
+}
+
+.uti-intelligence-page-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  flex: 0 0 auto;
+  min-height: 42px;
+  padding: 9px 13px;
+  border-radius: 999px;
+  background: #172033;
+  color: #fff !important;
+  font-size: .7rem;
+  font-weight: 900;
+  text-decoration: none !important;
+  box-shadow: 0 6px 16px rgba(15,23,42,.13);
+}
+
+.uti-intelligence-page-link:hover {
+  transform: translateY(-1px);
+}
+
+/* ---------- Standalone UTI Intelligence page ---------- */
+.uti-intelligence-page-body {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 92% 0%, rgba(13,110,253,.10), transparent 27%),
+    #eef3f7;
+}
+
+.uti-intelligence-page-shell {
+  width: min(1280px, calc(100% - 28px));
+  margin: 0 auto;
+  padding: 18px 0 48px;
+}
+
+.uti-intelligence-page-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.uti-intelligence-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #172033;
+  font-size: .76rem;
+  font-weight: 850;
+  text-decoration: none;
+}
+
+.uti-intelligence-back-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.uti-intelligence-page-badge {
+  padding: 6px 9px;
+  border: 1px solid rgba(15,23,42,.08);
+  border-radius: 999px;
+  background: rgba(255,255,255,.82);
+  color: #64748b;
+  font-size: .62rem;
+  font-weight: 800;
+}
+
+.uti-intelligence-page-hero {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 14px;
+  padding: 24px;
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 86% 0%, rgba(13,110,253,.18), transparent 29%),
+    linear-gradient(135deg, #111827, #172033 62%, #0d3159);
+  color: #fff;
+  box-shadow: 0 14px 36px rgba(15,23,42,.14);
+}
+
+.uti-intelligence-page-hero .kicker {
+  margin-bottom: 7px;
+  color: #7fc3ff;
+  font-size: .68rem;
+  font-weight: 950;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+}
+
+.uti-intelligence-page-hero h1 {
+  margin: 0;
+  font-size: clamp(1.9rem, 6vw, 3.4rem);
+  font-weight: 950;
+  line-height: .98;
+  letter-spacing: -.04em;
+}
+
+.uti-intelligence-page-hero p {
+  max-width: 760px;
+  margin: 10px 0 0;
+  color: rgba(255,255,255,.76);
+  font-size: .88rem;
+  line-height: 1.5;
+}
+
+.uti-intelligence-page-hero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 15px;
+}
+
+.uti-intelligence-page-hero-stats span {
+  padding: 6px 9px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 999px;
+  background: rgba(255,255,255,.07);
+  color: rgba(255,255,255,.84);
+  font-size: .61rem;
+  font-weight: 800;
+}
+
+.uti-intelligence-page-shell .uti-intelligence-section {
+  margin: 0;
+}
+
+.uti-intelligence-page-shell .uti-intelligence-details {
+  margin-top: 18px;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.uti-intelligence-page-shell .uti-intelligence-details > summary {
+  display: none;
+}
+
+.uti-intelligence-page-shell .uti-analytics-inline-grid {
+  padding-top: 0;
+}
+
+@media (max-width: 620px) {
+  .uti-intelligence-preview-cta {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .uti-intelligence-page-link {
+    width: 100%;
+  }
+
+  .uti-intelligence-page-shell {
+    width: min(100% - 16px, 1280px);
+    padding-top: 9px;
+  }
+
+  .uti-intelligence-page-hero {
+    padding: 20px 16px;
+    border-radius: 18px;
+  }
+
+  .uti-intelligence-page-nav {
+    padding: 0 4px;
+  }
+}

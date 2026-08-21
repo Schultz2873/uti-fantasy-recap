@@ -1,0 +1,21 @@
+﻿season,source,week,team,source_team_name,opponent,source_opponent_name,H,AB,R,HR,RBI,BB,SO,TB,AVG,NSB,IP,W,L,K,ERA,WHIP,QS,BSV,SVH,official_score_for,official_score_against
+2025,yahoo,1,Gunnarrhea,Acuña Handle the Gunnarrhea?,BTA Boyz,Yoshida Yo Pants 💩,117,470,63,18,60,43,132,200,0.249,5,129.2,7,7,146,4.16,1.1,5,1,6,6,7
+2025,yahoo,1,BTA Boyz,Yoshida Yo Pants 💩,Gunnarrhea,Acuña Handle the Gunnarrhea?,89,436,67,25,72,53,119,183,0.204,5,98.2,9,7,89,4.2,1.19,5,0,0,7,6
+2025,yahoo,1,Me So Heorny,Me So Heorny,This Is Mizerable,This Is Mizerable,115,478,69,12,65,55,110,165,0.241,9,122.1,9,4,140,3.68,1.14,6,1,12,14,1
+2025,yahoo,1,This Is Mizerable,This Is Mizerable,Me So Heorny,Me So Heorny,102,480,56,9,51,49,118,155,0.213,9,81.0,7,6,72,3.33,1.16,5,2,7,1,14
+2025,yahoo,1,You Don't Know Bo,You Don't Kno Bo,Goodyear Gila Monsters,Goodyear Gila Monsters,105,497,55,13,40,56,128,166,0.211,-2,79.0,3,3,72,3.65,1.46,3,0,9,3,12
+2025,yahoo,1,Goodyear Gila Monsters,Goodyear Gila Monsters,You Don't Know Bo,You Don't Kno Bo,158,507,95,26,92,56,114,277,0.312,23,105.1,6,9,95,3.16,1.16,7,1,4,12,3
+2025,yahoo,1,Mactown MacDaddies,Mactown MacDaddies,John's Super Team,John's Super Team,120,460,70,20,66,51,118,208,0.261,4,91.2,5,8,83,4.52,1.28,7,2,3,12,4
+2025,yahoo,1,John's Super Team,John's Super Team,Mactown MacDaddies,Mactown MacDaddies,110,479,65,16,59,46,125,181,0.23,15,54.0,2,6,61,5.67,1.69,1,1,7,4,12
+2025,yahoo,1,Dixon Cider,Dixon Cider,BB's Bold Team,BB's Bold Team,119,473,72,24,73,64,113,220,0.252,3,132.0,7,8,120,4.16,1.29,8,1,5,5,10
+2025,yahoo,1,BB's Bold Team,BB's Bold Team,Dixon Cider,Dixon Cider,128,520,93,33,86,49,111,249,0.246,17,68.2,5,1,94,3.41,1.06,1,0,5,10,5
+2025,yahoo,2,Gunnarrhea,Acuña Handle the Gunnarrhea?,Dixon Cider,Dixon Cider,76,302,35,11,38,34,68,125,0.252,10,97.0,8,4,96,2.69,1.0,7,0,2,6,7
+2025,yahoo,2,Dixon Cider,Dixon Cider,Gunnarrhea,Acuña Handle the Gunnarrhea?,70,269,35,10,31,34,58,119,0.26,6,80.0,5,1,84,1.69,0.96,8,0,7,7,6
+2025,yahoo,2,Me So Heorny,Me So Heorny,John's Super Team,John's Super Team,71,299,32,10,35,30,72,118,0.237,3,67.0,2,5,63,4.03,1.19,3,0,3,7,7
+2025,yahoo,2,John's Super Team,John's Super Team,Me So Heorny,Me So Heorny,72,295,51,9,37,29,64,124,0.244,5,30.1,0,5,21,6.23,1.48,1,0,6,7,7
+2025,yahoo,2,You Don't Know Bo,You Don't Kno Bo,Mactown MacDaddies,Mactown MacDaddies,66,290,34,10,35,23,83,109,0.228,1,52.2,4,4,59,2.73,1.06,2,1,1,5,11
+2025,yahoo,2,Mactown MacDaddies,Mactown MacDaddies,You Don't Know Bo,You Don't Kno Bo,64,265,27,6,19,34,82,94,0.242,10,70.1,5,2,62,2.69,1.11,6,0,3,11,5
+2025,yahoo,2,BB's Bold Team,BB's Bold Team,Goodyear Gila Monsters,Goodyear Gila Monsters,73,304,43,11,36,29,69,126,0.24,5,36.2,5,2,32,3.93,1.2,2,1,2,6,10
+2025,yahoo,2,Goodyear Gila Monsters,Goodyear Gila Monsters,BB's Bold Team,BB's Bold Team,70,306,37,10,37,31,73,113,0.229,4,60.2,7,0,79,2.23,1.02,4,0,4,10,6
+2025,yahoo,2,This Is Mizerable,This Is Mizerable,BTA Boyz,Yoshida Yo Pants 💩,66,284,39,8,32,39,61,101,0.232,13,64.0,3,5,57,3.66,1.28,4,1,7,7,8
+2025,yahoo,2,BTA Boyz,Yoshida Yo Pants 💩,This Is Mizerable,This Is Mizerable,43,233,23,11,37,23,61,83,0.185,1,62.1,1,4,65,3.61,1.11,5,0,0,8,7
