@@ -16,6 +16,10 @@
   <main class="uti-intelligence-page-shell">
     <nav class="uti-intelligence-page-nav" aria-label="UTI Intelligence navigation">
       <a class="uti-intelligence-back-link" href="index.html">← Back to UTI Home</a>
+      <div class="uti-page-nav-links">
+        <a class="is-active" href="uti-intelligence.html">Intelligence</a>
+        <a href="history.html">History</a>
+      </div>
       <span class="uti-intelligence-page-badge">Union of Ten Idiots</span>
     </nav>
 
@@ -23,12 +27,12 @@
       <div class="kicker">The Stuff Fantrax Doesn't Show</div>
       <h1>UTI Intelligence</h1>
       <p>
-        All-play strength, schedule luck, power rankings, category dominance, historical Yahoo data,
-        and team profiles — the actual nerd department of the UTI.
+        All-play strength, schedule luck, power rankings, category dominance, and current-season team profiles —
+        the actual nerd department of the UTI.
       </p>
       <div class="uti-intelligence-page-hero-stats">
-        <span>2026 Fantrax · Weeks 1–19</span>
-        <span>2025 Yahoo history · importing now</span>
+        <span id="utiCurrentSeasonBadge">2026 Fantrax · loading</span>
+        <span>Current-season analytics</span>
         <span>Click any team to open its profile</span>
       </div>
     </header>
@@ -97,6 +101,28 @@
         </div>
       </details>
     </section>
+
+    <section class="section-card uti-history-teaser-section" id="uti-history-teaser">
+      <div class="uti-intelligence-heading">
+        <div>
+          <div class="section-eyebrow">From the Archives</div>
+          <h2 class="section-title">UTI History has its own home now</h2>
+          <p class="section-subtitle">
+            Historical seasons, year-over-year franchise trends, old All-Play, Power, Luck, and category dominance live in the archive.
+          </p>
+        </div>
+        <a class="uti-history-page-cta" href="history.html">Open UTI History →</a>
+      </div>
+
+      <div class="uti-history-teaser-grid" id="utiHistoryTeaserGrid">
+        <article class="uti-history-teaser-card">
+          <span>Loading history</span>
+          <strong>2025 Yahoo</strong>
+          <small>Calculating the archive...</small>
+        </article>
+      </div>
+    </section>
+
   </main>
 
   <script src="data/team-logos.js"></script>

@@ -69,19 +69,20 @@
       .replaceAll("'", "&#039;");
   }
 
-  function teamIdentity(team, compact = false) {
+  function teamIdentity(team, compact = false, season = "2026") {
     const safeTeam = escapeHtml(team);
+    const safeSeason = escapeHtml(season);
     return `
-      <span class="uti-team-identity uti-team-profile-trigger ${compact ? "is-compact" : ""}" data-team-profile="${safeTeam}" role="button" tabindex="0" aria-label="Open ${safeTeam} profile">
+      <span class="uti-team-identity uti-team-profile-trigger ${compact ? "is-compact" : ""}" data-team-profile="${safeTeam}" data-profile-open-season="${safeSeason}" role="button" tabindex="0" aria-label="Open ${safeTeam} profile">
         <img class="uti-team-logo" src="${logoFor(team)}" alt="" loading="lazy">
         <span class="uti-team-name">${safeTeam}</span>
       </span>
     `;
   }
 
-  function metricCard({ icon, eyebrow, team, value, copy, tone = "" }) {
+  function metricCard({ icon, eyebrow, team, value, copy, tone = "", season = "2026" }) {
     return `
-      <article class="uti-intel-card uti-team-profile-trigger ${tone}" data-team-profile="${escapeHtml(team)}" role="button" tabindex="0" aria-label="Open ${escapeHtml(team)} profile">
+      <article class="uti-intel-card uti-team-profile-trigger ${tone}" data-team-profile="${escapeHtml(team)}" data-profile-open-season="${escapeHtml(season)}" role="button" tabindex="0" aria-label="Open ${escapeHtml(team)} profile">
         <div class="uti-intel-card-top">
           <span class="uti-intel-icon" aria-hidden="true">${icon}</span>
           <span class="uti-intel-label">${eyebrow}</span>
@@ -96,7 +97,7 @@
     `;
   }
 
-  function renderAllPlayChart(allPlay) {
+  function renderAllPlayChart(allPlay, season = "2026") {
     const maxPct = Math.max(...allPlay.map(row => Number(row.winPct || 0)), 0.01);
 
     return `
@@ -107,7 +108,7 @@
           return `
             <div class="uti-rank-row">
               <span class="uti-rank-number">${index + 1}</span>
-              ${teamIdentity(row.team)}
+              ${teamIdentity(row.team, false, season)}
               <div class="uti-rank-bar-zone">
                 <div class="uti-rank-bar-track">
                   <span class="uti-rank-bar uti-bar-allplay" style="width:${width.toFixed(1)}%"></span>
@@ -122,7 +123,7 @@
     `;
   }
 
-  function renderPowerChart(powerRankings) {
+  function renderPowerChart(powerRankings, season = "2026") {
     return `
       <div class="uti-rank-chart">
         ${powerRankings.map((row, index) => {
@@ -130,7 +131,7 @@
           return `
             <div class="uti-rank-row ${index < 3 ? `is-top-${index + 1}` : ""}">
               <span class="uti-rank-number">${index + 1}</span>
-              ${teamIdentity(row.team)}
+              ${teamIdentity(row.team, false, season)}
               <div class="uti-rank-bar-zone">
                 <div class="uti-rank-bar-track">
                   <span class="uti-rank-bar uti-bar-power" style="width:${Math.max(3, rating).toFixed(1)}%"></span>
@@ -147,7 +148,7 @@
     `;
   }
 
-  function renderLuckChart(luckIndex) {
+  function renderLuckChart(luckIndex, season = "2026") {
     const maxAbs = Math.max(...luckIndex.map(row => Math.abs(Number(row.luck || 0))), 0.01);
 
     return `
@@ -165,7 +166,7 @@
           return `
             <div class="uti-luck-row">
               <span class="uti-rank-number">${index + 1}</span>
-              ${teamIdentity(row.team)}
+              ${teamIdentity(row.team, false, season)}
               <div class="uti-luck-plot">
                 <span class="uti-luck-zero"></span>
                 <span
@@ -186,7 +187,7 @@
     `;
   }
 
-  function renderCategoryChart(data) {
+  function renderCategoryChart(data, season = "2026") {
     return `
       <div class="uti-category-grid">
         ${data.categories.map(category => {
@@ -199,7 +200,7 @@
                 <strong>${formatPct(pct)}</strong>
               </div>
               <div class="uti-category-team">
-                ${teamIdentity(king?.team || "—", true)}
+                ${teamIdentity(king?.team || "—", true, season)}
               </div>
               <div class="uti-category-meter">
                 <span style="width:${Math.max(3, pct * 100).toFixed(1)}%"></span>
@@ -212,6 +213,533 @@
   }
 
 
+
+
+  function sortedAllPlayFor(data) {
+    if (!data) return [];
+    return Object.entries(data.allPlayRecords || {})
+      .map(([team, record]) => ({ team, ...record }))
+      .sort((a, b) => b.winPct - a.winPct || b.points - a.points || a.team.localeCompare(b.team));
+  }
+
+  function powerMapFor(data) {
+    return Object.fromEntries((data?.powerRankings || []).map(row => [row.team, row]));
+  }
+
+  function allPlayMapFor(data) {
+    return Object.fromEntries(sortedAllPlayFor(data).map(row => [row.team, row]));
+  }
+
+  function renderFranchiseTrend(currentData, historyData) {
+    if (!currentData || !historyData) return "";
+
+    const currentPower = powerMapFor(currentData);
+    const historyPower = powerMapFor(historyData);
+    const currentAllPlay = allPlayMapFor(currentData);
+    const historyAllPlay = allPlayMapFor(historyData);
+
+    const teams = [...new Set([
+      ...Object.keys(currentPower),
+      ...Object.keys(historyPower),
+      ...Object.keys(currentAllPlay),
+      ...Object.keys(historyAllPlay)
+    ])];
+
+    teams.sort((a, b) => {
+      const aRating = Number(currentPower[a]?.rating || 0);
+      const bRating = Number(currentPower[b]?.rating || 0);
+      return bRating - aRating || a.localeCompare(b);
+    });
+
+    return `
+      <div class="uti-franchise-trend-table">
+        <div class="uti-franchise-trend-row is-head">
+          <span>Franchise</span>
+          <span>2025 All-Play %</span>
+          <span>2026 All-Play %</span>
+          <span>All-Play Change</span>
+          <span>2025 Power Rating</span>
+          <span>2026 Power Rating</span>
+          <span>Power Change</span>
+        </div>
+
+        ${teams.map(team => {
+          const ap25 = Number(historyAllPlay[team]?.winPct || 0);
+          const ap26 = Number(currentAllPlay[team]?.winPct || 0);
+          const power25 = Number(historyPower[team]?.rating || 0) * 100;
+          const power26 = Number(currentPower[team]?.rating || 0) * 100;
+          const apDelta = (ap26 - ap25) * 100;
+          const powerDelta = power26 - power25;
+
+          const deltaClass = value => value > 0.001 ? "is-up" : value < -0.001 ? "is-down" : "is-flat";
+          const signedOne = value => `${value > 0 ? "+" : ""}${value.toFixed(1)}`;
+
+          return `
+            <div class="uti-franchise-trend-row">
+              <div class="uti-franchise-trend-team">
+                ${teamIdentity(team, false, "2026")}
+              </div>
+              <strong>${formatPct(ap25)}</strong>
+              <strong>${formatPct(ap26)}</strong>
+              <span class="uti-history-delta ${deltaClass(apDelta)}">${signedOne(apDelta)} pts</span>
+              <strong>${power25.toFixed(1)}</strong>
+              <strong>${power26.toFixed(1)}</strong>
+              <span class="uti-history-delta ${deltaClass(powerDelta)}">${signedOne(powerDelta)}</span>
+            </div>
+          `;
+        }).join("")}
+      </div>
+    `;
+  }
+
+  function renderHistoricalBoard() {
+    if (!yahoo2025Analytics) return;
+
+    const historyGrid = document.getElementById("utiHistoryGrid");
+    const historyRange = document.getElementById("utiHistoryRange");
+    const historyBadge = document.getElementById("utiHistorySeasonBadge");
+
+    const weeks = yahoo2025Analytics.weeks || [];
+    const allPlay = sortedAllPlayFor(yahoo2025Analytics);
+    const power = yahoo2025Analytics.powerRankings || [];
+    const luck = yahoo2025Analytics.luckIndex || [];
+
+    if (historyRange && weeks.length) {
+      historyRange.textContent = `Weeks ${weeks[0]}–${weeks[weeks.length - 1]}`;
+    }
+
+    if (historyBadge && weeks.length) {
+      historyBadge.textContent = `2025 Yahoo · Weeks ${weeks[0]}–${weeks[weeks.length - 1]}`;
+    }
+
+    if (historyGrid) {
+      const leader = allPlay[0];
+      const powerLeader = power[0];
+      const luckiest = luck[0];
+      const unluckiest = luck[luck.length - 1];
+
+      historyGrid.innerHTML = [
+        metricCard({
+          icon: "🏛️",
+          eyebrow: "2025 All-Play King",
+          team: leader?.team || "—",
+          value: leader ? formatRecord(leader) : "—",
+          copy: leader ? `${formatPct(leader.winPct)} against the 2025 league` : "Waiting for data",
+          tone: "is-history",
+          season: "2025"
+        }),
+        metricCard({
+          icon: "📼",
+          eyebrow: "2025 Power #1",
+          team: powerLeader?.team || "—",
+          value: powerLeader ? `${(powerLeader.rating * 100).toFixed(1)} / 100` : "—",
+          copy: "2025 all-play · categories · recent form",
+          tone: "is-history",
+          season: "2025"
+        }),
+        metricCard({
+          icon: "🍀",
+          eyebrow: "2025 Luckiest",
+          team: luckiest?.team || "—",
+          value: luckiest ? formatSigned(luckiest.luck) : "—",
+          copy: "Wins above 2025 all-play expectation",
+          tone: "is-history",
+          season: "2025"
+        }),
+        metricCard({
+          icon: "🪦",
+          eyebrow: "2025 Unluckiest",
+          team: unluckiest?.team || "—",
+          value: unluckiest ? formatSigned(unluckiest.luck) : "—",
+          copy: "Wins below 2025 all-play expectation",
+          tone: "is-history",
+          season: "2025"
+        })
+      ].join("");
+    }
+
+    const historyAllPlayTable = document.getElementById("utiHistoryAllPlayTable");
+    if (historyAllPlayTable) historyAllPlayTable.innerHTML = renderAllPlayChart(allPlay, "2025");
+
+    const historyLuckTable = document.getElementById("utiHistoryLuckTable");
+    if (historyLuckTable) historyLuckTable.innerHTML = renderLuckChart(luck, "2025");
+
+    const historyPowerTable = document.getElementById("utiHistoryPowerTable");
+    if (historyPowerTable) historyPowerTable.innerHTML = renderPowerChart(power, "2025");
+
+    const historyCategoryTable = document.getElementById("utiHistoryCategoryTable");
+    if (historyCategoryTable) historyCategoryTable.innerHTML = renderCategoryChart(yahoo2025Analytics, "2025");
+
+    const franchiseTrendTable = document.getElementById("utiFranchiseTrendTable");
+    if (franchiseTrendTable && latestAnalytics) {
+      franchiseTrendTable.innerHTML = renderFranchiseTrend(latestAnalytics, yahoo2025Analytics);
+    }
+  }
+
+
+
+  function trackedHistoryRows() {
+    return [
+      ...(yahoo2025Analytics?.rows || []),
+      ...(latestAnalytics?.rows || [])
+    ];
+  }
+
+  function recordFromRows(rows) {
+    const record = { wins: 0, losses: 0, ties: 0, games: 0, points: 0, winPct: 0 };
+
+    rows.forEach(row => {
+      const scoreFor = Number(row.official_score_for);
+      const scoreAgainst = Number(row.official_score_against);
+      if (!Number.isFinite(scoreFor) || !Number.isFinite(scoreAgainst)) return;
+
+      record.games += 1;
+
+      if (scoreFor > scoreAgainst) {
+        record.wins += 1;
+        record.points += 1;
+      } else if (scoreFor < scoreAgainst) {
+        record.losses += 1;
+      } else {
+        record.ties += 1;
+        record.points += 0.5;
+      }
+    });
+
+    record.winPct = record.games ? record.points / record.games : 0;
+    return record;
+  }
+
+  function franchiseTeams() {
+    return [...new Set(trackedHistoryRows().map(row => row.team).filter(Boolean))]
+      .sort((a, b) => a.localeCompare(b));
+  }
+
+  function franchiseRecord(team, opponent = null, season = null) {
+    const rows = trackedHistoryRows().filter(row => {
+      if (row.team !== team) return false;
+      if (opponent && row.opponent !== opponent) return false;
+      if (season && Number(row.season) !== Number(season)) return false;
+      return true;
+    });
+
+    return recordFromRows(rows);
+  }
+
+  function knownSeasonResults() {
+    return Array.isArray(window.UTI_SEASON_RESULTS)
+      ? [...window.UTI_SEASON_RESULTS].sort((a, b) => Number(b.season) - Number(a.season))
+      : [];
+  }
+
+  function placementAvailability(field) {
+    return knownSeasonResults().filter(result => result?.[field]).length;
+  }
+
+  function placementCount(team, field) {
+    return knownSeasonResults().filter(result => result?.[field] === team).length;
+  }
+
+  function placementDisplay(team, field) {
+    return placementAvailability(field) ? String(placementCount(team, field)) : "—";
+  }
+
+  function renderFranchiseResume() {
+    const target = document.getElementById("utiFranchiseResumeTable");
+    if (!target) return;
+
+    const teams = franchiseTeams();
+    const records = teams.map(team => ({ team, ...franchiseRecord(team) }))
+      .sort((a, b) =>
+        b.winPct - a.winPct ||
+        b.wins - a.wins ||
+        a.losses - b.losses ||
+        a.team.localeCompare(b.team)
+      );
+
+    const seasons = [...new Set(trackedHistoryRows().map(row => Number(row.season)).filter(Number.isFinite))]
+      .sort((a, b) => a - b);
+
+    const range = document.getElementById("utiFranchiseRecordRange");
+    if (range && seasons.length) {
+      range.textContent = `${seasons[0]}–${seasons[seasons.length - 1]} imported`;
+    }
+
+    target.innerHTML = `
+      <div class="uti-franchise-resume-table">
+        <div class="uti-franchise-resume-row is-head">
+          <span>Franchise</span>
+          <span>Total Record</span>
+          <span>Win %</span>
+          <span>1st</span>
+          <span>2nd</span>
+          <span>3rd</span>
+          <span>Reg. Season #1</span>
+        </div>
+
+        ${records.map((row, index) => `
+          <div class="uti-franchise-resume-row">
+            <div class="uti-franchise-resume-team">
+              <span class="uti-franchise-rank">${index + 1}</span>
+              ${teamIdentity(row.team, false, "2026")}
+            </div>
+            <strong>${formatRecord(row)}</strong>
+            <strong>${formatPct(row.winPct)}</strong>
+            <span class="uti-placement-count">${placementDisplay(row.team, "champion")}</span>
+            <span class="uti-placement-count">${placementDisplay(row.team, "runnerUp")}</span>
+            <span class="uti-placement-count">${placementDisplay(row.team, "thirdPlace")}</span>
+            <span class="uti-placement-count">${placementDisplay(row.team, "regularSeasonFirst")}</span>
+          </div>
+        `).join("")}
+      </div>
+    `;
+  }
+
+  function renderSeasonPlacements() {
+    const target = document.getElementById("utiSeasonPlacements");
+    if (!target) return;
+
+    const results = knownSeasonResults();
+
+    if (!results.length) {
+      target.innerHTML = `
+        <div class="uti-history-empty">
+          No completed-season placement data has been entered yet.
+        </div>
+      `;
+      return;
+    }
+
+    const resultTeam = (team, season) => team
+      ? teamIdentity(team, true, String(season))
+      : `<span class="uti-season-result-pending">Pending</span>`;
+
+    target.innerHTML = `
+      <div class="uti-season-results-table">
+        <div class="uti-season-results-row is-head">
+          <span>Season</span>
+          <span>1st</span>
+          <span>2nd</span>
+          <span>3rd</span>
+          <span>Regular Season #1</span>
+        </div>
+        ${results.map(result => `
+          <div class="uti-season-results-row">
+            <strong>${escapeHtml(result.season)}</strong>
+            <div>${resultTeam(result.champion, result.season)}</div>
+            <div>${resultTeam(result.runnerUp, result.season)}</div>
+            <div>${resultTeam(result.thirdPlace, result.season)}</div>
+            <div>${resultTeam(result.regularSeasonFirst, result.season)}</div>
+          </div>
+        `).join("")}
+      </div>
+    `;
+  }
+
+  function renderHeadToHead(team) {
+    const summary = document.getElementById("utiHeadToHeadSummary");
+    const grid = document.getElementById("utiHeadToHeadGrid");
+    if (!summary || !grid || !team) return;
+
+    const overall = franchiseRecord(team);
+    const opponents = franchiseTeams().filter(opponent => opponent !== team);
+
+    summary.innerHTML = `
+      <div class="uti-h2h-summary-team">
+        <img src="${logoFor(team)}" alt="">
+        <div>
+          <span>Total Tracked Record</span>
+          <strong>${escapeHtml(team)}</strong>
+        </div>
+      </div>
+      <div class="uti-h2h-summary-record">
+        <strong>${formatRecord(overall)}</strong>
+        <span>${formatPct(overall.winPct)} win rate · ${overall.games} matchups</span>
+      </div>
+    `;
+
+    grid.innerHTML = opponents.map(opponent => {
+      const allTime = franchiseRecord(team, opponent);
+      const seasonRows = [...new Set(
+        trackedHistoryRows()
+          .filter(row => row.team === team && row.opponent === opponent)
+          .map(row => Number(row.season))
+          .filter(Number.isFinite)
+      )].sort((a, b) => a - b);
+
+      const splits = seasonRows.map(season => {
+        const record = franchiseRecord(team, opponent, season);
+        return `<span>${season}: <strong>${formatRecord(record)}</strong></span>`;
+      }).join("");
+
+      return `
+        <article class="uti-h2h-card">
+          <div class="uti-h2h-card-team">
+            <img src="${logoFor(opponent)}" alt="">
+            <div>
+              <span>vs.</span>
+              <strong>${escapeHtml(opponent)}</strong>
+            </div>
+          </div>
+
+          <div class="uti-h2h-card-record">
+            <strong>${formatRecord(allTime)}</strong>
+            <span>${formatPct(allTime.winPct)}</span>
+          </div>
+
+          <div class="uti-h2h-season-splits">
+            ${splits || "<span>No tracked matchups</span>"}
+          </div>
+        </article>
+      `;
+    }).join("");
+  }
+
+  function renderHistoryRecordSections() {
+    renderFranchiseResume();
+    renderSeasonPlacements();
+
+    const selector = document.getElementById("utiHeadToHeadTeamSelect");
+    if (!selector) return;
+
+    const teams = franchiseTeams();
+    const previousValue = selector.value;
+    selector.innerHTML = teams.map(team =>
+      `<option value="${escapeHtml(team)}">${escapeHtml(team)}</option>`
+    ).join("");
+
+    const initialTeam = teams.includes(previousValue)
+      ? previousValue
+      : (teams.includes("Gunnarrhea") ? "Gunnarrhea" : teams[0]);
+
+    if (initialTeam) {
+      selector.value = initialTeam;
+      renderHeadToHead(initialTeam);
+    }
+
+    if (!selector.dataset.historyListenerAttached) {
+      selector.addEventListener("change", () => renderHeadToHead(selector.value));
+      selector.dataset.historyListenerAttached = "true";
+    }
+  }
+
+  function findBiggestPowerMover(currentData, historyData) {
+    const current = powerMapFor(currentData);
+    const history = powerMapFor(historyData);
+
+    return Object.keys(current)
+      .filter(team => history[team])
+      .map(team => ({
+        team,
+        current: Number(current[team]?.rating || 0) * 100,
+        history: Number(history[team]?.rating || 0) * 100
+      }))
+      .map(row => ({ ...row, delta: row.current - row.history }))
+      .sort((a, b) => b.delta - a.delta || a.team.localeCompare(b.team))[0] || null;
+  }
+
+  function renderHistoryOverview() {
+    if (!latestAnalytics || !yahoo2025Analytics) return;
+
+    const target = document.getElementById("utiHistoryOverviewGrid");
+    const currentBadge = document.getElementById("utiHistoryCurrentBadge");
+    const historyBadge = document.getElementById("utiHistorySeasonBadge");
+
+    const historyWeeks = yahoo2025Analytics.weeks || [];
+    const currentWeeks = latestAnalytics.weeks
+      || [...new Set(latestAnalytics.rows.map(row => Number(row.week)))].filter(Number.isFinite).sort((a, b) => a - b);
+
+    const allPlay2025 = sortedAllPlayFor(yahoo2025Analytics);
+    const riser = findBiggestPowerMover(latestAnalytics, yahoo2025Analytics);
+
+    if (historyBadge && historyWeeks.length) {
+      historyBadge.textContent = `2025 Yahoo · Weeks ${historyWeeks[0]}–${historyWeeks[historyWeeks.length - 1]}`;
+    }
+
+    if (currentBadge && currentWeeks.length) {
+      currentBadge.textContent = `2026 Fantrax · Weeks ${currentWeeks[0]}–${currentWeeks[currentWeeks.length - 1]}`;
+    }
+
+    if (!target) return;
+
+    target.innerHTML = `
+      <article class="uti-history-overview-card">
+        <span>Seasons Tracked</span>
+        <strong>2</strong>
+        <small>2025 Yahoo + 2026 Fantrax</small>
+      </article>
+
+      <article class="uti-history-overview-card">
+        <span>Historical Team-Weeks</span>
+        <strong>${yahoo2025Analytics.rows.length}</strong>
+        <small>${historyWeeks.length ? `2025 Weeks ${historyWeeks[0]}–${historyWeeks[historyWeeks.length - 1]}` : "2025 Yahoo"}</small>
+      </article>
+
+      <article class="uti-history-overview-card uti-team-profile-trigger" data-team-profile="${escapeHtml(allPlay2025[0]?.team || "—")}" data-profile-open-season="2025" role="button" tabindex="0">
+        <span>2025 All-Play #1</span>
+        <div class="uti-history-overview-team">
+          <img src="${logoFor(allPlay2025[0]?.team || "")}" alt="">
+          <strong>${escapeHtml(allPlay2025[0]?.team || "—")}</strong>
+        </div>
+        <small>${allPlay2025[0] ? `${formatPct(allPlay2025[0].winPct)} vs 2025 league` : "—"}</small>
+      </article>
+
+      <article class="uti-history-overview-card uti-team-profile-trigger" data-team-profile="${escapeHtml(riser?.team || "—")}" data-profile-open-season="2026" role="button" tabindex="0">
+        <span>Biggest Power Riser</span>
+        <div class="uti-history-overview-team">
+          <img src="${logoFor(riser?.team || "")}" alt="">
+          <strong>${escapeHtml(riser?.team || "—")}</strong>
+        </div>
+        <small>${riser ? `${riser.delta >= 0 ? "+" : ""}${riser.delta.toFixed(1)} from 2025 → 2026` : "—"}</small>
+      </article>
+    `;
+  }
+
+  function renderHistoryTeaser() {
+    if (!latestAnalytics || !yahoo2025Analytics) return;
+    const target = document.getElementById("utiHistoryTeaserGrid");
+    if (!target) return;
+
+    const allPlay2025 = sortedAllPlayFor(yahoo2025Analytics);
+    const power2025 = yahoo2025Analytics.powerRankings || [];
+    const riser = findBiggestPowerMover(latestAnalytics, yahoo2025Analytics);
+    const weeks = yahoo2025Analytics.weeks || [];
+
+    target.innerHTML = `
+      <article class="uti-history-teaser-card uti-team-profile-trigger" data-team-profile="${escapeHtml(allPlay2025[0]?.team || "—")}" data-profile-open-season="2025" role="button" tabindex="0">
+        <span>2025 All-Play King</span>
+        <div class="uti-history-teaser-team">
+          <img src="${logoFor(allPlay2025[0]?.team || "")}" alt="">
+          <strong>${escapeHtml(allPlay2025[0]?.team || "—")}</strong>
+        </div>
+        <small>${allPlay2025[0] ? `${formatPct(allPlay2025[0].winPct)} all-play` : "—"}</small>
+      </article>
+
+      <article class="uti-history-teaser-card uti-team-profile-trigger" data-team-profile="${escapeHtml(power2025[0]?.team || "—")}" data-profile-open-season="2025" role="button" tabindex="0">
+        <span>2025 Power #1</span>
+        <div class="uti-history-teaser-team">
+          <img src="${logoFor(power2025[0]?.team || "")}" alt="">
+          <strong>${escapeHtml(power2025[0]?.team || "—")}</strong>
+        </div>
+        <small>${power2025[0] ? `${(power2025[0].rating * 100).toFixed(1)} / 100` : "—"}</small>
+      </article>
+
+      <article class="uti-history-teaser-card uti-team-profile-trigger" data-team-profile="${escapeHtml(riser?.team || "—")}" data-profile-open-season="2026" role="button" tabindex="0">
+        <span>Biggest 2025 → 2026 Riser</span>
+        <div class="uti-history-teaser-team">
+          <img src="${logoFor(riser?.team || "")}" alt="">
+          <strong>${escapeHtml(riser?.team || "—")}</strong>
+        </div>
+        <small>${riser ? `${riser.delta >= 0 ? "+" : ""}${riser.delta.toFixed(1)} Power` : "—"}</small>
+      </article>
+
+      <a class="uti-history-teaser-card is-link" href="history.html">
+        <span>Season Archive</span>
+        <strong>2025 Yahoo</strong>
+        <small>${weeks.length ? `Weeks ${weeks[0]}–${weeks[weeks.length - 1]} imported · Open history →` : "Open history →"}</small>
+      </a>
+    `;
+  }
 
   function loadScriptOnce(src, globalName) {
     if (window[globalName]) return Promise.resolve(window[globalName]);
@@ -760,7 +1288,7 @@
     const seasonTabs = `
       <div class="uti-profile-season-tabs" aria-label="Team profile season">
         <button type="button" class="${activeProfileSeason === "2026" ? "is-active" : ""}" data-profile-season="2026">
-          <strong>2026</strong><span>Fantrax · 19 weeks</span>
+          <strong>2026</strong><span>Fantrax · ${latestAnalytics?.weeks?.length || 0} weeks</span>
         </button>
         <button type="button" class="${activeProfileSeason === "2025" ? "is-active" : ""}" data-profile-season="2025">
           <strong>2025</strong><span>Yahoo · ${yahoo2025Analytics?.weeks?.length || 0} weeks</span>
@@ -918,6 +1446,12 @@
     if (!team) return;
 
     element.setAttribute("data-team-profile", team);
+    if (!element.hasAttribute("data-profile-open-season")) {
+      element.setAttribute(
+        "data-profile-open-season",
+        document.body.classList.contains("uti-history-page-body") ? "2025" : "2026"
+      );
+    }
     element.classList.add("uti-global-team-profile-link");
 
     if (!isAnchor && !element.matches("button")) {
@@ -988,7 +1522,9 @@
       const trigger = event.target.closest("[data-team-profile]");
       if (trigger) {
         event.preventDefault();
-        openTeamProfile(trigger.getAttribute("data-team-profile"), "2026");
+        const season = trigger.getAttribute("data-profile-open-season")
+          || (document.body.classList.contains("uti-history-page-body") ? "2025" : "2026");
+        openTeamProfile(trigger.getAttribute("data-team-profile"), season);
       }
     });
 
@@ -997,7 +1533,8 @@
 
       if ((event.key === "Enter" || event.key === " ") && event.target.matches("[data-team-profile]")) {
         event.preventDefault();
-        openTeamProfile(event.target.getAttribute("data-team-profile"), "2026");
+        const season = event.target.getAttribute("data-profile-open-season") || "2026";
+        openTeamProfile(event.target.getAttribute("data-team-profile"), season);
       }
     });
   }
@@ -1006,9 +1543,20 @@
     const grid = document.getElementById("utiIntelligenceGrid");
     const range = document.getElementById("utiIntelligenceRange");
     const section = document.getElementById("uti-intelligence");
-    const mode = section?.dataset?.utiMode || "full";
+    const mode = section?.dataset?.utiMode || (grid ? "full" : "history");
     const isPreview = mode === "preview";
-    if (!grid || !window.UTIAnalytics) return;
+
+    const needsCurrentBoard = Boolean(grid);
+    const needsHistoryBoard = Boolean(document.getElementById("utiHistoryGrid"));
+    const needsHistoryTeaser = Boolean(document.getElementById("utiHistoryTeaserGrid"));
+    const needsHistoryOverview = Boolean(document.getElementById("utiHistoryOverviewGrid"));
+    const needsHistoryRecords = Boolean(
+      document.getElementById("utiFranchiseResumeTable") ||
+      document.getElementById("utiHeadToHeadGrid")
+    );
+
+    if (!window.UTIAnalytics) return;
+    if (!needsCurrentBoard && !needsHistoryBoard && !needsHistoryTeaser && !needsHistoryOverview && !needsHistoryRecords) return;
 
     try {
       const data = await window.UTIAnalytics.load("data/weekly-team-stats.csv");
@@ -1016,32 +1564,40 @@
       data.source = "fantrax";
       data.hittingCategories = HITTING_CATEGORIES;
       data.pitchingCategories = PITCHING_CATEGORIES;
+      data.weeks = [...new Set(data.rows.map(row => Number(row.week)))]
+        .filter(Number.isFinite)
+        .sort((a, b) => a - b);
       latestAnalytics = data;
 
-      try {
-        const yahooRows = await loadScriptOnce(
-          "data/history/2025-yahoo-weekly-team-stats.js",
-          "UTI_YAHOO_2025_WEEKLY_TEAM_STATS"
-        );
+      // Team profiles on the homepage also expose the 2025 tab, so load Yahoo
+      // history even when the homepage Intelligence section is in preview mode.
+      const needsYahoo = needsCurrentBoard || !isPreview || needsHistoryBoard || needsHistoryTeaser || needsHistoryOverview || needsHistoryRecords;
 
-        if (Array.isArray(yahooRows) && yahooRows.length) {
-          yahoo2025Analytics = buildGenericSeasonAnalytics(yahooRows, {
-            categories: [...YAHOO_2025_HITTING_CATEGORIES, ...YAHOO_2025_PITCHING_CATEGORIES],
-            rules: YAHOO_2025_RULES,
-            hittingCategories: YAHOO_2025_HITTING_CATEGORIES,
-            pitchingCategories: YAHOO_2025_PITCHING_CATEGORIES,
-            season: 2025,
-            source: "yahoo"
-          });
+      if (needsYahoo) {
+        try {
+          const yahooRows = await loadScriptOnce(
+            "data/history/2025-yahoo-weekly-team-stats.js",
+            "UTI_YAHOO_2025_WEEKLY_TEAM_STATS"
+          );
+
+          if (Array.isArray(yahooRows) && yahooRows.length) {
+            yahoo2025Analytics = buildGenericSeasonAnalytics(yahooRows, {
+              categories: [...YAHOO_2025_HITTING_CATEGORIES, ...YAHOO_2025_PITCHING_CATEGORIES],
+              rules: YAHOO_2025_RULES,
+              hittingCategories: YAHOO_2025_HITTING_CATEGORIES,
+              pitchingCategories: YAHOO_2025_PITCHING_CATEGORIES,
+              season: 2025,
+              source: "yahoo"
+            });
+          }
+        } catch (historyError) {
+          console.warn("2025 Yahoo history could not be loaded:", historyError);
         }
-      } catch (historyError) {
-        console.warn("2025 Yahoo history could not be loaded:", historyError);
       }
 
       ensureProfileModal();
-      const weeks = [...new Set(data.rows.map(row => Number(row.week)))]
-        .filter(Number.isFinite)
-        .sort((a, b) => a - b);
+
+      const weeks = data.weeks;
 
       if (range && weeks.length) {
         range.textContent = weeks.length === 1
@@ -1049,147 +1605,116 @@
           : `Weeks ${weeks[0]}–${weeks[weeks.length - 1]}`;
       }
 
-      const allPlay = Object.entries(data.allPlayRecords)
-        .map(([team, record]) => ({ team, ...record }))
-        .sort((a, b) => b.winPct - a.winPct || b.points - a.points || a.team.localeCompare(b.team));
-
-      const leader = allPlay[0];
-      const power = data.powerRankings[0];
-      const luckiest = data.luckIndex[0];
-      const unluckiest = data.luckIndex[data.luckIndex.length - 1];
-
-      grid.innerHTML = [
-        metricCard({
-          icon: "🏆",
-          eyebrow: "All-Play King",
-          team: leader?.team || "—",
-          value: leader ? formatRecord(leader) : "—",
-          copy: leader ? `${formatPct(leader.winPct)} against the entire league` : "Waiting for data",
-          tone: "is-leader"
-        }),
-        metricCard({
-          icon: "🔥",
-          eyebrow: "Power #1",
-          team: power?.team || "—",
-          value: power ? `${(power.rating * 100).toFixed(1)} / 100` : "—",
-          copy: "50% all-play · 30% categories · 20% form",
-          tone: "is-power"
-        }),
-        metricCard({
-          icon: "🍀",
-          eyebrow: "Luckiest",
-          team: luckiest?.team || "—",
-          value: luckiest ? formatSigned(luckiest.luck) : "—",
-          copy: "Wins above all-play expectation",
-          tone: "is-lucky"
-        }),
-        metricCard({
-          icon: "💀",
-          eyebrow: "Unluckiest",
-          team: unluckiest?.team || "—",
-          value: unluckiest ? formatSigned(unluckiest.luck) : "—",
-          copy: "Wins below all-play expectation",
-          tone: "is-unlucky"
-        })
-      ].join("");
-
-      const existingPreviewCta = document.getElementById("utiIntelligencePreviewCta");
-      if (existingPreviewCta) existingPreviewCta.remove();
-
-      if (isPreview) {
-        const previewCta = document.createElement("div");
-        previewCta.id = "utiIntelligencePreviewCta";
-        previewCta.className = "uti-intelligence-preview-cta";
-        previewCta.innerHTML = `
-          <div>
-            <strong>Want the full report?</strong>
-            <span>All-Play standings, Luck Index, Power Rankings, Category Kings, 2025 Yahoo history, and team profiles.</span>
-          </div>
-          <a class="uti-intelligence-page-link" href="uti-intelligence.html">
-            Open UTI Intelligence <span aria-hidden="true">→</span>
-          </a>
-        `;
-        grid.insertAdjacentElement("afterend", previewCta);
+      const currentSeasonBadge = document.getElementById("utiCurrentSeasonBadge");
+      if (currentSeasonBadge && weeks.length) {
+        currentSeasonBadge.textContent = `2026 Fantrax · Weeks ${weeks[0]}–${weeks[weeks.length - 1]}`;
       }
 
-      const existingHistory = document.getElementById("utiHistorySnapshot");
-      if (existingHistory) existingHistory.remove();
+      const allPlay = sortedAllPlayFor(data);
 
-      if (!isPreview && yahoo2025Analytics) {
-        const historyAllPlay = Object.entries(yahoo2025Analytics.allPlayRecords)
-          .map(([team, record]) => ({ team, ...record }))
-          .sort((a, b) => b.winPct - a.winPct || b.points - a.points);
+      if (grid) {
+        const leader = allPlay[0];
+        const power = data.powerRankings[0];
+        const luckiest = data.luckIndex[0];
+        const unluckiest = data.luckIndex[data.luckIndex.length - 1];
 
-        const hitting2025 = getSubsetStrength(
-          yahoo2025Analytics.rows,
-          yahoo2025Analytics.hittingCategories,
-          yahoo2025Analytics.categoryRules
-        ).ranking;
+        grid.innerHTML = [
+          metricCard({
+            icon: "🏆",
+            eyebrow: "All-Play King",
+            team: leader?.team || "—",
+            value: leader ? formatRecord(leader) : "—",
+            copy: leader ? `${formatPct(leader.winPct)} against the entire league` : "Waiting for data",
+            tone: "is-leader"
+          }),
+          metricCard({
+            icon: "🔥",
+            eyebrow: "Power #1",
+            team: power?.team || "—",
+            value: power ? `${(power.rating * 100).toFixed(1)} / 100` : "—",
+            copy: "50% all-play · 30% categories · 20% form",
+            tone: "is-power"
+          }),
+          metricCard({
+            icon: "🍀",
+            eyebrow: "Luckiest",
+            team: luckiest?.team || "—",
+            value: luckiest ? formatSigned(luckiest.luck) : "—",
+            copy: "Wins above all-play expectation",
+            tone: "is-lucky"
+          }),
+          metricCard({
+            icon: "💀",
+            eyebrow: "Unluckiest",
+            team: unluckiest?.team || "—",
+            value: unluckiest ? formatSigned(unluckiest.luck) : "—",
+            copy: "Wins below all-play expectation",
+            tone: "is-unlucky"
+          })
+        ].join("");
 
-        const pitching2025 = getSubsetStrength(
-          yahoo2025Analytics.rows,
-          yahoo2025Analytics.pitchingCategories,
-          yahoo2025Analytics.categoryRules
-        ).ranking;
+        const existingPreviewCta = document.getElementById("utiIntelligencePreviewCta");
+        if (existingPreviewCta) existingPreviewCta.remove();
 
-        const snapshot = document.createElement("section");
-        snapshot.id = "utiHistorySnapshot";
-        snapshot.className = "uti-history-snapshot";
-        snapshot.innerHTML = `
-          <div class="uti-history-snapshot-head">
+        if (isPreview) {
+          const previewCta = document.createElement("div");
+          previewCta.id = "utiIntelligencePreviewCta";
+          previewCta.className = "uti-intelligence-preview-cta";
+          previewCta.innerHTML = `
             <div>
-              <span class="uti-history-eyebrow">League History</span>
-              <strong>2025 Yahoo snapshot</strong>
-              <small>Weeks ${yahoo2025Analytics.weeks[0]}–${yahoo2025Analytics.weeks[yahoo2025Analytics.weeks.length - 1]} imported so far</small>
+              <strong>Want the full nerd report?</strong>
+              <span>Current All-Play standings, Luck Index, Power Rankings, Category Kings, and team profiles.</span>
             </div>
-            <span class="uti-history-chip">Historical data</span>
-          </div>
+            <a class="uti-intelligence-page-link" href="uti-intelligence.html">
+              Open UTI Intelligence <span aria-hidden="true">→</span>
+            </a>
+          `;
+          grid.insertAdjacentElement("afterend", previewCta);
+        }
 
-          <div class="uti-history-snapshot-grid">
-            <article>
-              <span>2025 All-Play #1</span>
-              ${teamIdentity(historyAllPlay[0]?.team || "—", true)}
-              <strong>${historyAllPlay[0] ? formatPct(historyAllPlay[0].winPct) : "—"}</strong>
-            </article>
-            <article>
-              <span>2025 Hitting #1</span>
-              ${teamIdentity(hitting2025[0]?.team || "—", true)}
-              <strong>${hitting2025[0] ? formatPct(hitting2025[0].winPct) : "—"}</strong>
-            </article>
-            <article>
-              <span>2025 Pitching #1</span>
-              ${teamIdentity(pitching2025[0]?.team || "—", true)}
-              <strong>${pitching2025[0] ? formatPct(pitching2025[0].winPct) : "—"}</strong>
-            </article>
-          </div>
+        const allPlayTable = document.getElementById("utiAllPlayTable");
+        if (allPlayTable) allPlayTable.innerHTML = renderAllPlayChart(allPlay);
 
-          <p>Click any team in UTI Intelligence to open its profile, then switch between <strong>2026 Fantrax</strong> and <strong>2025 Yahoo</strong>.</p>
-        `;
+        const luckTable = document.getElementById("utiLuckTable");
+        if (luckTable) luckTable.innerHTML = renderLuckChart(data.luckIndex);
 
-        grid.insertAdjacentElement("afterend", snapshot);
+        const powerTable = document.getElementById("utiPowerTable");
+        if (powerTable) powerTable.innerHTML = renderPowerChart(data.powerRankings);
+
+        const categoryTable = document.getElementById("utiCategoryTable");
+        if (categoryTable) categoryTable.innerHTML = renderCategoryChart(data);
       }
 
-      const allPlayTable = document.getElementById("utiAllPlayTable");
-      if (allPlayTable) allPlayTable.innerHTML = renderAllPlayChart(allPlay);
-
-      const luckTable = document.getElementById("utiLuckTable");
-      if (luckTable) luckTable.innerHTML = renderLuckChart(data.luckIndex);
-
-      const powerTable = document.getElementById("utiPowerTable");
-      if (powerTable) powerTable.innerHTML = renderPowerChart(data.powerRankings);
-
-      const categoryTable = document.getElementById("utiCategoryTable");
-      if (categoryTable) categoryTable.innerHTML = renderCategoryChart(data);
+      if (yahoo2025Analytics) {
+        if (needsHistoryBoard) renderHistoricalBoard();
+        if (needsHistoryOverview) renderHistoryOverview();
+        if (needsHistoryTeaser) renderHistoryTeaser();
+        if (needsHistoryRecords) renderHistoryRecordSections();
+      }
 
     } catch (error) {
       console.error("UTI Intelligence failed to load:", error);
-      grid.innerHTML = `
-        <article class="uti-intel-card uti-intel-error">
-          <span class="uti-intel-label">UTI Intelligence</span>
-          <strong class="uti-intel-team">Analytics unavailable</strong>
-          <span class="uti-intel-copy">Check weekly-team-stats.csv and the analytics scripts.</span>
-        </article>
-      `;
+
+      if (grid) {
+        grid.innerHTML = `
+          <article class="uti-intel-card uti-intel-error">
+            <span class="uti-intel-label">UTI Intelligence</span>
+            <strong class="uti-intel-team">Analytics unavailable</strong>
+            <span class="uti-intel-copy">Check weekly-team-stats.csv and the analytics scripts.</span>
+          </article>
+        `;
+      }
+
+      const historyGrid = document.getElementById("utiHistoryGrid");
+      if (historyGrid) {
+        historyGrid.innerHTML = `
+          <article class="uti-intel-card uti-intel-error">
+            <span class="uti-intel-label">UTI History</span>
+            <strong class="uti-intel-team">History unavailable</strong>
+            <span class="uti-intel-copy">Check the Yahoo history data file and analytics scripts.</span>
+          </article>
+        `;
+      }
     }
   }
 
