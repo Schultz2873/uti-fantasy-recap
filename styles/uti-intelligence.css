@@ -1644,3 +1644,671 @@ a.uti-global-team-profile-link:hover,
     padding: 0 4px;
   }
 }
+
+
+/* ---------- Full historical intelligence board ---------- */
+.uti-history-board {
+  margin-top: 18px;
+  position: relative;
+  overflow: hidden;
+}
+
+.uti-history-board::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 4px;
+  background: linear-gradient(90deg, #8b5e34, #d4a72c, #8b5e34);
+}
+
+.uti-history-context {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 14px 0 16px;
+  padding: 12px 14px;
+  border: 1px solid rgba(139, 94, 52, .16);
+  border-radius: 12px;
+  background: rgba(255, 248, 235, .72);
+}
+
+.uti-history-context strong {
+  flex: 0 0 auto;
+  color: #7c4a19;
+  font-size: .72rem;
+}
+
+.uti-history-context span {
+  color: #6b7280;
+  font-size: .68rem;
+  line-height: 1.45;
+}
+
+.uti-history-headline-grid .uti-intel-card.is-history {
+  border-color: rgba(139, 94, 52, .15);
+  background:
+    radial-gradient(circle at 92% 5%, rgba(212, 167, 44, .11), transparent 31%),
+    #fff;
+}
+
+.uti-history-analytics-grid {
+  margin-top: 18px;
+}
+
+.uti-franchise-trend-panel {
+  margin-top: 18px;
+  padding: 16px;
+  border: 1px solid rgba(15, 23, 42, .08);
+  border-radius: 16px;
+  background: #fff;
+}
+
+.uti-franchise-trend-wrap {
+  margin-top: 12px;
+  overflow-x: auto;
+}
+
+.uti-franchise-trend-table {
+  min-width: 850px;
+}
+
+.uti-franchise-trend-row {
+  display: grid;
+  grid-template-columns: minmax(210px, 1.8fr) repeat(6, minmax(82px, .7fr));
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 8px 10px;
+  border-top: 1px solid rgba(15, 23, 42, .07);
+  font-size: .68rem;
+}
+
+.uti-franchise-trend-row.is-head {
+  min-height: 34px;
+  border-top: 0;
+  border-radius: 10px;
+  background: #f5f7fa;
+  color: #64748b;
+  font-size: .59rem;
+  font-weight: 900;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.uti-franchise-trend-team .uti-team-identity {
+  min-width: 0;
+}
+
+.uti-history-delta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  min-width: 58px;
+  padding: 4px 7px;
+  border-radius: 999px;
+  font-weight: 900;
+}
+
+.uti-history-delta.is-up {
+  background: rgba(22, 163, 74, .10);
+  color: #15803d;
+}
+
+.uti-history-delta.is-down {
+  background: rgba(220, 38, 38, .09);
+  color: #b91c1c;
+}
+
+.uti-history-delta.is-flat {
+  background: rgba(100, 116, 139, .10);
+  color: #64748b;
+}
+
+@media (max-width: 700px) {
+  .uti-history-context {
+    flex-direction: column;
+  }
+
+  .uti-history-context strong {
+    flex-basis: auto;
+  }
+
+  .uti-history-board {
+    margin-top: 12px;
+  }
+
+  .uti-franchise-trend-panel {
+    padding: 12px;
+  }
+}
+
+
+/* ---------- Intelligence / History page split ---------- */
+.uti-page-nav-links {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px;
+  border: 1px solid rgba(15, 23, 42, .08);
+  border-radius: 999px;
+  background: #fff;
+}
+
+.uti-page-nav-links a {
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #64748b;
+  font-size: .62rem;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.uti-page-nav-links a:hover,
+.uti-page-nav-links a.is-active {
+  background: #0f172a;
+  color: #fff;
+}
+
+.uti-history-teaser-section {
+  margin-top: 18px;
+}
+
+.uti-history-page-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #0f172a;
+  color: #fff;
+  font-size: .65rem;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.uti-history-page-cta:hover {
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.uti-history-teaser-grid,
+.uti-history-overview-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.uti-history-teaser-card,
+.uti-history-overview-card {
+  display: flex;
+  min-width: 0;
+  min-height: 118px;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 13px;
+  border: 1px solid rgba(15, 23, 42, .08);
+  border-radius: 14px;
+  background:
+    radial-gradient(circle at 90% 8%, rgba(212, 167, 44, .10), transparent 34%),
+    #fff;
+  color: #0f172a;
+  text-decoration: none;
+}
+
+.uti-history-teaser-card[role="button"],
+.uti-history-overview-card[role="button"],
+.uti-history-teaser-card.is-link {
+  cursor: pointer;
+}
+
+.uti-history-teaser-card:hover,
+.uti-history-overview-card[role="button"]:hover,
+.uti-history-teaser-card.is-link:hover {
+  border-color: rgba(15, 23, 42, .16);
+  box-shadow: 0 10px 26px rgba(15, 23, 42, .07);
+  transform: translateY(-1px);
+}
+
+.uti-history-teaser-card > span,
+.uti-history-overview-card > span {
+  color: #8b5e34;
+  font-size: .58rem;
+  font-weight: 950;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.uti-history-teaser-card > strong,
+.uti-history-overview-card > strong {
+  font-size: 1.45rem;
+  font-weight: 950;
+  letter-spacing: -.03em;
+}
+
+.uti-history-teaser-card small,
+.uti-history-overview-card small {
+  color: #64748b;
+  font-size: .62rem;
+  line-height: 1.35;
+}
+
+.uti-history-teaser-team,
+.uti-history-overview-team {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+}
+
+.uti-history-teaser-team img,
+.uti-history-overview-team img {
+  width: 32px;
+  height: 32px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.uti-history-teaser-team strong,
+.uti-history-overview-team strong {
+  min-width: 0;
+  overflow: hidden;
+  font-size: .82rem;
+  font-weight: 950;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.uti-history-page-hero {
+  background:
+    radial-gradient(circle at 86% 12%, rgba(212, 167, 44, .24), transparent 28%),
+    linear-gradient(135deg, #111827 0%, #261b13 100%);
+}
+
+.uti-history-overview-section {
+  margin: 0;
+}
+
+.uti-history-season-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 14px;
+}
+
+.uti-history-season-nav a {
+  padding: 7px 10px;
+  border: 1px solid rgba(15, 23, 42, .08);
+  border-radius: 999px;
+  background: #f8fafc;
+  color: #334155;
+  font-size: .61rem;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.uti-history-season-nav a:hover {
+  border-color: rgba(15, 23, 42, .16);
+  background: #fff;
+  color: #0f172a;
+}
+
+.uti-history-page-body .uti-history-board {
+  scroll-margin-top: 12px;
+}
+
+@media (max-width: 900px) {
+  .uti-history-teaser-grid,
+  .uti-history-overview-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 620px) {
+  .uti-intelligence-page-nav {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .uti-page-nav-links {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .uti-history-teaser-grid,
+  .uti-history-overview-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .uti-history-teaser-card,
+  .uti-history-overview-card {
+    min-height: 104px;
+  }
+
+  .uti-history-page-cta {
+    width: 100%;
+  }
+}
+
+
+/* ---------- Franchise records ---------- */
+.uti-franchise-resume-wrap,
+.uti-season-results-panel {
+  margin-top: 14px;
+}
+
+.uti-franchise-resume-wrap,
+.uti-season-results-panel,
+.uti-h2h-summary,
+.uti-h2h-card {
+  border: 1px solid rgba(15, 23, 42, .08);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.uti-franchise-resume-wrap {
+  overflow-x: auto;
+}
+
+.uti-franchise-resume-table {
+  min-width: 840px;
+}
+
+.uti-franchise-resume-row {
+  display: grid;
+  grid-template-columns: minmax(230px, 1.65fr) minmax(100px, .8fr) 78px 58px 58px 58px minmax(110px, .8fr);
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 8px 12px;
+  border-top: 1px solid rgba(15, 23, 42, .07);
+  font-size: .69rem;
+}
+
+.uti-franchise-resume-row.is-head {
+  min-height: 38px;
+  border-top: 0;
+  background: #f7f9fb;
+  color: #64748b;
+  font-size: .57rem;
+  font-weight: 950;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.uti-franchise-resume-team {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 9px;
+}
+
+.uti-franchise-rank {
+  display: inline-flex;
+  width: 24px;
+  height: 24px;
+  flex: 0 0 24px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #f1f5f9;
+  color: #64748b;
+  font-size: .58rem;
+  font-weight: 950;
+}
+
+.uti-placement-count {
+  display: inline-flex;
+  width: 32px;
+  min-height: 28px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  background: #f8fafc;
+  color: #334155;
+  font-weight: 950;
+}
+
+.uti-season-results-panel {
+  padding: 14px;
+}
+
+.uti-season-results-table {
+  margin-top: 10px;
+  overflow-x: auto;
+}
+
+.uti-season-results-row {
+  display: grid;
+  grid-template-columns: 70px repeat(4, minmax(155px, 1fr));
+  align-items: center;
+  gap: 10px;
+  min-width: 790px;
+  min-height: 48px;
+  padding: 8px 10px;
+  border-top: 1px solid rgba(15, 23, 42, .07);
+}
+
+.uti-season-results-row.is-head {
+  min-height: 34px;
+  border-top: 0;
+  border-radius: 10px;
+  background: #f7f9fb;
+  color: #64748b;
+  font-size: .57rem;
+  font-weight: 950;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.uti-season-result-pending {
+  color: #94a3b8;
+  font-size: .64rem;
+  font-style: italic;
+  font-weight: 750;
+}
+
+.uti-history-empty {
+  padding: 18px;
+  color: #64748b;
+  font-size: .7rem;
+  text-align: center;
+}
+
+/* ---------- Head-to-head history ---------- */
+.uti-h2h-selector {
+  display: flex;
+  min-width: 190px;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.uti-h2h-selector > span {
+  color: #64748b;
+  font-size: .55rem;
+  font-weight: 950;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+.uti-h2h-selector select {
+  min-height: 38px;
+  padding: 7px 30px 7px 10px;
+  border: 1px solid rgba(15, 23, 42, .13);
+  border-radius: 10px;
+  background: #fff;
+  color: #0f172a;
+  font-size: .68rem;
+  font-weight: 850;
+}
+
+.uti-h2h-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 14px;
+  padding: 14px;
+  background:
+    radial-gradient(circle at 90% 0%, rgba(13, 110, 253, .08), transparent 34%),
+    #fff;
+}
+
+.uti-h2h-summary-team {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 10px;
+}
+
+.uti-h2h-summary-team img {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  border-radius: 13px;
+  object-fit: cover;
+}
+
+.uti-h2h-summary-team span,
+.uti-h2h-summary-record span {
+  display: block;
+  color: #64748b;
+  font-size: .61rem;
+  font-weight: 750;
+}
+
+.uti-h2h-summary-team strong {
+  display: block;
+  margin-top: 2px;
+  color: #0f172a;
+  font-size: .94rem;
+  font-weight: 950;
+}
+
+.uti-h2h-summary-record {
+  text-align: right;
+}
+
+.uti-h2h-summary-record strong {
+  display: block;
+  color: #0f172a;
+  font-size: 1.35rem;
+  font-weight: 950;
+  letter-spacing: -.03em;
+}
+
+.uti-h2h-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.uti-h2h-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  padding: 12px;
+}
+
+.uti-h2h-card-team {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+}
+
+.uti-h2h-card-team img {
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.uti-h2h-card-team span {
+  display: block;
+  color: #94a3b8;
+  font-size: .52rem;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.uti-h2h-card-team strong {
+  display: block;
+  max-width: 170px;
+  overflow: hidden;
+  color: #0f172a;
+  font-size: .7rem;
+  font-weight: 950;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.uti-h2h-card-record {
+  text-align: right;
+}
+
+.uti-h2h-card-record strong {
+  display: block;
+  color: #0f172a;
+  font-size: .9rem;
+  font-weight: 950;
+}
+
+.uti-h2h-card-record span {
+  color: #64748b;
+  font-size: .59rem;
+  font-weight: 800;
+}
+
+.uti-h2h-season-splits {
+  display: flex;
+  grid-column: 1 / -1;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(15, 23, 42, .06);
+}
+
+.uti-h2h-season-splits > span {
+  padding: 4px 7px;
+  border-radius: 999px;
+  background: #f5f7fa;
+  color: #64748b;
+  font-size: .56rem;
+}
+
+.uti-h2h-season-splits strong {
+  color: #334155;
+}
+
+@media (max-width: 900px) {
+  .uti-h2h-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 620px) {
+  .uti-h2h-selector {
+    width: 100%;
+  }
+
+  .uti-h2h-summary {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .uti-h2h-summary-record {
+    text-align: left;
+  }
+
+  .uti-h2h-grid {
+    grid-template-columns: 1fr;
+  }
+}

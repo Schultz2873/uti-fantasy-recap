@@ -1,0 +1,52 @@
+/*
+ * Homepage explore navigation
+ * - Never wraps onto a second line.
+ * - On smaller screens, overflow becomes a horizontal swipe/scroll area.
+ */
+
+.explore-nav {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  align-items: center;
+  gap: 10px;
+
+  width: 100%;
+  max-width: 100%;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: none;
+}
+
+.explore-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.explore-nav > a {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+/* Desktop keeps the items centered when they all fit. */
+@media (min-width: 769px) {
+  .explore-nav {
+    justify-content: center;
+  }
+}
+
+/* Mobile starts at the first item and can be swiped horizontally. */
+@media (max-width: 768px) {
+  .explore-nav {
+    justify-content: flex-start;
+    scroll-snap-type: x proximity;
+    touch-action: pan-x;
+  }
+
+  .explore-nav > a {
+    scroll-snap-align: start;
+  }
+}

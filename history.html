@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>UTI History | Union of Ten Idiots</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="styles/styles.css" rel="stylesheet" />
+  <link href="styles/index-dashboard-preview.css" rel="stylesheet" />
+  <link href="styles/uti-intelligence.css" rel="stylesheet" />
+</head>
+
+<body class="uti-intelligence-page-body uti-history-page-body">
+  <main class="uti-intelligence-page-shell">
+    <nav class="uti-intelligence-page-nav" aria-label="UTI History navigation">
+      <a class="uti-intelligence-back-link" href="index.html">← Back to UTI Home</a>
+      <div class="uti-page-nav-links">
+        <a href="uti-intelligence.html">Intelligence</a>
+        <a class="is-active" href="history.html">History</a>
+      </div>
+      <span class="uti-intelligence-page-badge">Union of Ten Idiots</span>
+    </nav>
+
+    <header class="uti-intelligence-page-hero uti-history-page-hero">
+      <div class="kicker">The Idiots Have Receipts</div>
+      <h1>UTI History</h1>
+      <p>
+        The franchise archive: old seasons, all-play strength, luck, power, category dominance, and how every idiot changes from year to year.
+      </p>
+      <div class="uti-intelligence-page-hero-stats">
+        <span id="utiHistorySeasonBadge">2025 Yahoo · loading</span>
+        <span id="utiHistoryCurrentBadge">2026 Fantrax · loading</span>
+        <span>Season-aware team profiles</span>
+      </div>
+    </header>
+
+    <section class="section-card uti-history-overview-section" id="history-overview">
+      <div class="uti-intelligence-heading">
+        <div>
+          <div class="section-eyebrow">Franchise Archive</div>
+          <h2 class="section-title">History at a Glance</h2>
+          <p class="section-subtitle">
+            Historical seasons stay scored within their own rules. Cross-season comparisons use normalized percentages so Yahoo and Fantrax can be compared fairly.
+          </p>
+        </div>
+        <span class="tag">2025 → 2026</span>
+      </div>
+
+      <div class="uti-history-overview-grid" id="utiHistoryOverviewGrid">
+        <article class="uti-history-overview-card">
+          <span>Loading</span>
+          <strong>UTI History</strong>
+          <small>Building the archive...</small>
+        </article>
+      </div>
+
+      <nav class="uti-history-season-nav" aria-label="History sections">
+        <a href="#franchise-records">Franchise Records</a>
+        <a href="#head-to-head">Head-to-Head</a>
+        <a href="#franchise-timeline">Year-to-Year</a>
+        <a href="#season-2025">2025 Yahoo Archive</a>
+        <a href="uti-intelligence.html">2026 Current Intelligence ↗</a>
+      </nav>
+    </section>
+
+
+    <section class="section-card uti-history-board" id="franchise-records">
+      <div class="uti-intelligence-heading">
+        <div>
+          <div class="section-eyebrow">Franchise Résumé</div>
+          <h2 class="section-title">All-Time Franchise Records</h2>
+          <p class="section-subtitle">
+            Total tracked matchup record across every imported season, plus known podium finishes and regular-season titles.
+          </p>
+        </div>
+        <span class="tag" id="utiFranchiseRecordRange">Imported history</span>
+      </div>
+
+      <div class="uti-history-context">
+        <strong>Record vs. finishes</strong>
+        <span>
+          W-L-T records are calculated automatically from imported weekly matchups. 1st, 2nd, 3rd, and regular-season #1 finishes come from completed-season standings, so unknown placements display as — until those results are entered.
+        </span>
+      </div>
+
+      <div class="uti-franchise-resume-wrap" id="utiFranchiseResumeTable"></div>
+
+      <div class="uti-season-results-panel">
+        <div class="uti-analytics-panel-head">
+          <span class="uti-history-eyebrow">Season Results</span>
+          <h3>Known Final Placements</h3>
+          <p>This is the source for the podium and regular-season-title counts above.</p>
+        </div>
+        <div id="utiSeasonPlacements"></div>
+      </div>
+    </section>
+
+    <section class="section-card uti-history-board" id="head-to-head">
+      <div class="uti-intelligence-heading">
+        <div>
+          <div class="section-eyebrow">Rivalry Ledger</div>
+          <h2 class="section-title">Record vs. Every Team</h2>
+          <p class="section-subtitle">
+            Pick a franchise to see its total record against each of the other nine idiots, with season-by-season splits.
+          </p>
+        </div>
+
+        <label class="uti-h2h-selector">
+          <span>Franchise</span>
+          <select id="utiHeadToHeadTeamSelect" aria-label="Select franchise for head-to-head history"></select>
+        </label>
+      </div>
+
+      <div class="uti-h2h-summary" id="utiHeadToHeadSummary"></div>
+      <div class="uti-h2h-grid" id="utiHeadToHeadGrid"></div>
+    </section>
+
+    <section class="section-card uti-history-board" id="franchise-timeline">
+      <div class="uti-intelligence-heading">
+        <div>
+          <div class="section-eyebrow">Franchise Timeline</div>
+          <h2 class="section-title">2025 → 2026</h2>
+          <p class="section-subtitle">
+            See which franchises gained or lost ground in All-Play and Power from the Yahoo season to the current Fantrax season.
+          </p>
+        </div>
+        <span class="tag">Normalized comparison</span>
+      </div>
+
+      <div class="uti-history-context">
+        <strong>Why normalize?</strong>
+        <span>
+          2025 Yahoo and 2026 Fantrax use different category sets. All-Play percentage and Power Rating are both 0–100 style measures, so they are much safer for season-to-season comparisons than raw category totals.
+        </span>
+      </div>
+
+      <section class="uti-franchise-trend-panel">
+        <div class="uti-franchise-trend-wrap" id="utiFranchiseTrendTable"></div>
+      </section>
+    </section>
+
+    <section class="section-card uti-history-board" id="season-2025">
+      <div class="uti-intelligence-heading">
+        <div>
+          <div class="section-eyebrow">Season Archive</div>
+          <h2 class="section-title">2025 Yahoo Intelligence</h2>
+          <p class="section-subtitle">
+            Rebuild the 2025 season with the same UTI lens: who was actually strongest, who got lucky, and which categories each franchise owned.
+          </p>
+        </div>
+        <span class="tag" id="utiHistoryRange">Historical weeks</span>
+      </div>
+
+      <div class="uti-history-context">
+        <strong>2025 scoring stays 2025 scoring.</strong>
+        <span>
+          Yahoo used BSV and SV+H, along with the other 2025 categories. These rankings are calculated only against 2025 teams and are never mixed directly into the 2026 category leaderboard.
+        </span>
+      </div>
+
+      <div class="uti-intelligence-grid uti-history-headline-grid" id="utiHistoryGrid">
+        <article class="uti-intel-card">
+          <span class="uti-intel-label">Loading</span>
+          <strong class="uti-intel-team">2025 Yahoo History</strong>
+          <span class="uti-intel-copy">Calculating historical analytics...</span>
+        </article>
+      </div>
+
+      <div class="uti-analytics-inline-grid uti-history-analytics-grid">
+        <section class="uti-analytics-panel">
+          <div class="uti-analytics-panel-head">
+            <h3>2025 All-Play Record</h3>
+            <p>How each team would have performed against all nine franchises every week.</p>
+          </div>
+          <div class="uti-analytics-table-wrap" id="utiHistoryAllPlayTable"></div>
+        </section>
+
+        <section class="uti-analytics-panel">
+          <div class="uti-analytics-panel-head">
+            <h3>2025 Luck Index</h3>
+            <p>Actual Yahoo results compared with the wins expected from all-play performance.</p>
+          </div>
+          <div class="uti-analytics-table-wrap" id="utiHistoryLuckTable"></div>
+        </section>
+
+        <section class="uti-analytics-panel">
+          <div class="uti-analytics-panel-head">
+            <h3>2025 Power Rankings</h3>
+            <p>50% all-play, 30% category strength, and 20% recent 2025 form.</p>
+          </div>
+          <div class="uti-analytics-table-wrap" id="utiHistoryPowerTable"></div>
+        </section>
+
+        <section class="uti-analytics-panel">
+          <div class="uti-analytics-panel-head">
+            <h3>2025 Category Kings</h3>
+            <p>The strongest historical franchise in every Yahoo scoring category.</p>
+          </div>
+          <div class="uti-analytics-table-wrap" id="utiHistoryCategoryTable"></div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <script src="data/team-logos.js"></script>
+  <script src="data/weekly-team-stats.js"></script>
+  <script src="data/history/season-results.js"></script>
+  <script src="scripts/league-analytics.js"></script>
+  <script src="scripts/uti-intelligence.js"></script>
+</body>
+
+</html>
