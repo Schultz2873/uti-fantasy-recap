@@ -15,15 +15,16 @@ window.PRIZE_MONEY_DATA = {
   updatedLabel: "Season total",
 
   weeklyWinner: {
-    week: "Week 19",
-    category: "ERA",
-    team: "Me So Heorny",
-    result: "2.79",
+    week: "Week 20",
+    category: "NSB",
+    team: "BB's Bold Team",
+    result: "9",
     prize: 25
   },
 
   // Optional. Newest first. Add as many past winners as you want.
   weeklyWinnerHistory: [
+    { week: "Week 19", category: "ERA", team: "Me So Heorny", result: "2.79", prize: 25 },
     { week: "Week 18", category: "Strikeouts", team: "You Don't Know Bo", result: "55", prize: 25 },
     { week: "Week 17", category: "Total Bases", team: "Dixon Cider", result: "169", prize: 25 },
     { week: "Week 16", category: "Home Runs", team: "Me So Heorny", result: "25", prize: 25 },

@@ -1,8 +1,14 @@
 // UTI season finish metadata.
-// Add one row per completed season as historical standings are imported.
-// Unknown placements stay null so the History page does not treat missing data as a zero.
+// One row per completed season. regularSeasonFirst is the best regular-season record before playoffs begin.
 
 window.UTI_SEASON_RESULTS = [
+  {
+    season: 2024,
+    champion: "Goodyear Gila Monsters",
+    runnerUp: "John's Super Team",
+    thirdPlace: "BB's Bold Team",
+    regularSeasonFirst: "Dixon Cider"
+  },
   {
     season: 2025,
     champion: "Dixon Cider",

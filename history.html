@@ -10,6 +10,37 @@
   <link href="styles/styles.css" rel="stylesheet" />
   <link href="styles/index-dashboard-preview.css" rel="stylesheet" />
   <link href="styles/uti-intelligence.css" rel="stylesheet" />
+
+  <style>
+    /* Keep the profile season/year selectors on a single row. */
+    .uti-profile-season-tabs {
+      display: flex !important;
+      flex-wrap: nowrap !important;
+      width: 100%;
+      gap: 8px;
+    }
+
+    .uti-profile-season-tabs > button {
+      flex: 1 1 0;
+      min-width: 0;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 560px) {
+      .uti-profile-season-tabs {
+        gap: 5px;
+      }
+
+      .uti-profile-season-tabs > button {
+        padding-left: 7px;
+        padding-right: 7px;
+      }
+
+      .uti-profile-season-tabs > button span {
+        font-size: 0.72rem;
+      }
+    }
+  </style>
 </head>
 
 <body class="uti-intelligence-page-body uti-history-page-body">
@@ -125,7 +156,7 @@
           <div class="section-eyebrow">Franchise Timeline</div>
           <h2 class="section-title">2025 → 2026</h2>
           <p class="section-subtitle">
-            See which franchises gained or lost ground in All-Play and Power from the Yahoo season to the current Fantrax season.
+            The recent trend view compares the completed 2025 Yahoo season with the current 2026 Fantrax season. The full 2024 archive is tracked separately below and still feeds all-time records and head-to-head history.
           </p>
         </div>
         <span class="tag">Normalized comparison</span>
@@ -149,16 +180,16 @@
           <div class="section-eyebrow">Season Archive</div>
           <h2 class="section-title">2024 Yahoo Intelligence</h2>
           <p class="section-subtitle">
-            The 2024 archive uses the same UTI lens: all-play strength, schedule luck, power, and category leaders. More weeks will fill in as they are imported.
+            Complete 2024 archive: all 22 regular-season weeks plus Round 1, semifinals, championship, and third-place playoff results.
           </p>
         </div>
         <span class="tag" id="utiHistory2024Range">Historical weeks</span>
       </div>
 
       <div class="uti-history-context">
-        <strong>2024 stays separate from later seasons.</strong>
+        <strong>2024 is complete — regular season + playoffs.</strong>
         <span>
-          2024 Yahoo stats are calculated only against the 2024 league. They still feed the all-time franchise record and head-to-head history, but they are not mixed into 2025 or 2026 category rankings.
+          All-Play, Luck, Power, and Category Kings below use the 2024 regular season so playoff matchups do not distort season-strength analytics. Playoff results are still included in all-time records, playoff records, head-to-head history, and final placement trophies.
         </span>
       </div>
 
