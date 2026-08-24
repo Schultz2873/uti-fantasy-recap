@@ -411,15 +411,18 @@
     const luck = yahoo2024Analytics.luckIndex || [];
 
     if (historyRange && weeks.length) {
-      historyRange.textContent = weeks.length === 1
-        ? `Week ${weeks[0]}`
-        : `Weeks ${weeks[0]}–${weeks[weeks.length - 1]}`;
+      const playoffRows = (yahoo2024AllRows || []).filter(row => historyPhase(row) === "playoffs");
+      const playoffRounds = [...new Set(playoffRows.map(row => row.round).filter(Boolean))];
+      historyRange.textContent = playoffRows.length
+        ? `Reg Weeks ${weeks[0]}–${weeks[weeks.length - 1]} · Playoffs complete`
+        : (weeks.length === 1 ? `Week ${weeks[0]}` : `Weeks ${weeks[0]}–${weeks[weeks.length - 1]}`);
     }
 
     if (historyBadge && weeks.length) {
-      historyBadge.textContent = weeks.length === 1
-        ? `2024 Yahoo · Week ${weeks[0]}`
-        : `2024 Yahoo · Weeks ${weeks[0]}–${weeks[weeks.length - 1]}`;
+      const hasPlayoffs = (yahoo2024AllRows || []).some(row => historyPhase(row) === "playoffs");
+      historyBadge.textContent = hasPlayoffs
+        ? `2024 Yahoo · Complete season`
+        : (weeks.length === 1 ? `2024 Yahoo · Week ${weeks[0]}` : `2024 Yahoo · Weeks ${weeks[0]}–${weeks[weeks.length - 1]}`);
     }
 
     if (historyGrid) {
@@ -895,9 +898,12 @@
     const riser = yahoo2025Analytics ? findBiggestPowerMover(latestAnalytics, yahoo2025Analytics) : null;
 
     if (history2024Badge && weeks2024.length) {
-      history2024Badge.textContent = weeks2024.length === 1
-        ? `2024 Yahoo · Week ${weeks2024[0]}`
-        : `2024 Yahoo · Weeks ${weeks2024[0]}–${weeks2024[weeks2024.length - 1]}`;
+      const has2024Playoffs = (yahoo2024AllRows || []).some(row => historyPhase(row) === "playoffs");
+      history2024Badge.textContent = has2024Playoffs
+        ? `2024 Yahoo · Complete season`
+        : (weeks2024.length === 1
+          ? `2024 Yahoo · Week ${weeks2024[0]}`
+          : `2024 Yahoo · Weeks ${weeks2024[0]}–${weeks2024[weeks2024.length - 1]}`);
     }
 
     if (historyBadge && weeks2025.length) {
@@ -911,7 +917,10 @@
     if (!target) return;
 
     const trackedSeasons = [yahoo2024Analytics ? 2024 : null, yahoo2025Analytics ? 2025 : null, 2026].filter(Boolean);
-    const historicalTeamWeeks = (yahoo2024Analytics?.rows?.length || 0) + (yahoo2025Analytics?.rows?.length || 0);
+    const historicalTeamWeeks = (yahoo2024AllRows?.length || yahoo2024Analytics?.rows?.length || 0)
+      + (yahoo2025AllRows?.length || yahoo2025Analytics?.rows?.length || 0);
+    const yahoo2024PlayoffTeamWeeks = (yahoo2024AllRows || []).filter(row => historyPhase(row) === "playoffs").length;
+    const yahoo2025PlayoffTeamWeeks = (yahoo2025AllRows || []).filter(row => historyPhase(row) === "playoffs").length;
 
     target.innerHTML = `
       <article class="uti-history-overview-card">
@@ -923,7 +932,7 @@
       <article class="uti-history-overview-card">
         <span>Historical Team-Weeks</span>
         <strong>${historicalTeamWeeks}</strong>
-        <small>${weeks2024.length ? `2024: ${weeks2024.length} week${weeks2024.length === 1 ? "" : "s"}` : ""}${weeks2024.length && weeks2025.length ? " · " : ""}${weeks2025.length ? `2025: ${weeks2025.length} weeks` : ""}</small>
+        <small>${weeks2024.length ? `2024: ${weeks2024.length} reg weeks${yahoo2024PlayoffTeamWeeks ? " + playoffs" : ""}` : ""}${weeks2024.length && weeks2025.length ? " · " : ""}${weeks2025.length ? `2025: ${weeks2025.length} reg weeks${yahoo2025PlayoffTeamWeeks ? " + playoffs" : ""}` : ""}</small>
       </article>
 
       ${yahoo2024Analytics ? `
