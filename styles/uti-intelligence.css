@@ -2016,12 +2016,21 @@ a.uti-global-team-profile-link:hover,
 }
 
 .uti-franchise-resume-table {
-  min-width: 840px;
+  min-width: 1120px;
 }
 
 .uti-franchise-resume-row {
   display: grid;
-  grid-template-columns: minmax(230px, 1.65fr) minmax(100px, .8fr) 78px 58px 58px 58px minmax(110px, .8fr);
+  grid-template-columns:
+    minmax(225px, 1.55fr)
+    minmax(95px, .75fr)
+    minmax(105px, .82fr)
+    minmax(82px, .68fr)
+    72px
+    52px
+    52px
+    52px
+    minmax(105px, .82fr);
   align-items: center;
   gap: 10px;
   min-height: 52px;
@@ -2310,5 +2319,180 @@ a.uti-global-team-profile-link:hover,
 
   .uti-h2h-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+
+.uti-record-split {
+  display: inline-flex;
+  width: fit-content;
+  min-width: 62px;
+  min-height: 28px;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 8px;
+  border-radius: 9px;
+  font-weight: 950;
+}
+
+.uti-record-split.is-regular,
+.uti-h2h-record-splits .is-regular,
+.uti-h2h-summary-split.is-regular {
+  background: rgba(37, 99, 235, .08);
+  color: #1d4ed8;
+}
+
+.uti-record-split.is-playoffs,
+.uti-h2h-record-splits .is-playoffs,
+.uti-h2h-summary-split.is-playoffs {
+  background: rgba(217, 119, 6, .10);
+  color: #b45309;
+}
+
+.uti-h2h-summary-records {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(105px, 1fr));
+  gap: 8px;
+  min-width: min(100%, 430px);
+}
+
+.uti-h2h-summary-split {
+  padding: 9px 10px;
+  border-radius: 11px;
+  background: #f8fafc;
+}
+
+.uti-h2h-summary-split > span,
+.uti-h2h-summary-split > small {
+  display: block;
+  color: #64748b;
+  font-size: .54rem;
+  font-weight: 800;
+}
+
+.uti-h2h-summary-split > strong {
+  display: block;
+  margin: 2px 0;
+  color: inherit;
+  font-size: .92rem;
+  font-weight: 950;
+}
+
+.uti-h2h-record-splits {
+  display: flex;
+  grid-column: 1 / -1;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.uti-h2h-record-splits > span {
+  padding: 4px 7px;
+  border-radius: 999px;
+  font-size: .55rem;
+  font-weight: 850;
+}
+
+.uti-h2h-season-splits > span {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.uti-h2h-season-splits small {
+  color: #94a3b8;
+  font-size: .49rem;
+  font-weight: 750;
+}
+
+@media (max-width: 700px) {
+  .uti-h2h-summary-records {
+    width: 100%;
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ---------- Team profile: historical record split ---------- */
+.uti-profile-record-card {
+  min-width: 0;
+}
+
+.uti-profile-record-card > strong {
+  margin-bottom: 8px;
+}
+
+.uti-profile-record-splits {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  width: 100%;
+}
+
+.uti-profile-record-splits > span {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 1px;
+  padding: 6px 7px;
+  border-radius: 9px;
+}
+
+.uti-profile-record-splits > span.is-regular {
+  background: rgba(37, 99, 235, .08);
+  color: #1d4ed8;
+}
+
+.uti-profile-record-splits > span.is-playoffs {
+  background: rgba(217, 119, 6, .10);
+  color: #b45309;
+}
+
+.uti-profile-record-splits small {
+  color: inherit;
+  font-size: .48rem;
+  font-weight: 850;
+  line-height: 1.15;
+  opacity: .8;
+}
+
+.uti-profile-record-splits b {
+  color: inherit;
+  font-size: .68rem;
+  font-weight: 950;
+  line-height: 1.15;
+}
+
+@media (max-width: 560px) {
+  .uti-profile-record-splits {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ---------- Head-to-head season record badge shape ---------- */
+.uti-h2h-season-splits > span {
+  width: auto;
+  min-width: 118px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  background: #f5f7fa;
+  align-items: flex-start;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.uti-h2h-season-splits > span > strong {
+  font-size: .62rem;
+  line-height: 1.2;
+}
+
+.uti-h2h-season-splits > span > small {
+  margin-top: 2px;
+  line-height: 1.25;
+}
+
+@media (max-width: 560px) {
+  .uti-h2h-season-splits > span {
+    min-width: 140px;
   }
 }

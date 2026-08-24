@@ -1,4 +1,6 @@
 // 2025 Yahoo historical weekly team stats.
+// phase: regular | playoffs. round identifies the postseason round.
+// tiebreak_winner identifies the advancing team when a playoff matchup is tied on categories.
 // Yahoo display names are preserved in source_team_name/source_opponent_name.
 window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
   {
@@ -29,7 +31,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 5,
     "official_score_for": 10,
-    "official_score_against": 5
+    "official_score_against": 5,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -59,7 +65,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 0,
     "official_score_for": 7,
-    "official_score_against": 6
+    "official_score_against": 6,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -89,7 +99,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 5,
     "official_score_for": 5,
-    "official_score_against": 10
+    "official_score_against": 10,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -119,7 +133,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 4,
     "official_score_for": 12,
-    "official_score_against": 3
+    "official_score_against": 3,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -149,7 +167,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 6,
     "official_score_for": 6,
-    "official_score_against": 7
+    "official_score_against": 7,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -179,7 +201,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 7,
     "official_score_for": 4,
-    "official_score_against": 12
+    "official_score_against": 12,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -209,7 +235,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 2,
     "SVH": 3,
     "official_score_for": 12,
-    "official_score_against": 4
+    "official_score_against": 4,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -239,7 +269,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 12,
     "official_score_for": 14,
-    "official_score_against": 1
+    "official_score_against": 1,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -269,7 +303,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 2,
     "SVH": 7,
     "official_score_for": 1,
-    "official_score_against": 14
+    "official_score_against": 14,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -299,7 +337,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 9,
     "official_score_for": 3,
-    "official_score_against": 12
+    "official_score_against": 12,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -329,7 +371,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 2,
     "official_score_for": 6,
-    "official_score_against": 10
+    "official_score_against": 10,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -359,7 +405,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 0,
     "official_score_for": 8,
-    "official_score_against": 7
+    "official_score_against": 7,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -389,7 +439,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 7,
     "official_score_for": 7,
-    "official_score_against": 6
+    "official_score_against": 6,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -419,7 +473,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 4,
     "official_score_for": 10,
-    "official_score_against": 6
+    "official_score_against": 6,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -449,7 +507,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 2,
     "official_score_for": 6,
-    "official_score_against": 7
+    "official_score_against": 7,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -479,7 +541,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 6,
     "official_score_for": 7,
-    "official_score_against": 7
+    "official_score_against": 7,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -509,7 +575,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 3,
     "official_score_for": 11,
-    "official_score_against": 5
+    "official_score_against": 5,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -539,7 +609,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 3,
     "official_score_for": 7,
-    "official_score_against": 7
+    "official_score_against": 7,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -569,7 +643,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 7,
     "official_score_for": 7,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -599,7 +677,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 1,
     "official_score_for": 5,
-    "official_score_against": 11
+    "official_score_against": 11,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -629,7 +711,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 7,
     "official_score_for": 4,
-    "official_score_against": 10
+    "official_score_against": 10,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -659,7 +745,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 0,
     "official_score_for": 3,
-    "official_score_against": 12
+    "official_score_against": 12,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -689,7 +779,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 4,
     "official_score_for": 8,
-    "official_score_against": 6
+    "official_score_against": 6,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -719,7 +813,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 8,
     "official_score_for": 14,
-    "official_score_against": 1
+    "official_score_against": 1,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -749,7 +847,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 4,
     "official_score_for": 1,
-    "official_score_against": 14
+    "official_score_against": 14,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -779,7 +881,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 3,
     "official_score_for": 4,
-    "official_score_against": 9
+    "official_score_against": 9,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -809,7 +915,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 3,
     "official_score_for": 10,
-    "official_score_against": 4
+    "official_score_against": 4,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -839,7 +949,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 7,
     "official_score_for": 12,
-    "official_score_against": 3
+    "official_score_against": 3,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -869,7 +983,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 6,
     "official_score_for": 6,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -899,7 +1017,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 3,
     "official_score_for": 9,
-    "official_score_against": 4
+    "official_score_against": 4,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -929,7 +1051,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 4,
     "official_score_for": 12,
-    "official_score_against": 3
+    "official_score_against": 3,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -959,7 +1085,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 0,
     "official_score_for": 2,
-    "official_score_against": 12
+    "official_score_against": 12,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -989,7 +1119,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 5,
     "official_score_for": 12,
-    "official_score_against": 2
+    "official_score_against": 2,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -1019,7 +1153,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 2,
     "official_score_for": 12,
-    "official_score_against": 3
+    "official_score_against": 3,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -1049,7 +1187,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 2,
     "official_score_for": 11,
-    "official_score_against": 5
+    "official_score_against": 5,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -1079,7 +1221,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 3,
     "official_score_for": 3,
-    "official_score_against": 12
+    "official_score_against": 12,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -1109,7 +1255,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 1,
     "official_score_for": 5,
-    "official_score_against": 11
+    "official_score_against": 11,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -1139,7 +1289,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 2,
     "SVH": 4,
     "official_score_for": 10,
-    "official_score_against": 6
+    "official_score_against": 6,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -1169,7 +1323,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 4,
     "official_score_for": 3,
-    "official_score_against": 12
+    "official_score_against": 12,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -1199,7 +1357,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 1,
     "official_score_for": 6,
-    "official_score_against": 10
+    "official_score_against": 10,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -1229,7 +1391,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 4,
     "official_score_for": 8,
-    "official_score_against": 6
+    "official_score_against": 6,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -1259,7 +1425,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 0,
     "official_score_for": 2,
-    "official_score_against": 12
+    "official_score_against": 12,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -1289,7 +1459,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 6,
     "official_score_for": 11,
-    "official_score_against": 2
+    "official_score_against": 2,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -1319,7 +1493,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 7,
     "official_score_for": 12,
-    "official_score_against": 2
+    "official_score_against": 2,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -1349,7 +1527,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 2,
     "official_score_for": 6,
-    "official_score_against": 7
+    "official_score_against": 7,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -1379,7 +1561,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 8,
     "official_score_for": 7,
-    "official_score_against": 6
+    "official_score_against": 6,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -1409,7 +1595,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 2,
     "official_score_for": 8,
-    "official_score_against": 7
+    "official_score_against": 7,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -1439,7 +1629,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 3,
     "official_score_for": 2,
-    "official_score_against": 11
+    "official_score_against": 11,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -1469,7 +1663,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 5,
     "official_score_for": 7,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -1499,7 +1697,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 4,
     "official_score_for": 6,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -1529,7 +1731,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 7,
     "official_score_for": 5,
-    "official_score_against": 10
+    "official_score_against": 10,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -1559,7 +1765,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 0,
     "official_score_for": 6,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -1589,7 +1799,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 4,
     "official_score_for": 9,
-    "official_score_against": 6
+    "official_score_against": 6,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -1619,7 +1833,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 6,
     "official_score_for": 6,
-    "official_score_against": 9
+    "official_score_against": 9,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -1649,7 +1867,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 1,
     "official_score_for": 9,
-    "official_score_against": 6
+    "official_score_against": 6,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -1679,7 +1901,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 5,
     "official_score_for": 10,
-    "official_score_against": 5
+    "official_score_against": 5,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -1709,7 +1935,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 2,
     "official_score_for": 8,
-    "official_score_against": 6
+    "official_score_against": 6,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -1739,7 +1969,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 3,
     "official_score_for": 10,
-    "official_score_against": 5
+    "official_score_against": 5,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -1769,7 +2003,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 1,
     "official_score_for": 5,
-    "official_score_against": 10
+    "official_score_against": 10,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -1799,7 +2037,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 4,
     "official_score_for": 6,
-    "official_score_against": 9
+    "official_score_against": 9,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -1829,7 +2071,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 6,
     "official_score_for": 8,
-    "official_score_against": 5
+    "official_score_against": 5,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -1859,7 +2105,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 0,
     "official_score_for": 12,
-    "official_score_against": 2
+    "official_score_against": 2,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -1889,7 +2139,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 5,
     "official_score_for": 9,
-    "official_score_against": 6
+    "official_score_against": 6,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -1919,7 +2173,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 3,
     "official_score_for": 3,
-    "official_score_against": 11
+    "official_score_against": 11,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -1949,7 +2207,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 6,
     "official_score_for": 5,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -1979,7 +2241,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 0,
     "official_score_for": 2,
-    "official_score_against": 12
+    "official_score_against": 12,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -2009,7 +2275,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 2,
     "official_score_for": 6,
-    "official_score_against": 9
+    "official_score_against": 9,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -2039,7 +2309,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 0,
     "official_score_for": 11,
-    "official_score_against": 3
+    "official_score_against": 3,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -2069,7 +2343,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 3,
     "official_score_for": 6,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -2099,7 +2377,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 6,
     "official_score_for": 8,
-    "official_score_against": 6
+    "official_score_against": 6,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -2129,7 +2411,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 7,
     "official_score_for": 10,
-    "official_score_against": 4
+    "official_score_against": 4,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -2159,7 +2445,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 0,
     "official_score_for": 5,
-    "official_score_against": 9
+    "official_score_against": 9,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -2189,7 +2479,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 5,
     "official_score_for": 9,
-    "official_score_against": 7
+    "official_score_against": 7,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -2219,7 +2513,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 5,
     "official_score_for": 10,
-    "official_score_against": 5
+    "official_score_against": 5,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -2249,7 +2547,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 7,
     "official_score_for": 13,
-    "official_score_against": 2
+    "official_score_against": 2,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -2279,7 +2581,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 2,
     "SVH": 6,
     "official_score_for": 7,
-    "official_score_against": 9
+    "official_score_against": 9,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -2309,7 +2615,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 1,
     "official_score_for": 5,
-    "official_score_against": 10
+    "official_score_against": 10,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -2339,7 +2649,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 3,
     "SVH": 2,
     "official_score_for": 2,
-    "official_score_against": 13
+    "official_score_against": 13,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -2369,7 +2683,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 2,
     "official_score_for": 4,
-    "official_score_against": 10
+    "official_score_against": 10,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -2399,7 +2717,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 3,
     "SVH": 5,
     "official_score_for": 9,
-    "official_score_against": 5
+    "official_score_against": 5,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -2429,7 +2751,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 5,
     "official_score_for": 8,
-    "official_score_against": 7
+    "official_score_against": 7,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -2459,7 +2785,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 0,
     "official_score_for": 7,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -2489,7 +2819,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 2,
     "SVH": 5,
     "official_score_for": 9,
-    "official_score_against": 7
+    "official_score_against": 7,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -2519,7 +2853,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 7,
     "official_score_for": 5,
-    "official_score_against": 9
+    "official_score_against": 9,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -2549,7 +2887,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 5,
     "official_score_for": 6,
-    "official_score_against": 6
+    "official_score_against": 6,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -2579,7 +2921,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 6,
     "official_score_for": 9,
-    "official_score_against": 5
+    "official_score_against": 5,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -2609,7 +2955,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 4,
     "official_score_for": 10,
-    "official_score_against": 4
+    "official_score_against": 4,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -2639,7 +2989,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 1,
     "official_score_for": 4,
-    "official_score_against": 10
+    "official_score_against": 10,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -2669,7 +3023,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 3,
     "official_score_for": 6,
-    "official_score_against": 6
+    "official_score_against": 6,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -2699,7 +3057,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 10,
     "official_score_for": 7,
-    "official_score_against": 9
+    "official_score_against": 9,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -2729,7 +3091,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 2,
     "SVH": 4,
     "official_score_for": 8,
-    "official_score_against": 7
+    "official_score_against": 7,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -2759,7 +3125,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 0,
     "official_score_for": 7,
-    "official_score_against": 9
+    "official_score_against": 9,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -2789,7 +3159,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 2,
     "SVH": 6,
     "official_score_for": 7,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -2819,7 +3193,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 5,
     "official_score_for": 8,
-    "official_score_against": 7
+    "official_score_against": 7,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -2849,7 +3227,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 8,
     "official_score_for": 9,
-    "official_score_against": 7
+    "official_score_against": 7,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -2879,7 +3261,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 8,
     "official_score_for": 11,
-    "official_score_against": 5
+    "official_score_against": 5,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -2909,7 +3295,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 2,
     "SVH": 2,
     "official_score_for": 5,
-    "official_score_against": 11
+    "official_score_against": 11,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -2939,7 +3329,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 2,
     "official_score_for": 10,
-    "official_score_against": 5
+    "official_score_against": 5,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -2969,7 +3363,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 2,
     "SVH": 3,
     "official_score_for": 5,
-    "official_score_against": 10
+    "official_score_against": 10,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -2999,7 +3397,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 6,
     "official_score_for": 7,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -3029,7 +3431,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 6,
     "official_score_for": 4,
-    "official_score_against": 10
+    "official_score_against": 10,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -3059,7 +3465,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 0,
     "official_score_for": 5,
-    "official_score_against": 6
+    "official_score_against": 6,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -3089,7 +3499,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 2,
     "official_score_for": 1,
-    "official_score_against": 13
+    "official_score_against": 13,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -3119,7 +3533,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 3,
     "official_score_for": 10,
-    "official_score_against": 4
+    "official_score_against": 4,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -3149,7 +3567,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 4,
     "official_score_for": 13,
-    "official_score_against": 1
+    "official_score_against": 1,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -3179,7 +3601,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 4,
     "official_score_for": 7,
-    "official_score_against": 9
+    "official_score_against": 9,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -3209,7 +3635,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 1,
     "official_score_for": 6,
-    "official_score_against": 10
+    "official_score_against": 10,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -3239,7 +3669,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 6,
     "official_score_for": 9,
-    "official_score_against": 7
+    "official_score_against": 7,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -3269,7 +3703,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 3,
     "official_score_for": 6,
-    "official_score_against": 5
+    "official_score_against": 5,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -3299,7 +3737,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 3,
     "SVH": 4,
     "official_score_for": 10,
-    "official_score_against": 6
+    "official_score_against": 6,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -3329,7 +3771,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 3,
     "official_score_for": 10,
-    "official_score_against": 3
+    "official_score_against": 3,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -3359,7 +3805,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 0,
     "official_score_for": 6,
-    "official_score_against": 7
+    "official_score_against": 7,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -3389,7 +3839,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 4,
     "official_score_for": 8,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -3419,7 +3873,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 7,
     "official_score_for": 7,
-    "official_score_against": 7
+    "official_score_against": 7,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -3449,7 +3907,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 4,
     "official_score_for": 7,
-    "official_score_against": 7
+    "official_score_against": 7,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -3479,7 +3941,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 5,
     "official_score_for": 10,
-    "official_score_against": 4
+    "official_score_against": 4,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -3509,7 +3975,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 1,
     "official_score_for": 3,
-    "official_score_against": 10
+    "official_score_against": 10,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -3539,7 +4009,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 4,
     "official_score_for": 7,
-    "official_score_against": 6
+    "official_score_against": 6,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -3569,7 +4043,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 2,
     "SVH": 3,
     "official_score_for": 8,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -3599,7 +4077,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 3,
     "SVH": 2,
     "official_score_for": 4,
-    "official_score_against": 10
+    "official_score_against": 10,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -3629,7 +4111,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 5,
     "official_score_for": 8,
-    "official_score_against": 6
+    "official_score_against": 6,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -3659,7 +4145,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 0,
     "official_score_for": 4,
-    "official_score_against": 11
+    "official_score_against": 11,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -3689,7 +4179,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 0,
     "official_score_for": 11,
-    "official_score_against": 4
+    "official_score_against": 4,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -3719,7 +4213,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 2,
     "official_score_for": 12,
-    "official_score_against": 1
+    "official_score_against": 1,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -3749,7 +4247,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 4,
     "official_score_for": 9,
-    "official_score_against": 7
+    "official_score_against": 7,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -3779,7 +4281,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 3,
     "official_score_for": 6,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -3809,7 +4315,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 2,
     "official_score_for": 7,
-    "official_score_against": 9
+    "official_score_against": 9,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -3839,7 +4349,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 5,
     "official_score_for": 9,
-    "official_score_against": 5
+    "official_score_against": 5,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -3869,7 +4383,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 2,
     "official_score_for": 1,
-    "official_score_against": 12
+    "official_score_against": 12,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -3899,7 +4417,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 3,
     "official_score_for": 5,
-    "official_score_against": 9
+    "official_score_against": 9,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -3929,7 +4451,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 5,
     "official_score_for": 3,
-    "official_score_against": 12
+    "official_score_against": 12,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -3959,7 +4485,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 0,
     "official_score_for": 3,
-    "official_score_against": 13
+    "official_score_against": 13,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -3989,7 +4519,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 4,
     "official_score_for": 7,
-    "official_score_against": 7
+    "official_score_against": 7,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -4019,7 +4553,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 2,
     "SVH": 1,
     "official_score_for": 13,
-    "official_score_against": 3
+    "official_score_against": 3,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -4049,7 +4587,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 3,
     "official_score_for": 4,
-    "official_score_against": 11
+    "official_score_against": 11,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -4079,7 +4621,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 4,
     "official_score_for": 11,
-    "official_score_against": 4
+    "official_score_against": 4,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -4109,7 +4655,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 1,
     "official_score_for": 8,
-    "official_score_against": 7
+    "official_score_against": 7,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -4139,7 +4689,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 4,
     "official_score_for": 7,
-    "official_score_against": 7
+    "official_score_against": 7,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -4169,7 +4723,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 2,
     "official_score_for": 7,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -4199,7 +4757,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 8,
     "official_score_for": 12,
-    "official_score_against": 3
+    "official_score_against": 3,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -4229,7 +4791,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 6,
     "official_score_for": 6,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -4259,7 +4825,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 0,
     "official_score_for": 7,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -4289,7 +4859,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 4,
     "SVH": 2,
     "official_score_for": 9,
-    "official_score_against": 7
+    "official_score_against": 7,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -4319,7 +4893,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 5,
     "official_score_for": 7,
-    "official_score_against": 9
+    "official_score_against": 9,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -4349,7 +4927,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 2,
     "SVH": 4,
     "official_score_for": 5,
-    "official_score_against": 10
+    "official_score_against": 10,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -4379,7 +4961,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 8,
     "official_score_for": 9,
-    "official_score_against": 5
+    "official_score_against": 5,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -4409,7 +4995,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 2,
     "official_score_for": 8,
-    "official_score_against": 7
+    "official_score_against": 7,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -4439,7 +5029,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 2,
     "SVH": 6,
     "official_score_for": 8,
-    "official_score_against": 6
+    "official_score_against": 6,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -4469,7 +5063,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 4,
     "SVH": 10,
     "official_score_for": 5,
-    "official_score_against": 9
+    "official_score_against": 9,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -4499,7 +5097,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 2,
     "SVH": 5,
     "official_score_for": 10,
-    "official_score_against": 5
+    "official_score_against": 5,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -4529,7 +5131,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 7,
     "official_score_for": 6,
-    "official_score_against": 10
+    "official_score_against": 10,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -4559,7 +5165,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 0,
     "official_score_for": 6,
-    "official_score_against": 10
+    "official_score_against": 10,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -4589,7 +5199,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 3,
     "official_score_for": 2,
-    "official_score_against": 12
+    "official_score_against": 12,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -4619,7 +5233,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 5,
     "official_score_for": 8,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -4649,7 +5267,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 4,
     "official_score_for": 10,
-    "official_score_against": 6
+    "official_score_against": 6,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -4679,7 +5301,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 5,
     "official_score_for": 10,
-    "official_score_against": 6
+    "official_score_against": 6,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -4709,7 +5335,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 2,
     "official_score_for": 12,
-    "official_score_against": 2
+    "official_score_against": 2,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -4739,7 +5369,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 4,
     "official_score_for": 8,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -4769,7 +5403,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 4,
     "official_score_for": 2,
-    "official_score_against": 12
+    "official_score_against": 12,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -4799,7 +5437,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 4,
     "official_score_for": 12,
-    "official_score_against": 2
+    "official_score_against": 2,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -4829,7 +5471,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 3,
     "official_score_for": 8,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -4859,7 +5505,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 0,
     "official_score_for": 4,
-    "official_score_against": 9
+    "official_score_against": 9,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -4889,7 +5539,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 4,
     "official_score_for": 12,
-    "official_score_against": 2
+    "official_score_against": 2,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -4919,7 +5573,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 1,
     "official_score_for": 6,
-    "official_score_against": 7
+    "official_score_against": 7,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -4949,7 +5607,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 4,
     "official_score_for": 4,
-    "official_score_against": 11
+    "official_score_against": 11,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -4979,7 +5641,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 2,
     "SVH": 4,
     "official_score_for": 2,
-    "official_score_against": 12
+    "official_score_against": 12,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -5009,7 +5675,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 1,
     "official_score_for": 7,
-    "official_score_against": 6
+    "official_score_against": 6,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -5039,7 +5709,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 1,
     "official_score_for": 11,
-    "official_score_against": 4
+    "official_score_against": 4,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -5069,7 +5743,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 5,
     "official_score_for": 8,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -5099,7 +5777,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 2,
     "SVH": 4,
     "official_score_for": 9,
-    "official_score_against": 4
+    "official_score_against": 4,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -5129,7 +5811,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 6,
     "official_score_for": 8,
-    "official_score_against": 4
+    "official_score_against": 4,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -5159,7 +5845,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 0,
     "official_score_for": 4,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -5189,7 +5879,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 5,
     "official_score_for": 9,
-    "official_score_against": 6
+    "official_score_against": 6,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -5219,7 +5913,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 3,
     "official_score_for": 3,
-    "official_score_against": 12
+    "official_score_against": 12,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -5249,7 +5947,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 0,
     "SVH": 3,
     "official_score_for": 7,
-    "official_score_against": 9
+    "official_score_against": 9,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -5279,7 +5981,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 2,
     "official_score_for": 12,
-    "official_score_against": 3
+    "official_score_against": 3,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -5309,7 +6015,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 2,
     "SVH": 0,
     "official_score_for": 1,
-    "official_score_against": 13
+    "official_score_against": 13,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -5339,7 +6049,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 3,
     "official_score_for": 13,
-    "official_score_against": 1
+    "official_score_against": 1,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -5369,7 +6083,11 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 1,
     "SVH": 4,
     "official_score_for": 9,
-    "official_score_against": 7
+    "official_score_against": 7,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   },
   {
     "season": 2025,
@@ -5399,6 +6117,1574 @@ window.UTI_YAHOO_2025_WEEKLY_TEAM_STATS = [
     "BSV": 3,
     "SVH": 3,
     "official_score_for": 6,
-    "official_score_against": 9
+    "official_score_against": 9,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 19,
+    "team": "BB's Bold Team",
+    "source_team_name": "BB's Bold Team",
+    "opponent": "Dixon Cider",
+    "source_opponent_name": "Dixon Cider",
+    "H": 73,
+    "AB": 291,
+    "R": 44,
+    "HR": 15,
+    "RBI": 48,
+    "BB": 33,
+    "SO": 68,
+    "TB": 135,
+    "AVG": 0.251,
+    "NSB": 12,
+    "IP": "45.1",
+    "W": 3,
+    "L": 3,
+    "K": 52,
+    "ERA": 4.57,
+    "WHIP": 1.39,
+    "QS": 2,
+    "BSV": 1,
+    "SVH": 4,
+    "official_score_for": 3,
+    "official_score_against": 12,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 19,
+    "team": "BTA Boyz",
+    "source_team_name": "Yoshida Yo Pants 💩",
+    "opponent": "Gunnarrhea",
+    "source_opponent_name": "Acuña Handle the Gunnarrhea?",
+    "H": 56,
+    "AB": 247,
+    "R": 31,
+    "HR": 6,
+    "RBI": 39,
+    "BB": 30,
+    "SO": 67,
+    "TB": 85,
+    "AVG": 0.227,
+    "NSB": 3,
+    "IP": "30.0",
+    "W": 1,
+    "L": 2,
+    "K": 23,
+    "ERA": 6.0,
+    "WHIP": 1.23,
+    "QS": 2,
+    "BSV": 0,
+    "SVH": 0,
+    "official_score_for": 5,
+    "official_score_against": 9,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 19,
+    "team": "Dixon Cider",
+    "source_team_name": "Dixon Cider",
+    "opponent": "BB's Bold Team",
+    "source_opponent_name": "BB's Bold Team",
+    "H": 82,
+    "AB": 295,
+    "R": 63,
+    "HR": 18,
+    "RBI": 49,
+    "BB": 49,
+    "SO": 64,
+    "TB": 155,
+    "AVG": 0.278,
+    "NSB": 11,
+    "IP": "51.1",
+    "W": 2,
+    "L": 2,
+    "K": 48,
+    "ERA": 2.63,
+    "WHIP": 1.09,
+    "QS": 2,
+    "BSV": 0,
+    "SVH": 8,
+    "official_score_for": 12,
+    "official_score_against": 3,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 19,
+    "team": "Goodyear Gila Monsters",
+    "source_team_name": "Goodyear Gila Monsters",
+    "opponent": "You Don't Know Bo",
+    "source_opponent_name": "You Don't Kno Bo",
+    "H": 86,
+    "AB": 309,
+    "R": 49,
+    "HR": 15,
+    "RBI": 46,
+    "BB": 50,
+    "SO": 65,
+    "TB": 153,
+    "AVG": 0.278,
+    "NSB": 9,
+    "IP": "72.2",
+    "W": 6,
+    "L": 3,
+    "K": 68,
+    "ERA": 5.45,
+    "WHIP": 1.35,
+    "QS": 4,
+    "BSV": 0,
+    "SVH": 4,
+    "official_score_for": 8,
+    "official_score_against": 5,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 19,
+    "team": "Gunnarrhea",
+    "source_team_name": "Acuña Handle the Gunnarrhea?",
+    "opponent": "BTA Boyz",
+    "source_opponent_name": "Yoshida Yo Pants 💩",
+    "H": 77,
+    "AB": 310,
+    "R": 48,
+    "HR": 10,
+    "RBI": 33,
+    "BB": 25,
+    "SO": 72,
+    "TB": 124,
+    "AVG": 0.248,
+    "NSB": 3,
+    "IP": "70.2",
+    "W": 8,
+    "L": 2,
+    "K": 73,
+    "ERA": 3.44,
+    "WHIP": 1.26,
+    "QS": 6,
+    "BSV": 2,
+    "SVH": 2,
+    "official_score_for": 9,
+    "official_score_against": 5,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 19,
+    "team": "John's Super Team",
+    "source_team_name": "John's Super Team",
+    "opponent": "Mactown MacDaddies",
+    "source_opponent_name": "Mactown MacDaddies",
+    "H": 77,
+    "AB": 321,
+    "R": 46,
+    "HR": 13,
+    "RBI": 38,
+    "BB": 28,
+    "SO": 84,
+    "TB": 132,
+    "AVG": 0.24,
+    "NSB": 5,
+    "IP": "38.0",
+    "W": 3,
+    "L": 3,
+    "K": 29,
+    "ERA": 4.03,
+    "WHIP": 1.26,
+    "QS": 3,
+    "BSV": 0,
+    "SVH": 5,
+    "official_score_for": 10,
+    "official_score_against": 5,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 19,
+    "team": "Mactown MacDaddies",
+    "source_team_name": "Mactown MacDaddies",
+    "opponent": "John's Super Team",
+    "source_opponent_name": "John's Super Team",
+    "H": 59,
+    "AB": 282,
+    "R": 32,
+    "HR": 12,
+    "RBI": 40,
+    "BB": 25,
+    "SO": 77,
+    "TB": 110,
+    "AVG": 0.209,
+    "NSB": 6,
+    "IP": "70.2",
+    "W": 3,
+    "L": 6,
+    "K": 62,
+    "ERA": 4.84,
+    "WHIP": 1.32,
+    "QS": 4,
+    "BSV": 2,
+    "SVH": 2,
+    "official_score_for": 5,
+    "official_score_against": 10,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 19,
+    "team": "Me So Heorny",
+    "source_team_name": "Me so Hoerny",
+    "opponent": "This Is Mizerable",
+    "source_opponent_name": "This is Mizerable",
+    "H": 75,
+    "AB": 314,
+    "R": 37,
+    "HR": 12,
+    "RBI": 49,
+    "BB": 24,
+    "SO": 69,
+    "TB": 128,
+    "AVG": 0.239,
+    "NSB": 6,
+    "IP": "74.2",
+    "W": 5,
+    "L": 5,
+    "K": 73,
+    "ERA": 4.1,
+    "WHIP": 1.18,
+    "QS": 4,
+    "BSV": 0,
+    "SVH": 3,
+    "official_score_for": 4,
+    "official_score_against": 11,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 19,
+    "team": "This Is Mizerable",
+    "source_team_name": "This is Mizerable",
+    "opponent": "Me So Heorny",
+    "source_opponent_name": "Me so Hoerny",
+    "H": 85,
+    "AB": 293,
+    "R": 44,
+    "HR": 16,
+    "RBI": 45,
+    "BB": 29,
+    "SO": 52,
+    "TB": 149,
+    "AVG": 0.29,
+    "NSB": 3,
+    "IP": "63.2",
+    "W": 7,
+    "L": 2,
+    "K": 67,
+    "ERA": 2.97,
+    "WHIP": 0.77,
+    "QS": 3,
+    "BSV": 0,
+    "SVH": 5,
+    "official_score_for": 11,
+    "official_score_against": 4,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 19,
+    "team": "You Don't Know Bo",
+    "source_team_name": "You Don't Kno Bo",
+    "opponent": "Goodyear Gila Monsters",
+    "source_opponent_name": "Goodyear Gila Monsters",
+    "H": 84,
+    "AB": 305,
+    "R": 63,
+    "HR": 15,
+    "RBI": 50,
+    "BB": 31,
+    "SO": 75,
+    "TB": 144,
+    "AVG": 0.275,
+    "NSB": 3,
+    "IP": "51.1",
+    "W": 1,
+    "L": 3,
+    "K": 60,
+    "ERA": 5.26,
+    "WHIP": 1.25,
+    "QS": 2,
+    "BSV": 0,
+    "SVH": 6,
+    "official_score_for": 5,
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 20,
+    "team": "BB's Bold Team",
+    "source_team_name": "BB's Bold Team",
+    "opponent": "Goodyear Gila Monsters",
+    "source_opponent_name": "Goodyear Gila Monsters",
+    "H": 90,
+    "AB": 314,
+    "R": 59,
+    "HR": 26,
+    "RBI": 65,
+    "BB": 33,
+    "SO": 77,
+    "TB": 187,
+    "AVG": 0.287,
+    "NSB": 5,
+    "IP": "50.1",
+    "W": 4,
+    "L": 4,
+    "K": 65,
+    "ERA": 4.47,
+    "WHIP": 1.43,
+    "QS": 4,
+    "BSV": 3,
+    "SVH": 5,
+    "official_score_for": 5,
+    "official_score_against": 10,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 20,
+    "team": "BTA Boyz",
+    "source_team_name": "Yoshida Yo Pants 💩",
+    "opponent": "This Is Mizerable",
+    "source_opponent_name": "This is Mizerable",
+    "H": 44,
+    "AB": 246,
+    "R": 24,
+    "HR": 5,
+    "RBI": 17,
+    "BB": 29,
+    "SO": 65,
+    "TB": 72,
+    "AVG": 0.179,
+    "NSB": 4,
+    "IP": "72.2",
+    "W": 6,
+    "L": 3,
+    "K": 63,
+    "ERA": 3.1,
+    "WHIP": 1.03,
+    "QS": 8,
+    "BSV": 0,
+    "SVH": 0,
+    "official_score_for": 8,
+    "official_score_against": 7,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 20,
+    "team": "Dixon Cider",
+    "source_team_name": "Dixon Cider",
+    "opponent": "Gunnarrhea",
+    "source_opponent_name": "Acuña Handle the Gunnarrhea?",
+    "H": 67,
+    "AB": 299,
+    "R": 38,
+    "HR": 10,
+    "RBI": 35,
+    "BB": 39,
+    "SO": 70,
+    "TB": 122,
+    "AVG": 0.224,
+    "NSB": 5,
+    "IP": "68.2",
+    "W": 3,
+    "L": 5,
+    "K": 62,
+    "ERA": 4.85,
+    "WHIP": 1.4,
+    "QS": 4,
+    "BSV": 0,
+    "SVH": 7,
+    "official_score_for": 4,
+    "official_score_against": 11,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 20,
+    "team": "Goodyear Gila Monsters",
+    "source_team_name": "Goodyear Gila Monsters",
+    "opponent": "BB's Bold Team",
+    "source_opponent_name": "BB's Bold Team",
+    "H": 85,
+    "AB": 337,
+    "R": 50,
+    "HR": 11,
+    "RBI": 33,
+    "BB": 38,
+    "SO": 69,
+    "TB": 141,
+    "AVG": 0.252,
+    "NSB": 10,
+    "IP": "75.1",
+    "W": 7,
+    "L": 3,
+    "K": 90,
+    "ERA": 2.87,
+    "WHIP": 1.13,
+    "QS": 9,
+    "BSV": 0,
+    "SVH": 5,
+    "official_score_for": 10,
+    "official_score_against": 5,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 20,
+    "team": "Gunnarrhea",
+    "source_team_name": "Acuña Handle the Gunnarrhea?",
+    "opponent": "Dixon Cider",
+    "source_opponent_name": "Dixon Cider",
+    "H": 77,
+    "AB": 302,
+    "R": 46,
+    "HR": 9,
+    "RBI": 37,
+    "BB": 31,
+    "SO": 74,
+    "TB": 123,
+    "AVG": 0.255,
+    "NSB": 14,
+    "IP": "83.0",
+    "W": 7,
+    "L": 4,
+    "K": 92,
+    "ERA": 3.69,
+    "WHIP": 1.12,
+    "QS": 6,
+    "BSV": 0,
+    "SVH": 0,
+    "official_score_for": 11,
+    "official_score_against": 4,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 20,
+    "team": "John's Super Team",
+    "source_team_name": "John's Super Team",
+    "opponent": "Me So Heorny",
+    "source_opponent_name": "Me so Hoerny",
+    "H": 78,
+    "AB": 322,
+    "R": 49,
+    "HR": 12,
+    "RBI": 46,
+    "BB": 35,
+    "SO": 75,
+    "TB": 131,
+    "AVG": 0.242,
+    "NSB": 4,
+    "IP": "52.0",
+    "W": 3,
+    "L": 3,
+    "K": 56,
+    "ERA": 2.08,
+    "WHIP": 0.85,
+    "QS": 4,
+    "BSV": 0,
+    "SVH": 4,
+    "official_score_for": 5,
+    "official_score_against": 10,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 20,
+    "team": "Mactown MacDaddies",
+    "source_team_name": "Mactown MacDaddies",
+    "opponent": "You Don't Know Bo",
+    "source_opponent_name": "You Don't Kno Bo",
+    "H": 81,
+    "AB": 288,
+    "R": 46,
+    "HR": 15,
+    "RBI": 55,
+    "BB": 30,
+    "SO": 57,
+    "TB": 145,
+    "AVG": 0.281,
+    "NSB": 5,
+    "IP": "78.2",
+    "W": 6,
+    "L": 2,
+    "K": 66,
+    "ERA": 3.43,
+    "WHIP": 1.23,
+    "QS": 5,
+    "BSV": 0,
+    "SVH": 0,
+    "official_score_for": 11,
+    "official_score_against": 5,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 20,
+    "team": "Me So Heorny",
+    "source_team_name": "Me so Hoerny",
+    "opponent": "John's Super Team",
+    "source_opponent_name": "John's Super Team",
+    "H": 89,
+    "AB": 327,
+    "R": 52,
+    "HR": 13,
+    "RBI": 35,
+    "BB": 30,
+    "SO": 66,
+    "TB": 145,
+    "AVG": 0.272,
+    "NSB": 2,
+    "IP": "59.1",
+    "W": 4,
+    "L": 2,
+    "K": 68,
+    "ERA": 2.28,
+    "WHIP": 1.01,
+    "QS": 6,
+    "BSV": 0,
+    "SVH": 7,
+    "official_score_for": 10,
+    "official_score_against": 5,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 20,
+    "team": "This Is Mizerable",
+    "source_team_name": "This is Mizerable",
+    "opponent": "BTA Boyz",
+    "source_opponent_name": "Yoshida Yo Pants 💩",
+    "H": 87,
+    "AB": 313,
+    "R": 48,
+    "HR": 17,
+    "RBI": 49,
+    "BB": 41,
+    "SO": 70,
+    "TB": 154,
+    "AVG": 0.278,
+    "NSB": 4,
+    "IP": "41.2",
+    "W": 1,
+    "L": 4,
+    "K": 42,
+    "ERA": 6.05,
+    "WHIP": 1.49,
+    "QS": 1,
+    "BSV": 4,
+    "SVH": 6,
+    "official_score_for": 7,
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 20,
+    "team": "You Don't Know Bo",
+    "source_team_name": "You Don't Kno Bo",
+    "opponent": "Mactown MacDaddies",
+    "source_opponent_name": "Mactown MacDaddies",
+    "H": 86,
+    "AB": 309,
+    "R": 51,
+    "HR": 19,
+    "RBI": 51,
+    "BB": 31,
+    "SO": 70,
+    "TB": 160,
+    "AVG": 0.278,
+    "NSB": 3,
+    "IP": "47.0",
+    "W": 3,
+    "L": 4,
+    "K": 51,
+    "ERA": 6.32,
+    "WHIP": 1.64,
+    "QS": 2,
+    "BSV": 2,
+    "SVH": 3,
+    "official_score_for": 5,
+    "official_score_against": 11,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 21,
+    "team": "BB's Bold Team",
+    "source_team_name": "BB's Bold Team",
+    "opponent": "Mactown MacDaddies",
+    "source_opponent_name": "Mactown MacDaddies",
+    "H": 86,
+    "AB": 305,
+    "R": 53,
+    "HR": 13,
+    "RBI": 38,
+    "BB": 37,
+    "SO": 70,
+    "TB": 143,
+    "AVG": 0.282,
+    "NSB": 5,
+    "IP": "65.1",
+    "W": 3,
+    "L": 3,
+    "K": 76,
+    "ERA": 2.89,
+    "WHIP": 1.04,
+    "QS": 6,
+    "BSV": 0,
+    "SVH": 2,
+    "official_score_for": 11,
+    "official_score_against": 3,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 21,
+    "team": "BTA Boyz",
+    "source_team_name": "Yoshida Yo Pants 💩",
+    "opponent": "Me So Heorny",
+    "source_opponent_name": "Me so Hoerny",
+    "H": 62,
+    "AB": 249,
+    "R": 37,
+    "HR": 13,
+    "RBI": 47,
+    "BB": 32,
+    "SO": 65,
+    "TB": 114,
+    "AVG": 0.249,
+    "NSB": 4,
+    "IP": "21.2",
+    "W": 2,
+    "L": 2,
+    "K": 16,
+    "ERA": 5.82,
+    "WHIP": 1.43,
+    "QS": 2,
+    "BSV": 0,
+    "SVH": 0,
+    "official_score_for": 6,
+    "official_score_against": 10,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 21,
+    "team": "Dixon Cider",
+    "source_team_name": "Dixon Cider",
+    "opponent": "This Is Mizerable",
+    "source_opponent_name": "This is Mizerable",
+    "H": 75,
+    "AB": 303,
+    "R": 45,
+    "HR": 11,
+    "RBI": 36,
+    "BB": 39,
+    "SO": 73,
+    "TB": 120,
+    "AVG": 0.248,
+    "NSB": 3,
+    "IP": "54.0",
+    "W": 4,
+    "L": 2,
+    "K": 57,
+    "ERA": 4.0,
+    "WHIP": 0.98,
+    "QS": 3,
+    "BSV": 1,
+    "SVH": 5,
+    "official_score_for": 6,
+    "official_score_against": 9,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 21,
+    "team": "Goodyear Gila Monsters",
+    "source_team_name": "Goodyear Gila Monsters",
+    "opponent": "Gunnarrhea",
+    "source_opponent_name": "Acuña Handle the Gunnarrhea?",
+    "H": 79,
+    "AB": 330,
+    "R": 50,
+    "HR": 15,
+    "RBI": 42,
+    "BB": 34,
+    "SO": 85,
+    "TB": 144,
+    "AVG": 0.239,
+    "NSB": 6,
+    "IP": "80.2",
+    "W": 3,
+    "L": 4,
+    "K": 81,
+    "ERA": 2.57,
+    "WHIP": 1.03,
+    "QS": 6,
+    "BSV": 1,
+    "SVH": 2,
+    "official_score_for": 10,
+    "official_score_against": 6,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 21,
+    "team": "Gunnarrhea",
+    "source_team_name": "Acuña Handle the Gunnarrhea?",
+    "opponent": "Goodyear Gila Monsters",
+    "source_opponent_name": "Goodyear Gila Monsters",
+    "H": 87,
+    "AB": 320,
+    "R": 44,
+    "HR": 8,
+    "RBI": 39,
+    "BB": 31,
+    "SO": 74,
+    "TB": 137,
+    "AVG": 0.272,
+    "NSB": 7,
+    "IP": "69.1",
+    "W": 4,
+    "L": 6,
+    "K": 56,
+    "ERA": 5.97,
+    "WHIP": 1.34,
+    "QS": 3,
+    "BSV": 0,
+    "SVH": 3,
+    "official_score_for": 6,
+    "official_score_against": 10,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 21,
+    "team": "John's Super Team",
+    "source_team_name": "John's Super Team",
+    "opponent": "You Don't Know Bo",
+    "source_opponent_name": "You Don't Kno Bo",
+    "H": 89,
+    "AB": 291,
+    "R": 57,
+    "HR": 19,
+    "RBI": 50,
+    "BB": 31,
+    "SO": 63,
+    "TB": 159,
+    "AVG": 0.306,
+    "NSB": 15,
+    "IP": "38.0",
+    "W": 2,
+    "L": 4,
+    "K": 42,
+    "ERA": 5.21,
+    "WHIP": 1.34,
+    "QS": 1,
+    "BSV": 1,
+    "SVH": 7,
+    "official_score_for": 11,
+    "official_score_against": 5,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 21,
+    "team": "Mactown MacDaddies",
+    "source_team_name": "Mactown MacDaddies",
+    "opponent": "BB's Bold Team",
+    "source_opponent_name": "BB's Bold Team",
+    "H": 66,
+    "AB": 264,
+    "R": 42,
+    "HR": 19,
+    "RBI": 44,
+    "BB": 31,
+    "SO": 70,
+    "TB": 138,
+    "AVG": 0.25,
+    "NSB": 0,
+    "IP": "38.2",
+    "W": 3,
+    "L": 2,
+    "K": 37,
+    "ERA": 5.35,
+    "WHIP": 1.27,
+    "QS": 2,
+    "BSV": 1,
+    "SVH": 1,
+    "official_score_for": 3,
+    "official_score_against": 11,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 21,
+    "team": "Me So Heorny",
+    "source_team_name": "Me so Hoerny",
+    "opponent": "BTA Boyz",
+    "source_opponent_name": "Yoshida Yo Pants 💩",
+    "H": 75,
+    "AB": 312,
+    "R": 41,
+    "HR": 16,
+    "RBI": 60,
+    "BB": 29,
+    "SO": 71,
+    "TB": 139,
+    "AVG": 0.24,
+    "NSB": 0,
+    "IP": "65.1",
+    "W": 4,
+    "L": 4,
+    "K": 67,
+    "ERA": 3.86,
+    "WHIP": 1.16,
+    "QS": 6,
+    "BSV": 1,
+    "SVH": 4,
+    "official_score_for": 10,
+    "official_score_against": 6,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 21,
+    "team": "This Is Mizerable",
+    "source_team_name": "This is Mizerable",
+    "opponent": "Dixon Cider",
+    "source_opponent_name": "Dixon Cider",
+    "H": 91,
+    "AB": 332,
+    "R": 46,
+    "HR": 15,
+    "RBI": 57,
+    "BB": 28,
+    "SO": 71,
+    "TB": 157,
+    "AVG": 0.274,
+    "NSB": 4,
+    "IP": "50.2",
+    "W": 2,
+    "L": 3,
+    "K": 61,
+    "ERA": 4.26,
+    "WHIP": 1.14,
+    "QS": 3,
+    "BSV": 0,
+    "SVH": 3,
+    "official_score_for": 9,
+    "official_score_against": 6,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 21,
+    "team": "You Don't Know Bo",
+    "source_team_name": "You Don't Kno Bo",
+    "opponent": "John's Super Team",
+    "source_opponent_name": "John's Super Team",
+    "H": 72,
+    "AB": 307,
+    "R": 52,
+    "HR": 17,
+    "RBI": 41,
+    "BB": 30,
+    "SO": 88,
+    "TB": 134,
+    "AVG": 0.235,
+    "NSB": 8,
+    "IP": "51.0",
+    "W": 3,
+    "L": 5,
+    "K": 51,
+    "ERA": 4.24,
+    "WHIP": 1.29,
+    "QS": 4,
+    "BSV": 2,
+    "SVH": 2,
+    "official_score_for": 5,
+    "official_score_against": 11,
+    "phase": "regular",
+    "round": "",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 22,
+    "team": "BB's Bold Team",
+    "source_team_name": "BB's Bold Team",
+    "opponent": "John's Super Team",
+    "source_opponent_name": "John's Super Team",
+    "H": 77,
+    "AB": 268,
+    "R": 41,
+    "HR": 9,
+    "RBI": 44,
+    "BB": 34,
+    "SO": 64,
+    "TB": 134,
+    "AVG": 0.287,
+    "NSB": 4,
+    "IP": "57.2",
+    "W": 3,
+    "L": 4,
+    "K": 49,
+    "ERA": 4.37,
+    "WHIP": 1.21,
+    "QS": 4,
+    "BSV": 1,
+    "SVH": 7,
+    "official_score_for": 9,
+    "official_score_against": 4,
+    "phase": "playoffs",
+    "round": "Round 1",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 22,
+    "team": "Dixon Cider",
+    "source_team_name": "Dixon Cider",
+    "opponent": "Mactown MacDaddies",
+    "source_opponent_name": "Mactown MacDaddies",
+    "H": 86,
+    "AB": 306,
+    "R": 48,
+    "HR": 19,
+    "RBI": 50,
+    "BB": 30,
+    "SO": 66,
+    "TB": 163,
+    "AVG": 0.281,
+    "NSB": 8,
+    "IP": "52.0",
+    "W": 5,
+    "L": 0,
+    "K": 56,
+    "ERA": 3.29,
+    "WHIP": 1.12,
+    "QS": 4,
+    "BSV": 0,
+    "SVH": 3,
+    "official_score_for": 12,
+    "official_score_against": 2,
+    "phase": "playoffs",
+    "round": "Round 1",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 22,
+    "team": "Goodyear Gila Monsters",
+    "source_team_name": "Goodyear Gila Monsters",
+    "opponent": "Gunnarrhea",
+    "source_opponent_name": "Acuña Handle the Gunnarrhea?",
+    "H": 76,
+    "AB": 314,
+    "R": 43,
+    "HR": 10,
+    "RBI": 41,
+    "BB": 38,
+    "SO": 77,
+    "TB": 124,
+    "AVG": 0.242,
+    "NSB": 4,
+    "IP": "108.2",
+    "W": 5,
+    "L": 8,
+    "K": 97,
+    "ERA": 4.06,
+    "WHIP": 1.31,
+    "QS": 8,
+    "BSV": 0,
+    "SVH": 3,
+    "official_score_for": 10,
+    "official_score_against": 5,
+    "phase": "playoffs",
+    "round": "Round 1",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 22,
+    "team": "Gunnarrhea",
+    "source_team_name": "Acuña Handle the Gunnarrhea?",
+    "opponent": "Goodyear Gila Monsters",
+    "source_opponent_name": "Goodyear Gila Monsters",
+    "H": 62,
+    "AB": 299,
+    "R": 42,
+    "HR": 12,
+    "RBI": 33,
+    "BB": 28,
+    "SO": 80,
+    "TB": 106,
+    "AVG": 0.207,
+    "NSB": 3,
+    "IP": "76.1",
+    "W": 5,
+    "L": 3,
+    "K": 82,
+    "ERA": 3.89,
+    "WHIP": 1.15,
+    "QS": 5,
+    "BSV": 1,
+    "SVH": 5,
+    "official_score_for": 5,
+    "official_score_against": 10,
+    "phase": "playoffs",
+    "round": "Round 1",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 22,
+    "team": "John's Super Team",
+    "source_team_name": "John's Super Team",
+    "opponent": "BB's Bold Team",
+    "source_opponent_name": "BB's Bold Team",
+    "H": 64,
+    "AB": 278,
+    "R": 41,
+    "HR": 16,
+    "RBI": 55,
+    "BB": 22,
+    "SO": 63,
+    "TB": 133,
+    "AVG": 0.23,
+    "NSB": 5,
+    "IP": "44.1",
+    "W": 3,
+    "L": 5,
+    "K": 41,
+    "ERA": 6.29,
+    "WHIP": 1.78,
+    "QS": 3,
+    "BSV": 1,
+    "SVH": 5,
+    "official_score_for": 4,
+    "official_score_against": 9,
+    "phase": "playoffs",
+    "round": "Round 1",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 22,
+    "team": "Mactown MacDaddies",
+    "source_team_name": "Mactown MacDaddies",
+    "opponent": "Dixon Cider",
+    "source_opponent_name": "Dixon Cider",
+    "H": 60,
+    "AB": 240,
+    "R": 38,
+    "HR": 11,
+    "RBI": 34,
+    "BB": 33,
+    "SO": 60,
+    "TB": 105,
+    "AVG": 0.25,
+    "NSB": 2,
+    "IP": "43.1",
+    "W": 3,
+    "L": 3,
+    "K": 38,
+    "ERA": 3.32,
+    "WHIP": 1.22,
+    "QS": 4,
+    "BSV": 0,
+    "SVH": 0,
+    "official_score_for": 2,
+    "official_score_against": 12,
+    "phase": "playoffs",
+    "round": "Round 1",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 22,
+    "team": "Me So Heorny",
+    "source_team_name": "Me so Hoerny",
+    "opponent": "You Don't Know Bo",
+    "source_opponent_name": "You Don't Kno Bo",
+    "H": 92,
+    "AB": 311,
+    "R": 41,
+    "HR": 14,
+    "RBI": 45,
+    "BB": 25,
+    "SO": 66,
+    "TB": 153,
+    "AVG": 0.296,
+    "NSB": 4,
+    "IP": "56.2",
+    "W": 3,
+    "L": 6,
+    "K": 68,
+    "ERA": 6.35,
+    "WHIP": 1.61,
+    "QS": 3,
+    "BSV": 2,
+    "SVH": 3,
+    "official_score_for": 5,
+    "official_score_against": 10,
+    "phase": "playoffs",
+    "round": "Round 1",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 22,
+    "team": "You Don't Know Bo",
+    "source_team_name": "You Don't Kno Bo",
+    "opponent": "Me So Heorny",
+    "source_opponent_name": "Me so Hoerny",
+    "H": 84,
+    "AB": 306,
+    "R": 54,
+    "HR": 17,
+    "RBI": 61,
+    "BB": 29,
+    "SO": 91,
+    "TB": 153,
+    "AVG": 0.275,
+    "NSB": 5,
+    "IP": "35.0",
+    "W": 1,
+    "L": 1,
+    "K": 33,
+    "ERA": 4.89,
+    "WHIP": 1.34,
+    "QS": 1,
+    "BSV": 0,
+    "SVH": 4,
+    "official_score_for": 10,
+    "official_score_against": 5,
+    "phase": "playoffs",
+    "round": "Round 1",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 23,
+    "team": "BB's Bold Team",
+    "source_team_name": "BB's Bold Team",
+    "opponent": "You Don't Know Bo",
+    "source_opponent_name": "You Don't Kno Bo",
+    "H": 59,
+    "AB": 306,
+    "R": 35,
+    "HR": 8,
+    "RBI": 27,
+    "BB": 29,
+    "SO": 80,
+    "TB": 99,
+    "AVG": 0.193,
+    "NSB": 9,
+    "IP": "38.1",
+    "W": 3,
+    "L": 1,
+    "K": 44,
+    "ERA": 2.35,
+    "WHIP": 0.76,
+    "QS": 4,
+    "BSV": 1,
+    "SVH": 3,
+    "official_score_for": 7,
+    "official_score_against": 6,
+    "phase": "playoffs",
+    "round": "Semifinals",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 23,
+    "team": "Dixon Cider",
+    "source_team_name": "Dixon Cider",
+    "opponent": "Goodyear Gila Monsters",
+    "source_opponent_name": "Goodyear Gila Monsters",
+    "H": 69,
+    "AB": 286,
+    "R": 40,
+    "HR": 11,
+    "RBI": 35,
+    "BB": 44,
+    "SO": 74,
+    "TB": 120,
+    "AVG": 0.241,
+    "NSB": 5,
+    "IP": "87.1",
+    "W": 6,
+    "L": 4,
+    "K": 93,
+    "ERA": 3.81,
+    "WHIP": 1.12,
+    "QS": 6,
+    "BSV": 0,
+    "SVH": 5,
+    "official_score_for": 7,
+    "official_score_against": 7,
+    "phase": "playoffs",
+    "round": "Semifinals",
+    "tiebreak_winner": "Dixon Cider",
+    "tiebreak_note": "Advanced on regular-season head-to-head tiebreaker vs Goodyear Gila Monsters."
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 23,
+    "team": "Goodyear Gila Monsters",
+    "source_team_name": "Goodyear Gila Monsters",
+    "opponent": "Dixon Cider",
+    "source_opponent_name": "Dixon Cider",
+    "H": 90,
+    "AB": 322,
+    "R": 59,
+    "HR": 18,
+    "RBI": 35,
+    "BB": 35,
+    "SO": 72,
+    "TB": 155,
+    "AVG": 0.28,
+    "NSB": 8,
+    "IP": "93.2",
+    "W": 4,
+    "L": 6,
+    "K": 86,
+    "ERA": 4.9,
+    "WHIP": 1.51,
+    "QS": 7,
+    "BSV": 0,
+    "SVH": 2,
+    "official_score_for": 7,
+    "official_score_against": 7,
+    "phase": "playoffs",
+    "round": "Semifinals",
+    "tiebreak_winner": "Dixon Cider",
+    "tiebreak_note": "Lost regular-season head-to-head tiebreaker vs Dixon Cider."
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 23,
+    "team": "You Don't Know Bo",
+    "source_team_name": "You Don't Kno Bo",
+    "opponent": "BB's Bold Team",
+    "source_opponent_name": "BB's Bold Team",
+    "H": 65,
+    "AB": 308,
+    "R": 42,
+    "HR": 15,
+    "RBI": 34,
+    "BB": 28,
+    "SO": 80,
+    "TB": 125,
+    "AVG": 0.211,
+    "NSB": 5,
+    "IP": "44.0",
+    "W": 5,
+    "L": 3,
+    "K": 43,
+    "ERA": 2.66,
+    "WHIP": 0.82,
+    "QS": 4,
+    "BSV": 1,
+    "SVH": 2,
+    "official_score_for": 6,
+    "official_score_against": 7,
+    "phase": "playoffs",
+    "round": "Semifinals",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 24,
+    "team": "BB's Bold Team",
+    "source_team_name": "BB's Bold Team",
+    "opponent": "Dixon Cider",
+    "source_opponent_name": "Dixon Cider",
+    "H": 82,
+    "AB": 281,
+    "R": 44,
+    "HR": 12,
+    "RBI": 30,
+    "BB": 33,
+    "SO": 70,
+    "TB": 134,
+    "AVG": 0.292,
+    "NSB": 1,
+    "IP": "43.2",
+    "W": 3,
+    "L": 0,
+    "K": 47,
+    "ERA": 4.95,
+    "WHIP": 1.37,
+    "QS": 2,
+    "BSV": 1,
+    "SVH": 4,
+    "official_score_for": 4,
+    "official_score_against": 11,
+    "phase": "playoffs",
+    "round": "Finals",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 24,
+    "team": "Dixon Cider",
+    "source_team_name": "Dixon Cider",
+    "opponent": "BB's Bold Team",
+    "source_opponent_name": "BB's Bold Team",
+    "H": 98,
+    "AB": 313,
+    "R": 60,
+    "HR": 20,
+    "RBI": 49,
+    "BB": 33,
+    "SO": 73,
+    "TB": 189,
+    "AVG": 0.313,
+    "NSB": 10,
+    "IP": "60.1",
+    "W": 1,
+    "L": 3,
+    "K": 69,
+    "ERA": 4.18,
+    "WHIP": 1.18,
+    "QS": 1,
+    "BSV": 0,
+    "SVH": 6,
+    "official_score_for": 11,
+    "official_score_against": 4,
+    "phase": "playoffs",
+    "round": "Finals",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 24,
+    "team": "Goodyear Gila Monsters",
+    "source_team_name": "Goodyear Gila Monsters",
+    "opponent": "You Don't Know Bo",
+    "source_opponent_name": "You Don't Kno Bo",
+    "H": 86,
+    "AB": 322,
+    "R": 50,
+    "HR": 15,
+    "RBI": 49,
+    "BB": 44,
+    "SO": 70,
+    "TB": 151,
+    "AVG": 0.267,
+    "NSB": 3,
+    "IP": "70.1",
+    "W": 6,
+    "L": 2,
+    "K": 89,
+    "ERA": 2.05,
+    "WHIP": 1.08,
+    "QS": 6,
+    "BSV": 0,
+    "SVH": 3,
+    "official_score_for": 15,
+    "official_score_against": 1,
+    "phase": "playoffs",
+    "round": "Third Place",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
+  },
+  {
+    "season": 2025,
+    "source": "yahoo",
+    "week": 24,
+    "team": "You Don't Know Bo",
+    "source_team_name": "You Don't Kno Bo",
+    "opponent": "Goodyear Gila Monsters",
+    "source_opponent_name": "Goodyear Gila Monsters",
+    "H": 75,
+    "AB": 303,
+    "R": 33,
+    "HR": 7,
+    "RBI": 26,
+    "BB": 24,
+    "SO": 99,
+    "TB": 110,
+    "AVG": 0.248,
+    "NSB": 2,
+    "IP": "43.2",
+    "W": 5,
+    "L": 3,
+    "K": 51,
+    "ERA": 5.36,
+    "WHIP": 1.28,
+    "QS": 1,
+    "BSV": 1,
+    "SVH": 4,
+    "official_score_for": 1,
+    "official_score_against": 15,
+    "phase": "playoffs",
+    "round": "Third Place",
+    "tiebreak_winner": "",
+    "tiebreak_note": ""
   }
 ];
