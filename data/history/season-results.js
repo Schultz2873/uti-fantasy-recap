@@ -6,8 +6,8 @@ window.UTI_SEASON_RESULTS = [
   {
     season: 2025,
     champion: "Dixon Cider",
-    runnerUp: null,
-    thirdPlace: null,
-    regularSeasonFirst: null
+    runnerUp: "BB's Bold Team",
+    thirdPlace: "Goodyear Gila Monsters",
+    regularSeasonFirst: "Me So Heorny"
   }
 ];
