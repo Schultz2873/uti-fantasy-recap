@@ -2479,3 +2479,64 @@ a.uti-global-team-profile-link:hover,
     grid-template-columns: 1fr;
   }
 }
+
+/* === SHARED MOBILE PROFILE SEASON TABS ===
+   Keep the profile identical whether opened from index, Intelligence, or History.
+   Higher-specificity selectors intentionally beat older page-level inline overrides.
+*/
+@media (max-width: 620px) {
+  body .uti-profile-season-tabs {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 5px !important;
+
+    width: auto !important;
+    margin: 0 58px 14px 0 !important;
+    padding: 5px !important;
+
+    overflow: visible !important;
+  }
+
+  body .uti-profile-season-tabs > button,
+  body .uti-profile-season-tabs button {
+    display: flex !important;
+    flex: none !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 48px !important;
+
+    gap: 2px !important;
+    padding: 7px 4px !important;
+
+    line-height: 1 !important;
+    white-space: nowrap !important;
+  }
+
+  body .uti-profile-season-tabs button strong {
+    display: block !important;
+    margin: 0 !important;
+    font-size: .82rem !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+  }
+
+  body .uti-profile-season-tabs button span {
+    display: block !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+
+    font-size: .50rem !important;
+    line-height: 1.1 !important;
+    font-weight: 800 !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: clip !important;
+  }
+}
+/* === END SHARED MOBILE PROFILE SEASON TABS === */
+

@@ -40,7 +40,449 @@
         font-size: 0.72rem;
       }
     }
+
+    /* Mobile H2H cards: true compact 2-column layout */
+    @media (max-width: 620px) {
+      #utiHeadToHeadGrid.uti-h2h-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 6px !important; }
+      #utiHeadToHeadGrid .uti-h2h-card { display:flex !important; min-width:0 !important; flex-direction:column !important; gap:5px !important; padding:7px !important; border-radius:10px !important; }
+      #utiHeadToHeadGrid .uti-h2h-card-team { gap:5px !important; min-width:0 !important; }
+      #utiHeadToHeadGrid .uti-h2h-card-team img { width:22px !important; height:22px !important; flex:0 0 22px !important; }
+      #utiHeadToHeadGrid .uti-h2h-card-team > div { min-width:0 !important; }
+      #utiHeadToHeadGrid .uti-h2h-card-team span { font-size:.40rem !important; line-height:1 !important; }
+      #utiHeadToHeadGrid .uti-h2h-card-team strong { max-width:none !important; font-size:.56rem !important; line-height:1.08 !important; white-space:normal !important; overflow:visible !important; text-overflow:clip !important; }
+      #utiHeadToHeadGrid .uti-h2h-card-record { display:flex !important; align-items:baseline !important; gap:4px !important; text-align:left !important; }
+      #utiHeadToHeadGrid .uti-h2h-card-record strong { font-size:.72rem !important; line-height:1 !important; }
+      #utiHeadToHeadGrid .uti-h2h-card-record span { font-size:.42rem !important; line-height:1 !important; }
+      #utiHeadToHeadGrid .uti-h2h-record-splits { display:grid !important; grid-template-columns:1fr 1fr !important; gap:3px !important; width:100% !important; }
+      #utiHeadToHeadGrid .uti-h2h-record-splits > span { min-width:0 !important; padding:3px 4px !important; border-radius:6px !important; font-size:.42rem !important; line-height:1.1 !important; white-space:nowrap !important; text-align:center !important; }
+      #utiHeadToHeadGrid .uti-h2h-season-splits { display:flex !important; flex-wrap:nowrap !important; gap:3px !important; width:100% !important; padding-top:4px !important; overflow-x:auto !important; scrollbar-width:none; }
+      #utiHeadToHeadGrid .uti-h2h-season-splits::-webkit-scrollbar { display:none; }
+      #utiHeadToHeadGrid .uti-h2h-season-splits > span { flex:0 0 auto !important; min-width:max-content !important; gap:0 !important; padding:3px 4px !important; border-radius:6px !important; font-size:.40rem !important; line-height:1.05 !important; }
+      #utiHeadToHeadGrid .uti-h2h-season-splits small { font-size:.35rem !important; line-height:1.05 !important; }
+    }
+
+    /* Head-to-head season toggle */
+    .uti-h2h-year-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px;
+      border: 1px solid rgba(16, 35, 63, 0.12);
+      border-radius: 999px;
+      background: rgba(16, 35, 63, 0.04);
+    }
+
+    .uti-h2h-year-toggle button {
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      color: #536275;
+      padding: 6px 10px;
+      font-size: 0.72rem;
+      line-height: 1;
+      font-weight: 900;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .uti-h2h-year-toggle button.is-active {
+      background: #10233f;
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(16, 35, 63, 0.18);
+    }
+
+    #utiHeadToHeadGrid .uti-h2h-season-splits > [hidden] {
+      display: none !important;
+    }
+
+    @media (max-width: 620px) {
+      .uti-h2h-year-toggle {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 3px;
+        padding: 3px;
+        margin-top: 8px;
+      }
+
+      .uti-h2h-year-toggle button {
+        width: 100%;
+        padding: 6px 4px;
+        font-size: 0.66rem;
+      }
+
+      #utiHeadToHeadGrid .uti-h2h-season-splits {
+        overflow: visible !important;
+      }
+
+      #utiHeadToHeadGrid .uti-h2h-season-splits > span {
+        width: 100% !important;
+        min-width: 0 !important;
+        justify-content: center !important;
+        text-align: center !important;
+      }
+    }
+
+
+    /* Season archive selector: only one historical year is shown at a time */
+    .uti-season-archive-selector {
+      margin: 18px 0 12px;
+      padding: 14px;
+      border: 1px solid rgba(16, 35, 63, 0.12);
+      border-radius: 18px;
+      background: #fff;
+    }
+
+    .uti-season-archive-selector-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .uti-season-archive-selector-head strong {
+      color: #10233f;
+      font-size: 0.95rem;
+      font-weight: 950;
+    }
+
+    .uti-season-archive-toggle {
+      display: inline-grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 4px;
+      padding: 4px;
+      border-radius: 999px;
+      background: rgba(16, 35, 63, 0.06);
+      width: min(100%, 260px);
+    }
+
+    .uti-season-archive-toggle button {
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      color: #536275;
+      padding: 8px 14px;
+      font-size: 0.78rem;
+      line-height: 1;
+      font-weight: 950;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .uti-season-archive-toggle button.is-active {
+      background: #10233f;
+      color: #fff;
+      box-shadow: 0 3px 10px rgba(16, 35, 63, 0.18);
+    }
+
+    #season-2024[hidden],
+    #season-2025[hidden] {
+      display: none !important;
+    }
+
+    @media (max-width: 620px) {
+      .uti-season-archive-selector {
+        padding: 10px;
+        margin-top: 12px;
+      }
+
+      .uti-season-archive-selector-head {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .uti-season-archive-toggle {
+        width: 100%;
+      }
+
+      .uti-season-archive-toggle button {
+        padding: 8px 6px;
+        font-size: 0.74rem;
+      }
+    }
+
+
+    /* Rivalry section polish */
+    .uti-h2h-year-filter {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 210px;
+    }
+
+    .uti-h2h-control-label {
+      color: #64748b;
+      font-size: .55rem;
+      font-weight: 950;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+
+    /* Mobile: let the rivalry intro use the full row and give the controls their own rows. */
+    @media (max-width: 620px) {
+      #head-to-head .uti-intelligence-heading {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) !important;
+        align-items: stretch !important;
+        gap: 10px !important;
+        width: 100% !important;
+      }
+
+      #head-to-head .uti-intelligence-heading > div:first-child {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: none !important;
+      }
+
+      #head-to-head .uti-intelligence-heading .section-title,
+      #head-to-head .uti-intelligence-heading .section-subtitle {
+        width: 100% !important;
+        max-width: none !important;
+      }
+
+      #head-to-head .uti-intelligence-heading .section-subtitle {
+        margin-right: 0 !important;
+        padding-right: 0 !important;
+      }
+
+      #head-to-head .uti-h2h-selector,
+      #head-to-head .uti-h2h-year-filter {
+        width: 100% !important;
+        min-width: 0 !important;
+      }
+
+      #head-to-head .uti-h2h-selector select {
+        width: 100% !important;
+      }
+
+      #head-to-head .uti-h2h-year-toggle {
+        display: grid !important;
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        width: 100% !important;
+        gap: 4px !important;
+        margin-top: 0 !important;
+        padding: 4px !important;
+        border: 1px solid rgba(15, 23, 42, .10) !important;
+        border-radius: 11px !important;
+        background: #f1f5f9 !important;
+        box-shadow: inset 0 1px 2px rgba(15, 23, 42, .03);
+      }
+
+      #head-to-head .uti-h2h-year-toggle button {
+        min-height: 34px !important;
+        width: 100% !important;
+        padding: 7px 4px !important;
+        border-radius: 8px !important;
+        font-size: .72rem !important;
+        font-weight: 950 !important;
+      }
+
+      #head-to-head .uti-h2h-year-toggle button.is-active {
+        background: #10233f !important;
+        color: #fff !important;
+        box-shadow: 0 2px 7px rgba(16, 35, 63, .18) !important;
+      }
+
+      /* Give opponent names the entire remaining width of each compact card. */
+      #utiHeadToHeadGrid .uti-h2h-card-team {
+        width: 100% !important;
+      }
+
+      #utiHeadToHeadGrid .uti-h2h-card-team > div {
+        flex: 1 1 auto !important;
+        width: auto !important;
+        min-width: 0 !important;
+      }
+
+      #utiHeadToHeadGrid .uti-h2h-card-team strong {
+        display: block !important;
+        width: 100% !important;
+        max-width: none !important;
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
+        overflow-wrap: anywhere !important;
+      }
+
+      #utiHeadToHeadGrid .uti-h2h-card-record {
+        width: 100% !important;
+      }
+
+      #utiHeadToHeadGrid .uti-h2h-season-splits > span:not([hidden]) {
+        width: 100% !important;
+      }
+    }
+
+
+    /* Rivalry cleanup: overall / regular-season / playoff records only. */
+    #head-to-head .uti-h2h-year-filter,
+    #head-to-head .uti-h2h-year-toggle,
+    #utiHeadToHeadGrid .uti-h2h-season-splits {
+      display: none !important;
+    }
+
+    @media (max-width: 620px) {
+      /* Rivalry controls use the full width without the extra season control. */
+      #head-to-head .uti-intelligence-heading {
+        display: block !important;
+      }
+
+      #head-to-head .uti-h2h-selector {
+        display: block !important;
+        width: 100% !important;
+        margin-top: 12px !important;
+      }
+
+      #head-to-head .uti-h2h-selector > span {
+        display: block !important;
+        margin-bottom: 5px !important;
+        font-size: .66rem !important;
+        font-weight: 900 !important;
+        letter-spacing: .06em !important;
+        text-transform: uppercase !important;
+      }
+
+      #head-to-head .uti-h2h-selector select {
+        width: 100% !important;
+        min-height: 40px !important;
+      }
+
+      /* Date/range labels look better as simple metadata on phones, not grey chips. */
+      #utiFranchiseRecordRange,
+      #utiHistory2024Range,
+      #utiHistoryRange {
+        display: block !important;
+        width: 100% !important;
+        margin: 6px 0 0 !important;
+        padding: 0 !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        color: #64748b !important;
+        font-size: .68rem !important;
+        line-height: 1.25 !important;
+        font-weight: 800 !important;
+        text-align: left !important;
+        white-space: normal !important;
+      }
+
+      /* Keep archive headings full width when the range metadata drops underneath. */
+      #franchise-records .uti-intelligence-heading,
+      #season-2024 .uti-intelligence-heading,
+      #season-2025 .uti-intelligence-heading {
+        display: block !important;
+      }
+
+      #franchise-records .uti-intelligence-heading > div,
+      #season-2024 .uti-intelligence-heading > div,
+      #season-2025 .uti-intelligence-heading > div {
+        width: 100% !important;
+        max-width: none !important;
+      }
+    }
+
   </style>
+
+  <style id="uti-mobile-metadata-cleanup">
+    /*
+      Mobile only:
+      Section-range labels such as "Weeks 1–20", "2024 → 2026",
+      "Normalized comparison", and archive week ranges become simple
+      metadata instead of large grey pills.
+    */
+    @media (max-width: 620px) {
+      .uti-intelligence-page-body .uti-intelligence-heading {
+        display: block !important;
+        width: 100% !important;
+      }
+
+      .uti-intelligence-page-body .uti-intelligence-heading > div:first-child {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: none !important;
+      }
+
+      .uti-intelligence-page-body .uti-intelligence-heading .section-title,
+      .uti-intelligence-page-body .uti-intelligence-heading .section-subtitle {
+        width: 100% !important;
+        max-width: none !important;
+        margin-right: 0 !important;
+        padding-right: 0 !important;
+      }
+
+      /* Section header metadata */
+      .uti-intelligence-page-body .uti-intelligence-heading > .tag {
+        display: block !important;
+        width: fit-content !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+
+        margin: 7px 0 0 !important;
+        padding: 0 !important;
+
+        border: 0 !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+
+        color: #64748b !important;
+        font-size: .68rem !important;
+        line-height: 1.25 !important;
+        font-weight: 850 !important;
+        letter-spacing: .01em !important;
+
+        white-space: nowrap !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
+        text-align: left !important;
+      }
+
+      /* Hero pills become a lightweight metadata row */
+      .uti-intelligence-page-body .uti-intelligence-page-hero-stats {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        align-items: center !important;
+        gap: 5px 12px !important;
+        margin-top: 12px !important;
+      }
+
+      .uti-intelligence-page-body .uti-intelligence-page-hero-stats > span {
+        display: inline !important;
+        width: auto !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        border: 0 !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+
+        font-size: .67rem !important;
+        line-height: 1.3 !important;
+        font-weight: 800 !important;
+      }
+
+      /* Top-right league badge gets the same flatter mobile treatment */
+      .uti-intelligence-page-body .uti-intelligence-page-badge {
+        padding: 0 !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        font-size: .66rem !important;
+        line-height: 1.2 !important;
+        white-space: nowrap !important;
+      }
+    }
+  </style>
+
+  <link href="styles/uti-mobile-profile-rivalry.css" rel="stylesheet" />
 </head>
 
 <body class="uti-intelligence-page-body uti-history-page-body">
@@ -92,8 +534,7 @@
         <a href="#franchise-records">Franchise Records</a>
         <a href="#head-to-head">Head-to-Head</a>
         <a href="#franchise-timeline">Year-to-Year</a>
-        <a href="#season-2024">2024 Yahoo Archive</a>
-        <a href="#season-2025">2025 Yahoo Archive</a>
+        <a href="#season-archives">Season Archives</a>
         <a href="uti-intelligence.html">2026 Current Intelligence ↗</a>
       </nav>
     </section>
@@ -136,7 +577,7 @@
           <div class="section-eyebrow">Rivalry Ledger</div>
           <h2 class="section-title">Record vs. Every Team</h2>
           <p class="section-subtitle">
-            Pick a franchise to see its overall, regular-season, and playoff record against each of the other nine idiots, with season-by-season splits.
+            Pick a franchise to see its overall, regular-season, and playoff record against each of the other nine idiots.
           </p>
         </div>
 
@@ -174,7 +615,18 @@
       </section>
     </section>
 
-    <section class="section-card uti-history-board" id="season-2024">
+
+    <div class="uti-season-archive-selector" id="season-archives">
+      <div class="uti-season-archive-selector-head">
+        <strong>Season Archive</strong>
+        <div class="uti-season-archive-toggle" id="utiSeasonArchiveToggle" role="group" aria-label="Select historical season">
+          <button type="button" data-archive-year="2025" class="is-active" aria-pressed="true">2025</button>
+          <button type="button" data-archive-year="2024" aria-pressed="false">2024</button>
+        </div>
+      </div>
+    </div>
+
+    <section class="section-card uti-history-board" id="season-2024" hidden>
       <div class="uti-intelligence-heading">
         <div>
           <div class="section-eyebrow">Season Archive</div>
@@ -304,6 +756,56 @@
   <script src="data/history/season-results.js"></script>
   <script src="scripts/league-analytics.js"></script>
   <script src="scripts/uti-intelligence.js"></script>
+
+
+  <script>
+    (() => {
+      const toggle = document.getElementById("utiSeasonArchiveToggle");
+      const archive2024 = document.getElementById("season-2024");
+      const archive2025 = document.getElementById("season-2025");
+
+      if (!toggle || !archive2024 || !archive2025) return;
+
+      function showArchive(year, shouldScroll = false) {
+        const show2024 = year === "2024";
+
+        archive2024.hidden = !show2024;
+        archive2025.hidden = show2024;
+
+        toggle.querySelectorAll("[data-archive-year]").forEach(button => {
+          const active = button.dataset.archiveYear === year;
+          button.classList.toggle("is-active", active);
+          button.setAttribute("aria-pressed", String(active));
+        });
+
+        if (shouldScroll) {
+          document.getElementById("season-archives")?.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+          });
+        }
+      }
+
+      toggle.addEventListener("click", event => {
+        const button = event.target.closest("[data-archive-year]");
+        if (!button) return;
+        showArchive(button.dataset.archiveYear);
+      });
+
+      // Allow direct URLs like history.html#season-2024 / #season-2025
+      if (location.hash === "#season-2024") {
+        showArchive("2024");
+      } else {
+        showArchive("2025");
+      }
+
+      window.addEventListener("hashchange", () => {
+        if (location.hash === "#season-2024") showArchive("2024");
+        if (location.hash === "#season-2025") showArchive("2025");
+      });
+    })();
+  </script>
+
 </body>
 
 </html>

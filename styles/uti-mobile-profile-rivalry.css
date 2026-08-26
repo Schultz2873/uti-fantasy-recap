@@ -1,0 +1,317 @@
+/*
+  UTI mobile profile + rivalry cleanup
+  Loaded AFTER uti-intelligence.css and History's inline styles.
+*/
+
+@media (max-width: 620px) {
+
+  /* =========================================================
+     PROFILE SEASON TOGGLE
+     Keep the same segmented-control look, but stop labels from
+     running into each other and give each option breathing room.
+     ========================================================= */
+  .uti-profile-season-tabs {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 5px !important;
+
+    width: auto !important;
+    margin: 0 58px 14px 0 !important;
+    padding: 5px !important;
+
+    overflow: visible !important;
+  }
+
+  .uti-profile-season-tabs > button,
+  .uti-profile-season-tabs button {
+    display: flex !important;
+    flex: none !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 48px !important;
+
+    gap: 2px !important;
+    padding: 7px 4px !important;
+
+    line-height: 1 !important;
+    white-space: nowrap !important;
+  }
+
+  .uti-profile-season-tabs button strong {
+    display: block !important;
+    margin: 0 !important;
+
+    font-size: .82rem !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+  }
+
+  .uti-profile-season-tabs button span {
+    display: block !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+
+    font-size: .50rem !important;
+    line-height: 1.1 !important;
+    font-weight: 800 !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: clip !important;
+  }
+
+
+  /* =========================================================
+     RECORD VS. EVERY TEAM — SELECTED TEAM SUMMARY
+     The three record blocks were becoming three huge full-width
+     stacked cards. Keep all three on ONE compact row.
+     ========================================================= */
+  #utiHeadToHeadSummary.uti-h2h-summary {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+
+    gap: 8px !important;
+    padding: 10px !important;
+  }
+
+  #utiHeadToHeadSummary .uti-h2h-summary-team {
+    gap: 7px !important;
+  }
+
+  #utiHeadToHeadSummary .uti-h2h-summary-team img {
+    width: 34px !important;
+    height: 34px !important;
+    flex: 0 0 34px !important;
+    border-radius: 10px !important;
+  }
+
+  #utiHeadToHeadSummary .uti-h2h-summary-team span {
+    font-size: .52rem !important;
+    line-height: 1.1 !important;
+  }
+
+  #utiHeadToHeadSummary .uti-h2h-summary-team strong {
+    margin-top: 1px !important;
+    font-size: .86rem !important;
+    line-height: 1.05 !important;
+  }
+
+  #utiHeadToHeadSummary .uti-h2h-summary-records {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+
+    width: 100% !important;
+    min-width: 0 !important;
+    gap: 5px !important;
+  }
+
+  #utiHeadToHeadSummary .uti-h2h-summary-split {
+    min-width: 0 !important;
+    padding: 6px 5px !important;
+    border-radius: 8px !important;
+  }
+
+  #utiHeadToHeadSummary .uti-h2h-summary-split > span,
+  #utiHeadToHeadSummary .uti-h2h-summary-split > small {
+    font-size: .47rem !important;
+    line-height: 1.15 !important;
+  }
+
+  #utiHeadToHeadSummary .uti-h2h-summary-split > strong {
+    margin: 2px 0 !important;
+
+    font-size: .76rem !important;
+    line-height: 1 !important;
+
+    white-space: nowrap !important;
+  }
+
+
+  /* =========================================================
+     RECORD VS. EVERY TEAM — OPPONENT CARDS
+     Two genuinely compact cards per row.
+     ========================================================= */
+  #utiHeadToHeadGrid.uti-h2h-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+
+    gap: 5px !important;
+    align-items: start !important;
+    grid-auto-rows: min-content !important;
+  }
+
+  #utiHeadToHeadGrid .uti-h2h-card {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    align-self: start !important;
+
+    gap: 4px !important;
+    margin: 0 !important;
+    padding: 6px !important;
+
+    border-radius: 8px !important;
+    box-shadow: none !important;
+  }
+
+  #utiHeadToHeadGrid .uti-h2h-card-team {
+    gap: 4px !important;
+    min-width: 0 !important;
+  }
+
+  #utiHeadToHeadGrid .uti-h2h-card-team img {
+    width: 20px !important;
+    height: 20px !important;
+    flex: 0 0 20px !important;
+  }
+
+  #utiHeadToHeadGrid .uti-h2h-card-team span {
+    display: none !important;
+  }
+
+  #utiHeadToHeadGrid .uti-h2h-card-team > div {
+    min-width: 0 !important;
+  }
+
+  #utiHeadToHeadGrid .uti-h2h-card-team strong {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+
+    font-size: .52rem !important;
+    line-height: 1.05 !important;
+
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  #utiHeadToHeadGrid .uti-h2h-card-record {
+    width: auto !important;
+    margin: 0 !important;
+    text-align: right !important;
+  }
+
+  #utiHeadToHeadGrid .uti-h2h-card-record strong {
+    font-size: .68rem !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+  }
+
+  #utiHeadToHeadGrid .uti-h2h-card-record span {
+    display: none !important;
+  }
+
+  #utiHeadToHeadGrid .uti-h2h-record-splits {
+    grid-column: 1 / -1 !important;
+
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+
+    width: 100% !important;
+    gap: 2px !important;
+    margin: 0 !important;
+  }
+
+  #utiHeadToHeadGrid .uti-h2h-record-splits > span {
+    min-width: 0 !important;
+
+    padding: 2px 3px !important;
+    border-radius: 4px !important;
+
+    font-size: .38rem !important;
+    line-height: 1.05 !important;
+
+    text-align: center !important;
+    white-space: nowrap !important;
+  }
+
+  #utiHeadToHeadGrid .uti-h2h-season-splits {
+    display: none !important;
+  }
+}
+
+/* =========================================================
+   HISTORY AT A GLANCE
+   Compact mobile cards instead of one tall card per row.
+   ========================================================= */
+@media (max-width: 620px) {
+  .uti-history-overview-grid,
+  .uti-history-teaser-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+    margin-top: 10px !important;
+    align-items: start !important;
+  }
+
+  .uti-history-overview-card,
+  .uti-history-teaser-card {
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+
+    justify-content: flex-start !important;
+    gap: 5px !important;
+
+    padding: 9px !important;
+    border-radius: 10px !important;
+    box-shadow: none !important;
+  }
+
+  .uti-history-overview-card > span,
+  .uti-history-teaser-card > span {
+    font-size: .50rem !important;
+    line-height: 1.1 !important;
+    letter-spacing: .045em !important;
+  }
+
+  .uti-history-overview-card > strong,
+  .uti-history-teaser-card > strong {
+    margin: 2px 0 !important;
+    font-size: 1.02rem !important;
+    line-height: 1 !important;
+  }
+
+  .uti-history-overview-card small,
+  .uti-history-teaser-card small {
+    margin-top: auto !important;
+    font-size: .54rem !important;
+    line-height: 1.25 !important;
+  }
+
+  .uti-history-overview-team,
+  .uti-history-teaser-team {
+    gap: 6px !important;
+    min-width: 0 !important;
+  }
+
+  .uti-history-overview-team img,
+  .uti-history-teaser-team img {
+    width: 26px !important;
+    height: 26px !important;
+    flex: 0 0 26px !important;
+  }
+
+  .uti-history-overview-team strong,
+  .uti-history-teaser-team strong {
+    min-width: 0 !important;
+    font-size: .68rem !important;
+    line-height: 1.08 !important;
+
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    overflow-wrap: anywhere !important;
+  }
+}
+
