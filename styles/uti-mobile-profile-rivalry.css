@@ -55,7 +55,7 @@
     max-width: 100% !important;
     margin: 0 !important;
 
-    font-size: .50rem !important;
+    font-size: .56rem !important;
     line-height: 1.1 !important;
     font-weight: 800 !important;
 
@@ -97,7 +97,7 @@
 
   #utiHeadToHeadSummary .uti-h2h-summary-team strong {
     margin-top: 1px !important;
-    font-size: .86rem !important;
+    font-size: .92rem !important;
     line-height: 1.05 !important;
   }
 
@@ -270,7 +270,7 @@
 
   .uti-history-overview-card > span,
   .uti-history-teaser-card > span {
-    font-size: .50rem !important;
+    font-size: .56rem !important;
     line-height: 1.1 !important;
     letter-spacing: .045em !important;
   }
@@ -328,22 +328,22 @@
   }
 
   .uti-intelligence-grid .uti-intel-label {
-    font-size: .66rem !important;
+    font-size: .72rem !important;
     line-height: 1.1 !important;
   }
 
   .uti-intelligence-grid .uti-intel-team {
-    font-size: .90rem !important;
+    font-size: .98rem !important;
     line-height: 1.1 !important;
   }
 
   .uti-intelligence-grid .uti-intel-value {
-    font-size: 1.28rem !important;
+    font-size: 1.40rem !important;
     line-height: 1 !important;
   }
 
   .uti-intelligence-grid .uti-intel-copy {
-    font-size: .70rem !important;
+    font-size: .76rem !important;
     line-height: 1.3 !important;
   }
 
@@ -356,20 +356,20 @@
   /* History at a Glance cards */
   .uti-history-overview-card > span,
   .uti-history-teaser-card > span {
-    font-size: .62rem !important;
+    font-size: .68rem !important;
     line-height: 1.15 !important;
     letter-spacing: .04em !important;
   }
 
   .uti-history-overview-card > strong,
   .uti-history-teaser-card > strong {
-    font-size: 1.15rem !important;
+    font-size: 1.25rem !important;
     line-height: 1 !important;
   }
 
   .uti-history-overview-card small,
   .uti-history-teaser-card small {
-    font-size: .66rem !important;
+    font-size: .72rem !important;
     line-height: 1.3 !important;
   }
 
@@ -382,42 +382,42 @@
 
   .uti-history-overview-team strong,
   .uti-history-teaser-team strong {
-    font-size: .76rem !important;
+    font-size: .82rem !important;
     line-height: 1.12 !important;
   }
 
 
   /* Record vs. Every Team selected-team summary */
   #utiHeadToHeadSummary .uti-h2h-summary-team span {
-    font-size: .60rem !important;
+    font-size: .64rem !important;
   }
 
   #utiHeadToHeadSummary .uti-h2h-summary-team strong {
-    font-size: .94rem !important;
+    font-size: 1.00rem !important;
   }
 
   #utiHeadToHeadSummary .uti-h2h-summary-split > span,
   #utiHeadToHeadSummary .uti-h2h-summary-split > small {
-    font-size: .55rem !important;
+    font-size: .60rem !important;
   }
 
   #utiHeadToHeadSummary .uti-h2h-summary-split > strong {
-    font-size: .86rem !important;
+    font-size: .92rem !important;
   }
 
 
   /* Record vs. Every Team opponent cards */
   #utiHeadToHeadGrid .uti-h2h-card-team strong {
-    font-size: .62rem !important;
+    font-size: .68rem !important;
     line-height: 1.08 !important;
   }
 
   #utiHeadToHeadGrid .uti-h2h-card-record strong {
-    font-size: .78rem !important;
+    font-size: .84rem !important;
   }
 
   #utiHeadToHeadGrid .uti-h2h-record-splits > span {
-    font-size: .50rem !important;
+    font-size: .56rem !important;
     line-height: 1.1 !important;
     padding: 3px 4px !important;
   }
