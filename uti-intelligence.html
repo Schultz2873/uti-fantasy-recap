@@ -10,6 +10,104 @@
   <link href="styles/styles.css" rel="stylesheet" />
   <link href="styles/index-dashboard-preview.css" rel="stylesheet" />
   <link href="styles/uti-intelligence.css" rel="stylesheet" />
+
+  <style id="uti-mobile-metadata-cleanup">
+    /*
+      Mobile only:
+      Section-range labels such as "Weeks 1–20", "2024 → 2026",
+      "Normalized comparison", and archive week ranges become simple
+      metadata instead of large grey pills.
+    */
+    @media (max-width: 620px) {
+      .uti-intelligence-page-body .uti-intelligence-heading {
+        display: block !important;
+        width: 100% !important;
+      }
+
+      .uti-intelligence-page-body .uti-intelligence-heading > div:first-child {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: none !important;
+      }
+
+      .uti-intelligence-page-body .uti-intelligence-heading .section-title,
+      .uti-intelligence-page-body .uti-intelligence-heading .section-subtitle {
+        width: 100% !important;
+        max-width: none !important;
+        margin-right: 0 !important;
+        padding-right: 0 !important;
+      }
+
+      /* Section header metadata */
+      .uti-intelligence-page-body .uti-intelligence-heading > .tag {
+        display: block !important;
+        width: fit-content !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+
+        margin: 7px 0 0 !important;
+        padding: 0 !important;
+
+        border: 0 !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+
+        color: #64748b !important;
+        font-size: .68rem !important;
+        line-height: 1.25 !important;
+        font-weight: 850 !important;
+        letter-spacing: .01em !important;
+
+        white-space: nowrap !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
+        text-align: left !important;
+      }
+
+      /* Hero pills become a lightweight metadata row */
+      .uti-intelligence-page-body .uti-intelligence-page-hero-stats {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        align-items: center !important;
+        gap: 5px 12px !important;
+        margin-top: 12px !important;
+      }
+
+      .uti-intelligence-page-body .uti-intelligence-page-hero-stats > span {
+        display: inline !important;
+        width: auto !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        border: 0 !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+
+        font-size: .67rem !important;
+        line-height: 1.3 !important;
+        font-weight: 800 !important;
+      }
+
+      /* Top-right league badge gets the same flatter mobile treatment */
+      .uti-intelligence-page-body .uti-intelligence-page-badge {
+        padding: 0 !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        font-size: .66rem !important;
+        line-height: 1.2 !important;
+        white-space: nowrap !important;
+      }
+    }
+  </style>
+
+  <link href="styles/uti-mobile-profile-rivalry.css" rel="stylesheet" />
 </head>
 
 <body class="uti-intelligence-page-body">
@@ -102,7 +200,7 @@
       </details>
     </section>
 
-    <section class="section-card uti-history-teaser-section" id="uti-history-teaser">
+    <!-- <section class="section-card uti-history-teaser-section" id="uti-history-teaser">
       <div class="uti-intelligence-heading">
         <div>
           <div class="section-eyebrow">From the Archives</div>
@@ -121,7 +219,7 @@
           <small>Calculating the archive...</small>
         </article>
       </div>
-    </section>
+    </section> -->
 
   </main>
 
