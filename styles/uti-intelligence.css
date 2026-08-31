@@ -2487,7 +2487,7 @@ a.uti-global-team-profile-link:hover,
 @media (max-width: 620px) {
   body .uti-profile-season-tabs {
     display: grid !important;
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    grid-template-columns: repeat(auto-fit, minmax(0, 1fr)) !important;
     gap: 5px !important;
 
     width: auto !important;
@@ -2529,7 +2529,7 @@ a.uti-global-team-profile-link:hover,
     max-width: 100% !important;
     margin: 0 !important;
 
-    font-size: .50rem !important;
+    font-size: .56rem !important;
     line-height: 1.1 !important;
     font-weight: 800 !important;
 

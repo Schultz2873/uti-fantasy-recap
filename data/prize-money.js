@@ -7,23 +7,24 @@ window.PRIZE_MONEY_DATA = {
   // If currentTotal is null, the page will calculate:
   // basePool + waiverWireAdded + manualAdjustments.
   basePool: 1000,
-  waiverWireAdded: 5000 - 481 - 485 - 477 - 411 - 439 - 463 - 490 - 419 - 472 - 479,
-  manualAdjustments: 86,
+  waiverWireAdded: 5000 - 479 - 485 - 474 - 407 - 439 - 462 - 490 - 417 - 469 - 479,
+  manualAdjustments: 86 + 30,
   currentTotal: null,
 
   waiverRule: "Prize pool grows based on waiver-wire spending.",
   updatedLabel: "Season total",
 
   weeklyWinner: {
-    week: "Week 20",
-    category: "NSB",
-    team: "BB's Bold Team",
-    result: "9",
-    prize: 25
+    week: "Week 21",
+    category: "",
+    team: "NA",
+    result: "",
+    prize: 0
   },
 
   // Optional. Newest first. Add as many past winners as you want.
   weeklyWinnerHistory: [
+    { week: "Week 20", category: "NSB", team: "BB's Bold Team", result: "9", prize: 25 },
     { week: "Week 19", category: "ERA", team: "Me So Heorny", result: "2.79", prize: 25 },
     { week: "Week 18", category: "Strikeouts", team: "You Don't Know Bo", result: "55", prize: 25 },
     { week: "Week 17", category: "Total Bases", team: "Dixon Cider", result: "169", prize: 25 },
