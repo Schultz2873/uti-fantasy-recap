@@ -12,7 +12,7 @@
      ========================================================= */
   .uti-profile-season-tabs {
     display: grid !important;
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    grid-template-columns: repeat(auto-fit, minmax(0, 1fr)) !important;
     gap: 5px !important;
 
     width: auto !important;
@@ -420,6 +420,51 @@
     font-size: .56rem !important;
     line-height: 1.1 !important;
     padding: 3px 4px !important;
+  }
+}
+
+/* 2023 archive adds a third historical-season button. */
+.uti-season-archive-toggle {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+}
+
+@media (max-width: 620px) {
+  .uti-season-archive-toggle {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  .uti-season-archive-toggle button {
+    min-width: 0 !important;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+  }
+}
+
+@media (max-width: 620px) {
+  #utiHistory2023Range {
+    display: block !important;
+    width: 100% !important;
+    margin: 6px 0 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    color: #64748b !important;
+    font-size: .72rem !important;
+    line-height: 1.25 !important;
+    font-weight: 800 !important;
+    text-align: left !important;
+    white-space: normal !important;
+  }
+
+  #season-2023 .uti-intelligence-heading {
+    display: block !important;
+  }
+
+  #season-2023 .uti-intelligence-heading > div {
+    width: 100% !important;
+    max-width: none !important;
   }
 }
 

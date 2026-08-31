@@ -1,21 +1,27 @@
 (() => {
   const FALLBACK_LOGO = "images/owners/gunnarrhea.png";
+  const LEGACY_TEAM_LOGOS = {
+    "Pat James's Swell Team": "images/owners/pat-james-swell-team.png",
+    "You Don't Kno Bo (2023)": "images/owners/you-dont-kno-bo-2023.png"
+  };
   const HITTING_CATEGORIES = ["R", "HR", "RBI", "BB", "SO", "NSB", "AVG", "TB"];
   const PITCHING_CATEGORIES = ["W", "L", "QS", "NS", "K", "ERA", "WHIP", "BAA"];
 
   const YAHOO_2025_HITTING_CATEGORIES = ["R", "HR", "RBI", "BB", "SO", "TB", "AVG", "NSB"];
   const YAHOO_2025_PITCHING_CATEGORIES = ["W", "L", "K", "ERA", "WHIP", "QS", "BSV", "SVH"];
   const TEAM_PROFILE_ALIASES = {
-    "Gunnarrhea": ["Gunnarrhea", "Acuña Handle the Gunnarrhea?"],
+    "Gunnarrhea": ["Gunnarrhea", "Acuña Handle the Gunnarrhea?", "Rita's Favorite Team"],
     "BTA Boyz": ["BTA Boyz", "Yoshida Yo Pants", "Yoshida Yo Pants 💩", "The Lonely Bin"],
-    "You Don't Know Bo": ["You Don't Know Bo", "You Don't Kno Bo"],
+    "You Don't Know Bo": ["You Don't Know Bo"],
+    "You Don't Kno Bo (2023)": ["You Don't Kno Bo (2023)"],
+    "Pat James's Swell Team": ["Pat James's Swell Team"],
     "BB's Bold Team": ["BB's Bold Team", "BB’s Bold Team"],
     "Dixon Cider": ["Dixon Cider"],
     "Goodyear Gila Monsters": ["Goodyear Gila Monsters"],
     "John's Super Team": ["John's Super Team", "John’s Super Team"],
     "Mactown MacDaddies": ["Mactown MacDaddies"],
-    "Me So Heorny": ["Me So Heorny"],
-    "This Is Mizerable": ["This Is Mizerable", "This is Mizerable", "I have a Bohmer"]
+    "Me So Heorny": ["Me So Heorny", "Me so Randy", "Me So Randy"],
+    "This Is Mizerable": ["This Is Mizerable", "This is Mizerable", "I have a Bohmer", "Vladdys Hammer", "Vladdy's Hammer"]
   };
 
   const YAHOO_2025_RULES = {
@@ -42,6 +48,8 @@
   let yahoo2025AllRows = [];
   let yahoo2024Analytics = null;
   let yahoo2024AllRows = [];
+  let yahoo2023Analytics = null;
+  let yahoo2023AllRows = [];
   let activeProfileTeam = null;
   let activeProfileSeason = "2026";
 
@@ -78,7 +86,7 @@
   }
 
   function logoFor(team) {
-    return window.TEAM_LOGOS?.[team] || FALLBACK_LOGO;
+    return LEGACY_TEAM_LOGOS[team] || window.TEAM_LOGOS?.[team] || FALLBACK_LOGO;
   }
 
   function escapeHtml(value) {
@@ -485,6 +493,90 @@
   }
 
 
+  function renderHistoricalBoard2023() {
+    if (!yahoo2023Analytics) return;
+
+    const historyGrid = document.getElementById("utiHistory2023Grid");
+    const historyRange = document.getElementById("utiHistory2023Range");
+    const historyBadge = document.getElementById("utiHistory2023SeasonBadge");
+
+    const weeks = yahoo2023Analytics.weeks || [];
+    const allPlay = sortedAllPlayFor(yahoo2023Analytics);
+    const power = yahoo2023Analytics.powerRankings || [];
+    const luck = yahoo2023Analytics.luckIndex || [];
+
+    if (historyRange && weeks.length) {
+      historyRange.textContent = weeks.length === 1
+        ? `Week ${weeks[0]} imported`
+        : `Weeks ${weeks[0]}–${weeks[weeks.length - 1]} imported`;
+    }
+
+    if (historyBadge && weeks.length) {
+      historyBadge.textContent = weeks.length === 1
+        ? `2023 Yahoo · Week ${weeks[0]}`
+        : `2023 Yahoo · Weeks ${weeks[0]}–${weeks[weeks.length - 1]}`;
+    }
+
+    if (historyGrid) {
+      const leader = allPlay[0];
+      const powerLeader = power[0];
+      const luckiest = luck[0];
+      const unluckiest = luck[luck.length - 1];
+
+      historyGrid.innerHTML = [
+        metricCard({
+          icon: "🗃️",
+          eyebrow: "2023 Imported All-Play #1",
+          team: leader?.team || "—",
+          value: leader ? formatRecord(leader) : "—",
+          copy: leader ? `${formatPct(leader.winPct)} in the imported 2023 sample` : "Waiting for data",
+          tone: "is-history",
+          season: "2023"
+        }),
+        metricCard({
+          icon: "📼",
+          eyebrow: "2023 Imported Power #1",
+          team: powerLeader?.team || "—",
+          value: powerLeader ? `${(powerLeader.rating * 100).toFixed(1)} / 100` : "—",
+          copy: "Based only on imported 2023 matchup weeks",
+          tone: "is-history",
+          season: "2023"
+        }),
+        metricCard({
+          icon: "🍀",
+          eyebrow: "2023 Imported Luckiest",
+          team: luckiest?.team || "—",
+          value: luckiest ? formatSigned(luckiest.luck) : "—",
+          copy: "Imported wins above all-play expectation",
+          tone: "is-history",
+          season: "2023"
+        }),
+        metricCard({
+          icon: "🪦",
+          eyebrow: "2023 Imported Unluckiest",
+          team: unluckiest?.team || "—",
+          value: unluckiest ? formatSigned(unluckiest.luck) : "—",
+          copy: "Imported wins below all-play expectation",
+          tone: "is-history",
+          season: "2023"
+        })
+      ].join("");
+    }
+
+    const allPlayTable = document.getElementById("utiHistory2023AllPlayTable");
+    if (allPlayTable) allPlayTable.innerHTML = renderAllPlayChart(allPlay, "2023");
+
+    const luckTable = document.getElementById("utiHistory2023LuckTable");
+    if (luckTable) luckTable.innerHTML = renderLuckChart(luck, "2023");
+
+    const powerTable = document.getElementById("utiHistory2023PowerTable");
+    if (powerTable) powerTable.innerHTML = renderPowerChart(power, "2023");
+
+    const categoryTable = document.getElementById("utiHistory2023CategoryTable");
+    if (categoryTable) categoryTable.innerHTML = renderCategoryChart(yahoo2023Analytics, "2023");
+  }
+
+
 
   function historyPhase(row) {
     return String(row?.phase || row?.season_type || "regular").toLowerCase() === "playoffs"
@@ -496,6 +588,7 @@
     return [
       ...(yahoo2025AllRows || []),
       ...(yahoo2024AllRows || []),
+      ...(yahoo2023AllRows || []),
       ...(latestAnalytics?.rows || []).map(row => ({
         ...row,
         phase: row.phase || "regular",
@@ -533,16 +626,34 @@
       .sort((a, b) => a.localeCompare(b));
   }
 
+  function combineRecords(...records) {
+    const combined = { wins: 0, losses: 0, ties: 0, games: 0, points: 0, winPct: 0 };
+
+    records.filter(Boolean).forEach(record => {
+      combined.wins += Number(record.wins || 0);
+      combined.losses += Number(record.losses || 0);
+      combined.ties += Number(record.ties || 0);
+      combined.games += Number(record.games || 0);
+      combined.points += Number(record.points ?? (Number(record.wins || 0) + Number(record.ties || 0) * 0.5));
+    });
+
+    combined.winPct = combined.games ? combined.points / combined.games : 0;
+    return combined;
+  }
+
   function franchiseRecord(team, opponent = null, season = null, phase = "all") {
-    const rows = trackedHistoryRows().filter(row => {
+    const allRows = trackedHistoryRows();
+    const rowFilter = row => {
       if (row.team !== team) return false;
       if (opponent && row.opponent !== opponent) return false;
       if (season && Number(row.season) !== Number(season)) return false;
       if (phase !== "all" && historyPhase(row) !== phase) return false;
       return true;
-    });
+    };
 
-    return recordFromRows(rows);
+    // Franchise records are based only on matchup rows that have actually been imported.
+    // This is especially important for 2023, where Week 1 is currently the only imported week.
+    return recordFromRows(allRows.filter(rowFilter));
   }
 
   function derivedRegularSeasonFirst(season) {
@@ -687,7 +798,7 @@
           <div class="uti-franchise-resume-row">
             <div class="uti-franchise-resume-team">
               <span class="uti-franchise-rank">${index + 1}</span>
-              ${teamIdentity(row.team, false, "2026")}
+              ${teamIdentity(row.team, false, preferredSeasonForTeam(row.team, "2026"))}
             </div>
             <strong>${formatRecord(row.overall)}</strong>
             <span class="uti-record-split is-regular">${formatRecord(row.regular)}</span>
@@ -881,21 +992,30 @@
   }
 
   function renderHistoryOverview() {
-    if (!latestAnalytics || (!yahoo2025Analytics && !yahoo2024Analytics)) return;
+    if (!latestAnalytics || (!yahoo2025Analytics && !yahoo2024Analytics && !yahoo2023Analytics)) return;
 
     const target = document.getElementById("utiHistoryOverviewGrid");
     const currentBadge = document.getElementById("utiHistoryCurrentBadge");
     const historyBadge = document.getElementById("utiHistorySeasonBadge");
     const history2024Badge = document.getElementById("utiHistory2024SeasonBadge");
+    const history2023Badge = document.getElementById("utiHistory2023SeasonBadge");
 
     const weeks2025 = yahoo2025Analytics?.weeks || [];
     const weeks2024 = yahoo2024Analytics?.weeks || [];
+    const weeks2023 = yahoo2023Analytics?.weeks || [];
     const currentWeeks = latestAnalytics.weeks
       || [...new Set(latestAnalytics.rows.map(row => Number(row.week)))].filter(Number.isFinite).sort((a, b) => a - b);
 
     const allPlay2025 = sortedAllPlayFor(yahoo2025Analytics);
     const allPlay2024 = sortedAllPlayFor(yahoo2024Analytics);
+    const allPlay2023 = sortedAllPlayFor(yahoo2023Analytics);
     const riser = yahoo2025Analytics ? findBiggestPowerMover(latestAnalytics, yahoo2025Analytics) : null;
+
+    if (history2023Badge && weeks2023.length) {
+      history2023Badge.textContent = weeks2023.length === 1
+        ? `2023 Yahoo · Week ${weeks2023[0]}`
+        : `2023 Yahoo · Weeks ${weeks2023[0]}–${weeks2023[weeks2023.length - 1]}`;
+    }
 
     if (history2024Badge && weeks2024.length) {
       const has2024Playoffs = (yahoo2024AllRows || []).some(row => historyPhase(row) === "playoffs");
@@ -916,11 +1036,25 @@
 
     if (!target) return;
 
-    const trackedSeasons = [yahoo2024Analytics ? 2024 : null, yahoo2025Analytics ? 2025 : null, 2026].filter(Boolean);
-    const historicalTeamWeeks = (yahoo2024AllRows?.length || yahoo2024Analytics?.rows?.length || 0)
+    const trackedSeasons = [
+      yahoo2023Analytics ? 2023 : null,
+      yahoo2024Analytics ? 2024 : null,
+      yahoo2025Analytics ? 2025 : null,
+      2026
+    ].filter(Boolean);
+
+    const historicalTeamWeeks = (yahoo2023AllRows?.length || yahoo2023Analytics?.rows?.length || 0)
+      + (yahoo2024AllRows?.length || yahoo2024Analytics?.rows?.length || 0)
       + (yahoo2025AllRows?.length || yahoo2025Analytics?.rows?.length || 0);
+
     const yahoo2024PlayoffTeamWeeks = (yahoo2024AllRows || []).filter(row => historyPhase(row) === "playoffs").length;
     const yahoo2025PlayoffTeamWeeks = (yahoo2025AllRows || []).filter(row => historyPhase(row) === "playoffs").length;
+
+    const historyWeekParts = [
+      weeks2023.length ? `2023: ${weeks2023.length} imported reg week${weeks2023.length === 1 ? "" : "s"}` : "",
+      weeks2024.length ? `2024: ${weeks2024.length} reg weeks${yahoo2024PlayoffTeamWeeks ? " + playoffs" : ""}` : "",
+      weeks2025.length ? `2025: ${weeks2025.length} reg weeks${yahoo2025PlayoffTeamWeeks ? " + playoffs" : ""}` : ""
+    ].filter(Boolean);
 
     target.innerHTML = `
       <article class="uti-history-overview-card">
@@ -932,8 +1066,19 @@
       <article class="uti-history-overview-card">
         <span>Historical Team-Weeks</span>
         <strong>${historicalTeamWeeks}</strong>
-        <small>${weeks2024.length ? `2024: ${weeks2024.length} reg weeks${yahoo2024PlayoffTeamWeeks ? " + playoffs" : ""}` : ""}${weeks2024.length && weeks2025.length ? " · " : ""}${weeks2025.length ? `2025: ${weeks2025.length} reg weeks${yahoo2025PlayoffTeamWeeks ? " + playoffs" : ""}` : ""}</small>
+        <small>${historyWeekParts.join(" · ")}</small>
       </article>
+
+      ${yahoo2023Analytics ? `
+        <article class="uti-history-overview-card uti-team-profile-trigger" data-team-profile="${escapeHtml(allPlay2023[0]?.team || "—")}" data-profile-open-season="2023" role="button" tabindex="0">
+          <span>2023 Imported All-Play #1</span>
+          <div class="uti-history-overview-team">
+            <img src="${logoFor(allPlay2023[0]?.team || "")}" alt="">
+            <strong>${escapeHtml(allPlay2023[0]?.team || "—")}</strong>
+          </div>
+          <small>${allPlay2023[0] ? `${formatPct(allPlay2023[0].winPct)} in imported 2023 weeks` : "—"}</small>
+        </article>
+      ` : ""}
 
       ${yahoo2024Analytics ? `
         <article class="uti-history-overview-card uti-team-profile-trigger" data-team-profile="${escapeHtml(allPlay2024[0]?.team || "—")}" data-profile-open-season="2024" role="button" tabindex="0">
@@ -971,7 +1116,7 @@
   }
 
   function renderHistoryTeaser() {
-    if (!latestAnalytics || (!yahoo2025Analytics && !yahoo2024Analytics)) return;
+    if (!latestAnalytics || (!yahoo2025Analytics && !yahoo2024Analytics && !yahoo2023Analytics)) return;
     const target = document.getElementById("utiHistoryTeaserGrid");
     if (!target) return;
 
@@ -982,6 +1127,7 @@
     const riser = yahoo2025Analytics ? findBiggestPowerMover(latestAnalytics, yahoo2025Analytics) : null;
     const weeks2025 = yahoo2025Analytics?.weeks || [];
     const weeks2024 = yahoo2024Analytics?.weeks || [];
+    const weeks2023 = yahoo2023Analytics?.weeks || [];
 
     target.innerHTML = `
       ${yahoo2024Analytics ? `
@@ -1037,8 +1183,13 @@
 
       <a class="uti-history-teaser-card is-link" href="history.html">
         <span>Season Archive</span>
-        <strong>${yahoo2024Analytics && yahoo2025Analytics ? "2024 + 2025 Yahoo" : yahoo2024Analytics ? "2024 Yahoo" : "2025 Yahoo"}</strong>
+        <strong>${[
+          yahoo2023Analytics ? "2023" : "",
+          yahoo2024Analytics ? "2024" : "",
+          yahoo2025Analytics ? "2025" : ""
+        ].filter(Boolean).join(" + ")} Yahoo</strong>
         <small>${[
+          weeks2023.length ? (weeks2023.length === 1 ? `2023 Week ${weeks2023[0]}` : `2023 Weeks ${weeks2023[0]}–${weeks2023[weeks2023.length - 1]}`) : "",
           weeks2024.length ? `2024 Weeks ${weeks2024[0]}–${weeks2024[weeks2024.length - 1]}` : "",
           weeks2025.length ? `2025 Weeks ${weeks2025[0]}–${weeks2025[weeks2025.length - 1]}` : ""
         ].filter(Boolean).join(" · ")} · Open history →</small>
@@ -1268,7 +1419,23 @@
   function getSeasonData(season) {
     if (String(season) === "2025") return yahoo2025Analytics;
     if (String(season) === "2024") return yahoo2024Analytics;
+    if (String(season) === "2023") return yahoo2023Analytics;
     return latestAnalytics;
+  }
+
+  function teamHasSeasonData(team, season) {
+    const data = getSeasonData(season);
+    return Boolean(data?.rows?.some(row => row.team === team));
+  }
+
+  function preferredSeasonForTeam(team, requestedSeason = null) {
+    if (requestedSeason && teamHasSeasonData(team, requestedSeason)) {
+      return String(requestedSeason);
+    }
+
+    return ["2026", "2025", "2024", "2023"]
+      .find(season => teamHasSeasonData(team, season))
+      || String(requestedSeason || "2026");
   }
 
   function groupRowsByWeek(rows) {
@@ -1573,11 +1740,14 @@
   }
 
   function openTeamProfile(team, season = activeProfileSeason) {
-    const data = getSeasonData(season);
-    if (!data || !team) return;
+    if (!team) return;
+
+    const resolvedSeason = preferredSeasonForTeam(team, season);
+    const data = getSeasonData(resolvedSeason);
+    if (!data) return;
 
     activeProfileTeam = team;
-    activeProfileSeason = String(season);
+    activeProfileSeason = String(resolvedSeason);
     ensureProfileModal();
 
     const profile = buildTeamProfile(data, team);
@@ -1592,14 +1762,15 @@
     const profileSeasonButtons = [
       { season: "2026", label: "Fantrax", weeks: latestAnalytics?.weeks?.length || 0 },
       ...(yahoo2025Analytics ? [{ season: "2025", label: "Yahoo", weeks: yahoo2025Analytics?.weeks?.length || 0 }] : []),
-      ...(yahoo2024Analytics ? [{ season: "2024", label: "Yahoo", weeks: yahoo2024Analytics?.weeks?.length || 0 }] : [])
-    ];
+      ...(yahoo2024Analytics ? [{ season: "2024", label: "Yahoo", weeks: yahoo2024Analytics?.weeks?.length || 0 }] : []),
+      ...(yahoo2023Analytics ? [{ season: "2023", label: "Yahoo", weeks: yahoo2023Analytics?.weeks?.length || 0 }] : [])
+    ].filter(button => teamHasSeasonData(team, button.season));
 
     const seasonTabs = `
       <div class="uti-profile-season-tabs" aria-label="Team profile season">
         ${profileSeasonButtons.map(button => `
           <button type="button" class="${activeProfileSeason === button.season ? "is-active" : ""}" data-profile-season="${button.season}">
-            <strong>${button.season}</strong><span>${button.label} · ${button.weeks} weeks</span>
+            <strong>${button.season}</strong><span>${button.label} · ${button.weeks}w</span>
           </button>
         `).join("")}
       </div>
@@ -1877,7 +2048,11 @@
     const isPreview = mode === "preview";
 
     const needsCurrentBoard = Boolean(grid);
-    const needsHistoryBoard = Boolean(document.getElementById("utiHistoryGrid") || document.getElementById("utiHistory2024Grid"));
+    const needsHistoryBoard = Boolean(
+      document.getElementById("utiHistoryGrid") ||
+      document.getElementById("utiHistory2024Grid") ||
+      document.getElementById("utiHistory2023Grid")
+    );
     const needsHistoryTeaser = Boolean(document.getElementById("utiHistoryTeaserGrid"));
     const needsHistoryOverview = Boolean(document.getElementById("utiHistoryOverviewGrid"));
     const needsHistoryRecords = Boolean(
@@ -1958,6 +2133,34 @@
           }
         } catch (history2024Error) {
           console.warn("2024 Yahoo history could not be loaded:", history2024Error);
+        }
+
+        try {
+          const yahoo2023Rows = await loadScriptOnce(
+            "data/history/2023-yahoo-weekly-team-stats.js",
+            "UTI_YAHOO_2023_WEEKLY_TEAM_STATS"
+          );
+
+          if (Array.isArray(yahoo2023Rows) && yahoo2023Rows.length) {
+            yahoo2023AllRows = yahoo2023Rows.map(row => ({
+              ...row,
+              phase: row.phase || "regular",
+              round: row.round || ""
+            }));
+
+            const yahoo2023RegularSeasonRows = yahoo2023AllRows.filter(row => historyPhase(row) === "regular");
+
+            yahoo2023Analytics = buildGenericSeasonAnalytics(yahoo2023RegularSeasonRows, {
+              categories: [...YAHOO_2025_HITTING_CATEGORIES, ...YAHOO_2025_PITCHING_CATEGORIES],
+              rules: YAHOO_2025_RULES,
+              hittingCategories: YAHOO_2025_HITTING_CATEGORIES,
+              pitchingCategories: YAHOO_2025_PITCHING_CATEGORIES,
+              season: 2023,
+              source: "yahoo"
+            });
+          }
+        } catch (history2023Error) {
+          console.warn("2023 Yahoo history could not be loaded:", history2023Error);
         }
       }
 
@@ -2059,11 +2262,15 @@
         renderHistoricalBoard2024();
       }
 
-      if ((yahoo2025Analytics || yahoo2024Analytics) && needsHistoryOverview) {
+      if (yahoo2023Analytics && needsHistoryBoard) {
+        renderHistoricalBoard2023();
+      }
+
+      if ((yahoo2025Analytics || yahoo2024Analytics || yahoo2023Analytics) && needsHistoryOverview) {
         renderHistoryOverview();
       }
 
-      if (yahoo2025Analytics || yahoo2024Analytics) {
+      if (yahoo2025Analytics || yahoo2024Analytics || yahoo2023Analytics) {
         if (needsHistoryTeaser) renderHistoryTeaser();
         if (needsHistoryRecords) renderHistoryRecordSections();
       }
@@ -2108,3 +2315,120 @@
     renderUTIIntelligence();
   }
 })();
+
+/* ==========================================================
+   Mobile metadata cleanup for Intelligence + History pages.
+   Keeps desktop styling unchanged.
+   ========================================================== */
+(() => {
+  const styleId = "uti-mobile-metadata-cleanup";
+  if (document.getElementById(styleId)) return;
+
+  const style = document.createElement("style");
+  style.id = styleId;
+  style.textContent = `
+    @media (max-width: 620px) {
+      /*
+       * Section metadata such as "Weeks 1–20", "2024 → 2026",
+       * "Normalized comparison", and historical week ranges
+       * should read like metadata — not a giant floating pill.
+       */
+      .uti-intelligence-page-body .uti-intelligence-heading {
+        display: block !important;
+      }
+
+      .uti-intelligence-page-body .uti-intelligence-heading > div {
+        width: 100% !important;
+        max-width: none !important;
+        min-width: 0 !important;
+      }
+
+      .uti-intelligence-page-body .uti-intelligence-heading > .tag,
+      .uti-intelligence-page-body #utiIntelligenceRange,
+      .uti-intelligence-page-body #utiFranchiseRecordRange,
+      .uti-intelligence-page-body #utiHistory2024Range,
+      .uti-intelligence-page-body #utiHistoryRange {
+        display: block !important;
+        width: fit-content !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+
+        margin: 7px 0 0 !important;
+        padding: 0 !important;
+
+        border: 0 !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+
+        color: #53677f !important;
+        font-size: .68rem !important;
+        font-weight: 850 !important;
+        line-height: 1.25 !important;
+        letter-spacing: .01em !important;
+
+        white-space: nowrap !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
+        text-align: left !important;
+      }
+
+      /*
+       * Hero stat pills become a clean metadata row on phones.
+       */
+      .uti-intelligence-page-body .uti-intelligence-page-hero-stats {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        align-items: center !important;
+        gap: 5px 12px !important;
+        margin-top: 12px !important;
+      }
+
+      .uti-intelligence-page-body .uti-intelligence-page-hero-stats > span {
+        display: inline !important;
+        width: auto !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        border: 0 !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+
+        font-size: .66rem !important;
+        line-height: 1.25 !important;
+        font-weight: 800 !important;
+        white-space: nowrap !important;
+      }
+
+      /*
+       * The small league badge in the page nav gets the same flat treatment.
+       */
+      .uti-intelligence-page-body .uti-intelligence-page-badge {
+        padding: 0 !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        white-space: nowrap !important;
+        font-size: .66rem !important;
+      }
+
+      /*
+       * Prevent a right-side metadata label from stealing width from
+       * the section title/subtitle on narrow screens.
+       */
+      .uti-intelligence-page-body .uti-intelligence-heading .section-title,
+      .uti-intelligence-page-body .uti-intelligence-heading .section-subtitle {
+        max-width: none !important;
+        width: 100% !important;
+      }
+    }
+  `;
+
+  document.head.appendChild(style);
+})();
+
