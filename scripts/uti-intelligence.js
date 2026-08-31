@@ -2,7 +2,7 @@
   const FALLBACK_LOGO = "images/owners/gunnarrhea.png";
   const LEGACY_TEAM_LOGOS = {
     "Pat James's Swell Team": "images/owners/pat-james-swell-team.png",
-    "You Don't Kno Bo (2023)": "images/owners/you-dont-kno-bo-2023.png"
+    "You Don't Kno Bo (Frank)": "images/owners/you-dont-kno-bo-frank.png"
   };
   const HITTING_CATEGORIES = ["R", "HR", "RBI", "BB", "SO", "NSB", "AVG", "TB"];
   const PITCHING_CATEGORIES = ["W", "L", "QS", "NS", "K", "ERA", "WHIP", "BAA"];
@@ -13,7 +13,7 @@
     "Gunnarrhea": ["Gunnarrhea", "Acuña Handle the Gunnarrhea?", "Rita's Favorite Team"],
     "BTA Boyz": ["BTA Boyz", "Yoshida Yo Pants", "Yoshida Yo Pants 💩", "The Lonely Bin"],
     "You Don't Know Bo": ["You Don't Know Bo"],
-    "You Don't Kno Bo (2023)": ["You Don't Kno Bo (2023)"],
+    "You Don't Kno Bo (Frank)": ["You Don't Kno Bo (Frank)"],
     "Pat James's Swell Team": ["Pat James's Swell Team"],
     "BB's Bold Team": ["BB's Bold Team", "BB’s Bold Team"],
     "Dixon Cider": ["Dixon Cider"],
