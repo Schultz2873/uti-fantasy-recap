@@ -1,4 +1,7 @@
 // Generated UTI weekly team stats.
+// 2026 regular season: Weeks 1–21.
+// 2026 playoffs: Week 22 = Playoff Round 1.
+// phase/round fields distinguish regular-season and playoff rows.
 window.UTI_WEEKLY_TEAM_STATS = [
   {
     "week": 1,
@@ -24,7 +27,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 0,
     "BAA": 0.188,
     "official_score_for": 9,
-    "official_score_against": 7
+    "official_score_against": 7,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 1,
@@ -50,7 +55,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 3,
     "BAA": 0.207,
     "official_score_for": 7,
-    "official_score_against": 9
+    "official_score_against": 9,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 1,
@@ -76,7 +83,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 0,
     "BAA": 0.216,
     "official_score_for": 8,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 1,
@@ -102,7 +111,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 5,
     "BAA": 0.227,
     "official_score_for": 8,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 1,
@@ -128,7 +139,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 5,
     "BAA": 0.218,
     "official_score_for": 4.5,
-    "official_score_against": 11.5
+    "official_score_against": 11.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 1,
@@ -154,7 +167,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 9,
     "BAA": 0.212,
     "official_score_for": 11.5,
-    "official_score_against": 4.5
+    "official_score_against": 4.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 1,
@@ -171,7 +186,7 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "AVG": 0.23,
     "TB": 195,
     "IP": "77.1",
-    "ERA": 5.0,
+    "ERA": 5,
     "WHIP": 1.397,
     "K": 80,
     "W": 3,
@@ -180,7 +195,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 4,
     "BAA": 0.257,
     "official_score_for": 8,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 1,
@@ -206,7 +223,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 2,
     "BAA": 0.278,
     "official_score_for": 8,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 1,
@@ -232,7 +251,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 4,
     "BAA": 0.228,
     "official_score_for": 5.5,
-    "official_score_against": 10.5
+    "official_score_against": 10.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 1,
@@ -258,7 +279,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 4,
     "BAA": 0.227,
     "official_score_for": 10.5,
-    "official_score_against": 5.5
+    "official_score_against": 5.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 2,
@@ -284,7 +307,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 0,
     "BAA": 0.23,
     "official_score_for": 9.5,
-    "official_score_against": 6.5
+    "official_score_against": 6.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 2,
@@ -301,7 +326,7 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "AVG": 0.235,
     "TB": 110,
     "IP": "72",
-    "ERA": 3.0,
+    "ERA": 3,
     "WHIP": 1.181,
     "K": 78,
     "W": 6,
@@ -310,7 +335,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 4,
     "BAA": 0.232,
     "official_score_for": 6.5,
-    "official_score_against": 9.5
+    "official_score_against": 9.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 2,
@@ -336,7 +363,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 2,
     "BAA": 0.254,
     "official_score_for": 8.5,
-    "official_score_against": 7.5
+    "official_score_against": 7.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 2,
@@ -362,7 +391,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 4,
     "BAA": 0.261,
     "official_score_for": 7.5,
-    "official_score_against": 8.5
+    "official_score_against": 8.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 2,
@@ -388,7 +419,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 2,
     "BAA": 0.214,
     "official_score_for": 7.5,
-    "official_score_against": 8.5
+    "official_score_against": 8.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 2,
@@ -414,7 +447,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 2,
     "BAA": 0.177,
     "official_score_for": 8.5,
-    "official_score_against": 7.5
+    "official_score_against": 7.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 2,
@@ -440,7 +475,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 1,
     "BAA": 0.271,
     "official_score_for": 8,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 2,
@@ -466,7 +503,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 1,
     "BAA": 0.245,
     "official_score_for": 8,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 2,
@@ -492,7 +531,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 0,
     "BAA": 0.266,
     "official_score_for": 7.5,
-    "official_score_against": 8.5
+    "official_score_against": 8.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 2,
@@ -518,7 +559,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": -1,
     "BAA": 0.264,
     "official_score_for": 8.5,
-    "official_score_against": 7.5
+    "official_score_against": 7.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 3,
@@ -544,7 +587,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 4,
     "BAA": 0.203,
     "official_score_for": 9,
-    "official_score_against": 7
+    "official_score_against": 7,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 3,
@@ -570,7 +615,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 7,
     "BAA": 0.199,
     "official_score_for": 7,
-    "official_score_against": 9
+    "official_score_against": 9,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 3,
@@ -596,7 +643,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 1,
     "BAA": 0.207,
     "official_score_for": 12.5,
-    "official_score_against": 3.5
+    "official_score_against": 3.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 3,
@@ -622,7 +671,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 2,
     "BAA": 0.274,
     "official_score_for": 3.5,
-    "official_score_against": 12.5
+    "official_score_against": 12.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 3,
@@ -648,7 +699,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 2,
     "BAA": 0.25,
     "official_score_for": 5.5,
-    "official_score_against": 10.5
+    "official_score_against": 10.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 3,
@@ -674,7 +727,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 0,
     "BAA": 0.196,
     "official_score_for": 10.5,
-    "official_score_against": 5.5
+    "official_score_against": 5.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 3,
@@ -700,7 +755,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 6,
     "BAA": 0.241,
     "official_score_for": 9,
-    "official_score_against": 7
+    "official_score_against": 7,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 3,
@@ -726,7 +783,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 5,
     "BAA": 0.267,
     "official_score_for": 7,
-    "official_score_against": 9
+    "official_score_against": 9,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 3,
@@ -752,7 +811,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 1,
     "BAA": 0.308,
     "official_score_for": 4.5,
-    "official_score_against": 11.5
+    "official_score_against": 11.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 3,
@@ -778,7 +839,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 1,
     "BAA": 0.252,
     "official_score_for": 11.5,
-    "official_score_against": 4.5
+    "official_score_against": 4.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 4,
@@ -804,7 +867,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 0,
     "BAA": 0.286,
     "official_score_for": 8.5,
-    "official_score_against": 7.5
+    "official_score_against": 7.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 4,
@@ -830,7 +895,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": -1,
     "BAA": 0.246,
     "official_score_for": 7.5,
-    "official_score_against": 8.5
+    "official_score_against": 8.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 4,
@@ -856,7 +923,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 1,
     "BAA": 0.212,
     "official_score_for": 11.5,
-    "official_score_against": 4.5
+    "official_score_against": 4.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 4,
@@ -882,7 +951,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 1,
     "BAA": 0.246,
     "official_score_for": 4.5,
-    "official_score_against": 11.5
+    "official_score_against": 11.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 4,
@@ -908,7 +979,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 3,
     "BAA": 0.266,
     "official_score_for": 10,
-    "official_score_against": 6
+    "official_score_against": 6,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 4,
@@ -934,7 +1007,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 1,
     "BAA": 0.276,
     "official_score_for": 6,
-    "official_score_against": 10
+    "official_score_against": 10,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 4,
@@ -960,7 +1035,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 6,
     "BAA": 0.247,
     "official_score_for": 8.5,
-    "official_score_against": 7.5
+    "official_score_against": 7.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 4,
@@ -986,7 +1063,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": -1,
     "BAA": 0.29,
     "official_score_for": 7.5,
-    "official_score_against": 8.5
+    "official_score_against": 8.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 4,
@@ -1012,7 +1091,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 4,
     "BAA": 0.278,
     "official_score_for": 4,
-    "official_score_against": 12
+    "official_score_against": 12,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 4,
@@ -1038,7 +1119,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 4,
     "BAA": 0.248,
     "official_score_for": 12,
-    "official_score_against": 4
+    "official_score_against": 4,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 5,
@@ -1064,7 +1147,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 2,
     "BAA": 0.265,
     "official_score_for": 9,
-    "official_score_against": 7
+    "official_score_against": 7,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 5,
@@ -1090,7 +1175,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 3,
     "BAA": 0.261,
     "official_score_for": 7,
-    "official_score_against": 9
+    "official_score_against": 9,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 5,
@@ -1116,7 +1203,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 3,
     "BAA": 0.233,
     "official_score_for": 9.5,
-    "official_score_against": 6.5
+    "official_score_against": 6.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 5,
@@ -1142,7 +1231,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 7,
     "BAA": 0.234,
     "official_score_for": 6.5,
-    "official_score_against": 9.5
+    "official_score_against": 9.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 5,
@@ -1168,7 +1259,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 2,
     "BAA": 0.254,
     "official_score_for": 14,
-    "official_score_against": 2
+    "official_score_against": 2,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 5,
@@ -1194,7 +1287,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 0,
     "BAA": 0.247,
     "official_score_for": 2,
-    "official_score_against": 14
+    "official_score_against": 14,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 5,
@@ -1220,7 +1315,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 1,
     "BAA": 0.231,
     "official_score_for": 12,
-    "official_score_against": 4
+    "official_score_against": 4,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 5,
@@ -1246,7 +1343,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 2,
     "BAA": 0.29,
     "official_score_for": 4,
-    "official_score_against": 12
+    "official_score_against": 12,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 5,
@@ -1272,7 +1371,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 2,
     "BAA": 0.233,
     "official_score_for": 0.5,
-    "official_score_against": 15.5
+    "official_score_against": 15.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 5,
@@ -1298,7 +1399,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 3,
     "BAA": 0.201,
     "official_score_for": 15.5,
-    "official_score_against": 0.5
+    "official_score_against": 0.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 6,
@@ -1324,7 +1427,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 3,
     "BAA": 0.217,
     "official_score_for": 5.5,
-    "official_score_against": 10.5
+    "official_score_against": 10.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 6,
@@ -1350,7 +1455,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 3,
     "BAA": 0.197,
     "official_score_for": 10.5,
-    "official_score_against": 5.5
+    "official_score_against": 5.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 6,
@@ -1376,7 +1483,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 2,
     "BAA": 0.223,
     "official_score_for": 5.5,
-    "official_score_against": 10.5
+    "official_score_against": 10.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 6,
@@ -1402,7 +1511,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": -1,
     "BAA": 0.224,
     "official_score_for": 10.5,
-    "official_score_against": 5.5
+    "official_score_against": 5.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 6,
@@ -1428,7 +1539,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 3,
     "BAA": 0.211,
     "official_score_for": 5.5,
-    "official_score_against": 10.5
+    "official_score_against": 10.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 6,
@@ -1454,7 +1567,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 5,
     "BAA": 0.194,
     "official_score_for": 10.5,
-    "official_score_against": 5.5
+    "official_score_against": 5.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 6,
@@ -1480,7 +1595,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 2,
     "BAA": 0.236,
     "official_score_for": 12.5,
-    "official_score_against": 3.5
+    "official_score_against": 3.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 6,
@@ -1506,7 +1623,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 2,
     "BAA": 0.255,
     "official_score_for": 3.5,
-    "official_score_against": 12.5
+    "official_score_against": 12.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 6,
@@ -1532,7 +1651,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 7,
     "BAA": 0.195,
     "official_score_for": 6,
-    "official_score_against": 10
+    "official_score_against": 10,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 6,
@@ -1558,7 +1679,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 1,
     "BAA": 0.176,
     "official_score_for": 10,
-    "official_score_against": 6
+    "official_score_against": 6,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 7,
@@ -1584,7 +1707,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 0,
     "BAA": 0.26,
     "official_score_for": 11.5,
-    "official_score_against": 4.5
+    "official_score_against": 4.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 7,
@@ -1610,7 +1735,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 4,
     "BAA": 0.231,
     "official_score_for": 4.5,
-    "official_score_against": 11.5
+    "official_score_against": 11.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 7,
@@ -1636,7 +1763,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 4,
     "BAA": 0.208,
     "official_score_for": 10.5,
-    "official_score_against": 5.5
+    "official_score_against": 5.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 7,
@@ -1662,7 +1791,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 4,
     "BAA": 0.251,
     "official_score_for": 5.5,
-    "official_score_against": 10.5
+    "official_score_against": 10.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 7,
@@ -1688,7 +1819,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 3,
     "BAA": 0.212,
     "official_score_for": 14,
-    "official_score_against": 2
+    "official_score_against": 2,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 7,
@@ -1714,7 +1847,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 1,
     "BAA": 0.234,
     "official_score_for": 2,
-    "official_score_against": 14
+    "official_score_against": 14,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 7,
@@ -1740,7 +1875,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 4,
     "BAA": 0.243,
     "official_score_for": 4.5,
-    "official_score_against": 11.5
+    "official_score_against": 11.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 7,
@@ -1766,7 +1903,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 0,
     "BAA": 0.266,
     "official_score_for": 11.5,
-    "official_score_against": 4.5
+    "official_score_against": 4.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 7,
@@ -1792,7 +1931,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 5,
     "BAA": 0.204,
     "official_score_for": 8,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 7,
@@ -1818,7 +1959,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 1,
     "BAA": 0.206,
     "official_score_for": 8,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 8,
@@ -1844,7 +1987,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 1,
     "BAA": 0.237,
     "official_score_for": 7.5,
-    "official_score_against": 8.5
+    "official_score_against": 8.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 8,
@@ -1870,7 +2015,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 3,
     "BAA": 0.26,
     "official_score_for": 8.5,
-    "official_score_against": 7.5
+    "official_score_against": 7.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 8,
@@ -1896,7 +2043,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 1,
     "BAA": 0.228,
     "official_score_for": 5,
-    "official_score_against": 11
+    "official_score_against": 11,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 8,
@@ -1922,7 +2071,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 3,
     "BAA": 0.21,
     "official_score_for": 11,
-    "official_score_against": 5
+    "official_score_against": 5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 8,
@@ -1948,7 +2099,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 1,
     "BAA": 0.271,
     "official_score_for": 4,
-    "official_score_against": 12
+    "official_score_against": 12,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 8,
@@ -1974,7 +2127,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 11,
     "BAA": 0.229,
     "official_score_for": 12,
-    "official_score_against": 4
+    "official_score_against": 4,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 8,
@@ -2000,7 +2155,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 4,
     "BAA": 0.197,
     "official_score_for": 9.5,
-    "official_score_against": 6.5
+    "official_score_against": 6.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 8,
@@ -2026,7 +2183,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 1,
     "BAA": 0.274,
     "official_score_for": 6.5,
-    "official_score_against": 9.5
+    "official_score_against": 9.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 8,
@@ -2052,7 +2211,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 1,
     "BAA": 0.232,
     "official_score_for": 4.5,
-    "official_score_against": 11.5
+    "official_score_against": 11.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 8,
@@ -2078,7 +2239,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 3,
     "BAA": 0.182,
     "official_score_for": 11.5,
-    "official_score_against": 4.5
+    "official_score_against": 4.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 9,
@@ -2104,7 +2267,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 7,
     "BAA": 0.224,
     "official_score_for": 9.5,
-    "official_score_against": 6.5
+    "official_score_against": 6.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 9,
@@ -2130,7 +2295,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 3,
     "BAA": 0.228,
     "official_score_for": 6.5,
-    "official_score_against": 9.5
+    "official_score_against": 9.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 9,
@@ -2156,7 +2323,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 0,
     "BAA": 0.255,
     "official_score_for": 2.5,
-    "official_score_against": 13.5
+    "official_score_against": 13.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 9,
@@ -2182,7 +2351,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 2,
     "BAA": 0.205,
     "official_score_for": 13.5,
-    "official_score_against": 2.5
+    "official_score_against": 2.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 9,
@@ -2208,7 +2379,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": -1,
     "BAA": 0.226,
     "official_score_for": 6.5,
-    "official_score_against": 9.5
+    "official_score_against": 9.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 9,
@@ -2234,7 +2407,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 7,
     "BAA": 0.224,
     "official_score_for": 9.5,
-    "official_score_against": 6.5
+    "official_score_against": 6.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 9,
@@ -2260,7 +2435,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 1,
     "BAA": 0.29,
     "official_score_for": 7,
-    "official_score_against": 9
+    "official_score_against": 9,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 9,
@@ -2286,7 +2463,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 4,
     "BAA": 0.214,
     "official_score_for": 9,
-    "official_score_against": 7
+    "official_score_against": 7,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 9,
@@ -2312,7 +2491,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 5,
     "BAA": 0.257,
     "official_score_for": 10,
-    "official_score_against": 6
+    "official_score_against": 6,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 9,
@@ -2338,7 +2519,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 2,
     "BAA": 0.265,
     "official_score_for": 6,
-    "official_score_against": 10
+    "official_score_against": 10,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 10,
@@ -2364,7 +2547,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 4,
     "BAA": 0.236,
     "official_score_for": 7.5,
-    "official_score_against": 8.5
+    "official_score_against": 8.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 10,
@@ -2390,7 +2575,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": -1,
     "BAA": 0.232,
     "official_score_for": 8.5,
-    "official_score_against": 7.5
+    "official_score_against": 7.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 10,
@@ -2416,7 +2603,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 3,
     "BAA": 0.225,
     "official_score_for": 12,
-    "official_score_against": 4
+    "official_score_against": 4,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 10,
@@ -2442,7 +2631,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 5,
     "BAA": 0.296,
     "official_score_for": 4,
-    "official_score_against": 12
+    "official_score_against": 12,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 10,
@@ -2468,7 +2659,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 7,
     "BAA": 0.269,
     "official_score_for": 9,
-    "official_score_against": 7
+    "official_score_against": 7,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 10,
@@ -2494,7 +2687,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 5,
     "BAA": 0.233,
     "official_score_for": 7,
-    "official_score_against": 9
+    "official_score_against": 9,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 10,
@@ -2520,7 +2715,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 4,
     "BAA": 0.235,
     "official_score_for": 15,
-    "official_score_against": 1
+    "official_score_against": 1,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 10,
@@ -2546,7 +2743,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 1,
     "BAA": 0.316,
     "official_score_for": 1,
-    "official_score_against": 15
+    "official_score_against": 15,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 10,
@@ -2572,7 +2771,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 2,
     "BAA": 0.178,
     "official_score_for": 10,
-    "official_score_against": 6
+    "official_score_against": 6,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 10,
@@ -2598,7 +2799,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 1,
     "BAA": 0.285,
     "official_score_for": 6,
-    "official_score_against": 10
+    "official_score_against": 10,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 11,
@@ -2624,7 +2827,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 7,
     "BAA": 0.217,
     "official_score_for": 12,
-    "official_score_against": 4
+    "official_score_against": 4,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 11,
@@ -2650,7 +2855,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 2,
     "BAA": 0.253,
     "official_score_for": 4,
-    "official_score_against": 12
+    "official_score_against": 12,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 11,
@@ -2676,7 +2883,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 1,
     "BAA": 0.25,
     "official_score_for": 4,
-    "official_score_against": 12
+    "official_score_against": 12,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 11,
@@ -2702,7 +2911,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 7,
     "BAA": 0.234,
     "official_score_for": 12,
-    "official_score_against": 4
+    "official_score_against": 4,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 11,
@@ -2728,7 +2939,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 5,
     "BAA": 0.252,
     "official_score_for": 11,
-    "official_score_against": 5
+    "official_score_against": 5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 11,
@@ -2754,7 +2967,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 1,
     "BAA": 0.281,
     "official_score_for": 5,
-    "official_score_against": 11
+    "official_score_against": 11,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 11,
@@ -2780,7 +2995,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 2,
     "BAA": 0.266,
     "official_score_for": 4,
-    "official_score_against": 12
+    "official_score_against": 12,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 11,
@@ -2806,7 +3023,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 4,
     "BAA": 0.247,
     "official_score_for": 12,
-    "official_score_against": 4
+    "official_score_against": 4,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 11,
@@ -2832,7 +3051,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 3,
     "BAA": 0.22,
     "official_score_for": 9.5,
-    "official_score_against": 6.5
+    "official_score_against": 6.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 11,
@@ -2858,7 +3079,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 0,
     "BAA": 0.24,
     "official_score_for": 6.5,
-    "official_score_against": 9.5
+    "official_score_against": 9.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 12,
@@ -2884,7 +3107,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 7,
     "BAA": 0.242,
     "official_score_for": 8.5,
-    "official_score_against": 7.5
+    "official_score_against": 7.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 12,
@@ -2910,7 +3135,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 3,
     "BAA": 0.254,
     "official_score_for": 7.5,
-    "official_score_against": 8.5
+    "official_score_against": 8.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 12,
@@ -2936,7 +3163,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 3,
     "BAA": 0.204,
     "official_score_for": 11.5,
-    "official_score_against": 4.5
+    "official_score_against": 4.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 12,
@@ -2962,7 +3191,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 1,
     "BAA": 0.227,
     "official_score_for": 4.5,
-    "official_score_against": 11.5
+    "official_score_against": 11.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 12,
@@ -2988,7 +3219,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 4,
     "BAA": 0.242,
     "official_score_for": 10,
-    "official_score_against": 6
+    "official_score_against": 6,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 12,
@@ -3014,7 +3247,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": -1,
     "BAA": 0.277,
     "official_score_for": 6,
-    "official_score_against": 10
+    "official_score_against": 10,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 12,
@@ -3040,7 +3275,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 8,
     "BAA": 0.176,
     "official_score_for": 13,
-    "official_score_against": 3
+    "official_score_against": 3,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 12,
@@ -3066,7 +3303,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 2,
     "BAA": 0.236,
     "official_score_for": 3,
-    "official_score_against": 13
+    "official_score_against": 13,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 12,
@@ -3092,7 +3331,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 4,
     "BAA": 0.233,
     "official_score_for": 11,
-    "official_score_against": 5
+    "official_score_against": 5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 12,
@@ -3118,7 +3359,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 1,
     "BAA": 0.288,
     "official_score_for": 5,
-    "official_score_against": 11
+    "official_score_against": 11,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 13,
@@ -3144,7 +3387,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 1,
     "BAA": 0.272,
     "official_score_for": 3,
-    "official_score_against": 13
+    "official_score_against": 13,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 13,
@@ -3170,7 +3415,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 8,
     "BAA": 0.216,
     "official_score_for": 13,
-    "official_score_against": 3
+    "official_score_against": 3,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 13,
@@ -3196,7 +3443,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 3,
     "BAA": 0.212,
     "official_score_for": 6.5,
-    "official_score_against": 9.5
+    "official_score_against": 9.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 13,
@@ -3222,7 +3471,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 8,
     "BAA": 0.197,
     "official_score_for": 9.5,
-    "official_score_against": 6.5
+    "official_score_against": 6.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 13,
@@ -3248,7 +3499,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 0,
     "BAA": 0.238,
     "official_score_for": 9,
-    "official_score_against": 7
+    "official_score_against": 7,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 13,
@@ -3274,7 +3527,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 2,
     "BAA": 0.294,
     "official_score_for": 7,
-    "official_score_against": 9
+    "official_score_against": 9,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 13,
@@ -3300,7 +3555,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 3,
     "BAA": 0.2,
     "official_score_for": 12.5,
-    "official_score_against": 3.5
+    "official_score_against": 3.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 13,
@@ -3326,7 +3583,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 5,
     "BAA": 0.233,
     "official_score_for": 3.5,
-    "official_score_against": 12.5
+    "official_score_against": 12.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 13,
@@ -3352,7 +3611,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 5,
     "BAA": 0.201,
     "official_score_for": 7.5,
-    "official_score_against": 8.5
+    "official_score_against": 8.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 13,
@@ -3378,7 +3639,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 4,
     "BAA": 0.194,
     "official_score_for": 8.5,
-    "official_score_against": 7.5
+    "official_score_against": 7.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 14,
@@ -3404,7 +3667,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 7,
     "BAA": 0.197,
     "official_score_for": 13,
-    "official_score_against": 3
+    "official_score_against": 3,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 14,
@@ -3430,7 +3695,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 2,
     "BAA": 0.215,
     "official_score_for": 3,
-    "official_score_against": 13
+    "official_score_against": 13,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 14,
@@ -3456,7 +3723,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 1,
     "BAA": 0.254,
     "official_score_for": 3,
-    "official_score_against": 13
+    "official_score_against": 13,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 14,
@@ -3482,7 +3751,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 2,
     "BAA": 0.246,
     "official_score_for": 13,
-    "official_score_against": 3
+    "official_score_against": 3,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 14,
@@ -3508,7 +3779,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 1,
     "BAA": 0.248,
     "official_score_for": 8,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 14,
@@ -3534,7 +3807,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 8,
     "BAA": 0.261,
     "official_score_for": 8,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 14,
@@ -3560,7 +3835,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 3,
     "BAA": 0.266,
     "official_score_for": 7.5,
-    "official_score_against": 8.5
+    "official_score_against": 8.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 14,
@@ -3586,7 +3863,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 3,
     "BAA": 0.28,
     "official_score_for": 8.5,
-    "official_score_against": 7.5
+    "official_score_against": 7.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 14,
@@ -3612,7 +3891,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 1,
     "BAA": 0.17,
     "official_score_for": 7.5,
-    "official_score_against": 8.5
+    "official_score_against": 8.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 14,
@@ -3638,7 +3919,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 5,
     "BAA": 0.274,
     "official_score_for": 8.5,
-    "official_score_against": 7.5
+    "official_score_against": 7.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 15,
@@ -3664,7 +3947,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 7,
     "BAA": 0.187,
     "official_score_for": 6.5,
-    "official_score_against": 9.5
+    "official_score_against": 9.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 15,
@@ -3690,7 +3975,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 6,
     "BAA": 0.214,
     "official_score_for": 9.5,
-    "official_score_against": 6.5
+    "official_score_against": 6.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 15,
@@ -3716,7 +4003,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 6,
     "BAA": 0.27,
     "official_score_for": 10,
-    "official_score_against": 6
+    "official_score_against": 6,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 15,
@@ -3742,7 +4031,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 0,
     "BAA": 0.248,
     "official_score_for": 6,
-    "official_score_against": 10
+    "official_score_against": 10,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 15,
@@ -3768,7 +4059,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 1,
     "BAA": 0.209,
     "official_score_for": 7.5,
-    "official_score_against": 8.5
+    "official_score_against": 8.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 15,
@@ -3794,7 +4087,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 4,
     "BAA": 0.179,
     "official_score_for": 8.5,
-    "official_score_against": 7.5
+    "official_score_against": 7.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 15,
@@ -3820,7 +4115,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": -1,
     "BAA": 0.253,
     "official_score_for": 5.5,
-    "official_score_against": 10.5
+    "official_score_against": 10.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 15,
@@ -3846,7 +4143,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 3,
     "BAA": 0.229,
     "official_score_for": 10.5,
-    "official_score_against": 5.5
+    "official_score_against": 5.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 15,
@@ -3872,7 +4171,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 0,
     "BAA": 0.277,
     "official_score_for": 11.5,
-    "official_score_against": 4.5
+    "official_score_against": 4.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 15,
@@ -3898,7 +4199,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 2,
     "BAA": 0.285,
     "official_score_for": 4.5,
-    "official_score_against": 11.5
+    "official_score_against": 11.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 16,
@@ -3924,7 +4227,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 6,
     "BAA": 0.28,
     "official_score_for": 5,
-    "official_score_against": 11
+    "official_score_against": 11,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 16,
@@ -3950,7 +4255,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 2,
     "BAA": 0.241,
     "official_score_for": 11,
-    "official_score_against": 5
+    "official_score_against": 5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 16,
@@ -3976,7 +4283,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": -3,
     "BAA": 0.259,
     "official_score_for": 1.5,
-    "official_score_against": 14.5
+    "official_score_against": 14.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 16,
@@ -4002,7 +4311,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 4,
     "BAA": 0.203,
     "official_score_for": 14.5,
-    "official_score_against": 1.5
+    "official_score_against": 1.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 16,
@@ -4028,7 +4339,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 5,
     "BAA": 0.203,
     "official_score_for": 8,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 16,
@@ -4054,7 +4367,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 6,
     "BAA": 0.185,
     "official_score_for": 8,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 16,
@@ -4080,7 +4395,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 2,
     "BAA": 0.249,
     "official_score_for": 2,
-    "official_score_against": 14
+    "official_score_against": 14,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 16,
@@ -4106,7 +4423,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 10,
     "BAA": 0.198,
     "official_score_for": 14,
-    "official_score_against": 2
+    "official_score_against": 2,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 16,
@@ -4132,7 +4451,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 5,
     "BAA": 0.244,
     "official_score_for": 14,
-    "official_score_against": 2
+    "official_score_against": 2,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 16,
@@ -4158,7 +4479,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 4,
     "BAA": 0.26,
     "official_score_for": 2,
-    "official_score_against": 14
+    "official_score_against": 14,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 17,
@@ -4184,7 +4507,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 0,
     "BAA": 0.221,
     "official_score_for": 7.5,
-    "official_score_against": 8.5
+    "official_score_against": 8.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 17,
@@ -4210,7 +4535,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 6,
     "BAA": 0.211,
     "official_score_for": 8.5,
-    "official_score_against": 7.5
+    "official_score_against": 7.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 17,
@@ -4236,7 +4563,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 2,
     "BAA": 0.237,
     "official_score_for": 12.5,
-    "official_score_against": 3.5
+    "official_score_against": 3.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 17,
@@ -4262,7 +4591,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 5,
     "BAA": 0.268,
     "official_score_for": 3.5,
-    "official_score_against": 12.5
+    "official_score_against": 12.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 17,
@@ -4288,7 +4619,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 6,
     "BAA": 0.215,
     "official_score_for": 15,
-    "official_score_against": 1
+    "official_score_against": 1,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 17,
@@ -4314,7 +4647,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 3,
     "BAA": 0.237,
     "official_score_for": 1,
-    "official_score_against": 15
+    "official_score_against": 15,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 17,
@@ -4340,7 +4675,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 9,
     "BAA": 0.248,
     "official_score_for": 6.5,
-    "official_score_against": 9.5
+    "official_score_against": 9.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 17,
@@ -4366,7 +4703,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 0,
     "BAA": 0.203,
     "official_score_for": 9.5,
-    "official_score_against": 6.5
+    "official_score_against": 6.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 17,
@@ -4392,7 +4731,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 3,
     "BAA": 0.176,
     "official_score_for": 8,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 17,
@@ -4418,7 +4759,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 1,
     "BAA": 0.244,
     "official_score_for": 8,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 18,
@@ -4444,7 +4787,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 8,
     "BAA": 0.241,
     "official_score_for": 5,
-    "official_score_against": 11
+    "official_score_against": 11,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 18,
@@ -4470,7 +4815,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 1,
     "BAA": 0.191,
     "official_score_for": 11,
-    "official_score_against": 5
+    "official_score_against": 5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 18,
@@ -4496,7 +4843,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 1,
     "BAA": 0.255,
     "official_score_for": 8,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 18,
@@ -4522,7 +4871,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 3,
     "BAA": 0.231,
     "official_score_for": 8,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 18,
@@ -4548,7 +4899,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 2,
     "BAA": 0.299,
     "official_score_for": 8,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 18,
@@ -4574,7 +4927,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 2,
     "BAA": 0.208,
     "official_score_for": 8,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 18,
@@ -4600,7 +4955,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 5,
     "BAA": 0.227,
     "official_score_for": 9,
-    "official_score_against": 7
+    "official_score_against": 7,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 18,
@@ -4626,7 +4983,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 0,
     "BAA": 0.234,
     "official_score_for": 7,
-    "official_score_against": 9
+    "official_score_against": 9,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 18,
@@ -4652,7 +5011,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 2,
     "BAA": 0.197,
     "official_score_for": 7,
-    "official_score_against": 9
+    "official_score_against": 9,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 18,
@@ -4678,7 +5039,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 3,
     "BAA": 0.269,
     "official_score_for": 9,
-    "official_score_against": 7
+    "official_score_against": 7,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 19,
@@ -4704,7 +5067,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 1,
     "BAA": 0.229,
     "official_score_for": 8.5,
-    "official_score_against": 7.5
+    "official_score_against": 7.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 19,
@@ -4730,7 +5095,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 1,
     "BAA": 0.211,
     "official_score_for": 7.5,
-    "official_score_against": 8.5
+    "official_score_against": 8.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 19,
@@ -4756,7 +5123,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 4,
     "BAA": 0.219,
     "official_score_for": 11,
-    "official_score_against": 5
+    "official_score_against": 5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 19,
@@ -4782,7 +5151,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 3,
     "BAA": 0.2,
     "official_score_for": 5,
-    "official_score_against": 11
+    "official_score_against": 11,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 19,
@@ -4808,7 +5179,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 2,
     "BAA": 0.206,
     "official_score_for": 10.5,
-    "official_score_against": 5.5
+    "official_score_against": 5.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 19,
@@ -4834,7 +5207,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 4,
     "BAA": 0.234,
     "official_score_for": 5.5,
-    "official_score_against": 10.5
+    "official_score_against": 10.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 19,
@@ -4860,7 +5235,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 2,
     "BAA": 0.234,
     "official_score_for": 8,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 19,
@@ -4886,7 +5263,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 4,
     "BAA": 0.217,
     "official_score_for": 8,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 19,
@@ -4912,7 +5291,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 9,
     "BAA": 0.268,
     "official_score_for": 8.5,
-    "official_score_against": 7.5
+    "official_score_against": 7.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 19,
@@ -4938,7 +5319,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 3,
     "BAA": 0.187,
     "official_score_for": 7.5,
-    "official_score_against": 8.5
+    "official_score_against": 8.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 20,
@@ -4964,7 +5347,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 8,
     "BAA": 0.197,
     "official_score_for": 6.5,
-    "official_score_against": 9.5
+    "official_score_against": 9.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 20,
@@ -4990,7 +5375,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 3,
     "BAA": 0.199,
     "official_score_for": 9.5,
-    "official_score_against": 6.5
+    "official_score_against": 6.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 20,
@@ -5016,7 +5403,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 7,
     "BAA": 0.305,
     "official_score_for": 10.5,
-    "official_score_against": 5.5
+    "official_score_against": 5.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 20,
@@ -5042,7 +5431,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 2,
     "BAA": 0.26,
     "official_score_for": 5.5,
-    "official_score_against": 10.5
+    "official_score_against": 10.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 20,
@@ -5068,7 +5459,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 1,
     "BAA": 0.243,
     "official_score_for": 14,
-    "official_score_against": 2
+    "official_score_against": 2,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 20,
@@ -5094,7 +5487,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 1,
     "BAA": 0.269,
     "official_score_for": 2,
-    "official_score_against": 14
+    "official_score_against": 14,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 20,
@@ -5120,7 +5515,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 5,
     "BAA": 0.261,
     "official_score_for": 10,
-    "official_score_against": 6
+    "official_score_against": 6,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 20,
@@ -5146,7 +5543,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 1,
     "BAA": 0.225,
     "official_score_for": 6,
-    "official_score_against": 10
+    "official_score_against": 10,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 20,
@@ -5172,7 +5571,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 7,
     "BAA": 0.237,
     "official_score_for": 13,
-    "official_score_against": 3
+    "official_score_against": 3,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 20,
@@ -5198,7 +5599,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 6,
     "BAA": 0.279,
     "official_score_for": 3,
-    "official_score_against": 13
+    "official_score_against": 13,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 21,
@@ -5224,7 +5627,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 2,
     "BAA": 0.271,
     "official_score_for": 2.5,
-    "official_score_against": 13.5
+    "official_score_against": 13.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 21,
@@ -5250,7 +5655,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 6,
     "BAA": 0.23,
     "official_score_for": 13.5,
-    "official_score_against": 2.5
+    "official_score_against": 2.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 21,
@@ -5276,7 +5683,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 0,
     "BAA": 0.234,
     "official_score_for": 8,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 21,
@@ -5302,7 +5711,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 6,
     "BAA": 0.194,
     "official_score_for": 8,
-    "official_score_against": 8
+    "official_score_against": 8,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 21,
@@ -5328,7 +5739,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 3,
     "BAA": 0.187,
     "official_score_for": 6,
-    "official_score_against": 10
+    "official_score_against": 10,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 21,
@@ -5354,7 +5767,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 3,
     "BAA": 0.261,
     "official_score_for": 10,
-    "official_score_against": 6
+    "official_score_against": 6,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 21,
@@ -5380,7 +5795,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": -1,
     "BAA": 0.241,
     "official_score_for": 3,
-    "official_score_against": 13
+    "official_score_against": 13,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 21,
@@ -5406,7 +5823,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 6,
     "BAA": 0.224,
     "official_score_for": 13,
-    "official_score_against": 3
+    "official_score_against": 3,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 21,
@@ -5432,7 +5851,9 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 4,
     "BAA": 0.27,
     "official_score_for": 3.5,
-    "official_score_against": 12.5
+    "official_score_against": 12.5,
+    "phase": "regular",
+    "round": ""
   },
   {
     "week": 21,
@@ -5458,6 +5879,232 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "NS": 6,
     "BAA": 0.208,
     "official_score_for": 12.5,
-    "official_score_against": 3.5
+    "official_score_against": 3.5,
+    "phase": "regular",
+    "round": ""
+  },
+  {
+    "week": 22,
+    "team": "BB's Bold Team",
+    "opponent": "John's Super Team",
+    "AB": 323,
+    "H": 78,
+    "R": 53,
+    "HR": 11,
+    "RBI": 42,
+    "BB": 33,
+    "SO": 85,
+    "NSB": 3,
+    "AVG": 0.241,
+    "TB": 127,
+    "IP": "56.1",
+    "ERA": 5.43,
+    "WHIP": 1.349,
+    "K": 61,
+    "W": 1,
+    "L": 7,
+    "QS": 2,
+    "NS": 8,
+    "BAA": 0.265,
+    "official_score_for": 4.5,
+    "official_score_against": 11.5,
+    "phase": "playoffs",
+    "round": "Round 1"
+  },
+  {
+    "week": 22,
+    "team": "Dixon Cider",
+    "opponent": "This Is Mizerable",
+    "AB": 310,
+    "H": 77,
+    "R": 42,
+    "HR": 9,
+    "RBI": 31,
+    "BB": 40,
+    "SO": 68,
+    "NSB": 5,
+    "AVG": 0.248,
+    "TB": 122,
+    "IP": "83.2",
+    "ERA": 3.66,
+    "WHIP": 1.243,
+    "K": 86,
+    "W": 3,
+    "L": 6,
+    "QS": 6,
+    "NS": 5,
+    "BAA": 0.241,
+    "official_score_for": 5.5,
+    "official_score_against": 10.5,
+    "phase": "playoffs",
+    "round": "Round 1"
+  },
+  {
+    "week": 22,
+    "team": "Goodyear Gila Monsters",
+    "opponent": "Mactown MacDaddies",
+    "AB": 331,
+    "H": 91,
+    "R": 48,
+    "HR": 14,
+    "RBI": 50,
+    "BB": 36,
+    "SO": 77,
+    "NSB": 9,
+    "AVG": 0.275,
+    "TB": 159,
+    "IP": "57.2",
+    "ERA": 5.77,
+    "WHIP": 1.595,
+    "K": 65,
+    "W": 4,
+    "L": 3,
+    "QS": 3,
+    "NS": 7,
+    "BAA": 0.311,
+    "official_score_for": 11.5,
+    "official_score_against": 4.5,
+    "phase": "playoffs",
+    "round": "Round 1"
+  },
+  {
+    "week": 22,
+    "team": "Gunnarrhea",
+    "opponent": "Me So Heorny",
+    "AB": 333,
+    "H": 90,
+    "R": 41,
+    "HR": 18,
+    "RBI": 58,
+    "BB": 25,
+    "SO": 102,
+    "NSB": 6,
+    "AVG": 0.27,
+    "TB": 163,
+    "IP": "78.2",
+    "ERA": 2.63,
+    "WHIP": 1.004,
+    "K": 95,
+    "W": 7,
+    "L": 2,
+    "QS": 8,
+    "NS": 3,
+    "BAA": 0.189,
+    "official_score_for": 10.5,
+    "official_score_against": 5.5,
+    "phase": "playoffs",
+    "round": "Round 1"
+  },
+  {
+    "week": 22,
+    "team": "John's Super Team",
+    "opponent": "BB's Bold Team",
+    "AB": 327,
+    "H": 80,
+    "R": 51,
+    "HR": 11,
+    "RBI": 48,
+    "BB": 26,
+    "SO": 68,
+    "NSB": 8,
+    "AVG": 0.245,
+    "TB": 136,
+    "IP": "51.2",
+    "ERA": 2.09,
+    "WHIP": 1.045,
+    "K": 47,
+    "W": 5,
+    "L": 2,
+    "QS": 3,
+    "NS": 3,
+    "BAA": 0.198,
+    "official_score_for": 11.5,
+    "official_score_against": 4.5,
+    "phase": "playoffs",
+    "round": "Round 1"
+  },
+  {
+    "week": 22,
+    "team": "Mactown MacDaddies",
+    "opponent": "Goodyear Gila Monsters",
+    "AB": 285,
+    "H": 64,
+    "R": 43,
+    "HR": 13,
+    "RBI": 32,
+    "BB": 42,
+    "SO": 82,
+    "NSB": 2,
+    "AVG": 0.225,
+    "TB": 119,
+    "IP": "56.1",
+    "ERA": 3.51,
+    "WHIP": 1.243,
+    "K": 51,
+    "W": 3,
+    "L": 5,
+    "QS": 3,
+    "NS": 4,
+    "BAA": 0.241,
+    "official_score_for": 4.5,
+    "official_score_against": 11.5,
+    "phase": "playoffs",
+    "round": "Round 1"
+  },
+  {
+    "week": 22,
+    "team": "Me So Heorny",
+    "opponent": "Gunnarrhea",
+    "AB": 332,
+    "H": 89,
+    "R": 50,
+    "HR": 11,
+    "RBI": 43,
+    "BB": 26,
+    "SO": 75,
+    "NSB": -1,
+    "AVG": 0.268,
+    "TB": 141,
+    "IP": "118.1",
+    "ERA": 4.79,
+    "WHIP": 1.234,
+    "K": 119,
+    "W": 7,
+    "L": 7,
+    "QS": 9,
+    "NS": 1,
+    "BAA": 0.249,
+    "official_score_for": 5.5,
+    "official_score_against": 10.5,
+    "phase": "playoffs",
+    "round": "Round 1"
+  },
+  {
+    "week": 22,
+    "team": "This Is Mizerable",
+    "opponent": "Dixon Cider",
+    "AB": 320,
+    "H": 83,
+    "R": 47,
+    "HR": 8,
+    "RBI": 36,
+    "BB": 33,
+    "SO": 60,
+    "NSB": 4,
+    "AVG": 0.259,
+    "TB": 128,
+    "IP": "80.1",
+    "ERA": 4.03,
+    "WHIP": 1.158,
+    "K": 90,
+    "W": 6,
+    "L": 3,
+    "QS": 6,
+    "NS": 3,
+    "BAA": 0.232,
+    "official_score_for": 10.5,
+    "official_score_against": 5.5,
+    "phase": "playoffs",
+    "round": "Round 1"
   }
 ];
