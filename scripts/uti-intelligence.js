@@ -2,7 +2,7 @@
   const FALLBACK_LOGO = "images/owners/gunnarrhea.png";
   const LEGACY_TEAM_LOGOS = {
     "Pat James's Swell Team": "images/owners/pat-james-swell-team.png",
-    "You Don't Kno Bo (Frank)": "images/owners/you-dont-kno-bo-frank.png"
+    "You Don't Kno Bo (2023)": "images/owners/you-dont-kno-bo-2023.png"
   };
   const HITTING_CATEGORIES = ["R", "HR", "RBI", "BB", "SO", "NSB", "AVG", "TB"];
   const PITCHING_CATEGORIES = ["W", "L", "QS", "NS", "K", "ERA", "WHIP", "BAA"];
@@ -13,7 +13,7 @@
     "Gunnarrhea": ["Gunnarrhea", "Acuña Handle the Gunnarrhea?", "Rita's Favorite Team"],
     "BTA Boyz": ["BTA Boyz", "Yoshida Yo Pants", "Yoshida Yo Pants 💩", "The Lonely Bin"],
     "You Don't Know Bo": ["You Don't Know Bo"],
-    "You Don't Kno Bo (Frank)": ["You Don't Kno Bo (Frank)"],
+    "You Don't Kno Bo (2023)": ["You Don't Kno Bo (2023)"],
     "Pat James's Swell Team": ["Pat James's Swell Team"],
     "BB's Bold Team": ["BB's Bold Team", "BB’s Bold Team"],
     "Dixon Cider": ["Dixon Cider"],
@@ -507,13 +507,13 @@
 
     if (historyRange && weeks.length) {
       historyRange.textContent = weeks.length === 1
-        ? `Week ${weeks[0]} imported`
+        ? `Week ${weeks[0]} imported · final regular-season standings captured`
         : `Weeks ${weeks[0]}–${weeks[weeks.length - 1]} imported`;
     }
 
     if (historyBadge && weeks.length) {
       historyBadge.textContent = weeks.length === 1
-        ? `2023 Yahoo · Week ${weeks[0]}`
+        ? `2023 Yahoo · Week ${weeks[0]} stats + final standings`
         : `2023 Yahoo · Weeks ${weeks[0]}–${weeks[weeks.length - 1]}`;
     }
 
@@ -585,12 +585,15 @@
   }
 
   function trackedHistoryRows() {
+    const currentRows = latestAnalytics?.allRows || latestAnalytics?.rows || [];
+
     return [
       ...(yahoo2025AllRows || []),
       ...(yahoo2024AllRows || []),
       ...(yahoo2023AllRows || []),
-      ...(latestAnalytics?.rows || []).map(row => ({
+      ...currentRows.map(row => ({
         ...row,
+        season: row.season || 2026,
         phase: row.phase || "regular",
         round: row.round || ""
       }))
@@ -641,6 +644,22 @@
     return combined;
   }
 
+  function seasonSummaryRecord(team, season) {
+    if (Number(season) !== 2023) return null;
+
+    const record = window.UTI_YAHOO_2023_FINAL_REGULAR_SEASON_RECORDS?.[team];
+    if (!record) return null;
+
+    return {
+      wins: Number(record.wins || 0),
+      losses: Number(record.losses || 0),
+      ties: Number(record.ties || 0),
+      games: Number(record.games || 0),
+      points: Number(record.points ?? (Number(record.wins || 0) + Number(record.ties || 0) * 0.5)),
+      winPct: Number(record.winPct || 0)
+    };
+  }
+
   function franchiseRecord(team, opponent = null, season = null, phase = "all") {
     const allRows = trackedHistoryRows();
     const rowFilter = row => {
@@ -651,9 +670,83 @@
       return true;
     };
 
-    // Franchise records are based only on matchup rows that have actually been imported.
-    // This is especially important for 2023, where Week 1 is currently the only imported week.
+    // Opponent-specific H2H remains based strictly on imported matchup rows.
+    if (opponent) {
+      return recordFromRows(allRows.filter(rowFilter));
+    }
+
+    const summary2023 = seasonSummaryRecord(team, 2023);
+
+    // For 2023, Yahoo's final regular-season standings are known even though
+    // week-by-week import is incomplete. Use the final record for overall/regular
+    // franchise totals and keep imported rows for playoffs/H2H only.
+    if (season && Number(season) === 2023 && summary2023) {
+      if (phase === "regular") return summary2023;
+      if (phase === "playoffs") {
+        return recordFromRows(allRows.filter(row =>
+          row.team === team &&
+          Number(row.season) === 2023 &&
+          historyPhase(row) === "playoffs"
+        ));
+      }
+
+      const playoffs = recordFromRows(allRows.filter(row =>
+        row.team === team &&
+        Number(row.season) === 2023 &&
+        historyPhase(row) === "playoffs"
+      ));
+      return combineRecords(summary2023, playoffs);
+    }
+
+    if (!season && summary2023 && (phase === "all" || phase === "regular")) {
+      const non2023Rows = allRows.filter(row => {
+        if (row.team !== team) return false;
+        if (Number(row.season) === 2023 && historyPhase(row) === "regular") return false;
+        if (phase === "regular" && historyPhase(row) !== "regular") return false;
+        return true;
+      });
+
+      return combineRecords(recordFromRows(non2023Rows), summary2023);
+    }
+
     return recordFromRows(allRows.filter(rowFilter));
+  }
+
+  function currentPlayoffRows() {
+    return (latestAnalytics?.allRows || latestAnalytics?.rows || [])
+      .filter(row => historyPhase(row) === "playoffs");
+  }
+
+  function currentPlayoffRounds() {
+    return [...new Set(
+      currentPlayoffRows()
+        .map(row => String(row.round || "").trim())
+        .filter(Boolean)
+    )];
+  }
+
+  function currentSeasonStatusLabel(compact = false) {
+    const regularWeeks = latestAnalytics?.weeks || [];
+    const playoffRows = currentPlayoffRows();
+    const rounds = currentPlayoffRounds();
+
+    if (!regularWeeks.length) return compact ? "No reg data" : "No regular-season weeks imported";
+
+    const regLabel = compact
+      ? `${regularWeeks.length} reg`
+      : `Reg Weeks ${regularWeeks[0]}–${regularWeeks[regularWeeks.length - 1]}`;
+
+    if (!playoffRows.length) return regLabel;
+
+    const roundLabel = rounds.length
+      ? (compact
+        ? rounds.map(round => round.replace(/^Round\s*/i, "R")).join("+")
+        : rounds.join(" · "))
+      : (compact ? "PO" : "Playoffs underway");
+
+    return compact
+      ? `${regLabel} + ${roundLabel}`
+      : `${regLabel} · Playoffs ${roundLabel}`;
   }
 
   function derivedRegularSeasonFirst(season) {
@@ -1013,7 +1106,7 @@
 
     if (history2023Badge && weeks2023.length) {
       history2023Badge.textContent = weeks2023.length === 1
-        ? `2023 Yahoo · Week ${weeks2023[0]}`
+        ? `2023 Yahoo · Week ${weeks2023[0]} stats + final standings`
         : `2023 Yahoo · Weeks ${weeks2023[0]}–${weeks2023[weeks2023.length - 1]}`;
     }
 
@@ -1031,7 +1124,7 @@
     }
 
     if (currentBadge && currentWeeks.length) {
-      currentBadge.textContent = `2026 Fantrax · Weeks ${currentWeeks[0]}–${currentWeeks[currentWeeks.length - 1]}`;
+      currentBadge.textContent = `2026 Fantrax · ${currentSeasonStatusLabel(false)}`;
     }
 
     if (!target) return;
@@ -1051,7 +1144,7 @@
     const yahoo2025PlayoffTeamWeeks = (yahoo2025AllRows || []).filter(row => historyPhase(row) === "playoffs").length;
 
     const historyWeekParts = [
-      weeks2023.length ? `2023: ${weeks2023.length} imported reg week${weeks2023.length === 1 ? "" : "s"}` : "",
+      weeks2023.length ? `2023: ${weeks2023.length} imported reg week${weeks2023.length === 1 ? "" : "s"} + final standings` : "",
       weeks2024.length ? `2024: ${weeks2024.length} reg weeks${yahoo2024PlayoffTeamWeeks ? " + playoffs" : ""}` : "",
       weeks2025.length ? `2025: ${weeks2025.length} reg weeks${yahoo2025PlayoffTeamWeeks ? " + playoffs" : ""}` : ""
     ].filter(Boolean);
@@ -1189,7 +1282,7 @@
           yahoo2025Analytics ? "2025" : ""
         ].filter(Boolean).join(" + ")} Yahoo</strong>
         <small>${[
-          weeks2023.length ? (weeks2023.length === 1 ? `2023 Week ${weeks2023[0]}` : `2023 Weeks ${weeks2023[0]}–${weeks2023[weeks2023.length - 1]}`) : "",
+          weeks2023.length ? `2023 Week ${weeks2023[0]}+` : "",
           weeks2024.length ? `2024 Weeks ${weeks2024[0]}–${weeks2024[weeks2024.length - 1]}` : "",
           weeks2025.length ? `2025 Weeks ${weeks2025[0]}–${weeks2025[weeks2025.length - 1]}` : ""
         ].filter(Boolean).join(" · ")} · Open history →</small>
@@ -1755,22 +1848,24 @@
     const content = document.getElementById("utiTeamProfileContent");
     const best = profile.bestCategory;
     const worst = profile.worstCategory;
-    const weeksLabel = profile.trackedWeeks.length
-      ? `Weeks ${profile.trackedWeeks[0]}–${profile.trackedWeeks[profile.trackedWeeks.length - 1]} imported`
-      : "No weeks imported";
+    const weeksLabel = String(profile.season) === "2026"
+      ? currentSeasonStatusLabel(false)
+      : (profile.trackedWeeks.length
+        ? `Weeks ${profile.trackedWeeks[0]}–${profile.trackedWeeks[profile.trackedWeeks.length - 1]} imported`
+        : "No weeks imported");
 
     const profileSeasonButtons = [
-      { season: "2026", label: "Fantrax", weeks: latestAnalytics?.weeks?.length || 0 },
-      ...(yahoo2025Analytics ? [{ season: "2025", label: "Yahoo", weeks: yahoo2025Analytics?.weeks?.length || 0 }] : []),
-      ...(yahoo2024Analytics ? [{ season: "2024", label: "Yahoo", weeks: yahoo2024Analytics?.weeks?.length || 0 }] : []),
-      ...(yahoo2023Analytics ? [{ season: "2023", label: "Yahoo", weeks: yahoo2023Analytics?.weeks?.length || 0 }] : [])
+      { season: "2026", label: "Fantrax", detail: currentSeasonStatusLabel(true) },
+      ...(yahoo2025Analytics ? [{ season: "2025", label: "Yahoo", detail: `${yahoo2025Analytics?.weeks?.length || 0}w` }] : []),
+      ...(yahoo2024Analytics ? [{ season: "2024", label: "Yahoo", detail: `${yahoo2024Analytics?.weeks?.length || 0}w` }] : []),
+      ...(yahoo2023Analytics ? [{ season: "2023", label: "Yahoo", detail: `${yahoo2023Analytics?.weeks?.length || 0}w` }] : [])
     ].filter(button => teamHasSeasonData(team, button.season));
 
     const seasonTabs = `
       <div class="uti-profile-season-tabs" aria-label="Team profile season">
         ${profileSeasonButtons.map(button => `
           <button type="button" class="${activeProfileSeason === button.season ? "is-active" : ""}" data-profile-season="${button.season}">
-            <strong>${button.season}</strong><span>${button.label} · ${button.weeks}w</span>
+            <strong>${button.season}</strong><span>${button.label} · ${button.detail}</span>
           </button>
         `).join("")}
       </div>
@@ -1802,7 +1897,12 @@
           <strong>${profile.season} Yahoo scoring</strong>
           <span>This season is calculated with its own Yahoo categories, including BSV and SV+H, so it is not mixed directly into the 2026 Fantrax category ratings.</span>
         </div>
-      ` : ""}
+      ` : (currentPlayoffRows().length ? `
+        <div class="uti-history-notice">
+          <strong>2026 playoffs tracked separately</strong>
+          <span>Actual records include playoff matchups. All-Play, Luck, Power, category strength, and weekly-rank metrics stay regular-season-only so the eight-team playoff field does not distort the ten-team league comparisons.</span>
+        </div>
+      ` : "")}
 
       <div class="uti-profile-stat-grid">
         <article>
@@ -1810,13 +1910,13 @@
           <strong>${formatRecord(profile.allPlayRecord)}</strong>
           <small>${formatPct(profile.allPlayPct)} vs league</small>
         </article>
-        <article class="${profile.source === "yahoo" ? "uti-profile-record-card" : ""}">
-          <span>${profile.source === "yahoo" ? `${profile.season} Record` : "Actual Record"}</span>
-          ${profile.source === "yahoo" ? (() => {
-            const yahooSeason = Number(profile.season);
-            const overallRecord = franchiseRecord(team, null, yahooSeason, "all");
-            const regularRecord = franchiseRecord(team, null, yahooSeason, "regular");
-            const playoffRecord = franchiseRecord(team, null, yahooSeason, "playoffs");
+        <article class="uti-profile-record-card">
+          <span>${profile.season} Record</span>
+          ${(() => {
+            const profileSeason = Number(profile.season);
+            const overallRecord = franchiseRecord(team, null, profileSeason, "all");
+            const regularRecord = franchiseRecord(team, null, profileSeason, "regular");
+            const playoffRecord = franchiseRecord(team, null, profileSeason, "playoffs");
 
             return `
               <strong>${formatRecord(overallRecord)}</strong>
@@ -1831,10 +1931,7 @@
                 </span>
               </div>
             `;
-          })() : `
-            <strong>${formatRecord(profile.officialRecord)}</strong>
-            <small>${Number(profile.officialRecord.winPct || 0) ? formatPct(profile.officialRecord.winPct) : "Tracked weeks"}</small>
-          `}
+          })()}
         </article>
         <article>
           <span>Luck Index</span>
@@ -2072,6 +2169,24 @@
       data.weeks = [...new Set(data.rows.map(row => Number(row.week)))]
         .filter(Number.isFinite)
         .sort((a, b) => a - b);
+      data.allRows = (data.allRows || data.rows || []).map(row => ({
+        ...row,
+        season: row.season || 2026,
+        phase: row.phase || "regular",
+        round: row.round || ""
+      }));
+      data.regularRows = (data.regularRows || data.rows || []).map(row => ({
+        ...row,
+        season: row.season || 2026,
+        phase: row.phase || "regular",
+        round: row.round || ""
+      }));
+      data.playoffRows = (data.playoffRows || []).map(row => ({
+        ...row,
+        season: row.season || 2026,
+        phase: row.phase || "playoffs",
+        round: row.round || ""
+      }));
       latestAnalytics = data;
 
       // Team profiles on the homepage also expose the 2025 tab, so load Yahoo
@@ -2169,14 +2284,12 @@
       const weeks = data.weeks;
 
       if (range && weeks.length) {
-        range.textContent = weeks.length === 1
-          ? `Week ${weeks[0]} sample`
-          : `Weeks ${weeks[0]}–${weeks[weeks.length - 1]}`;
+        range.textContent = currentSeasonStatusLabel(false);
       }
 
       const currentSeasonBadge = document.getElementById("utiCurrentSeasonBadge");
       if (currentSeasonBadge && weeks.length) {
-        currentSeasonBadge.textContent = `2026 Fantrax · Weeks ${weeks[0]}–${weeks[weeks.length - 1]}`;
+        currentSeasonBadge.textContent = `2026 Fantrax · ${currentSeasonStatusLabel(false)}`;
       }
 
       const allPlay = sortedAllPlayFor(data);

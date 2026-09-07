@@ -68,7 +68,7 @@
       headers.forEach((header, index) => {
         const raw = (values[index] ?? "").trim();
 
-        if (["team", "opponent", "IP"].includes(header)) {
+        if (["team", "opponent", "IP", "phase", "round"].includes(header)) {
           obj[header] = raw;
           return;
         }
@@ -350,33 +350,57 @@
     return rankings.sort((a, b) => b.rating - a.rating || a.team.localeCompare(b.team));
   }
 
+  function phaseFor(row) {
+    return String(row?.phase || row?.season_type || "regular").toLowerCase() === "playoffs"
+      ? "playoffs"
+      : "regular";
+  }
+
   function buildSummary(rows) {
-    const officialRecords = getOfficialRecords(rows);
-    const allPlayRecords = getAllPlayRecords(rows);
-    const categoryRecords = getCategoryRecords(rows);
+    const allRows = Array.isArray(rows) ? rows : [];
+    const regularRows = allRows.filter(row => phaseFor(row) === "regular");
+    const playoffRows = allRows.filter(row => phaseFor(row) === "playoffs");
+
+    // UTI strength analytics stay regular-season-only. Once the playoffs begin,
+    // only eight teams are active, so mixing playoff rounds into All-Play, Luck,
+    // Power, and Category Kings would distort the ten-team regular-season baseline.
+    const analyticsRows = regularRows.length ? regularRows : allRows;
+
+    const officialRecords = getOfficialRecords(analyticsRows);
+    const officialRecordsOverall = getOfficialRecords(allRows);
+    const officialRecordsRegular = getOfficialRecords(regularRows);
+    const officialRecordsPlayoffs = getOfficialRecords(playoffRows);
+    const allPlayRecords = getAllPlayRecords(analyticsRows);
+    const categoryRecords = getCategoryRecords(analyticsRows);
 
     return {
-      rows,
+      // Keep rows as the analytics rows for backward compatibility with the
+      // Intelligence board/profile strength calculations. allRows preserves
+      // every matchup, including playoffs, for actual/franchise records.
+      rows: analyticsRows,
+      allRows,
+      regularRows,
+      playoffRows,
       categories: CATEGORIES,
       categoryRules: CATEGORY_RULES,
       officialRecords,
+      officialRecordsOverall,
+      officialRecordsRegular,
+      officialRecordsPlayoffs,
       allPlayRecords,
       categoryRecords,
       categoryKings: getCategoryKings(categoryRecords),
-      luckIndex: getLuckIndex(rows, officialRecords, allPlayRecords),
-      recentForm: getRecentForm(rows, 4),
-      powerRankings: getPowerRankings(rows, allPlayRecords, categoryRecords, 4)
+      luckIndex: getLuckIndex(analyticsRows, officialRecords, allPlayRecords),
+      recentForm: getRecentForm(analyticsRows, 4),
+      powerRankings: getPowerRankings(analyticsRows, allPlayRecords, categoryRecords, 4)
     };
   }
 
   async function load(csvPath = DEFAULT_CSV_PATH) {
-    // Prefer the generated JS data file. This works on GitHub Pages AND when
-    // index.html is opened directly from the filesystem.
     if (Array.isArray(window.UTI_WEEKLY_TEAM_STATS) && window.UTI_WEEKLY_TEAM_STATS.length) {
       return buildSummary(window.UTI_WEEKLY_TEAM_STATS);
     }
 
-    // Fallback for deployments that only provide the CSV.
     const response = await fetch(csvPath, { cache: "no-store" });
     if (!response.ok) {
       throw new Error(`Unable to load ${csvPath}: ${response.status}`);
@@ -391,6 +415,7 @@
     CATEGORY_RULES,
     parseCSV,
     compareTeams,
+    phaseFor,
     buildSummary,
     load
   };
