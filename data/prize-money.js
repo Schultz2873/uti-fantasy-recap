@@ -7,7 +7,7 @@ window.PRIZE_MONEY_DATA = {
   // If currentTotal is null, the page will calculate:
   // basePool + waiverWireAdded + manualAdjustments.
   basePool: 1000,
-  waiverWireAdded: 5000 - 479 - 485 - 470 - 402 - 436 - 460 - 490 - 401 - 465 - 479,
+  waiverWireAdded: 5000 - 479 - 485 - 470 - 394 - 433 - 457 - 490 - 401 - 462 - 479,
   manualAdjustments: 86 + 30,
   currentTotal: null,
 
