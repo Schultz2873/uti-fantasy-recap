@@ -2252,7 +2252,7 @@
 
         try {
           const yahoo2023Rows = await loadScriptOnce(
-            "data/history/2023-yahoo-weekly-team-stats.js",
+            "data/history/2023-yahoo-weekly-team-stats.js?v=2023-week19",
             "UTI_YAHOO_2023_WEEKLY_TEAM_STATS"
           );
 
