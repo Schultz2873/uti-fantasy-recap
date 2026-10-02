@@ -1855,17 +1855,17 @@
         : "No weeks imported");
 
     const profileSeasonButtons = [
-      { season: "2026", label: "Fantrax", detail: currentSeasonStatusLabel(true) },
-      ...(yahoo2025Analytics ? [{ season: "2025", label: "Yahoo", detail: `${yahoo2025Analytics?.weeks?.length || 0}w` }] : []),
-      ...(yahoo2024Analytics ? [{ season: "2024", label: "Yahoo", detail: `${yahoo2024Analytics?.weeks?.length || 0}w` }] : []),
-      ...(yahoo2023Analytics ? [{ season: "2023", label: "Yahoo", detail: `${yahoo2023Analytics?.weeks?.length || 0}w` }] : [])
+      { season: "2026", label: "Fantrax" },
+      ...(yahoo2025Analytics ? [{ season: "2025", label: "Yahoo" }] : []),
+      ...(yahoo2024Analytics ? [{ season: "2024", label: "Yahoo" }] : []),
+      ...(yahoo2023Analytics ? [{ season: "2023", label: "Yahoo" }] : [])
     ].filter(button => teamHasSeasonData(team, button.season));
 
     const seasonTabs = `
       <div class="uti-profile-season-tabs" aria-label="Team profile season">
         ${profileSeasonButtons.map(button => `
           <button type="button" class="${activeProfileSeason === button.season ? "is-active" : ""}" data-profile-season="${button.season}">
-            <strong>${button.season}</strong><span>${button.label} · ${button.detail}</span>
+            <strong>${button.season}</strong><span>${button.label}</span>
           </button>
         `).join("")}
       </div>
@@ -2252,7 +2252,7 @@
 
         try {
           const yahoo2023Rows = await loadScriptOnce(
-            "data/history/2023-yahoo-weekly-team-stats.js",
+            "data/history/2023-yahoo-weekly-team-stats.js?v=2023-week19",
             "UTI_YAHOO_2023_WEEKLY_TEAM_STATS"
           );
 

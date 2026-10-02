@@ -15,5 +15,12 @@ window.UTI_SEASON_RESULTS = [
     runnerUp: "BB's Bold Team",
     thirdPlace: "Goodyear Gila Monsters",
     regularSeasonFirst: "Me So Heorny"
+  },
+  {
+    season: 2026,
+    champion: "Goodyear Gila Monsters",
+    runnerUp: "Gunnarrhea",
+    thirdPlace: null,
+    regularSeasonFirst: "Goodyear Gila Monsters"
   }
 ];
