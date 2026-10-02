@@ -1,6 +1,6 @@
 // Generated UTI weekly team stats.
 // 2026 regular season: Weeks 1–21.
-// 2026 playoffs: Week 22 = Round 1; Week 23 = Semifinals.
+// 2026 playoffs: Week 22 = Round 1; Week 23 = Semifinals; Week 24 = Championship.
 // phase/round fields distinguish regular-season and playoff rows.
 window.UTI_WEEKLY_TEAM_STATS = [
   {
@@ -6218,5 +6218,61 @@ window.UTI_WEEKLY_TEAM_STATS = [
     "official_score_against": 5.5,
     "phase": "playoffs",
     "round": "Semifinals"
-  }
+  },
+{
+    "week":  24,
+    "team":  "Gunnarrhea",
+    "opponent":  "Goodyear Gila Monsters",
+    "AB":  null,
+    "H":  null,
+    "R":  48,
+    "HR":  13,
+    "RBI":  42,
+    "BB":  43,
+    "SO":  78,
+    "NSB":  0,
+    "AVG":  0.258,
+    "TB":  137,
+    "IP":  "78",
+    "ERA":  3.46,
+    "WHIP":  1.397,
+    "K":  85,
+    "W":  5,
+    "L":  5,
+    "QS":  5,
+    "NS":  5,
+    "BAA":  0.262,
+    "official_score_for":  6.5,
+    "official_score_against":  9.5,
+    "phase":  "playoffs",
+    "round":  "Championship"
+},
+{
+    "week":  24,
+    "team":  "Goodyear Gila Monsters",
+    "opponent":  "Gunnarrhea",
+    "AB":  null,
+    "H":  null,
+    "R":  52,
+    "HR":  13,
+    "RBI":  48,
+    "BB":  33,
+    "SO":  95,
+    "NSB":  9,
+    "AVG":  0.256,
+    "TB":  146,
+    "IP":  "51",
+    "ERA":  1.94,
+    "WHIP":  0.98,
+    "K":  55,
+    "W":  3,
+    "L":  3,
+    "QS":  3,
+    "NS":  7,
+    "BAA":  0.198,
+    "official_score_for":  9.5,
+    "official_score_against":  6.5,
+    "phase":  "playoffs",
+    "round":  "Championship"
+}
 ];

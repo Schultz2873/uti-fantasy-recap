@@ -221,3 +221,5 @@ week,team,opponent,AB,H,R,HR,RBI,BB,SO,NSB,AVG,TB,IP,ERA,WHIP,K,W,L,QS,NS,BAA,of
 23,This Is Mizerable,Gunnarrhea,269,69,29,8,30,27,66,1,0.257,108,,,,,,,,,,4.5,11.5,playoffs,Semifinals
 23,John's Super Team,Goodyear Gila Monsters,313,93,54,10,48,29,69,4,0.297,146,,,,,,,,,,5.5,10.5,playoffs,Semifinals
 23,Goodyear Gila Monsters,John's Super Team,315,95,42,17,47,32,80,5,0.302,158,,,,,,,,,,10.5,5.5,playoffs,Semifinals
+24,Gunnarrhea,Goodyear Gila Monsters,,,48,13,42,43,78,0,0.258,137,78,3.46,1.397,85,5,5,5,5,0.262,6.5,9.5,playoffs,Championship
+24,Goodyear Gila Monsters,Gunnarrhea,,,52,13,48,33,95,9,0.256,146,51,1.94,0.980,55,3,3,3,7,0.198,9.5,6.5,playoffs,Championship
