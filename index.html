@@ -16,19 +16,66 @@
   <link href="styles/index-dashboard-preview.css" rel="stylesheet" />
   <link href="styles/uti-intelligence.css" rel="stylesheet" />
   <link href="styles/explore-nav.css" rel="stylesheet" />
+  <link href="styles/homepage-newsroom.css" rel="stylesheet" />
 </head>
 
-<body>
+<body class="newsroom-home">
+  <a class="skip-link" href="#featured-recap">Skip to the latest recap</a>
   <div class="page">
     <div class="top-banner">UTI Fantasy Baseball HQ — Recaps, Leaders, HR Pool, and Weekly Chaos</div>
-    <section class="hero">
-      <div class="kicker">League Newsroom</div>
-      <h1>Union of Ten Idiots Fantasy Baseball</h1>
-      <p class="deck">
-        The Best Dang Fantasy League in the World
-      </p>
-      <p class="last-updated">Last updated: 2026 Championship Recap • MLB weekly leaders update automatically</p>
-    </section>
+    <header class="hero">
+      <div class="masthead-banner">
+      <div class="masthead-topline"><span>Fantasy baseball. Real bragging rights.</span><span>2026 season / Championship edition</span></div>
+      <div class="masthead-main">
+        <a class="league-monogram" href="index.html" aria-label="UTI homepage">UTI<span>BASEBALL</span></a>
+        <div class="masthead-copy">
+          <div class="kicker">Welcome to the ballpark</div>
+          <h1>Union of<br />Ten Idiots<span class="masthead-period">.</span></h1>
+          <p class="deck">The best dang fantasy league in the world.</p>
+        </div>
+        <div class="ballpark-art" aria-hidden="true">
+          <svg viewBox="0 0 300 240" fill="none">
+            <path d="M150 218 20 88A184 184 0 0 1 280 88Z" fill="#243f63" stroke="#7195c5" stroke-width="1.5" />
+            <path d="M150 218 44 112M150 218 69 91M150 218 96 77M150 218 123 68M150 218 150 65M150 218 177 68M150 218 204 77M150 218 231 91M150 218 256 112" stroke="#34557e" stroke-width="13" />
+            <path d="m150 210-65-65 65-65 65 65Z" fill="#8a95a7" stroke="#b3bdcc" stroke-width="2" />
+            <path d="m150 199-53-54 53-53 53 53Z" fill="#34557e" />
+            <path d="M150 210 20 80M150 210 280 80" stroke="#f5f8ff" stroke-width="2" />
+            <path d="m150 85 6 6-6 6-6-6Zm-59 54 6 6-6 6-6-6Zm118 0 6 6-6 6-6-6Z" fill="#f5f8ff" />
+            <circle cx="150" cy="151" r="8" fill="#b3bdcc" /><path d="M146 151h8" stroke="#f5f8ff" stroke-width="2" />
+            <path d="M144 205h12v7l-6 5-6-5Z" fill="#f5f8ff" />
+            <path d="M35 67A165 165 0 0 1 265 67" stroke="#f5f8ff" stroke-opacity=".25" stroke-width="3" stroke-dasharray="3 8" />
+          </svg>
+          <span>10 teams <b>&bull;</b> 1 diamond <b>&bull;</b> Endless chaos</span>
+        </div>
+      </div>
+      <figure class="league-cover">
+        <img src="assets/characters/uti-league-cover-v10.png" width="2157" height="729" alt="Eleven UTI league owners, including both Me So Heorny co-owners, together as cartoon characters at the ballpark" fetchpriority="high" decoding="async" />
+        <figcaption>Union of Ten Idiots <span>Fantasy baseball. Real friends. Endless chaos.</span></figcaption>
+      </figure>
+      </div>
+      <section class="team-lineup" aria-labelledby="team-lineup-title">
+        <div class="team-lineup-heading"><h2 id="team-lineup-title">Ten teams. One league.</h2><span>The usual suspects</span></div>
+        <div class="team-lineup-grid">
+          <figure><img src="assets/characters/goodyear-champion-cartoon.png" alt="Goodyear cartoon holding the championship trophy" width="1024" height="1536" decoding="async" /><figcaption>Goodyear Gila Monsters<span>2026 Champion</span></figcaption></figure>
+          <figure><img src="assets/characters/gunnarrhea-cartoon.png" alt="Gunnarrhea cartoon character" width="1024" height="1536" decoding="async" /><figcaption>Gunnarrhea</figcaption></figure>
+          <figure><img src="assets/characters/this-is-mizerable-cartoon.png" alt="This is Mizerable cartoon character" width="1024" height="1536" decoding="async" /><figcaption>This is Mizerable</figcaption></figure>
+          <figure><img src="assets/characters/johns-super-team-cartoon.png" alt="John's Super Team cartoon character" width="1024" height="1536" decoding="async" /><figcaption>John's Super Team</figcaption></figure>
+          <figure><img src="assets/characters/bbs-bold-team-cartoon-v2.png" alt="BB's Bold Team cartoon character" width="1024" height="1536" decoding="async" /><figcaption>BB's Bold Team</figcaption></figure>
+          <figure><img src="assets/characters/dixon-cider-cartoon.png" alt="Dixon Cider cartoon character" width="1024" height="1536" decoding="async" /><figcaption>Dixon Cider</figcaption></figure>
+          <figure><img src="assets/characters/bta-boyz-cartoon.png" alt="BTA Boyz cartoon character" width="1024" height="1536" decoding="async" /><figcaption>BTA Boyz</figcaption></figure>
+          <figure><img src="assets/characters/me-so-heorny-cartoon-v5.png" alt="Me So Heorny cartoon character" width="1024" height="1536" decoding="async" /><figcaption>Me So Heorny</figcaption></figure>
+          <figure><img src="assets/characters/you-dont-know-bo-cartoon-v3.png" alt="You Don't Know Bo cartoon character" width="1024" height="1536" decoding="async" /><figcaption>You Don't Know Bo</figcaption></figure>
+          <figure><img class="team-lineup-photo" src="images/owners/mactown-macdaddies.png" alt="Mactown MacDaddies owner" width="296" height="296" decoding="async" /><figcaption>Mactown MacDaddies</figcaption></figure>
+        </div>
+      </section>
+    </header>
+    <nav aria-label="Explore homepage sections" class="explore-nav">
+      <a href="uti-intelligence.html">UTI Intelligence</a>
+      <a href="history.html">UTI History</a>
+      <a href="#mlb-weekly-leaders">MLB Leaders</a>
+      <a href="#fantasy-tools">Fantasy Tools</a>
+      <a href="#featured-recap">Recaps</a>
+    </nav>
     <!-- <section aria-label="League alerts" class="league-alert-strip">
       <article class="league-alert-card trade-alert">
         <div class="league-alert-main">
@@ -67,241 +114,30 @@
         <span class="pulse-copy" id="pulseWeeklyCategory">Category prize</span>
       </a>
     </section>
-    <nav aria-label="Explore homepage sections" class="explore-nav">
-      <a href="uti-intelligence.html">UTI Intelligence</a>
-      <a href="history.html">UTI History</a>
-      <a href="#mlb-weekly-leaders">MLB Leaders</a>
-      <a href="#fantasy-tools">Fantasy Tools</a>
-      <a href="#featured-recap">Recaps</a>
-    </nav>
-
-    <section class="section-card uti-intelligence-section" id="uti-intelligence" data-uti-mode="preview">
-      <div class="uti-intelligence-heading">
-        <div>
-          <div class="section-eyebrow">The Stuff Fantrax Doesn't Show</div>
-          <h2 class="section-title">UTI Intelligence</h2>
-          <p class="section-subtitle">
-            The headline numbers live here. Open Intelligence for current rankings, luck, categories, and team profiles
-            — or jump into the separate History archive.
-          </p>
-        </div>
-        <span class="tag" id="utiIntelligenceRange">Tracked weeks</span>
-      </div>
-
-      <div class="uti-intelligence-grid" id="utiIntelligenceGrid">
-        <article class="uti-intel-card">
-          <span class="uti-intel-label">Loading</span>
-          <strong class="uti-intel-team">UTI Intelligence</strong>
-          <span class="uti-intel-copy">Calculating league analytics...</span>
-        </article>
-      </div>
-    </section>
 
 
-
-    <section class="section-card league-money-section" id="league-money">
-      <div class="section-heading league-money-heading">
-        <div>
-          <div class="section-eyebrow">League Money</div>
-          <h2 class="section-title">Prize Pool & Weekly Category Winner</h2>
-          <p class="section-subtitle">
-            Follow the live season prize pool as waiver money is added, plus the latest weekly category winner.
-          </p>
-        </div>
-        <span class="money-updated-tag" id="prizeMoneyUpdatedAt">Season total</span>
-      </div>
-
-      <div class="league-money-grid">
-        <article class="money-card prize-total-card">
-          <div class="money-card-topline">
-            <span class="money-label">Current Prize Pool</span>
-            <span class="money-status">Live Pot</span>
-          </div>
-          <div class="money-total" id="prizePoolTotal">—</div>
-          <p class="money-description" id="prizePoolRule">Prize pool grows based on waiver-wire spending.</p>
-
-          <div class="money-breakdown">
-            <div class="money-breakdown-item">
-              <span>Starting Pool</span>
-              <strong id="basePrizePool">—</strong>
-            </div>
-            <div class="money-breakdown-item waiver-money-item">
-              <span>Added From Waivers</span>
-              <strong id="waiverPrizeAdded">—</strong>
-            </div>
-            <div class="money-breakdown-item waiver-money-item">
-              <span>Added From Auction</span>
-              <strong>$86</strong>
-            </div>
-            <div class="money-breakdown-item waiver-money-item">
-              <span>Added From Draft</span>
-              <strong id="waiverPrizeAdded">$30</strong>
-            </div>
-          </div>
-        </article>
-
-        <article class="money-card weekly-winner-card">
-          <div class="money-card-topline">
-            <span class="money-label">Weekly Category Winner</span>
-            <span class="weekly-week-pill" id="weeklyWinnerWeek">Latest</span>
-          </div>
-
-          <div class="weekly-winner-main">
-            <div>
-              <span class="weekly-category" id="weeklyWinnerCategory">Category TBD</span>
-              <strong class="weekly-winner-name" id="weeklyWinnerTeam">Winner TBD</strong>
-              <span class="weekly-result" id="weeklyWinnerResult">Result will appear here.</span>
-            </div>
-            <div class="weekly-prize-box">
-              <span>Prize</span>
-              <strong id="weeklyWinnerPrize">—</strong>
-            </div>
-          </div>
-
-          <details class="weekly-history" id="weeklyWinnerHistoryWrap" hidden>
-            <summary>Past weekly winners</summary>
-            <div class="weekly-history-list" id="weeklyWinnerHistory"></div>
-          </details>
-        </article>
-      </div>
-    </section>
-
-    <!-- <section class="section-card" id="top-pickups">
-      <div class="leader-section-header">
-        <div>
-          <div class="section-eyebrow">Waiver Wire</div>
-          <h2 class="section-title" style="margin-bottom:4px;">Trending Available</h2>
-          <p class="section-subtitle">
-            Popular players from other fantasy leagues, filtered against UTI rosters so only available guys show.
-          </p>
-        </div>
-        <div class="leader-header-actions trending-header-actions">
-          <div aria-label="Trending card stat range" class="leader-mode-toggle trend-stat-toggle">
-            <button aria-pressed="true" class="leader-mode-btn active" data-trend-stat-range="last7"
-              type="button">7D</button>
-            <button aria-pressed="false" class="leader-mode-btn" data-trend-stat-range="last14"
-              type="button">14D</button>
-            <button aria-pressed="false" class="leader-mode-btn" data-trend-stat-range="season"
-              type="button">SEA</button>
-          </div>
-          <span class="tag" id="availableStudsModeTag">Last 7</span>
-        </div>
-      </div>
-      <div class="available-studs-grid" id="availableStudsGrid">
-        <article class="article-card">
-          <p class="article-summary">Loading trending available players...</p>
-        </article>
-      </div>
-    </section> -->
-    <section class="section-card" id="mlb-weekly-leaders">
-      <div class="leader-section-header">
-        <div>
-          <div class="section-eyebrow">Around MLB</div>
-          <h2 class="section-title" style="margin-bottom:4px;">MLB Category Leaders</h2>
-          <p class="section-subtitle">
-            Switch between the current week, any completed past week, and full-season leaders.
-          </p>
-        </div>
-        <div class="leader-header-actions">
-          <div aria-label="Leader range filter" class="leader-mode-toggle">
-            <button aria-pressed="true" class="leader-mode-btn active" data-leader-mode="weekly" type="button">
-              Current Week
-            </button>
-            <button aria-pressed="false" class="leader-mode-btn" data-leader-mode="past" type="button">
-              Past Weeks
-            </button>
-            <button aria-pressed="false" class="leader-mode-btn" data-leader-mode="season" type="button">
-              Season
-            </button>
-          </div>
-          <select aria-label="Select past week" class="leader-week-select" hidden="" id="pastWeekSelect"></select>
-          <span class="tag" id="weeklyLeaderRange">Loading...</span>
-        </div>
-      </div>
-      <div class="weekly-leaders-grid" id="weeklyLeadersGrid">
-        <article class="article-card">
-          <p class="article-summary">Loading category leaders...</p>
-        </article>
-      </div>
-    </section>
-    <section class="section-card home-run-pool-preview" id="home-run-pool">
-      <div class="section-heading home-run-pool-heading">
-        <div>
-          <div class="section-eyebrow">Season Race</div>
-          <h2 class="section-title">Home Run Pool</h2>
-          <p class="section-subtitle">Season-long HR race. Top teams show here, full standings live on the pool page.
-          </p>
-        </div>
-        <span class="tag" id="homeRunPoolUpdatedAt">Loading...</span>
-      </div>
-      <div class="home-run-pool-grid home-run-pool-grid-preview" data-limit="3" id="homeRunPoolGrid">
-        <article class="article-card">
-          <p class="article-summary">Loading Home Run Pool...</p>
-        </article>
-      </div>
-      <div class="view-more-wrap home-run-pool-link-wrap">
-        <a class="article-link" href="tools/home-run-pool.html">View Full Home Run Pool</a>
-      </div>
-    </section>
-    <section class="section-card" id="fantasy-tools">
-      <div class="section-heading">
-        <div>
-          <div class="section-eyebrow">League Resources</div>
-          <h2 class="section-title">Fantasy Tools</h2>
-          <p class="section-subtitle">Dynasty resources and league tools that are actually useful.</p>
-        </div>
-      </div>
-      <div class="tools-grid">
-        <article class="tool-card">
-          <div>
-            <div class="article-meta">Prospect Rankings • Dynasty Resource</div>
-            <h3 class="article-title">MLB Top 100 Prospects</h3>
-            <p class="article-summary">
-              Search, filter, and sort the current Top 100 prospects by team, position, level, age, and ETA.
-            </p>
-            <div class="tag-row">
-              <span class="tag">Prospects</span>
-              <span class="tag">Dynasty</span>
-              <span class="tag">Top 100</span>
-              <span class="tag">Draft Prep</span>
-            </div>
-          </div>
-          <div class="tool-actions">
-            <a class="article-link" href="tools/mlb-top-100.html">View Top 100</a>
-          </div>
-        </article>
-        <article class="tool-card">
-          <div>
-            <div class="article-meta">Dynasty Trade Tool • UTI League</div>
-            <h3 class="article-title">UTI Trade Analyzer</h3>
-            <p class="article-summary">
-              Check trade fairness using UTI dynasty values, team ownership, category fit, age, risk, and future upside.
-            </p>
-            <div class="tag-row">
-              <span class="tag">Trades</span>
-              <span class="tag">Dynasty Values</span>
-              <span class="tag">Category Fit</span>
-              <span class="tag">Deadline Prep</span>
-            </div>
-          </div>
-          <div class="tool-actions">
-            <a class="article-link" href="tools/uti-trade-analyzer.html">Open Trade Analyzer</a>
-          </div>
-        </article>
-      </div>
-    </section>
     <section class="section-card" id="featured-recap">
       <div class="section-heading">
         <div>
           <div class="section-eyebrow">League Newsroom</div>
-          <h2 class="section-title">Featured Recap</h2>
-          <p class="section-subtitle">Newest recap up top. Use View More to open the recap archive.</p>
+          <h2 class="section-title">Championship central</h2>
+          <p class="section-subtitle">The trophy has a home. The rest of us have an offseason to hear about it.</p>
         </div>
+        <figure class="member-character">
+          <img src="assets/characters/goodyear-champion-cartoon.png" width="1024" height="1536" alt="Expressive cartoon Goodyear in a GILA baseball uniform, celebrating with the championship trophy" decoding="async" />
+          <figcaption>Goodyear <span>2026 Champion</span></figcaption>
+        </figure>
       </div>
       <article class="article-card featured featured-recap-card">
+        <aside class="championship-score" aria-label="Championship final score">
+          <div class="scoreboard-label">2026 Championship / Final</div>
+          <div class="scoreboard-team is-champion"><span>Goodyear Gila Monsters<small>2026 UTI Champion</small></span><strong>9.5</strong></div>
+          <div class="scoreboard-team"><span>Gunnarrhea<small>Runner-up</small></span><strong>6.5</strong></div>
+          <div class="scoreboard-bottom">No. 1 seed. Last team standing.</div>
+        </aside>
         <div>
           <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
-            <span style="background:#198754;color:white;padding:6px 10px;border-radius:999px;font-size:0.75rem;font-weight:700;">NEW</span>
+            <span class="latest-story-badge">LATEST</span>
             <div class="article-meta" style="margin:0;">Championship &bull; Playoff Recap</div>
           </div>
           <h3 class="article-title">All Hail the Gila: Goodyear Wins the 2026 Championship</h3>
@@ -812,6 +648,221 @@
           type="button">View More Recaps</button></div>
     </section>
 
+    <section class="section-card uti-intelligence-section" id="uti-intelligence" data-uti-mode="preview">
+      <div class="uti-intelligence-heading">
+        <div>
+          <div class="section-eyebrow">The Stuff Fantrax Doesn't Show</div>
+          <h2 class="section-title">UTI Intelligence</h2>
+          <p class="section-subtitle">
+            The headline numbers live here. Open Intelligence for current rankings, luck, categories, and team profiles
+            — or jump into the separate History archive.
+          </p>
+        </div>
+        <span class="tag" id="utiIntelligenceRange">Tracked weeks</span>
+      </div>
+
+      <div class="uti-intelligence-grid" id="utiIntelligenceGrid">
+        <article class="uti-intel-card">
+          <span class="uti-intel-label">Loading</span>
+          <strong class="uti-intel-team">UTI Intelligence</strong>
+          <span class="uti-intel-copy">Calculating league analytics...</span>
+        </article>
+      </div>
+    </section>
+
+
+
+    <section class="section-card league-money-section" id="league-money">
+      <div class="section-heading league-money-heading">
+        <div>
+          <div class="section-eyebrow">League Money</div>
+          <h2 class="section-title">Prize Pool & Weekly Category Winner</h2>
+          <p class="section-subtitle">
+            Follow the live season prize pool as waiver money is added, plus the latest weekly category winner.
+          </p>
+        </div>
+        <span class="money-updated-tag" id="prizeMoneyUpdatedAt">Season total</span>
+      </div>
+
+      <div class="league-money-grid">
+        <article class="money-card prize-total-card">
+          <div class="money-card-topline">
+            <span class="money-label">Current Prize Pool</span>
+            <span class="money-status">Live Pot</span>
+          </div>
+          <div class="money-total" id="prizePoolTotal">—</div>
+          <p class="money-description" id="prizePoolRule">Prize pool grows based on waiver-wire spending.</p>
+
+          <div class="money-breakdown">
+            <div class="money-breakdown-item">
+              <span>Starting Pool</span>
+              <strong id="basePrizePool">—</strong>
+            </div>
+            <div class="money-breakdown-item waiver-money-item">
+              <span>Added From Waivers</span>
+              <strong id="waiverPrizeAdded">—</strong>
+            </div>
+            <div class="money-breakdown-item waiver-money-item">
+              <span>Added From Auction</span>
+              <strong>$86</strong>
+            </div>
+            <div class="money-breakdown-item waiver-money-item">
+              <span>Added From Draft</span>
+              <strong id="draftPrizeAdded">$30</strong>
+            </div>
+          </div>
+        </article>
+
+        <article class="money-card weekly-winner-card">
+          <div class="money-card-topline">
+            <span class="money-label">Weekly Category Winner</span>
+            <span class="weekly-week-pill" id="weeklyWinnerWeek">Latest</span>
+          </div>
+
+          <div class="weekly-winner-main">
+            <div>
+              <span class="weekly-category" id="weeklyWinnerCategory">Category TBD</span>
+              <strong class="weekly-winner-name" id="weeklyWinnerTeam">Winner TBD</strong>
+              <span class="weekly-result" id="weeklyWinnerResult">Result will appear here.</span>
+            </div>
+            <div class="weekly-prize-box">
+              <span>Prize</span>
+              <strong id="weeklyWinnerPrize">—</strong>
+            </div>
+          </div>
+
+          <details class="weekly-history" id="weeklyWinnerHistoryWrap" hidden>
+            <summary>Past weekly winners</summary>
+            <div class="weekly-history-list" id="weeklyWinnerHistory"></div>
+          </details>
+        </article>
+      </div>
+    </section>
+
+    <!-- <section class="section-card" id="top-pickups">
+      <div class="leader-section-header">
+        <div>
+          <div class="section-eyebrow">Waiver Wire</div>
+          <h2 class="section-title" style="margin-bottom:4px;">Trending Available</h2>
+          <p class="section-subtitle">
+            Popular players from other fantasy leagues, filtered against UTI rosters so only available guys show.
+          </p>
+        </div>
+        <div class="leader-header-actions trending-header-actions">
+          <div aria-label="Trending card stat range" class="leader-mode-toggle trend-stat-toggle">
+            <button aria-pressed="true" class="leader-mode-btn active" data-trend-stat-range="last7"
+              type="button">7D</button>
+            <button aria-pressed="false" class="leader-mode-btn" data-trend-stat-range="last14"
+              type="button">14D</button>
+            <button aria-pressed="false" class="leader-mode-btn" data-trend-stat-range="season"
+              type="button">SEA</button>
+          </div>
+          <span class="tag" id="availableStudsModeTag">Last 7</span>
+        </div>
+      </div>
+      <div class="available-studs-grid" id="availableStudsGrid">
+        <article class="article-card">
+          <p class="article-summary">Loading trending available players...</p>
+        </article>
+      </div>
+    </section> -->
+    <section class="section-card" id="mlb-weekly-leaders">
+      <div class="leader-section-header">
+        <div>
+          <div class="section-eyebrow">Around MLB</div>
+          <h2 class="section-title" style="margin-bottom:4px;">MLB Category Leaders</h2>
+          <p class="section-subtitle">
+            Switch between the current week, any completed past week, and full-season leaders.
+          </p>
+        </div>
+        <div class="leader-header-actions">
+          <div aria-label="Leader range filter" class="leader-mode-toggle">
+            <button aria-pressed="true" class="leader-mode-btn active" data-leader-mode="weekly" type="button">
+              Current Week
+            </button>
+            <button aria-pressed="false" class="leader-mode-btn" data-leader-mode="past" type="button">
+              Past Weeks
+            </button>
+            <button aria-pressed="false" class="leader-mode-btn" data-leader-mode="season" type="button">
+              Season
+            </button>
+          </div>
+          <select aria-label="Select past week" class="leader-week-select" hidden="" id="pastWeekSelect"></select>
+          <span class="tag" id="weeklyLeaderRange">Loading...</span>
+        </div>
+      </div>
+      <div class="weekly-leaders-grid" id="weeklyLeadersGrid">
+        <article class="article-card">
+          <p class="article-summary">Loading category leaders...</p>
+        </article>
+      </div>
+    </section>
+    <section class="section-card home-run-pool-preview" id="home-run-pool">
+      <div class="section-heading home-run-pool-heading">
+        <div>
+          <div class="section-eyebrow">Season Race</div>
+          <h2 class="section-title">Home Run Pool</h2>
+          <p class="section-subtitle">Season-long HR race. Top teams show here, full standings live on the pool page.
+          </p>
+        </div>
+        <span class="tag" id="homeRunPoolUpdatedAt">Loading...</span>
+      </div>
+      <div class="home-run-pool-grid home-run-pool-grid-preview" data-limit="3" id="homeRunPoolGrid">
+        <article class="article-card">
+          <p class="article-summary">Loading Home Run Pool...</p>
+        </article>
+      </div>
+      <div class="view-more-wrap home-run-pool-link-wrap">
+        <a class="article-link" href="tools/home-run-pool.html">View Full Home Run Pool</a>
+      </div>
+    </section>
+    <section class="section-card" id="fantasy-tools">
+      <div class="section-heading">
+        <div>
+          <div class="section-eyebrow">League Resources</div>
+          <h2 class="section-title">Fantasy Tools</h2>
+          <p class="section-subtitle">Dynasty resources and league tools that are actually useful.</p>
+        </div>
+      </div>
+      <div class="tools-grid">
+        <article class="tool-card">
+          <div>
+            <div class="article-meta">Prospect Rankings • Dynasty Resource</div>
+            <h3 class="article-title">MLB Top 100 Prospects</h3>
+            <p class="article-summary">
+              Search, filter, and sort the current Top 100 prospects by team, position, level, age, and ETA.
+            </p>
+            <div class="tag-row">
+              <span class="tag">Prospects</span>
+              <span class="tag">Dynasty</span>
+              <span class="tag">Top 100</span>
+              <span class="tag">Draft Prep</span>
+            </div>
+          </div>
+          <div class="tool-actions">
+            <a class="article-link" href="tools/mlb-top-100.html">View Top 100</a>
+          </div>
+        </article>
+        <article class="tool-card">
+          <div>
+            <div class="article-meta">Dynasty Trade Tool • UTI League</div>
+            <h3 class="article-title">UTI Trade Analyzer</h3>
+            <p class="article-summary">
+              Check trade fairness using UTI dynasty values, team ownership, category fit, age, risk, and future upside.
+            </p>
+            <div class="tag-row">
+              <span class="tag">Trades</span>
+              <span class="tag">Dynasty Values</span>
+              <span class="tag">Category Fit</span>
+              <span class="tag">Deadline Prep</span>
+            </div>
+          </div>
+          <div class="tool-actions">
+            <a class="article-link" href="tools/uti-trade-analyzer.html">Open Trade Analyzer</a>
+          </div>
+        </article>
+      </div>
+    </section>
     <section class="section-card allstar-compact-section allstar-archive-section" id="all-star-week">
       <div class="allstar-compact-head">
         <div>

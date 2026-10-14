@@ -1,0 +1,10 @@
+Generated with the built-in imagegen tool using five recent likeness and style references.
+
+Use case: stylized-concept.
+Create the next BTA Boyz owner character for an existing fantasy baseball cartoon series.
+Input references: the bar photo and beach photo show the adult man whose likeness to preserve; the red THIS IS MIZERABLE and pink ME SO HEORNY cartoons are STYLE references only; the final small owner headshot is an additional likeness reference. Depict only the adult male owner.
+Style: match those cartoons closely: crisp thick black outlines, expressive oversized head, large lively brown eyes, polished cel shading, athletic cartoon proportions, full body with both cleats entirely visible, vertical 2:3 composition.
+Identity: recognizable dark brown hair, strong eyebrows, prominent dark brown mustache, light jaw stubble, friendly confident smile, tattooed arms based on the supplied photos. Include his worn construction hard hat as seen in the user's other reference photos.
+Outfit: baseball jersey with short sleeves exposing his tattoos, white baseball pants, striped socks, black cleats. Use a dark jersey with orange trim drawing on his workwear. Across the chest, render exactly "BTA BOYZ" in bold readable baseball block letters. Relaxed proud stance, holding a wooden baseball bat resting on one shoulder.
+Background: black with a subtle warm orange glow behind the character, matching the other owner illustrations.
+No other people, no extra writing, no watermark.

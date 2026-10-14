@@ -1,0 +1,3 @@
+Mode: built-in image_gen edit.
+Target: uti-league-cover-v4.png.
+Prompt: Change only the back-row Me So Heorny co-owner's pink backwards baseball cap to deep navy blue, including panels, strap and brim. Preserve cap shape, seams, shading and outlines. Keep all eleven owners, faces, hair, clothing, poses, hands, ballpark background, lights and original wide framing unchanged.

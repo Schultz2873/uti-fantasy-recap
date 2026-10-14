@@ -1,0 +1,5 @@
+Mode: built-in image_gen edit.
+Banner: uti-league-cover-v3.png
+Prompt: Update only Me So Heorny, front center in pink hoodie, using the supplied photos for likeness. Give him swept-up short brown hair, large blue cartoon eyes, a longer face, short stubble and a friendly smile. Use bold black outlines and smooth cel shading matching the other owners. Correct his anatomy to exactly two arms and two thumbs-up hands. Preserve the other nine owners, background and wide framing.
+Portrait: me-so-heorny-cartoon-v2.png
+Prompt: Update only the face and hair of the original full-body baseball cartoon to match the updated banner character. Keep exaggerated blue cartoon eyes, swept-up light brown hair, longer face and short stubble. Preserve the pink uniform, ME SO HEORNY lettering, raised index finger, glove, full-body pose and dark background with pink glow. Keep the face fully cartoon.

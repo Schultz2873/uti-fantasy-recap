@@ -1,0 +1,4 @@
+Mode: built-in image_gen edit.
+Target: uti-league-cover-v3.png.
+References: four user-provided photos of the additional male Me So Heorny co-owner.
+Prompt: Add the co-owner as an eleventh separate cartoon person near the existing pink-hoodie owner. Preserve all ten existing owners, especially the pink-hoodie owner's cartoon face and two thumbs up. New co-owner has dark brown hair, bright blue cartoon eyes, a prominent nose, short brown beard, backwards pink cap and navy hoodie. Match bold outlines and smooth cel shading. Space the back row to show all eleven faces. Preserve ballpark, sunset, lights, palette and wide framing. No extra limbs or text.
