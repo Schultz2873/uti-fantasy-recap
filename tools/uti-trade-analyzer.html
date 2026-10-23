@@ -9,20 +9,20 @@
   <link href="../styles/styles.css" rel="stylesheet" />
   <style>
     :root {
-      --uti-blue: #0b5ed7;
-      --uti-dark: #10233f;
-      --uti-border: rgba(16, 35, 63, 0.12);
-      --uti-card: #ffffff;
-      --uti-muted: #65758b;
-      --uti-good: #198754;
-      --uti-warn: #f59f00;
-      --uti-bad: #dc3545;
+      --uti-blue: #19d3c5;
+      --uti-dark: #e9eef8;
+      --uti-border: rgba(255, 255, 255, 0.1);
+      --uti-card: rgba(255, 255, 255, 0.05);
+      --uti-muted: #8d98b3;
+      --uti-good: #34d399;
+      --uti-warn: #ff9f5a;
+      --uti-bad: #ff6b4a;
     }
 
     body {
       background:
-        radial-gradient(circle at top left, rgba(11, 94, 215, 0.14), transparent 32rem),
-        linear-gradient(180deg, #f3f7fc 0%, #ffffff 58%);
+        radial-gradient(circle at top left, rgba(25, 211, 197, 0.22), transparent 32rem),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.05) 58%);
       min-height: 100vh;
     }
 
@@ -35,12 +35,12 @@
     .trade-hero {
       border: 1px solid var(--uti-border);
       background:
-        linear-gradient(135deg, rgba(11, 94, 215, 0.96), rgba(16, 35, 63, 0.95)),
+        linear-gradient(135deg, rgba(14, 124, 116, 0.96), rgba(36, 48, 77, 0.95)),
         radial-gradient(circle at right top, rgba(255, 255, 255, 0.22), transparent 20rem);
       color: #ffffff;
       border-radius: 24px;
       padding: clamp(22px, 4vw, 40px);
-      box-shadow: 0 20px 50px rgba(16, 35, 63, 0.18);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
       overflow: hidden;
       position: relative;
     }
@@ -107,7 +107,7 @@
       background: var(--uti-card);
       border: 1px solid var(--uti-border);
       border-radius: 22px;
-      box-shadow: 0 14px 34px rgba(16, 35, 63, 0.08);
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.34);
     }
 
     .trade-card { padding: 18px; }
@@ -122,7 +122,7 @@
       border: 1px solid var(--uti-border);
       border-radius: 18px;
       padding: 14px;
-      background: #f8fbff;
+      background: rgba(255, 255, 255, 0.05);
       min-width: 0;
     }
 
@@ -144,7 +144,7 @@
     .side-total-pill {
       display: inline-flex;
       border-radius: 999px;
-      background: rgba(11, 94, 215, 0.10);
+      background: rgba(25, 211, 197, 0.16);
       color: var(--uti-blue);
       padding: 5px 9px;
       font-size: 0.78rem;
@@ -156,7 +156,7 @@
       width: 100%;
       border: 1px solid var(--uti-border);
       border-radius: 999px;
-      background: #ffffff;
+      background: rgba(255, 255, 255, 0.05);
       color: var(--uti-dark);
       padding: 8px 10px;
       font-size: 0.78rem;
@@ -175,12 +175,12 @@
       outline: none;
       font-weight: 700;
       color: var(--uti-dark);
-      background: #ffffff;
+      background: rgba(255, 255, 255, 0.05);
     }
 
     .player-search:focus {
-      border-color: rgba(11, 94, 215, 0.55);
-      box-shadow: 0 0 0 4px rgba(11, 94, 215, 0.10);
+      border-color: rgba(25, 211, 197, 0.55);
+      box-shadow: 0 0 0 4px rgba(25, 211, 197, 0.1);
     }
 
     .suggestions {
@@ -188,11 +188,11 @@
       inset-inline: 0;
       top: calc(100% + 6px);
       z-index: 20;
-      background: #ffffff;
+      background: rgba(255, 255, 255, 0.05);
       border: 1px solid var(--uti-border);
       border-radius: 16px;
       overflow: hidden;
-      box-shadow: 0 16px 34px rgba(16, 35, 63, 0.18);
+      box-shadow: 0 16px 34px rgba(0, 0, 0, 0.5);
       max-height: 320px;
       overflow-y: auto;
       display: none;
@@ -203,16 +203,16 @@
     .suggestion-btn {
       width: 100%;
       border: 0;
-      background: #ffffff;
+      background: rgba(255, 255, 255, 0.05);
       text-align: left;
       padding: 10px 12px;
       display: grid;
       gap: 2px;
       cursor: pointer;
-      border-bottom: 1px solid rgba(16, 35, 63, 0.08);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    .suggestion-btn:hover { background: #f3f7fc; }
+    .suggestion-btn:hover { background: rgba(255, 255, 255, 0.05); }
 
     .suggestion-name {
       font-weight: 950;
@@ -233,8 +233,8 @@
     }
 
     .selected-empty {
-      border: 1px dashed rgba(16, 35, 63, 0.20);
-      background: rgba(255, 255, 255, 0.70);
+      border: 1px dashed rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.05);
       border-radius: 14px;
       padding: 14px;
       color: var(--uti-muted);
@@ -243,9 +243,9 @@
     }
 
     .selected-player {
-      border: 1px solid rgba(16, 35, 63, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 16px;
-      background: #ffffff;
+      background: rgba(255, 255, 255, 0.05);
       padding: 11px;
       display: grid;
       gap: 8px;
@@ -283,7 +283,7 @@
       display: inline-flex;
       border-radius: 999px;
       padding: 4px 8px;
-      background: rgba(16, 35, 63, 0.07);
+      background: rgba(255, 255, 255, 0.07);
       font-size: 0.72rem;
       font-weight: 950;
       color: var(--uti-dark);
@@ -305,7 +305,7 @@
     .remove-player {
       border: 0;
       border-radius: 999px;
-      background: rgba(220, 53, 69, 0.10);
+      background: rgba(255, 107, 74, 0.16);
       color: var(--uti-bad);
       padding: 5px 9px;
       font-weight: 950;
@@ -314,7 +314,7 @@
       width: fit-content;
     }
 
-    .remove-player:hover { background: rgba(220, 53, 69, 0.18); }
+    .remove-player:hover { background: rgba(255, 107, 74, 0.29); }
 
     .result-card {
       padding: 18px;
@@ -341,8 +341,8 @@
     .winner-box {
       border-radius: 18px;
       padding: 16px;
-      background: linear-gradient(135deg, rgba(11, 94, 215, 0.10), rgba(25, 135, 84, 0.09));
-      border: 1px solid rgba(11, 94, 215, 0.16);
+      background: linear-gradient(135deg, rgba(25, 211, 197, 0.16), rgba(52, 211, 153, 0.14));
+      border: 1px solid rgba(25, 211, 197, 0.3);
     }
 
     .winner-label {
@@ -373,7 +373,7 @@
       border: 1px solid var(--uti-border);
       border-radius: 16px;
       padding: 12px;
-      background: #f8fbff;
+      background: rgba(255, 255, 255, 0.05);
     }
 
     .result-stat-label,
@@ -425,7 +425,7 @@
       gap: 8px;
       box-shadow: none;
       border-radius: 16px;
-      background: #f8fbff;
+      background: rgba(255, 255, 255, 0.05);
     }
 
     .impact-list {
@@ -434,13 +434,13 @@
       gap: 6px;
     }
 
-    .impact-chip.positive { background: rgba(25, 135, 84, 0.12); color: #146c43; }
-    .impact-chip.negative { background: rgba(220, 53, 69, 0.10); color: #842029; }
+    .impact-chip.positive { background: rgba(52, 211, 153, 0.19); color: #34d399; }
+    .impact-chip.negative { background: rgba(255, 107, 74, 0.16); color: #ff6b4a; }
 
     .reset-btn {
       border: 0;
       border-radius: 999px;
-      background: rgba(16, 35, 63, 0.08);
+      background: rgba(255, 255, 255, 0.08);
       color: var(--uti-dark);
       padding: 9px 12px;
       font-weight: 950;
@@ -448,7 +448,7 @@
       width: 100%;
     }
 
-    .reset-btn:hover { background: rgba(16, 35, 63, 0.14); }
+    .reset-btn:hover { background: rgba(255, 255, 255, 0.08); }
 
     .player-table-card {
       margin-top: 18px;
@@ -491,13 +491,13 @@
       border-collapse: separate;
       border-spacing: 0;
       min-width: 860px;
-      background: #ffffff;
+      background: rgba(255, 255, 255, 0.05);
     }
 
     .players-table th,
     .players-table td {
       padding: 10px 12px;
-      border-bottom: 1px solid rgba(16, 35, 63, 0.08);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       vertical-align: middle;
       font-size: 0.88rem;
     }
@@ -506,7 +506,7 @@
       position: sticky;
       top: 0;
       z-index: 3;
-      background: #f3f7fc;
+      background: rgba(255, 255, 255, 0.05);
       color: var(--uti-dark);
       font-size: 0.75rem;
       text-transform: uppercase;
@@ -527,7 +527,7 @@
     .add-small-btn {
       border: 0;
       border-radius: 999px;
-      background: rgba(11, 94, 215, 0.10);
+      background: rgba(25, 211, 197, 0.16);
       color: var(--uti-blue);
       font-weight: 950;
       padding: 6px 10px;
@@ -536,12 +536,12 @@
       white-space: nowrap;
     }
 
-    .add-small-btn:hover { background: rgba(11, 94, 215, 0.18); }
+    .add-small-btn:hover { background: rgba(25, 211, 197, 0.29); }
 
     .load-error {
-      border: 1px solid rgba(220, 53, 69, 0.28);
-      background: rgba(220, 53, 69, 0.08);
-      color: #842029;
+      border: 1px solid rgba(255, 107, 74, 0.3);
+      background: rgba(255, 107, 74, 0.13);
+      color: #ff6b4a;
       border-radius: 16px;
       padding: 14px;
       font-weight: 850;
@@ -559,6 +559,7 @@
       .fit-grid { grid-template-columns: 1fr; }
     }
   </style>
+  <link href="../styles/primetime.css" rel="stylesheet" />
 </head>
 
 <body>

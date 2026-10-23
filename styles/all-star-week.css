@@ -10,7 +10,7 @@
       gap: 12px;
       padding: 12px 14px;
       border-radius: 15px;
-      background: linear-gradient(135deg, #071b3d, #0b5ed7 62%, #d71920);
+      background: linear-gradient(135deg, #13243f, #0e7c74 62%, #c2410c);
       color: #fff;
     }
 
@@ -36,7 +36,7 @@
       border-radius: 13px;
       text-align: center;
       background: rgba(255, 255, 255, .14);
-      border: 1px solid rgba(255, 255, 255, .24);
+      border: 1px solid rgba(255, 255, 255, 0.12);
     }
 
     .allstar-total-pill b {
@@ -65,8 +65,8 @@
       overflow: hidden;
       border: 1px solid var(--border);
       border-radius: 13px;
-      background: #fff;
-      box-shadow: 0 5px 14px rgba(15, 23, 42, .045);
+      background: rgba(255, 255, 255, 0.05);
+      box-shadow: 0 5px 14px rgba(0, 0, 0, 0.24);
     }
 
     .allstar-compact-league summary {
@@ -77,7 +77,7 @@
       padding: 9px 10px;
       cursor: pointer;
       list-style: none;
-      background: #f7f9fc;
+      background: rgba(255, 255, 255, 0.05);
       color: var(--ink);
       font-size: .68rem;
       font-weight: 950;
@@ -109,7 +109,7 @@
       align-items: center;
       min-width: 0;
       padding: 5px 2px;
-      border-bottom: 1px solid rgba(226, 232, 240, .72);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.09);
     }
 
     .allstar-compact-name {
@@ -135,13 +135,13 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      color: #146c43;
+      color: #34d399;
       font-size: .46rem;
       font-weight: 900;
     }
 
     .allstar-compact-owner.free-agent {
-      color: #842029;
+      color: #ff6b4a;
     }
 
     @media (max-width: 760px) {
@@ -246,10 +246,10 @@
       gap: 3px 6px;
       min-width: 0;
       padding: 7px 8px;
-      border: 1px solid rgba(226, 232, 240, .95);
+      border: 1px solid rgba(255, 255, 255, 0.09);
       border-radius: 10px;
-      background: #fff;
-      box-shadow: 0 3px 10px rgba(15, 23, 42, .035);
+      background: rgba(255, 255, 255, 0.05);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.21);
     }
 
     .allstar-player-card .allstar-compact-name {
@@ -289,8 +289,8 @@
       flex: 0 0 18px;
       border-radius: 50%;
       object-fit: cover;
-      border: 1px solid rgba(11, 94, 215, .18);
-      background: #fff;
+      border: 1px solid rgba(25, 211, 197, 0.3);
+      background: rgba(255, 255, 255, 0.05);
     }
 
     .allstar-player-card .allstar-compact-owner {
@@ -298,13 +298,13 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      color: #146c43;
+      color: #34d399;
       font-size: .49rem;
       font-weight: 900;
     }
 
     .allstar-player-card .allstar-compact-owner.free-agent {
-      color: #842029;
+      color: #ff6b4a;
     }
 
     @media (max-width: 900px) {
@@ -361,10 +361,10 @@
       gap: 7px;
       min-width: 0;
       padding: 6px 8px;
-      border: 1px solid rgba(226, 232, 240, .95);
+      border: 1px solid rgba(255, 255, 255, 0.09);
       border-radius: 10px;
-      background: #fff;
-      box-shadow: 0 3px 9px rgba(15, 23, 42, .035);
+      background: rgba(255, 255, 255, 0.05);
+      box-shadow: 0 3px 9px rgba(0, 0, 0, 0.21);
     }
 
     .allstar-owner-rank-number {
@@ -389,7 +389,7 @@
       flex: 0 0 auto;
       padding: 2px 6px;
       border-radius: 999px;
-      background: rgba(11, 94, 215, .10);
+      background: rgba(25, 211, 197, 0.16);
       color: var(--accent-dark);
       font-size: .52rem;
       font-weight: 950;
@@ -401,8 +401,8 @@
       flex: 0 0 20px;
       border-radius: 50%;
       object-fit: cover;
-      background: #fff;
-      border: 1px solid rgba(11, 94, 215, .18);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(25, 211, 197, 0.3);
     }
 
     .allstar-owner-fallback {
@@ -413,7 +413,7 @@
       height: 20px;
       flex: 0 0 20px;
       border-radius: 50%;
-      background: rgba(11, 94, 215, .10);
+      background: rgba(25, 211, 197, 0.16);
       color: var(--accent-dark);
       font-size: .46rem;
       font-weight: 950;
@@ -450,8 +450,8 @@
       overflow: hidden;
       border: 1px solid var(--border);
       border-radius: 14px;
-      background: #fff;
-      box-shadow: 0 5px 14px rgba(15, 23, 42, .045);
+      background: rgba(255, 255, 255, 0.05);
+      box-shadow: 0 5px 14px rgba(0, 0, 0, 0.24);
     }
 
     .allstar-combined-dropdown>summary {
@@ -462,7 +462,7 @@
       padding: 10px 12px;
       cursor: pointer;
       list-style: none;
-      background: #f7f9fc;
+      background: rgba(255, 255, 255, 0.05);
       color: var(--ink);
       font-size: .70rem;
       font-weight: 950;
@@ -577,9 +577,9 @@
       flex: 0 0 auto;
       padding: 2px 4px;
       border-radius: 999px;
-      background: rgba(255, 193, 7, .20);
-      color: #795c00;
-      border: 1px solid rgba(255, 193, 7, .28);
+      background: rgba(242, 193, 78, 0.3);
+      color: #f2c14e;
+      border: 1px solid rgba(242, 193, 78, 0.3);
       font-size: .36rem;
       font-weight: 900;
       line-height: 1;
@@ -644,8 +644,8 @@
       overflow: hidden;
       border: 1px solid var(--border);
       border-radius: 12px;
-      background: #ffffff;
-      box-shadow: 0 5px 14px rgba(15, 23, 42, 0.045);
+      background: rgba(255, 255, 255, 0.05);
+      box-shadow: 0 5px 14px rgba(0, 0, 0, 0.24);
     }
 
     .allstar-team-dropdown>summary {
@@ -656,7 +656,7 @@
       padding: 8px 10px;
       cursor: pointer;
       list-style: none;
-      background: #f7f9fc;
+      background: rgba(255, 255, 255, 0.05);
       color: var(--ink);
       font-size: 0.68rem;
       font-weight: 950;
@@ -683,7 +683,7 @@
       flex: 0 0 auto;
       padding: 3px 7px;
       border-radius: 999px;
-      background: rgba(11, 94, 215, 0.10);
+      background: rgba(25, 211, 197, 0.16);
       color: var(--accent-dark);
       font-size: 0.50rem;
       font-weight: 950;
@@ -708,8 +708,8 @@
       flex-basis: 24px;
       border-radius: 50%;
       object-fit: cover;
-      border: 1px solid rgba(11, 94, 215, 0.20);
-      background: #ffffff;
+      border: 1px solid rgba(25, 211, 197, 0.3);
+      background: rgba(255, 255, 255, 0.05);
     }
 
     .allstar-team-player-grid {
@@ -717,7 +717,7 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 5px;
       padding: 7px;
-      background: #ffffff;
+      background: rgba(255, 255, 255, 0.05);
     }
 
     .allstar-team-player-grid .allstar-player-card {

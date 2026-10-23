@@ -48,7 +48,7 @@
   justify-content: center;
   padding: 4px 8px;
   border-radius: 999px;
-  background: #f3f4f6;
+  background: rgba(255, 255, 255, 0.05);
   color: var(--muted);
   font-size: 0.58rem;
   font-weight: 950;
@@ -69,10 +69,10 @@
   gap: 9px;
   min-height: 176px;
   padding: 12px;
-  border: 1px solid rgba(226, 232, 240, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: 16px;
-  background: #ffffff;
-  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.065);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3);
   overflow: hidden;
 }
 
@@ -86,18 +86,18 @@
 
 .available-stud-card.hitting-pickup-card {
   background:
-    linear-gradient(135deg, rgba(11, 94, 215, 0.055), rgba(25, 135, 84, 0.035)),
-    #ffffff;
+    linear-gradient(135deg, rgba(25, 211, 197, 0.09), rgba(52, 211, 153, 0.08)),
+    rgba(255, 255, 255, 0.05);
 }
 
 .available-stud-card.pitching-pickup-card {
   background:
-    linear-gradient(135deg, rgba(132, 32, 41, 0.045), rgba(11, 94, 215, 0.045)),
-    #ffffff;
+    linear-gradient(135deg, rgba(255, 107, 74, 0.08), rgba(25, 211, 197, 0.08)),
+    rgba(255, 255, 255, 0.05);
 }
 
 .available-stud-card.pitching-pickup-card::before {
-  background: #842029;
+  background: #ff6b4a;
 }
 
 .pickup-card-top {
@@ -140,16 +140,16 @@
   min-width: 48px;
   padding: 6px 7px;
   border-radius: 14px;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
   color: var(--accent-dark);
-  border: 1px solid rgba(11, 94, 215, 0.20);
+  border: 1px solid rgba(25, 211, 197, 0.3);
   text-align: center;
-  box-shadow: 0 5px 14px rgba(15, 23, 42, 0.055);
+  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.27);
 }
 
 .pitching-pickup-card .pickup-score-box {
-  color: #842029;
-  border-color: rgba(132, 32, 41, 0.20);
+  color: #ff6b4a;
+  border-color: rgba(255, 107, 74, 0.3);
 }
 
 .pickup-score-number {
@@ -193,28 +193,28 @@
 }
 
 .pickup-group-tag-hitting {
-  background: rgba(11, 94, 215, 0.12);
+  background: rgba(25, 211, 197, 0.19);
   color: var(--accent-dark);
 }
 
 .pickup-group-tag-pitching {
-  background: rgba(132, 32, 41, 0.10);
-  color: #842029;
+  background: rgba(255, 107, 74, 0.16);
+  color: #ff6b4a;
 }
 
 .pickup-reason-tag {
-  background: #f3f4f6;
+  background: rgba(255, 255, 255, 0.05);
   color: var(--muted);
 }
 
 .pickup-range-tag {
-  background: rgba(25, 135, 84, 0.12);
-  color: #146c43;
-  border: 1px solid rgba(25, 135, 84, 0.18);
+  background: rgba(52, 211, 153, 0.19);
+  color: #34d399;
+  border: 1px solid rgba(52, 211, 153, 0.3);
 }
 
 .pickup-volume-tag {
-  background: rgba(15, 23, 42, 0.06);
+  background: rgba(255, 255, 255, 0.06);
   color: var(--muted);
 }
 
@@ -236,10 +236,10 @@
   min-width: 0;
   padding: 7px 5px;
   border-radius: 11px;
-  background: #ffffff;
-  border: 1px solid rgba(226, 232, 240, 0.95);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.09);
   text-align: center;
-  box-shadow: 0 3px 10px rgba(15, 23, 42, 0.035);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.21);
 }
 
 .pickup-primary-value {
@@ -267,8 +267,8 @@
   min-width: 0;
   padding: 5px 4px;
   border-radius: 9px;
-  background: rgba(248, 250, 252, 0.9);
-  border: 1px solid rgba(226, 232, 240, 0.75);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.09);
   text-align: center;
   line-height: 1.05;
 }
@@ -308,9 +308,9 @@
   justify-content: center;
   padding: 3px 7px;
   border-radius: 999px;
-  background: rgba(25, 135, 84, 0.12);
-  color: #146c43;
-  border: 1px solid rgba(25, 135, 84, 0.22);
+  background: rgba(52, 211, 153, 0.19);
+  color: #34d399;
+  border: 1px solid rgba(52, 211, 153, 0.3);
   font-size: 0.52rem;
   font-weight: 950;
   text-transform: uppercase;
@@ -441,9 +441,9 @@
   max-width: 100%;
   padding: 3px 6px;
   border-radius: 999px;
-  background: rgba(15, 23, 42, 0.06);
+  background: rgba(255, 255, 255, 0.06);
   color: var(--muted);
-  border: 1px solid rgba(226, 232, 240, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.09);
   font-size: 0.54rem;
   font-weight: 950;
   line-height: 1;
@@ -505,21 +505,21 @@
 }
 
 .pickup-age-tag {
-  background: rgba(132, 32, 41, 0.11);
-  color: #842029;
-  border: 1px solid rgba(132, 32, 41, 0.22);
+  background: rgba(255, 107, 74, 0.18);
+  color: #ff6b4a;
+  border: 1px solid rgba(255, 107, 74, 0.3);
 }
 
 .pickup-position-chip {
-  background: rgba(11, 94, 215, 0.09);
+  background: rgba(25, 211, 197, 0.14);
   color: var(--accent-dark);
-  border: 1px solid rgba(11, 94, 215, 0.16);
+  border: 1px solid rgba(25, 211, 197, 0.3);
 }
 
 .pickup-rookie-tag {
-  background: rgba(255, 193, 7, 0.18);
-  color: #7a5200;
-  border: 1px solid rgba(255, 193, 7, 0.28);
+  background: rgba(242, 193, 78, 0.29);
+  color: #f2c14e;
+  border: 1px solid rgba(242, 193, 78, 0.3);
   text-transform: uppercase;
   letter-spacing: 0.02em;
 }
@@ -978,12 +978,12 @@
   }
 
   #top-pickups .pickup-group-grid::-webkit-scrollbar-track {
-    background: rgba(15, 23, 42, 0.06);
+    background: rgba(255, 255, 255, 0.06);
     border-radius: 999px;
   }
 
   #top-pickups .pickup-group-grid::-webkit-scrollbar-thumb {
-    background: rgba(11, 94, 215, 0.28);
+    background: rgba(25, 211, 197, 0.3);
     border-radius: 999px;
   }
 
@@ -1165,9 +1165,9 @@
   gap: 6px;
   padding: 5px;
   border-radius: 999px;
-  background: #f8fafc;
-  border: 1px solid rgba(148, 163, 184, 0.26);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(25, 211, 197, 0.3);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 #top-pickups .leader-mode-btn {
@@ -1189,7 +1189,7 @@
 #top-pickups .leader-mode-btn[aria-pressed="true"] {
   background: var(--accent);
   color: #fff;
-  box-shadow: 0 8px 18px rgba(11, 94, 215, 0.22);
+  box-shadow: 0 8px 18px rgba(25, 211, 197, 0.22);
 }
 
 /* Mobile: compact single-row scrollable filters */
@@ -1287,17 +1287,17 @@
 }
 
 #top-pickups .pickup-reason-tag {
-  background: rgba(11, 94, 215, 0.10);
+  background: rgba(25, 211, 197, 0.16);
   color: var(--accent-dark);
 }
 
 #top-pickups .pitching-pickup-card .pickup-reason-tag {
-  background: rgba(132, 32, 41, 0.10);
-  color: #842029;
+  background: rgba(255, 107, 74, 0.16);
+  color: #ff6b4a;
 }
 
 #top-pickups .pickup-volume-tag {
-  background: rgba(15, 23, 42, 0.06);
+  background: rgba(255, 255, 255, 0.06);
   color: var(--muted);
 }
 

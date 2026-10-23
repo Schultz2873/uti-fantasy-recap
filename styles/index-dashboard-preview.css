@@ -39,10 +39,10 @@
   overflow: hidden;
   color: var(--text);
   text-decoration: none;
-  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.05) 100%);
   border: 1px solid var(--border);
   border-radius: 18px;
-  box-shadow: 0 10px 26px rgba(16, 24, 40, .07);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.31);
   transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
 }
 
@@ -59,8 +59,8 @@
 .pulse-card:hover {
   color: var(--text);
   transform: translateY(-3px);
-  border-color: #b7d1ff;
-  box-shadow: 0 16px 32px rgba(16, 24, 40, .10);
+  border-color: rgba(25, 211, 197, 0.35);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
 }
 
 .pulse-label,
@@ -129,10 +129,10 @@
 /* --- Trending comes first and feels actionable ------------------ */
 
 #top-pickups {
-  border-color: #cfe0ff;
+  border-color: rgba(25, 211, 197, 0.35);
   background:
-    radial-gradient(circle at top right, rgba(11, 94, 215, .055), transparent 22rem),
-    #ffffff;
+    radial-gradient(circle at top right, rgba(25, 211, 197, 0.09), transparent 22rem),
+    rgba(255, 255, 255, 0.05);
 }
 
 #top-pickups .available-studs-grid {
@@ -163,15 +163,15 @@
 #featured-recap {
   padding: 20px;
   background:
-    linear-gradient(135deg, rgba(11, 94, 215, .045), rgba(25, 135, 84, .025)),
-    #ffffff;
-  border-color: #cfe0ff;
+    linear-gradient(135deg, rgba(25, 211, 197, 0.08), rgba(52, 211, 153, 0.08)),
+    rgba(255, 255, 255, 0.05);
+  border-color: rgba(25, 211, 197, 0.35);
 }
 
 .featured-recap-card {
   padding: 20px;
-  border-color: #b9d2ff;
-  box-shadow: 0 16px 34px rgba(16, 24, 40, .09);
+  border-color: rgba(25, 211, 197, 0.35);
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.37);
 }
 
 .featured-recap-card .article-title {
@@ -189,20 +189,20 @@
 }
 
 #fantasy-tools .tool-card {
-  box-shadow: 0 10px 24px rgba(16, 24, 40, .07);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.31);
 }
 
 /* --- All-Stars become an archive instead of a giant section ----- */
 
 .allstar-archive-section {
-  background: #fbfcfe;
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .allstar-archive-shell {
   overflow: hidden;
   border: 1px solid var(--border);
   border-radius: 16px;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .allstar-archive-shell > summary {
@@ -221,7 +221,7 @@
 }
 
 .allstar-archive-shell > summary:hover {
-  background: #f7f9fc;
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .allstar-archive-shell > summary > span:first-child {
@@ -245,7 +245,7 @@
   flex: 0 0 auto;
   padding: 7px 10px;
   color: var(--accent-dark);
-  background: #edf4ff;
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 999px;
   font-size: .75rem;
   font-weight: 900;
@@ -265,7 +265,7 @@
 .article-card,
 .tool-card,
 .leader-card {
-  box-shadow: 0 9px 22px rgba(16, 24, 40, .065);
+  box-shadow: 0 9px 22px rgba(0, 0, 0, 0.3);
 }
 
 .article-card:hover {
@@ -373,8 +373,8 @@
 }
 
 .secondary-nav a:hover {
-  background: #edf4ff;
-  border-color: #cfe0ff;
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(25, 211, 197, 0.35);
 }
 
 @media (max-width: 520px) {
@@ -409,10 +409,10 @@
   gap: 0;
   margin: 0 0 14px;
   overflow: hidden;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--border);
   border-radius: 14px;
-  box-shadow: 0 7px 18px rgba(16, 24, 40, .055);
+  box-shadow: 0 7px 18px rgba(0, 0, 0, 0.27);
 }
 
 .explore-nav a {
@@ -438,7 +438,7 @@
 }
 
 .explore-nav a:active {
-  background: #edf4ff;
+  background: rgba(255, 255, 255, 0.05);
 }
 
 @media (min-width: 600px) {
@@ -457,7 +457,7 @@
 
 @media (min-width: 900px) {
   .explore-nav a:hover {
-    background: #edf4ff;
+    background: rgba(255, 255, 255, 0.05);
   }
 }
 
@@ -467,10 +467,10 @@
    ========================================================= */
 
 .league-money-section {
-  border-color: #cfe0ff;
+  border-color: rgba(25, 211, 197, 0.35);
   background:
-    radial-gradient(circle at top left, rgba(11, 94, 215, .055), transparent 20rem),
-    #ffffff;
+    radial-gradient(circle at top left, rgba(25, 211, 197, 0.09), transparent 20rem),
+    rgba(255, 255, 255, 0.05);
 }
 
 .league-money-heading {
@@ -483,8 +483,8 @@
   min-height: 30px;
   padding: 5px 9px;
   color: var(--accent-dark);
-  background: #edf4ff;
-  border: 1px solid #cfe0ff;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(25, 211, 197, 0.35);
   border-radius: 999px;
   font-size: .70rem;
   font-weight: 900;
@@ -500,22 +500,22 @@
 .money-card {
   min-width: 0;
   padding: 15px;
-  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.05) 100%);
   border: 1px solid var(--border);
   border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(16, 24, 40, .065);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
 .prize-total-card {
   background:
-    radial-gradient(circle at top right, rgba(25, 135, 84, .08), transparent 15rem),
-    linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+    radial-gradient(circle at top right, rgba(52, 211, 153, 0.13), transparent 15rem),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.05) 100%);
 }
 
 .weekly-winner-card {
   background:
-    radial-gradient(circle at top right, rgba(11, 94, 215, .07), transparent 15rem),
-    linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+    radial-gradient(circle at top right, rgba(25, 211, 197, 0.11), transparent 15rem),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.05) 100%);
 }
 
 .money-card-topline {
@@ -547,15 +547,15 @@
 }
 
 .money-status {
-  color: #087443;
-  background: #eaf8f0;
-  border: 1px solid #c9eed9;
+  color: #34d399;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(52, 211, 153, 0.35);
 }
 
 .weekly-week-pill {
   color: var(--accent-dark);
-  background: #edf4ff;
-  border: 1px solid #cfe0ff;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(25, 211, 197, 0.35);
 }
 
 .money-total {
@@ -583,7 +583,7 @@
 .money-breakdown-item {
   min-width: 0;
   padding: 9px;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--border);
   border-radius: 11px;
 }
@@ -647,8 +647,8 @@
   min-width: 74px;
   padding: 10px 8px;
   text-align: center;
-  background: #edf4ff;
-  border: 1px solid #cfe0ff;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(25, 211, 197, 0.35);
   border-radius: 12px;
 }
 
@@ -694,7 +694,7 @@
   gap: 8px;
   align-items: center;
   padding: 7px 8px;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--border);
   border-radius: 9px;
   font-size: .72rem;
@@ -813,14 +813,14 @@
   align-items: center;
   min-width: 0;
   padding: 9px;
-  background: #f8fbff;
+  background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--border);
   border-radius: 11px;
 }
 
 .weekly-ledger-row.is-latest {
-  background: #edf4ff;
-  border-color: #cfe0ff;
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(25, 211, 197, 0.35);
 }
 
 .weekly-ledger-week {
@@ -862,7 +862,7 @@
   margin: 9px 0 0;
   padding: 10px;
   color: var(--muted);
-  background: #f8fbff;
+  background: rgba(255, 255, 255, 0.05);
   border: 1px dashed var(--border);
   border-radius: 10px;
   font-size: .72rem;
@@ -947,7 +947,7 @@
   min-width: 0;
   padding: 10px 11px;
   overflow: hidden;
-  background: #f8fbff;
+  background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--border);
   border-radius: 11px;
 }
@@ -959,9 +959,9 @@
   width: 4px;
 }
 
-.payout-first::before { background: #f5b700; }
-.payout-second::before { background: #94a3b8; }
-.payout-third::before { background: #b7791f; }
+.payout-first::before { background: #f2c14e; }
+.payout-second::before { background: #19d3c5; }
+.payout-third::before { background: #ff9f5a; }
 
 .payout-place {
   grid-area: place;
