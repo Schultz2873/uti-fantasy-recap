@@ -38,20 +38,26 @@ updateLeagueAlertCountdowns();
 setInterval(updateLeagueAlertCountdowns, 1000 * 60);
 
 
+// Recaps list: show the newest few, with a button to reveal the rest.
+const RECAPS_SHOWN_BY_DEFAULT = 4;
 const viewMoreArticlesBtn = document.getElementById('viewMoreArticlesBtn');
-const hiddenArticles = document.querySelectorAll('.hidden-article');
+const olderRecaps = [...document.querySelectorAll('#recapList .recap-row')].slice(RECAPS_SHOWN_BY_DEFAULT);
 
-hiddenArticles.forEach(article => {
-  article.style.display = 'none';
+olderRecaps.forEach(row => {
+  row.hidden = true;
 });
+
+if (viewMoreArticlesBtn && !olderRecaps.length) {
+  viewMoreArticlesBtn.hidden = true;
+}
 
 viewMoreArticlesBtn?.addEventListener('click', () => {
   const isExpanded = viewMoreArticlesBtn.dataset.expanded === 'true';
 
-  hiddenArticles.forEach(article => {
-    article.style.display = isExpanded ? 'none' : 'flex';
+  olderRecaps.forEach(row => {
+    row.hidden = isExpanded;
   });
 
   viewMoreArticlesBtn.dataset.expanded = String(!isExpanded);
-  viewMoreArticlesBtn.textContent = isExpanded ? 'View More Recaps' : 'Show Less Articles';
+  viewMoreArticlesBtn.textContent = isExpanded ? 'Show all recaps' : 'Show fewer recaps';
 });

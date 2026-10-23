@@ -9,6 +9,11 @@ window.PRIZE_MONEY_DATA = {
   basePool: 1000,
   waiverWireAdded: 5000 - 479 - 485 - 470 - 385 - 425 - 457 - 490 - 401 - 460 - 479,
   manualAdjustments: 86 + 30,
+  // Optional: labels for what makes up manualAdjustments, shown on the homepage money bar.
+  adjustmentBreakdown: [
+    { label: "Added from auction", amount: 86 },
+    { label: "Added from draft", amount: 30 }
+  ],
   currentTotal: null,
 
   waiverRule: "Prize pool grows based on waiver-wire spending.",

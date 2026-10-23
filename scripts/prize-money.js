@@ -1,3 +1,4 @@
+// Renders the homepage League Money panel from data/prize-money.js.
 (function renderPrizeMoney() {
   const data = window.PRIZE_MONEY_DATA || {};
 
@@ -26,27 +27,41 @@
   const total = isNumber(data.currentTotal) ? data.currentTotal : calculatedTotal;
 
   setText("prizePoolTotal", money(total));
-  setText("pulsePrizePoolTotal", money(total));
-  setText("basePrizePool", money(data.basePool));
-  setText("waiverPrizeAdded", money(data.waiverWireAdded));
-  setText("auctionPrizeAdded", money(data.waiverWireAdded));
   setText("prizePoolRule", data.waiverRule || "Prize pool grows based on waiver-wire spending.");
   setText("prizeMoneyUpdatedAt", data.updatedLabel || "Season total");
 
+  // Where the money came from, drawn to scale. adjustmentBreakdown splits manualAdjustments into labeled parts.
+  const adjustments = Array.isArray(data.adjustmentBreakdown) && data.adjustmentBreakdown.length
+    ? data.adjustmentBreakdown
+    : (isNumber(data.manualAdjustments) && data.manualAdjustments ? [{ label: "Other adjustments", amount: data.manualAdjustments }] : []);
+
+  const parts = [
+    { label: "Starting pool", amount: data.basePool, tone: "base" },
+    { label: "Added from waivers", amount: data.waiverWireAdded, tone: "waivers" },
+    ...adjustments.map((item, index) => ({ label: item.label, amount: item.amount, tone: `extra-${index + 1}` }))
+  ].filter(part => isNumber(part.amount) && part.amount > 0);
+
+  const bar = document.getElementById("prizePoolBar");
+  const legend = document.getElementById("prizePoolBreakdown");
+
+  if (bar) {
+    bar.innerHTML = parts.map(part => `<span class="money-bar-${part.tone}" style="flex: ${part.amount}"></span>`).join("");
+    bar.setAttribute("aria-label", parts.map(part => `${part.label} ${money(part.amount)}`).join(", "));
+  }
+
+  if (legend) {
+    legend.innerHTML = parts.map(part => `
+      <li><i class="money-bar-${part.tone}"></i><span>${part.label}</span><b>${money(part.amount)}</b></li>
+    `).join("");
+  }
+
   const winner = data.weeklyWinner || {};
-  const winnerName = winner.team || "Winner TBD";
-  const category = winner.category || "Category TBD";
-  const result = winner.result || "Result will appear here.";
-  const week = winner.week || "Latest";
 
-  setText("weeklyWinnerWeek", week);
-  setText("weeklyWinnerCategory", category);
-  setText("weeklyWinnerTeam", winnerName);
-  setText("weeklyWinnerResult", result);
+  setText("weeklyWinnerWeek", winner.week || "Latest");
+  setText("weeklyWinnerCategory", winner.category || "Category TBD");
+  setText("weeklyWinnerTeam", winner.team || "Winner TBD");
+  setText("weeklyWinnerResult", winner.result || "Result will appear here.");
   setText("weeklyWinnerPrize", money(winner.prize));
-
-  setText("pulseWeeklyWinner", winner.team || "TBD");
-  setText("pulseWeeklyCategory", winner.category || "Category prize");
 
   const history = Array.isArray(data.weeklyWinnerHistory) ? data.weeklyWinnerHistory : [];
   const historyWrap = document.getElementById("weeklyWinnerHistoryWrap");

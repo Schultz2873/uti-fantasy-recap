@@ -1994,9 +1994,11 @@
       document.getElementById("utiFranchiseResumeTable") ||
       document.getElementById("utiHeadToHeadGrid")
     );
+    // Pages without a board can still ask for team profiles (e.g. the homepage dashboard).
+    const needsProfiles = Boolean(document.querySelector("[data-uti-profiles]"));
 
     if (!window.UTIAnalytics) return;
-    if (!needsCurrentBoard && !needsHistoryBoard && !needsHistoryTeaser && !needsHistoryOverview && !needsHistoryRecords) return;
+    if (!needsCurrentBoard && !needsHistoryBoard && !needsHistoryTeaser && !needsHistoryOverview && !needsHistoryRecords && !needsProfiles) return;
 
     try {
       const data = await loadCurrentSeason();

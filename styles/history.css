@@ -50,54 +50,12 @@
 }
 
 /* Head-to-head season toggle */
-.uti-h2h-year-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 4px;
-  border: 1px solid rgb(var(--rgb-white) / 0.1);
-  border-radius: 999px;
-  background: rgb(var(--rgb-white) / 0.04);
-}
-
-.uti-h2h-year-toggle button {
-  border: 0;
-  border-radius: 999px;
-  background: transparent;
-  color: var(--color-text-soft);
-  padding: 6px 10px;
-  font-size: 0.72rem;
-  line-height: 1;
-  font-weight: 900;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.uti-h2h-year-toggle button.is-active {
-  background: var(--color-slate-deep);
-  color: var(--color-white);
-  box-shadow: 0 2px 8px rgb(var(--rgb-black) / 0.5);
-}
 
 #utiHeadToHeadGrid .uti-h2h-season-splits > [hidden] {
   display: none !important;
 }
 
 @media (max-width: 620px) {
-  .uti-h2h-year-toggle {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 3px;
-    padding: 3px;
-    margin-top: 8px;
-  }
-
-  .uti-h2h-year-toggle button {
-    width: 100%;
-    padding: 6px 4px;
-    font-size: 0.66rem;
-  }
 
   #utiHeadToHeadGrid .uti-h2h-season-splits {
     overflow: visible !important;
@@ -193,20 +151,6 @@
 
 
 /* Rivalry section polish */
-.uti-h2h-year-filter {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 210px;
-}
-
-.uti-h2h-control-label {
-  color: var(--color-text-muted);
-  font-size: .55rem;
-  font-weight: 950;
-  letter-spacing: .05em;
-  text-transform: uppercase;
-}
 
 /* Mobile: let the rivalry intro use the full row and give the controls their own rows. */
 @media (max-width: 620px) {
@@ -235,42 +179,13 @@
     padding-right: 0 !important;
   }
 
-  #head-to-head .uti-h2h-selector,
-  #head-to-head .uti-h2h-year-filter {
+  #head-to-head .uti-h2h-selector {
     width: 100% !important;
     min-width: 0 !important;
   }
 
   #head-to-head .uti-h2h-selector select {
     width: 100% !important;
-  }
-
-  #head-to-head .uti-h2h-year-toggle {
-    display: grid !important;
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-    width: 100% !important;
-    gap: 4px !important;
-    margin-top: 0 !important;
-    padding: 4px !important;
-    border: 1px solid rgb(var(--rgb-white) / 0.1) !important;
-    border-radius: 11px !important;
-    background: rgb(var(--rgb-white) / 0.05) !important;
-    box-shadow: inset 0 1px 2px rgb(var(--rgb-black) / 0.19);
-  }
-
-  #head-to-head .uti-h2h-year-toggle button {
-    min-height: 34px !important;
-    width: 100% !important;
-    padding: 7px 4px !important;
-    border-radius: 8px !important;
-    font-size: .72rem !important;
-    font-weight: 950 !important;
-  }
-
-  #head-to-head .uti-h2h-year-toggle button.is-active {
-    background: var(--color-slate-deep) !important;
-    color: var(--color-white) !important;
-    box-shadow: 0 2px 7px rgb(var(--rgb-black) / 0.5) !important;
   }
 
   /* Give opponent names the entire remaining width of each compact card. */
@@ -305,8 +220,6 @@
 
 
 /* Rivalry cleanup: overall / regular-season / playoff records only. */
-#head-to-head .uti-h2h-year-filter,
-#head-to-head .uti-h2h-year-toggle,
 #utiHeadToHeadGrid .uti-h2h-season-splits {
   display: none !important;
 }
