@@ -1,16 +1,37 @@
+@import url("https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,100..125,400..900;1,100..125,400..900&display=swap");
+
+/*
+  Weekly recap pages: "Primetime" styling.
+  Dark broadcast look with glass cards and teal/coral accents.
+  Layout (grid, sidebar, breakpoints) is unchanged; only the visual styling lives here.
+*/
 :root {
-    --bg: #eef2f7;
-    --card: #ffffff;
-    --text: #17212b;
-    --muted: #5f6b7a;
-    --accent: #0b5ed7;
-    --accent-dark: #083b88;
-    --border: #d9e1ea;
-    --soft: #f7f9fc;
-    --gold: #f5b301;
-    --green: #198754;
-    --red: #c92a2a;
-    --shadow: 0 14px 36px rgba(16, 24, 40, 0.08);
+    color-scheme: dark;
+
+    --bg: #0b0f1c;
+    --bg-glow: #1a2340;
+    --card-top: rgba(255, 255, 255, 0.07);
+    --card-bottom: rgba(255, 255, 255, 0.03);
+    --border: rgba(255, 255, 255, 0.09);
+    --rule: rgba(255, 255, 255, 0.08);
+
+    --text: #e9eef8;
+    --text-soft: #b8c2da;
+    --muted: #8d98b3;
+
+    --teal: #19d3c5;
+    --teal-soft: rgba(25, 211, 197, 0.14);
+    --teal-border: rgba(25, 211, 197, 0.35);
+    --coral: #ff6b4a;
+    --coral-soft: rgba(255, 107, 74, 0.1);
+    --coral-border: rgba(255, 107, 74, 0.32);
+
+    --hero-gradient: linear-gradient(140deg, #13304a 0%, #0f1b33 55%, #2a1630 100%);
+    --glow: 0 0 0 1px rgba(25, 211, 197, 0.08), 0 18px 60px rgba(25, 211, 197, 0.12);
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+
+    --font: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    --wide: 118%;
 }
 
 * {
@@ -19,10 +40,20 @@
 
 body {
     margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background: linear-gradient(180deg, #f4f7fb 0%, #eef2f7 100%);
+    font-family: var(--font);
+    background: radial-gradient(120% 60% at 50% -10%, var(--bg-glow) 0%, var(--bg) 60%) fixed, var(--bg);
+    color: var(--text-soft);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+}
+
+strong,
+b {
     color: var(--text);
-    line-height: 1.65;
+}
+
+a {
+    color: var(--teal);
 }
 
 .page {
@@ -31,69 +62,94 @@ body {
     padding: 28px 18px 48px;
 }
 
+/* Top bar styled like a broadcast ticker with a live dot. */
 .top-banner {
-    background: linear-gradient(90deg, var(--accent-dark), var(--accent));
-    color: #fff;
-    border-radius: 18px;
-    padding: 14px 18px;
-    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 12px;
+    padding: 12px 18px;
     margin-bottom: 22px;
-    font-weight: 700;
-    letter-spacing: 0.02em;
+    font-weight: 800;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.top-banner::before {
+    content: "";
+    flex: none;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--coral);
+    box-shadow: 0 0 8px var(--coral);
 }
 
 .hero {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 24px;
+    background: var(--hero-gradient);
+    border: 1px solid var(--teal-border);
+    border-radius: 18px;
     overflow: hidden;
-    box-shadow: var(--shadow);
+    box-shadow: var(--glow);
     margin-bottom: 24px;
 }
 
 .hero-header {
     padding: 34px 30px 28px;
-    background:
-        linear-gradient(135deg, rgba(8, 59, 136, 0.95), rgba(11, 94, 215, 0.88)),
-        url('https://images.unsplash.com/photo-1471295253337-3ceaaedca402?auto=format&fit=crop&w=1600&q=80') center/cover;
-    color: white;
+    color: var(--text);
 }
 
 .kicker {
-    display: inline-block;
-    background: rgba(255, 255, 255, 0.14);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 7px 12px;
-    border-radius: 999px;
-    font-size: 0.8rem;
-    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.75rem;
+    font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.12em;
+    color: var(--teal);
     margin-bottom: 14px;
 }
 
+.kicker::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--coral);
+    box-shadow: 0 0 8px var(--coral);
+}
+
 h1 {
-    margin: 0 0 10px;
-    font-size: clamp(2rem, 4vw, 3.3rem);
-    line-height: 1.05;
+    margin: 0 0 14px;
+    font-size: clamp(2rem, 4.4vw, 3.4rem);
+    font-weight: 900;
+    font-stretch: var(--wide);
+    line-height: 1.03;
+    color: var(--text);
+    text-wrap: balance;
 }
 
 .deck {
     max-width: 860px;
     font-size: 1.08rem;
-    opacity: 0.96;
+    color: var(--text-soft);
     margin: 0;
 }
 
 .hero-meta {
     display: flex;
     flex-wrap: wrap;
-    gap: 14px;
-    padding: 18px 30px;
-    background: #fff;
+    gap: 14px 24px;
+    padding: 16px 30px;
+    background: rgba(0, 0, 0, 0.25);
     color: var(--muted);
-    border-top: 1px solid rgba(255, 255, 255, 0.12);
-    font-size: 0.95rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.9rem;
 }
 
 .layout {
@@ -113,9 +169,9 @@ h1 {
 
 .section-card,
 .sidebar {
-    background: var(--card);
+    background: linear-gradient(180deg, var(--card-top), var(--card-bottom));
     border: 1px solid var(--border);
-    border-radius: 22px;
+    border-radius: 14px;
     box-shadow: var(--shadow);
 }
 
@@ -125,22 +181,25 @@ h1 {
 
 .intro-section p {
     margin: 0 0 16px;
-    font-size: 1.02rem;
+    font-size: 1.03rem;
 }
 
 .special-callout {
-    background: linear-gradient(135deg, #fff9e8, #fffdf6);
-    border: 1px solid #f1df9b;
-    border-left: 6px solid var(--gold);
-    padding: 18px;
-    border-radius: 16px;
+    background: var(--teal-soft);
+    border: 1px solid var(--teal-border);
+    padding: 18px 20px;
+    border-radius: 12px;
     margin-top: 18px;
+    color: var(--text-soft);
 }
 
 .special-callout strong {
     display: block;
     margin-bottom: 8px;
-    font-size: 1.02rem;
+    font-size: 1.05rem;
+    font-weight: 800;
+    font-stretch: 110%;
+    color: var(--teal);
 }
 
 .matchup-card {
@@ -154,28 +213,33 @@ h1 {
     gap: 16px;
     margin-bottom: 16px;
     padding-bottom: 14px;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--rule);
 }
 
 .matchup-title {
     margin: 0;
-    font-size: 1.42rem;
+    font-size: 1.45rem;
+    font-weight: 900;
+    font-stretch: var(--wide);
     line-height: 1.2;
+    color: var(--text);
 }
 
 .score-pill {
     white-space: nowrap;
-    background: #edf4ff;
-    color: var(--accent-dark);
-    border: 1px solid #cfe0ff;
+    background: var(--teal-soft);
+    color: var(--teal);
+    border: 1px solid var(--teal-border);
     border-radius: 999px;
-    padding: 8px 12px;
-    font-weight: 700;
+    padding: 8px 14px;
+    font-weight: 900;
+    font-stretch: var(--wide);
     font-size: 0.95rem;
+    font-variant-numeric: tabular-nums;
 }
 
 .winner-line {
-    font-size: 0.95rem;
+    font-size: 0.92rem;
     color: var(--muted);
     margin-top: 6px;
 }
@@ -184,13 +248,22 @@ h1 {
     margin: 0 0 14px;
 }
 
+/* "League takeaway" box at the end of each matchup. */
 .tone-box {
-    background: var(--soft);
-    border: 1px solid var(--border);
-    border-radius: 16px;
+    background: var(--coral-soft);
+    border: 1px solid var(--coral-border);
+    border-radius: 12px;
     padding: 14px 16px;
     margin-top: 8px;
-    color: #334155;
+    color: var(--text-soft);
+}
+
+.tone-box strong {
+    color: var(--coral);
+}
+
+.league-takeaway {
+    margin: 6px 0 0;
 }
 
 .sidebar {
@@ -202,7 +275,7 @@ h1 {
 .sidebar-section {
     padding-bottom: 20px;
     margin-bottom: 20px;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--rule);
 }
 
 .sidebar-section:last-child {
@@ -212,8 +285,13 @@ h1 {
 }
 
 .sidebar h3 {
-    margin: 0 0 12px;
-    font-size: 1.08rem;
+    margin: 0 0 10px;
+    font-size: 0.9rem;
+    font-weight: 900;
+    font-stretch: var(--wide);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text);
 }
 
 .list {
@@ -224,7 +302,8 @@ h1 {
 
 .list li {
     padding: 10px 0;
-    border-bottom: 1px dashed var(--border);
+    border-bottom: 1px solid var(--rule);
+    font-size: 0.94rem;
 }
 
 .list li:last-child {
@@ -233,28 +312,32 @@ h1 {
 
 .badge {
     display: inline-block;
-    padding: 4px 10px;
-    border-radius: 999px;
-    font-size: 0.8rem;
-    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 6px;
+    font-size: 0.72rem;
+    font-weight: 900;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
     margin-right: 8px;
 }
 
 .badge-green {
-    background: #dcfce7;
-    color: var(--green);
+    background: var(--teal-soft);
+    color: var(--teal);
+    border: 1px solid var(--teal-border);
 }
 
 .badge-red {
-    background: #fee2e2;
-    color: var(--red);
+    background: var(--coral-soft);
+    color: var(--coral);
+    border: 1px solid var(--coral-border);
 }
 
 .footer-note {
     text-align: center;
     color: var(--muted);
-    font-size: 0.92rem;
-    margin-top: 22px;
+    font-size: 0.88rem;
+    margin-top: 28px;
 }
 
 .intro-section p,
@@ -265,6 +348,19 @@ h1 {
 .special-callout {
     overflow-wrap: anywhere;
     word-break: break-word;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .top-banner::before,
+    .kicker::before {
+        animation: recap-pulse 1.8s ease-in-out infinite;
+    }
+
+    @keyframes recap-pulse {
+        50% {
+            opacity: 0.35;
+        }
+    }
 }
 
 @media (max-width: 900px) {
@@ -306,10 +402,6 @@ h1 {
 
 
 @media (max-width: 600px) {
-    body {
-        background: #eef2f7;
-    }
-
     .page {
         padding: 12px 10px 32px;
     }
@@ -318,30 +410,32 @@ h1 {
         position: sticky;
         top: 0;
         z-index: 50;
-        border-radius: 0 0 18px 18px;
+        justify-content: center;
+        border-radius: 0 0 14px 14px;
+        border-top: 0;
         margin: -12px -10px 14px;
-        text-align: center;
-        font-size: 0.82rem;
+        background: rgba(11, 15, 28, 0.92);
+        backdrop-filter: blur(8px);
+        font-size: 0.74rem;
         line-height: 1.35;
         padding: 12px 14px;
     }
 
     .hero {
-        border-radius: 20px;
+        border-radius: 16px;
         margin-bottom: 18px;
     }
 
     .hero-header {
-        padding: 28px 20px;
+        padding: 26px 20px;
     }
 
     .kicker {
-        font-size: 0.72rem;
-        padding: 6px 10px;
+        font-size: 0.68rem;
     }
 
     h1 {
-        font-size: 2.1rem;
+        font-size: 2rem;
     }
 
     .deck {
@@ -352,7 +446,7 @@ h1 {
         padding: 14px 18px;
         gap: 8px;
         flex-direction: column;
-        font-size: 0.9rem;
+        font-size: 0.88rem;
     }
 
     .layout {
@@ -367,17 +461,16 @@ h1 {
     .matchup-card,
     .sidebar {
         padding: 18px;
-        border-radius: 20px;
+        border-radius: 14px;
     }
 
     .intro-section p,
     .matchup-card p {
-        font-size: 0.96rem;
+        font-size: 0.97rem;
     }
 
     .special-callout {
         padding: 16px;
-        border-radius: 14px;
     }
 
     .matchup-head {
@@ -394,33 +487,27 @@ h1 {
         text-align: center;
         font-size: 1rem;
         padding: 10px 14px;
-        border-radius: 14px;
-        box-shadow: inset 0 0 0 1px rgba(8, 59, 136, 0.08);
+        border-radius: 12px;
     }
 
     .winner-line {
-        font-size: 0.9rem;
+        font-size: 0.88rem;
     }
 
     .tone-box {
-        font-size: 0.92rem;
-        border-left: 5px solid var(--accent);
-    }
-
-    .sidebar {
-        background: #fdfefe;
+        font-size: 0.93rem;
     }
 
     .sidebar-section {
-        background: var(--soft);
+        background: rgba(0, 0, 0, 0.2);
         border: 1px solid var(--border);
-        border-radius: 16px;
+        border-radius: 12px;
         padding: 16px;
         margin-bottom: 14px;
     }
 
-    .sidebar h3 {
-        font-size: 1rem;
+    .sidebar-section:last-child {
+        border-bottom: 1px solid var(--border);
     }
 
     .list li {
@@ -432,7 +519,7 @@ h1 {
     }
 
     .footer-note {
-        font-size: 0.85rem;
+        font-size: 0.84rem;
         padding: 0 12px;
     }
 }
