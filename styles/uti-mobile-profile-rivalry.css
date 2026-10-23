@@ -468,3 +468,29 @@
   }
 }
 
+
+/* === Franchise resume placement badges (moved from uti-intelligence.js) === */
+.uti-placement-count {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.uti-placement-icon-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.uti-placement-icon-count > span {
+  font-size: 1.05rem;
+}
+
+.uti-placement-icon-count > strong {
+  color: #0f172a;
+  font-size: 0.68rem;
+  font-weight: 800;
+}

@@ -1,3 +1,10 @@
+/*
+  UTI league analytics for the current Fantrax season.
+  Turns weekly team stat rows (data/weekly-team-stats.js or .csv) into official records,
+  all-play records, category records, Category Kings, Luck Index, recent form, and Power Rankings.
+
+  Exposes window.UTIAnalytics for scripts/uti-intelligence.js.
+*/
 (() => {
   const DEFAULT_CSV_PATH = "data/weekly-team-stats.csv";
 
@@ -25,11 +32,21 @@
 
   const CATEGORIES = Object.keys(CATEGORY_RULES);
 
+  // CSV columns that stay as text instead of being converted to numbers.
+  const TEXT_COLUMNS = ["team", "opponent", "IP", "phase", "round"];
+
   function parseCSV(text) {
     const rows = [];
     let row = [];
     let field = "";
     let quoted = false;
+
+    const endRow = () => {
+      row.push(field);
+      if (row.some(v => v !== "")) rows.push(row);
+      row = [];
+      field = "";
+    };
 
     for (let i = 0; i < text.length; i++) {
       const ch = text[i];
@@ -45,19 +62,13 @@
         field = "";
       } else if ((ch === "\n" || ch === "\r") && !quoted) {
         if (ch === "\r" && next === "\n") i++;
-        row.push(field);
-        if (row.some(v => v !== "")) rows.push(row);
-        row = [];
-        field = "";
+        endRow();
       } else {
         field += ch;
       }
     }
 
-    if (field.length || row.length) {
-      row.push(field);
-      if (row.some(v => v !== "")) rows.push(row);
-    }
+    if (field.length || row.length) endRow();
 
     if (!rows.length) return [];
 
@@ -68,7 +79,7 @@
       headers.forEach((header, index) => {
         const raw = (values[index] ?? "").trim();
 
-        if (["team", "opponent", "IP", "phase", "round"].includes(header)) {
+        if (TEXT_COLUMNS.includes(header)) {
           obj[header] = raw;
           return;
         }
@@ -80,6 +91,7 @@
     });
   }
 
+  // 1 if A wins the category, -1 if B wins, 0 for a tie or missing value.
   function compareValue(a, b, rule) {
     const av = Number(a);
     const bv = Number(b);
@@ -131,15 +143,42 @@
     }, new Map());
   }
 
-  function ensureTeamRecord(map, team) {
-    if (!map[team]) {
-      map[team] = { wins: 0, losses: 0, ties: 0, points: 0, games: 0 };
+  // Calls fn(a, b) for every pair of teams that played in the same week.
+  function forEachWeeklyPair(rows, fn) {
+    for (const weekRows of groupByWeek(rows).values()) {
+      for (let i = 0; i < weekRows.length; i++) {
+        for (let j = i + 1; j < weekRows.length; j++) {
+          fn(weekRows[i], weekRows[j]);
+        }
+      }
     }
+  }
+
+  function emptyRecord() {
+    return { wins: 0, losses: 0, ties: 0, points: 0, games: 0 };
+  }
+
+  function ensureTeamRecord(map, team) {
+    if (!map[team]) map[team] = emptyRecord();
     return map[team];
   }
 
-  function pct(points, games) {
-    return games ? points / games : 0;
+  // Adds one game to the record. result > 0 is a win, < 0 a loss, 0 a tie.
+  function addResult(record, result) {
+    record.games += 1;
+    if (result > 0) {
+      record.wins += 1;
+      record.points += 1;
+    } else if (result < 0) {
+      record.losses += 1;
+    } else {
+      record.ties += 1;
+      record.points += 0.5;
+    }
+  }
+
+  function setWinPct(record) {
+    record.winPct = record.games ? record.points / record.games : 0;
   }
 
   function getOfficialRecords(rows) {
@@ -151,118 +190,51 @@
       const againstScore = Number(row.official_score_against);
 
       if (!Number.isFinite(forScore) || !Number.isFinite(againstScore)) return;
-
-      rec.games += 1;
-      if (forScore > againstScore) {
-        rec.wins += 1;
-        rec.points += 1;
-      } else if (forScore < againstScore) {
-        rec.losses += 1;
-      } else {
-        rec.ties += 1;
-        rec.points += 0.5;
-      }
+      addResult(rec, forScore - againstScore);
     });
 
-    Object.values(records).forEach(rec => {
-      rec.winPct = pct(rec.points, rec.games);
-    });
-
+    Object.values(records).forEach(setWinPct);
     return records;
   }
 
+  // Every team plays every other team each week, scored on all categories.
   function getAllPlayRecords(rows) {
-    const byWeek = groupByWeek(rows);
     const records = {};
 
-    for (const weekRows of byWeek.values()) {
-      for (let i = 0; i < weekRows.length; i++) {
-        for (let j = i + 1; j < weekRows.length; j++) {
-          const a = weekRows[i];
-          const b = weekRows[j];
-          const result = compareTeams(a, b);
-
-          const recA = ensureTeamRecord(records, a.team);
-          const recB = ensureTeamRecord(records, b.team);
-          recA.games += 1;
-          recB.games += 1;
-
-          if (result.scoreA > result.scoreB) {
-            recA.wins += 1;
-            recA.points += 1;
-            recB.losses += 1;
-          } else if (result.scoreB > result.scoreA) {
-            recB.wins += 1;
-            recB.points += 1;
-            recA.losses += 1;
-          } else {
-            recA.ties += 1;
-            recB.ties += 1;
-            recA.points += 0.5;
-            recB.points += 0.5;
-          }
-        }
-      }
-    }
-
-    Object.values(records).forEach(rec => {
-      rec.winPct = pct(rec.points, rec.games);
+    forEachWeeklyPair(rows, (a, b) => {
+      const { scoreA, scoreB } = compareTeams(a, b);
+      addResult(ensureTeamRecord(records, a.team), scoreA - scoreB);
+      addResult(ensureTeamRecord(records, b.team), scoreB - scoreA);
     });
 
+    Object.values(records).forEach(setWinPct);
     return records;
   }
 
+  // Same as all-play, but each category is its own game.
   function getCategoryRecords(rows) {
-    const byWeek = groupByWeek(rows);
     const output = {};
 
     const ensure = team => {
       if (!output[team]) {
         output[team] = {};
         CATEGORIES.forEach(category => {
-          output[team][category] = { wins: 0, losses: 0, ties: 0, points: 0, games: 0, winPct: 0 };
+          output[team][category] = { ...emptyRecord(), winPct: 0 };
         });
       }
       return output[team];
     };
 
-    for (const weekRows of byWeek.values()) {
-      for (let i = 0; i < weekRows.length; i++) {
-        for (let j = i + 1; j < weekRows.length; j++) {
-          const a = weekRows[i];
-          const b = weekRows[j];
-
-          CATEGORIES.forEach(category => {
-            const result = compareValue(a[category], b[category], CATEGORY_RULES[category]);
-            const aRec = ensure(a.team)[category];
-            const bRec = ensure(b.team)[category];
-
-            aRec.games += 1;
-            bRec.games += 1;
-
-            if (result > 0) {
-              aRec.wins += 1;
-              aRec.points += 1;
-              bRec.losses += 1;
-            } else if (result < 0) {
-              bRec.wins += 1;
-              bRec.points += 1;
-              aRec.losses += 1;
-            } else {
-              aRec.ties += 1;
-              bRec.ties += 1;
-              aRec.points += 0.5;
-              bRec.points += 0.5;
-            }
-          });
-        }
-      }
-    }
+    forEachWeeklyPair(rows, (a, b) => {
+      CATEGORIES.forEach(category => {
+        const result = compareValue(a[category], b[category], CATEGORY_RULES[category]);
+        addResult(ensure(a.team)[category], result);
+        addResult(ensure(b.team)[category], -result);
+      });
+    });
 
     Object.values(output).forEach(teamCategories => {
-      Object.values(teamCategories).forEach(rec => {
-        rec.winPct = pct(rec.points, rec.games);
-      });
+      Object.values(teamCategories).forEach(setWinPct);
     });
 
     return output;
@@ -272,7 +244,7 @@
     const kings = {};
 
     CATEGORIES.forEach(category => {
-      const ranking = Object.entries(categoryRecords)
+      kings[category] = Object.entries(categoryRecords)
         .map(([team, records]) => ({
           team,
           winPct: records[category].winPct,
@@ -281,8 +253,6 @@
           ties: records[category].ties
         }))
         .sort((a, b) => b.winPct - a.winPct || b.wins - a.wins || a.team.localeCompare(b.team));
-
-      kings[category] = ranking;
     });
 
     return kings;
@@ -367,9 +337,6 @@
     const analyticsRows = regularRows.length ? regularRows : allRows;
 
     const officialRecords = getOfficialRecords(analyticsRows);
-    const officialRecordsOverall = getOfficialRecords(allRows);
-    const officialRecordsRegular = getOfficialRecords(regularRows);
-    const officialRecordsPlayoffs = getOfficialRecords(playoffRows);
     const allPlayRecords = getAllPlayRecords(analyticsRows);
     const categoryRecords = getCategoryRecords(analyticsRows);
 
@@ -384,9 +351,9 @@
       categories: CATEGORIES,
       categoryRules: CATEGORY_RULES,
       officialRecords,
-      officialRecordsOverall,
-      officialRecordsRegular,
-      officialRecordsPlayoffs,
+      officialRecordsOverall: getOfficialRecords(allRows),
+      officialRecordsRegular: getOfficialRecords(regularRows),
+      officialRecordsPlayoffs: getOfficialRecords(playoffRows),
       allPlayRecords,
       categoryRecords,
       categoryKings: getCategoryKings(categoryRecords),
@@ -396,6 +363,7 @@
     };
   }
 
+  // Prefers the preloaded window.UTI_WEEKLY_TEAM_STATS; falls back to fetching the CSV.
   async function load(csvPath = DEFAULT_CSV_PATH) {
     if (Array.isArray(window.UTI_WEEKLY_TEAM_STATS) && window.UTI_WEEKLY_TEAM_STATS.length) {
       return buildSummary(window.UTI_WEEKLY_TEAM_STATS);
