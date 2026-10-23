@@ -1,12 +1,966 @@
+/* UTI Intelligence: homepage preview, analytics boards, history archives, and the team profile modal. */
+
+/* ---------- Homepage dashboard preview ---------- */
+/* =========================================================
+   UTI Homepage Dashboard Preview
+   Keeps the original light-blue homepage theme.
+   Load AFTER the existing homepage styles.
+   ========================================================= */
+
+.page {
+  max-width: 1240px;
+}
+
+.hero {
+  margin-bottom: 16px;
+}
+
+.hero .deck {
+  max-width: 680px;
+}
+
+.last-updated {
+  margin-top: 10px;
+}
+
+/* --- League Pulse ------------------------------------------------ */
+
+.league-pulse {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0 0 16px;
+}
+
+.pulse-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 118px;
+  padding: 15px 16px;
+  overflow: hidden;
+  color: var(--text);
+  text-decoration: none;
+  background: linear-gradient(180deg, rgb(var(--rgb-white) / 0.05) 0%, rgb(var(--rgb-white) / 0.05) 100%);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: 0 10px 26px rgb(var(--rgb-black) / 0.31);
+  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+
+.pulse-card::after {
+  content: "→";
+  position: absolute;
+  right: 14px;
+  bottom: 12px;
+  color: var(--accent);
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.pulse-card:hover {
+  color: var(--text);
+  transform: translateY(-3px);
+  border-color: rgb(var(--rgb-teal) / 0.35);
+  box-shadow: 0 16px 32px rgb(var(--rgb-black) / 0.4);
+}
+
+.pulse-label,
+.section-eyebrow {
+  color: var(--accent);
+  font-size: .72rem;
+  font-weight: 900;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+
+.pulse-card strong {
+  display: block;
+  margin-top: 5px;
+  font-size: 1.6rem;
+  line-height: 1.05;
+  letter-spacing: -.035em;
+}
+
+.pulse-copy {
+  max-width: calc(100% - 22px);
+  margin-top: 7px;
+  color: var(--muted);
+  font-size: .82rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+/* --- Navigation -------------------------------------------------- */
+
+.quick-nav {
+  margin-bottom: 16px;
+}
+
+.quick-nav a {
+  min-height: 36px;
+  padding: 7px 12px;
+}
+
+/* --- Denser section hierarchy ----------------------------------- */
+
+.section-card {
+  margin-bottom: 16px;
+  padding: 18px;
+}
+
+.section-heading,
+.leader-section-header,
+.allstar-compact-head {
+  margin-bottom: 13px;
+}
+
+.section-eyebrow {
+  margin-bottom: 4px;
+}
+
+.section-title,
+.section-heading .section-title {
+  letter-spacing: -.02em;
+}
+
+.section-subtitle {
+  max-width: 700px;
+}
+
+/* --- Trending comes first and feels actionable ------------------ */
+
+#top-pickups {
+  border-color: rgb(var(--rgb-teal) / 0.35);
+  background:
+    radial-gradient(circle at top right, rgb(var(--rgb-teal) / 0.09), transparent 22rem),
+    rgb(var(--rgb-white) / 0.05);
+}
+
+#top-pickups .available-studs-grid {
+  margin-top: 14px;
+}
+
+/* --- Leaders / HR Pool slightly denser -------------------------- */
+
+#mlb-weekly-leaders .weekly-leaders-grid {
+  margin-top: 14px;
+}
+
+#mlb-weekly-leaders .leader-card {
+  min-height: 138px;
+  padding: 14px;
+}
+
+#home-run-pool .home-run-pool-grid {
+  margin-top: 12px;
+}
+
+#home-run-pool .home-run-pool-link-wrap {
+  margin-top: 14px;
+}
+
+/* --- Latest recap gets stronger prominence ---------------------- */
+
+#featured-recap {
+  padding: 20px;
+  background:
+    linear-gradient(135deg, rgb(var(--rgb-teal) / 0.08), rgb(var(--rgb-green) / 0.08)),
+    rgb(var(--rgb-white) / 0.05);
+  border-color: rgb(var(--rgb-teal) / 0.35);
+}
+
+.featured-recap-card {
+  padding: 20px;
+  border-color: rgb(var(--rgb-teal) / 0.35);
+  box-shadow: 0 16px 34px rgb(var(--rgb-black) / 0.37);
+}
+
+.featured-recap-card .article-title {
+  max-width: 900px;
+}
+
+.featured-archive-grid {
+  gap: 12px;
+}
+
+/* --- Tools stay useful but quieter ------------------------------ */
+
+#fantasy-tools .tools-grid {
+  gap: 12px;
+}
+
+#fantasy-tools .tool-card {
+  box-shadow: 0 10px 24px rgb(var(--rgb-black) / 0.31);
+}
+
+/* --- All-Stars become an archive instead of a giant section ----- */
+
+.allstar-archive-section {
+  background: rgb(var(--rgb-white) / 0.05);
+}
+
+.allstar-archive-shell {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: rgb(var(--rgb-white) / 0.05);
+}
+
+.allstar-archive-shell > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 15px 16px;
+  cursor: pointer;
+  list-style: none;
+  transition: background .16s ease;
+}
+
+.allstar-archive-shell > summary::-webkit-details-marker {
+  display: none;
+}
+
+.allstar-archive-shell > summary:hover {
+  background: rgb(var(--rgb-white) / 0.05);
+}
+
+.allstar-archive-shell > summary > span:first-child {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.allstar-archive-shell > summary strong {
+  color: var(--text);
+  font-size: .95rem;
+}
+
+.allstar-archive-shell > summary small {
+  color: var(--muted);
+  font-size: .78rem;
+  line-height: 1.3;
+}
+
+.allstar-archive-action {
+  flex: 0 0 auto;
+  padding: 7px 10px;
+  color: var(--accent-dark);
+  background: rgb(var(--rgb-white) / 0.05);
+  border-radius: 999px;
+  font-size: .75rem;
+  font-weight: 900;
+}
+
+.allstar-archive-shell[open] .allstar-archive-action {
+  color: var(--color-white);
+  background: var(--accent);
+}
+
+.allstar-archive-shell .allstar-team-dropdowns {
+  padding: 0 12px 12px;
+}
+
+/* --- Slightly less visual noise across cards -------------------- */
+
+.article-card,
+.tool-card,
+.leader-card {
+  box-shadow: 0 9px 22px rgb(var(--rgb-black) / 0.3);
+}
+
+.article-card:hover {
+  transform: translateY(-2px);
+}
+
+.tag-row {
+  margin-bottom: 14px;
+}
+
+.tag {
+  padding: 4px 9px;
+}
+
+/* --- Responsive -------------------------------------------------- */
+
+@media (max-width: 900px) {
+  .league-pulse {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pulse-card {
+    min-height: 108px;
+  }
+}
+
+@media (max-width: 520px) {
+  .league-pulse {
+    gap: 9px;
+    margin-bottom: 13px;
+  }
+
+  .pulse-card {
+    min-height: 100px;
+    padding: 12px;
+    border-radius: 15px;
+  }
+
+  .pulse-card strong {
+    font-size: 1.3rem;
+  }
+
+  .pulse-label {
+    font-size: .64rem;
+  }
+
+  .pulse-copy {
+    font-size: .74rem;
+  }
+
+  .section-card {
+    margin-bottom: 13px;
+    padding: 15px;
+  }
+
+  .allstar-archive-shell > summary {
+    align-items: flex-start;
+    padding: 13px;
+  }
+
+  .allstar-archive-action {
+    padding: 6px 8px;
+    font-size: .68rem;
+  }
+}
+
+/* --- Cleaner secondary navigation ------------------------------- */
+
+.quick-nav {
+  display: none !important;
+}
+
+.secondary-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: -2px 0 16px;
+  padding: 0 2px;
+}
+
+.secondary-nav-label {
+  color: var(--muted);
+  font-size: .72rem;
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-right: 2px;
+}
+
+.secondary-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 5px 9px;
+  color: var(--accent-dark);
+  text-decoration: none;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-size: .78rem;
+  font-weight: 850;
+  transition: background .16s ease, border-color .16s ease;
+}
+
+.secondary-nav a:hover {
+  background: rgb(var(--rgb-white) / 0.05);
+  border-color: rgb(var(--rgb-teal) / 0.35);
+}
+
+@media (max-width: 520px) {
+  .secondary-nav {
+    gap: 5px;
+    margin-bottom: 13px;
+  }
+
+  .secondary-nav-label {
+    width: 100%;
+    margin-bottom: 1px;
+  }
+
+  .secondary-nav a {
+    padding: 5px 8px;
+    font-size: .74rem;
+  }
+}
+
+/* =========================================================
+   Prize Pool + Weekly Category Winner
+   ========================================================= */
+
+.league-money-section {
+  border-color: rgb(var(--rgb-teal) / 0.35);
+  background:
+    radial-gradient(circle at top left, rgb(var(--rgb-teal) / 0.09), transparent 20rem),
+    rgb(var(--rgb-white) / 0.05);
+}
+
+.league-money-heading {
+  align-items: flex-start;
+}
+
+.money-updated-tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 5px 9px;
+  color: var(--accent-dark);
+  background: rgb(var(--rgb-white) / 0.05);
+  border: 1px solid rgb(var(--rgb-teal) / 0.35);
+  border-radius: 999px;
+  font-size: .70rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.league-money-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.money-card {
+  min-width: 0;
+  padding: 15px;
+  background: linear-gradient(180deg, rgb(var(--rgb-white) / 0.05) 0%, rgb(var(--rgb-white) / 0.05) 100%);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgb(var(--rgb-black) / 0.3);
+}
+
+.prize-total-card {
+  background:
+    radial-gradient(circle at top right, rgb(var(--rgb-green) / 0.13), transparent 15rem),
+    linear-gradient(180deg, rgb(var(--rgb-white) / 0.05) 0%, rgb(var(--rgb-white) / 0.05) 100%);
+}
+
+.weekly-winner-card {
+  background:
+    radial-gradient(circle at top right, rgb(var(--rgb-teal) / 0.11), transparent 15rem),
+    linear-gradient(180deg, rgb(var(--rgb-white) / 0.05) 0%, rgb(var(--rgb-white) / 0.05) 100%);
+}
+
+.money-card-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 9px;
+}
+
+.money-label {
+  color: var(--muted);
+  font-size: .68rem;
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.money-status,
+.weekly-week-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 4px 7px;
+  border-radius: 999px;
+  font-size: .64rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.money-status {
+  color: var(--color-green);
+  background: rgb(var(--rgb-white) / 0.05);
+  border: 1px solid rgb(var(--rgb-green) / 0.35);
+}
+
+.weekly-week-pill {
+  color: var(--accent-dark);
+  background: rgb(var(--rgb-white) / 0.05);
+  border: 1px solid rgb(var(--rgb-teal) / 0.35);
+}
+
+.money-total {
+  color: var(--green);
+  font-size: clamp(2rem, 12vw, 3rem);
+  font-weight: 950;
+  line-height: .95;
+  letter-spacing: -.055em;
+}
+
+.money-description {
+  margin: 9px 0 13px;
+  color: var(--muted);
+  font-size: .80rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.money-breakdown {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+}
+
+.money-breakdown-item {
+  min-width: 0;
+  padding: 9px;
+  background: rgb(var(--rgb-white) / 0.05);
+  border: 1px solid var(--border);
+  border-radius: 11px;
+}
+
+.money-breakdown-item span {
+  display: block;
+  color: var(--muted);
+  font-size: .63rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.money-breakdown-item strong {
+  display: block;
+  margin-top: 3px;
+  color: var(--text);
+  font-size: .98rem;
+  line-height: 1.1;
+}
+
+.waiver-money-item strong {
+  color: var(--green);
+}
+
+.weekly-winner-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 11px;
+  align-items: center;
+}
+
+.weekly-category {
+  display: block;
+  margin-bottom: 3px;
+  color: var(--accent);
+  font-size: .68rem;
+  font-weight: 900;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.weekly-winner-name {
+  display: block;
+  color: var(--text);
+  font-size: 1.25rem;
+  line-height: 1.1;
+  letter-spacing: -.025em;
+  overflow-wrap: anywhere;
+}
+
+.weekly-result {
+  display: block;
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: .78rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.weekly-prize-box {
+  min-width: 74px;
+  padding: 10px 8px;
+  text-align: center;
+  background: rgb(var(--rgb-white) / 0.05);
+  border: 1px solid rgb(var(--rgb-teal) / 0.35);
+  border-radius: 12px;
+}
+
+.weekly-prize-box span {
+  display: block;
+  color: var(--muted);
+  font-size: .60rem;
+  font-weight: 900;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.weekly-prize-box strong {
+  display: block;
+  margin-top: 2px;
+  color: var(--accent-dark);
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.weekly-history {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.weekly-history summary {
+  color: var(--accent-dark);
+  cursor: pointer;
+  font-size: .76rem;
+  font-weight: 900;
+}
+
+.weekly-history-list {
+  display: grid;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.weekly-history-item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+  padding: 7px 8px;
+  background: rgb(var(--rgb-white) / 0.05);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  font-size: .72rem;
+}
+
+.weekly-history-item .history-week {
+  color: var(--muted);
+  font-weight: 900;
+}
+
+.weekly-history-item .history-winner {
+  min-width: 0;
+  font-weight: 900;
+  overflow-wrap: anywhere;
+}
+
+.weekly-history-item .history-prize {
+  color: var(--green);
+  font-weight: 900;
+}
+
+.pulse-money-card strong {
+  color: var(--green);
+}
+
+.pulse-winner-card strong {
+  font-size: 1.2rem;
+  overflow-wrap: anywhere;
+}
+
+@media (min-width: 700px) {
+  .league-money-grid {
+    grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+    gap: 12px;
+  }
+
+  .money-card {
+    padding: 17px;
+  }
+}
+
+/* =========================================================
+   Prize pool — three source breakdown
+   ========================================================= */
+
+.money-breakdown {
+  grid-template-columns: 1fr !important;
+}
+
+.money-breakdown-item {
+  min-width: 0;
+}
+
+.bid-money-item strong {
+  color: var(--accent-dark);
+}
+
+/* =========================================================
+   Weekly category winner season ledger
+   ========================================================= */
+
+.weekly-ledger-header {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-top: 15px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.weekly-ledger-header > div:first-child {
+  display: grid;
+  gap: 1px;
+}
+
+.weekly-ledger-subtitle {
+  color: var(--muted);
+  font-size: .72rem;
+  font-weight: 700;
+}
+
+.weekly-ledger-totals {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.weekly-ledger-totals span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 7px;
+  color: var(--muted);
+  background: var(--soft);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: .68rem;
+  font-weight: 800;
+}
+
+.weekly-ledger-totals b {
+  color: var(--text);
+}
+
+.weekly-winner-ledger {
+  display: grid;
+  gap: 7px;
+  margin-top: 9px;
+}
+
+.weekly-ledger-row {
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+  min-width: 0;
+  padding: 9px;
+  background: rgb(var(--rgb-white) / 0.05);
+  border: 1px solid var(--border);
+  border-radius: 11px;
+}
+
+.weekly-ledger-row.is-latest {
+  background: rgb(var(--rgb-white) / 0.05);
+  border-color: rgb(var(--rgb-teal) / 0.35);
+}
+
+.weekly-ledger-week {
+  color: var(--accent-dark);
+  font-size: .70rem;
+  font-weight: 900;
+}
+
+.weekly-ledger-main {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+}
+
+.weekly-ledger-main strong {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: var(--text);
+  font-size: .78rem;
+  line-height: 1.15;
+}
+
+.weekly-ledger-main span {
+  min-width: 0;
+  color: var(--muted);
+  font-size: .68rem;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.weekly-ledger-prize {
+  color: var(--green);
+  font-size: .76rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.weekly-ledger-empty {
+  margin: 9px 0 0;
+  padding: 10px;
+  color: var(--muted);
+  background: rgb(var(--rgb-white) / 0.05);
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  font-size: .72rem;
+  line-height: 1.35;
+}
+
+.weekly-ledger-empty code {
+  color: var(--accent-dark);
+}
+
+@media (min-width: 600px) {
+  .money-breakdown {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  .weekly-ledger-header {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
+  .weekly-ledger-row {
+    grid-template-columns: 72px minmax(0, 1fr) 78px;
+    padding: 10px 11px;
+  }
+
+  .weekly-ledger-week,
+  .weekly-ledger-main strong,
+  .weekly-ledger-prize {
+    font-size: .82rem;
+  }
+
+  .weekly-ledger-main span {
+    font-size: .72rem;
+  }
+
+  .weekly-ledger-prize {
+    text-align: right;
+  }
+}
+
+/* =========================================================
+   Prize payout structure
+   ========================================================= */
+
+.payout-structure {
+  margin-top: 14px;
+  padding-top: 13px;
+  border-top: 1px solid var(--border);
+}
+
+.payout-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 8px;
+}
+
+.payout-note {
+  color: var(--muted);
+  font-size: .68rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.payout-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 7px;
+}
+
+.payout-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "place value"
+    "projected projected";
+  gap: 3px 8px;
+  align-items: center;
+  min-width: 0;
+  padding: 10px 11px;
+  overflow: hidden;
+  background: rgb(var(--rgb-white) / 0.05);
+  border: 1px solid var(--border);
+  border-radius: 11px;
+}
+
+.payout-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+}
+
+.payout-first::before { background: var(--color-gold); }
+.payout-second::before { background: var(--color-teal); }
+.payout-third::before { background: var(--color-orange); }
+
+.payout-place {
+  grid-area: place;
+  color: var(--muted);
+  font-size: .70rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .045em;
+}
+
+.payout-card strong {
+  grid-area: value;
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 900;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.payout-projected {
+  grid-area: projected;
+  color: var(--accent-dark);
+  font-size: .68rem;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+@media (min-width: 600px) {
+  .payout-heading {
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .payout-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .payout-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-height: 92px;
+  }
+
+  .payout-card strong {
+    font-size: 1.18rem;
+    text-align: left;
+  }
+
+  .payout-projected {
+    margin-top: auto;
+  }
+}
+
+/* ---------- Intelligence boards, history, team profiles ---------- */
 .uti-intelligence-section {
   position: relative;
   overflow: hidden;
   padding: 22px;
-  border-color: rgba(255, 255, 255, 0.1);
+  border-color: rgb(var(--rgb-white) / 0.1);
   background:
-    radial-gradient(circle at 90% 0%, rgba(25, 211, 197, 0.16), transparent 28%),
-    radial-gradient(circle at 0% 100%, rgba(52, 211, 153, 0.13), transparent 28%),
-    rgba(255, 255, 255, 0.05);
+    radial-gradient(circle at 90% 0%, rgb(var(--rgb-teal) / 0.16), transparent 28%),
+    radial-gradient(circle at 0% 100%, rgb(var(--rgb-green) / 0.13), transparent 28%),
+    rgb(var(--rgb-white) / 0.05);
 }
 
 .uti-intelligence-heading {
@@ -32,10 +986,10 @@
   min-width: 0;
   overflow: hidden;
   padding: 15px 16px 14px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgb(var(--rgb-white) / 0.1);
   border-radius: 16px;
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05));
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.31);
+  background: linear-gradient(145deg, rgb(var(--rgb-white) / 0.05), rgb(var(--rgb-white) / 0.05));
+  box-shadow: 0 8px 22px rgb(var(--rgb-black) / 0.31);
 }
 
 .uti-intel-card::after {
@@ -63,7 +1017,7 @@
   height: 28px;
   place-items: center;
   border-radius: 9px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgb(var(--rgb-white) / 0.05);
   font-size: 1rem;
 }
 
@@ -73,7 +1027,7 @@
 }
 
 .uti-intel-label {
-  color: #8d98b3;
+  color: var(--color-text-muted);
   font-size: .68rem;
   font-weight: 900;
   letter-spacing: .07em;
@@ -94,7 +1048,7 @@
   flex: 0 0 auto;
   border-radius: 50%;
   object-fit: cover;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 2px 8px rgb(var(--rgb-black) / 0.5);
 }
 
 .uti-intel-team {
@@ -116,29 +1070,29 @@
 }
 
 .uti-intel-copy {
-  color: #8d98b3;
+  color: var(--color-text-muted);
   font-size: .69rem;
   line-height: 1.25;
 }
 
-.uti-intel-card.is-leader { color: #34d399; border-top: 4px solid #34d399; }
-.uti-intel-card.is-power { color: #19d3c5; border-top: 4px solid #19d3c5; }
-.uti-intel-card.is-lucky { color: #ff9f5a; border-top: 4px solid #ff9f5a; }
-.uti-intel-card.is-unlucky { color: #ff6b4a; border-top: 4px solid #ff6b4a; }
+.uti-intel-card.is-leader { color: var(--color-green); border-top: 4px solid var(--color-green); }
+.uti-intel-card.is-power { color: var(--color-teal); border-top: 4px solid var(--color-teal); }
+.uti-intel-card.is-lucky { color: var(--color-orange); border-top: 4px solid var(--color-orange); }
+.uti-intel-card.is-unlucky { color: var(--color-coral); border-top: 4px solid var(--color-coral); }
 
 .uti-intel-card .uti-intel-label,
 .uti-intel-card .uti-intel-team,
 .uti-intel-card .uti-intel-copy {
-  color: #e9eef8;
+  color: var(--color-text);
 }
 
-.uti-intel-card .uti-intel-copy { color: #8d98b3; }
+.uti-intel-card .uti-intel-copy { color: var(--color-text-muted); }
 .uti-intel-error { grid-column: 1 / -1; }
 
 .uti-intelligence-details {
   margin-top: 18px;
   padding-top: 14px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgb(var(--rgb-white) / 0.1);
 }
 
 .uti-intelligence-details > summary {
@@ -157,17 +1111,17 @@
 .uti-intelligence-details > summary strong { font-size: .94rem; }
 .uti-intelligence-details > summary small {
   margin-top: 3px;
-  color: #8d98b3;
+  color: var(--color-text-muted);
   font-size: .72rem;
 }
 
 .uti-intelligence-toggle {
   flex: 0 0 auto;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgb(var(--rgb-white) / 0.1);
   border-radius: 999px;
   padding: 7px 11px;
-  background: rgba(255, 255, 255, 0.05);
-  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.25);
+  background: rgb(var(--rgb-white) / 0.05);
+  box-shadow: 0 2px 7px rgb(var(--rgb-black) / 0.25);
   font-size: .7rem;
   font-weight: 900;
 }
@@ -188,10 +1142,10 @@
 .uti-analytics-panel {
   min-width: 0;
   padding: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgb(var(--rgb-white) / 0.1);
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.05);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  background: rgb(var(--rgb-white) / 0.05);
+  box-shadow: inset 0 1px 0 rgb(var(--rgb-white) / 0.06);
 }
 
 .uti-analytics-panel-head {
@@ -206,7 +1160,7 @@
 
 .uti-analytics-panel-head p {
   margin: 0;
-  color: #8d98b3;
+  color: var(--color-text-muted);
   font-size: .7rem;
   line-height: 1.35;
 }
@@ -230,8 +1184,8 @@
   flex: 0 0 auto;
   border-radius: 50%;
   object-fit: cover;
-  background: rgba(255, 255, 255, 0.05);
-  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.5);
+  background: rgb(var(--rgb-white) / 0.05);
+  box-shadow: 0 2px 7px rgb(var(--rgb-black) / 0.5);
 }
 
 .uti-team-name {
@@ -271,17 +1225,17 @@
 
 .uti-rank-row:hover {
   transform: translateY(-1px);
-  background: rgba(255, 255, 255, 0.05);
+  background: rgb(var(--rgb-white) / 0.05);
 }
 
 .uti-rank-row.is-top-1 {
-  background: linear-gradient(90deg, rgba(242, 193, 78, 0.19), transparent 70%);
+  background: linear-gradient(90deg, rgb(var(--rgb-gold) / 0.19), transparent 70%);
 }
 .uti-rank-row.is-top-2 {
-  background: linear-gradient(90deg, rgba(25, 211, 197, 0.19), transparent 70%);
+  background: linear-gradient(90deg, rgb(var(--rgb-teal) / 0.19), transparent 70%);
 }
 .uti-rank-row.is-top-3 {
-  background: linear-gradient(90deg, rgba(255, 159, 90, 0.16), transparent 70%);
+  background: linear-gradient(90deg, rgb(var(--rgb-orange) / 0.16), transparent 70%);
 }
 
 .uti-rank-number {
@@ -290,8 +1244,8 @@
   height: 22px;
   place-items: center;
   border-radius: 7px;
-  background: rgba(255, 255, 255, 0.06);
-  color: #8d98b3;
+  background: rgb(var(--rgb-white) / 0.06);
+  color: var(--color-text-muted);
   font-size: .65rem;
   font-weight: 900;
 }
@@ -305,29 +1259,29 @@
   height: 8px;
   overflow: hidden;
   border-radius: 999px;
-  background: rgba(25, 211, 197, 0.3);
+  background: rgb(var(--rgb-teal) / 0.3);
 }
 
 .uti-rank-bar {
   display: block;
   height: 100%;
   border-radius: inherit;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 1px 5px rgb(var(--rgb-black) / 0.4);
 }
 
 .uti-bar-allplay {
-  background: linear-gradient(90deg, #34d399, #34d399);
+  background: linear-gradient(90deg, var(--color-green), var(--color-green));
 }
 
 .uti-bar-power {
-  background: linear-gradient(90deg, #19d3c5, #19d3c5);
+  background: linear-gradient(90deg, var(--color-teal), var(--color-teal));
 }
 
 .uti-rank-sub {
   display: block;
   margin-top: 4px;
   overflow: hidden;
-  color: #8d98b3;
+  color: var(--color-text-muted);
   font-size: .58rem;
   line-height: 1.15;
   text-overflow: ellipsis;
@@ -352,7 +1306,7 @@
   grid-template-columns: 1fr auto 1fr;
   gap: 8px;
   padding: 0 50px 1px 166px;
-  color: #19d3c5;
+  color: var(--color-teal);
   font-size: .55rem;
   font-weight: 800;
   letter-spacing: .04em;
@@ -375,7 +1329,7 @@
 }
 
 .uti-luck-row:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgb(var(--rgb-white) / 0.05);
 }
 
 .uti-luck-row > .uti-rank-number { grid-area: rank; }
@@ -387,7 +1341,7 @@
   height: 10px;
   overflow: hidden;
   border-radius: 999px;
-  background: rgba(25, 211, 197, 0.26);
+  background: rgb(var(--rgb-teal) / 0.26);
 }
 
 .uti-luck-zero {
@@ -397,7 +1351,7 @@
   left: 50%;
   width: 2px;
   transform: translateX(-1px);
-  background: rgba(25, 211, 197, 0.3);
+  background: rgb(var(--rgb-teal) / 0.3);
   z-index: 2;
 }
 
@@ -409,11 +1363,11 @@
 }
 
 .uti-luck-bar.is-positive {
-  background: linear-gradient(90deg, #ff9f5a, #ff9f5a);
+  background: linear-gradient(90deg, var(--color-orange), var(--color-orange));
 }
 
 .uti-luck-bar.is-negative {
-  background: linear-gradient(90deg, #ff6b4a, #ff6b4a);
+  background: linear-gradient(90deg, var(--color-coral), var(--color-coral));
 }
 
 .uti-luck-value {
@@ -424,12 +1378,12 @@
   font-variant-numeric: tabular-nums;
 }
 
-.uti-luck-value.is-positive { color: #ff9f5a; }
-.uti-luck-value.is-negative { color: #ff6b4a; }
+.uti-luck-value.is-positive { color: var(--color-orange); }
+.uti-luck-value.is-negative { color: var(--color-coral); }
 
 .uti-luck-detail {
   grid-area: detail;
-  color: #8d98b3;
+  color: var(--color-text-muted);
   font-size: .57rem;
   text-align: right;
 }
@@ -444,9 +1398,9 @@
 .uti-category-card {
   min-width: 0;
   padding: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgb(var(--rgb-white) / 0.1);
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgb(var(--rgb-white) / 0.05);
 }
 
 .uti-category-top {
@@ -464,15 +1418,15 @@
   place-items: center;
   padding: 0 7px;
   border-radius: 7px;
-  background: #24304d;
-  color: #fff;
+  background: var(--color-slate-deep);
+  color: var(--color-white);
   font-size: .61rem;
   font-weight: 900;
   letter-spacing: .03em;
 }
 
 .uti-category-top strong {
-  color: #e9eef8;
+  color: var(--color-text);
   font-size: .68rem;
   font-variant-numeric: tabular-nums;
 }
@@ -486,14 +1440,14 @@
   height: 6px;
   overflow: hidden;
   border-radius: 999px;
-  background: rgba(25, 211, 197, 0.29);
+  background: rgb(var(--rgb-teal) / 0.29);
 }
 
 .uti-category-meter span {
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.12), #19d3c5);
+  background: linear-gradient(90deg, rgb(var(--rgb-white) / 0.12), var(--color-teal));
 }
 
 @media (max-width: 1050px) {
@@ -641,7 +1595,7 @@
 }
 
 .uti-team-profile-trigger:focus-visible {
-  outline: 3px solid rgba(25, 211, 197, 0.3);
+  outline: 3px solid rgb(var(--rgb-teal) / 0.3);
   outline-offset: 2px;
 }
 
@@ -651,7 +1605,7 @@
 
 .uti-intel-card.uti-team-profile-trigger:hover {
   transform: translateY(-3px);
-  box-shadow: 0 13px 30px rgba(0, 0, 0, 0.46);
+  box-shadow: 0 13px 30px rgb(var(--rgb-black) / 0.46);
 }
 
 .uti-team-identity.uti-team-profile-trigger:hover .uti-team-name {
@@ -671,7 +1625,7 @@ body.uti-profile-open {
   display: grid;
   place-items: center;
   padding: 24px;
-  background: rgba(255, 255, 255, 0.12);
+  background: rgb(var(--rgb-white) / 0.12);
   backdrop-filter: blur(7px);
 }
 
@@ -684,13 +1638,13 @@ body.uti-profile-open {
   width: min(920px, 100%);
   max-height: min(860px, calc(100vh - 48px));
   overflow-y: auto;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgb(var(--rgb-white) / 0.12);
   border-radius: 24px;
   background:
-    radial-gradient(circle at 85% 0%, rgba(25, 211, 197, 0.26), transparent 31%),
-    radial-gradient(circle at 0% 95%, rgba(52, 211, 153, 0.16), transparent 28%),
-    rgba(255, 255, 255, 0.05);
-  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.5);
+    radial-gradient(circle at 85% 0%, rgb(var(--rgb-teal) / 0.26), transparent 31%),
+    radial-gradient(circle at 0% 95%, rgb(var(--rgb-green) / 0.16), transparent 28%),
+    rgb(var(--rgb-white) / 0.05);
+  box-shadow: 0 28px 80px rgb(var(--rgb-black) / 0.5);
 }
 
 .uti-profile-close {
@@ -701,10 +1655,10 @@ body.uti-profile-open {
   width: 38px;
   height: 38px;
   margin: 14px 14px -52px 0;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgb(var(--rgb-white) / 0.1);
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.05);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.46);
+  background: rgb(var(--rgb-white) / 0.05);
+  box-shadow: 0 4px 14px rgb(var(--rgb-black) / 0.46);
   font-size: 1.35rem;
   font-weight: 800;
   line-height: 1;
@@ -736,14 +1690,14 @@ body.uti-profile-open {
   flex: 0 0 auto;
   border-radius: 18px;
   object-fit: cover;
-  background: rgba(255, 255, 255, 0.05);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  background: rgb(var(--rgb-white) / 0.05);
+  box-shadow: 0 8px 24px rgb(var(--rgb-black) / 0.5);
 }
 
 .uti-profile-kicker {
   display: block;
   margin-bottom: 4px;
-  color: #19d3c5;
+  color: var(--color-teal);
   font-size: .68rem;
   font-weight: 950;
   letter-spacing: .09em;
@@ -764,8 +1718,8 @@ body.uti-profile-open {
   min-height: 28px;
   padding: 5px 10px;
   border-radius: 999px;
-  background: #24304d;
-  color: #fff;
+  background: var(--color-slate-deep);
+  color: var(--color-white);
   font-size: .7rem;
   font-weight: 900;
   letter-spacing: .03em;
@@ -776,11 +1730,11 @@ body.uti-profile-open {
   flex: 0 0 auto;
   min-width: 118px;
   padding: 12px 14px;
-  border: 1px solid rgba(25, 211, 197, 0.3);
+  border: 1px solid rgb(var(--rgb-teal) / 0.3);
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgb(var(--rgb-white) / 0.05);
   text-align: center;
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
+  box-shadow: 0 8px 22px rgb(var(--rgb-black) / 0.28);
 }
 
 .uti-profile-power-badge span,
@@ -789,7 +1743,7 @@ body.uti-profile-open {
 }
 
 .uti-profile-power-badge span {
-  color: #8d98b3;
+  color: var(--color-text-muted);
   font-size: .62rem;
   font-weight: 900;
   letter-spacing: .06em;
@@ -799,13 +1753,13 @@ body.uti-profile-open {
 .uti-profile-power-badge strong {
   display: block;
   margin: 2px 0;
-  color: #19d3c5;
+  color: var(--color-teal);
   font-size: 2rem;
   line-height: 1;
 }
 
 .uti-profile-power-badge small {
-  color: #8d98b3;
+  color: var(--color-text-muted);
   font-size: .62rem;
   font-weight: 700;
 }
@@ -820,9 +1774,9 @@ body.uti-profile-open {
 .uti-profile-stat-grid article {
   min-width: 0;
   padding: 13px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgb(var(--rgb-white) / 0.1);
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgb(var(--rgb-white) / 0.05);
 }
 
 .uti-profile-stat-grid span,
@@ -832,7 +1786,7 @@ body.uti-profile-open {
 
 .uti-profile-stat-grid span {
   margin-bottom: 4px;
-  color: #8d98b3;
+  color: var(--color-text-muted);
   font-size: .62rem;
   font-weight: 900;
   letter-spacing: .05em;
@@ -847,15 +1801,15 @@ body.uti-profile-open {
 }
 
 .uti-profile-stat-grid strong.is-positive {
-  color: #ff9f5a;
+  color: var(--color-orange);
 }
 
 .uti-profile-stat-grid strong.is-negative {
-  color: #ff6b4a;
+  color: var(--color-coral);
 }
 
 .uti-profile-stat-grid small {
-  color: #8d98b3;
+  color: var(--color-text-muted);
   font-size: .62rem;
 }
 
@@ -868,21 +1822,21 @@ body.uti-profile-open {
 
 .uti-profile-split-card {
   padding: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgb(var(--rgb-white) / 0.1);
   border-radius: 15px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgb(var(--rgb-white) / 0.05);
 }
 
 .uti-profile-split-card.is-hitting {
-  background: linear-gradient(135deg, rgba(52, 211, 153, 0.13), rgba(255, 255, 255, 0.05) 58%);
+  background: linear-gradient(135deg, rgb(var(--rgb-green) / 0.13), rgb(var(--rgb-white) / 0.05) 58%);
 }
 
 .uti-profile-split-card.is-pitching {
-  background: linear-gradient(135deg, rgba(25, 211, 197, 0.13), rgba(255, 255, 255, 0.05) 58%);
+  background: linear-gradient(135deg, rgb(var(--rgb-teal) / 0.13), rgb(var(--rgb-white) / 0.05) 58%);
 }
 
 .uti-profile-card-label {
-  color: #8d98b3;
+  color: var(--color-text-muted);
   font-size: .62rem;
   font-weight: 950;
   letter-spacing: .06em;
@@ -903,7 +1857,7 @@ body.uti-profile-open {
 }
 
 .uti-profile-rank-line span {
-  color: #8d98b3;
+  color: var(--color-text-muted);
   font-size: .74rem;
   font-weight: 800;
 }
@@ -912,7 +1866,7 @@ body.uti-profile-open {
   height: 8px;
   overflow: hidden;
   border-radius: 999px;
-  background: rgba(25, 211, 197, 0.29);
+  background: rgb(var(--rgb-teal) / 0.29);
 }
 
 .uti-profile-meter span {
@@ -922,19 +1876,19 @@ body.uti-profile-open {
 }
 
 .uti-profile-split-card.is-hitting .uti-profile-meter span {
-  background: linear-gradient(90deg, #34d399, #34d399);
+  background: linear-gradient(90deg, var(--color-green), var(--color-green));
 }
 
 .uti-profile-split-card.is-pitching .uti-profile-meter span {
-  background: linear-gradient(90deg, #19d3c5, #19d3c5);
+  background: linear-gradient(90deg, var(--color-teal), var(--color-teal));
 }
 
 .uti-profile-section {
   margin-bottom: 12px;
   padding: 15px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgb(var(--rgb-white) / 0.1);
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgb(var(--rgb-white) / 0.05);
 }
 
 .uti-profile-section-head {
@@ -974,18 +1928,18 @@ body.uti-profile-open {
 }
 
 .uti-form-chip.is-w {
-  background: rgba(52, 211, 153, 0.19);
-  color: #34d399;
+  background: rgb(var(--rgb-green) / 0.19);
+  color: var(--color-green);
 }
 
 .uti-form-chip.is-l {
-  background: rgba(255, 107, 74, 0.18);
-  color: #ff6b4a;
+  background: rgb(var(--rgb-coral) / 0.18);
+  color: var(--color-coral);
 }
 
 .uti-form-chip.is-t {
-  background: rgba(255, 255, 255, 0.08);
-  color: #8d98b3;
+  background: rgb(var(--rgb-white) / 0.08);
+  color: var(--color-text-muted);
 }
 
 .uti-profile-trend {
@@ -1013,7 +1967,7 @@ body.uti-profile-open {
   height: 74px;
   overflow: hidden;
   border-radius: 7px 7px 4px 4px;
-  background: rgba(25, 211, 197, 0.18);
+  background: rgb(var(--rgb-teal) / 0.18);
 }
 
 .uti-profile-trend-bar {
@@ -1021,7 +1975,7 @@ body.uti-profile-open {
   width: 100%;
   min-height: 8px;
   border-radius: 7px 7px 3px 3px;
-  background: linear-gradient(180deg, #19d3c5, #19d3c5);
+  background: linear-gradient(180deg, var(--color-teal), var(--color-teal));
 }
 
 .uti-profile-trend-item strong {
@@ -1029,7 +1983,7 @@ body.uti-profile-open {
 }
 
 .uti-profile-trend-item small {
-  color: #19d3c5;
+  color: var(--color-teal);
   font-size: .52rem;
 }
 
@@ -1042,9 +1996,9 @@ body.uti-profile-open {
 .uti-profile-detail-card {
   min-width: 0;
   padding: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgb(var(--rgb-white) / 0.1);
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgb(var(--rgb-white) / 0.05);
 }
 
 .uti-profile-detail-card span,
@@ -1055,7 +2009,7 @@ body.uti-profile-open {
 
 .uti-profile-detail-card span {
   margin-bottom: 5px;
-  color: #8d98b3;
+  color: var(--color-text-muted);
   font-size: .61rem;
   font-weight: 900;
   text-transform: uppercase;
@@ -1070,19 +2024,19 @@ body.uti-profile-open {
 }
 
 .uti-profile-detail-card small {
-  color: #8d98b3;
+  color: var(--color-text-muted);
   font-size: .59rem;
   line-height: 1.25;
 }
 
 .uti-profile-detail-card.is-best,
 .uti-profile-detail-card.is-best-cat {
-  border-top: 3px solid #34d399;
+  border-top: 3px solid var(--color-green);
 }
 
 .uti-profile-detail-card.is-worst,
 .uti-profile-detail-card.is-worst-cat {
-  border-top: 3px solid #ff6b4a;
+  border-top: 3px solid var(--color-coral);
 }
 
 .uti-profile-footer-stats {
@@ -1095,14 +2049,14 @@ body.uti-profile-open {
 .uti-profile-footer-stats span {
   padding: 7px 10px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.06);
-  color: #8d98b3;
+  background: rgb(var(--rgb-white) / 0.06);
+  color: var(--color-text-muted);
   font-size: .65rem;
   font-weight: 750;
 }
 
 .uti-profile-footer-stats strong {
-  color: #e9eef8;
+  color: var(--color-text);
 }
 
 @media (max-width: 720px) {
@@ -1194,14 +2148,13 @@ body.uti-profile-open {
   }
 }
 
-
 /* ---------- Historical season display ---------- */
 .uti-history-snapshot {
   margin-top: 12px;
   padding: 14px;
-  border: 1px solid rgba(25, 211, 197, 0.3);
+  border: 1px solid rgb(var(--rgb-teal) / 0.3);
   border-radius: 16px;
-  background: linear-gradient(135deg, rgba(25, 211, 197, 0.1), rgba(255, 255, 255, 0.05) 48%, rgba(52, 211, 153, 0.08));
+  background: linear-gradient(135deg, rgb(var(--rgb-teal) / 0.1), rgb(var(--rgb-white) / 0.05) 48%, rgb(var(--rgb-green) / 0.08));
 }
 
 .uti-history-snapshot-head {
@@ -1220,7 +2173,7 @@ body.uti-profile-open {
 
 .uti-history-eyebrow {
   margin-bottom: 2px;
-  color: #19d3c5;
+  color: var(--color-teal);
   font-size: .62rem;
   font-weight: 950;
   letter-spacing: .08em;
@@ -1228,13 +2181,13 @@ body.uti-profile-open {
 }
 
 .uti-history-snapshot-head strong {
-  color: #e9eef8;
+  color: var(--color-text);
   font-size: .95rem;
 }
 
 .uti-history-snapshot-head small {
   margin-top: 2px;
-  color: #8d98b3;
+  color: var(--color-text-muted);
   font-size: .64rem;
 }
 
@@ -1242,8 +2195,8 @@ body.uti-profile-open {
   flex: 0 0 auto;
   padding: 6px 9px;
   border-radius: 999px;
-  background: #24304d;
-  color: #fff;
+  background: var(--color-slate-deep);
+  color: var(--color-white);
   font-size: .6rem;
   font-weight: 850;
 }
@@ -1264,14 +2217,14 @@ body.uti-profile-open {
   gap: 4px 8px;
   min-width: 0;
   padding: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgb(var(--rgb-white) / 0.1);
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgb(var(--rgb-white) / 0.05);
 }
 
 .uti-history-snapshot-grid article > span {
   grid-area: label;
-  color: #8d98b3;
+  color: var(--color-text-muted);
   font-size: .58rem;
   font-weight: 900;
   letter-spacing: .03em;
@@ -1284,14 +2237,14 @@ body.uti-profile-open {
 
 .uti-history-snapshot-grid article > strong {
   grid-area: value;
-  color: #19d3c5;
+  color: var(--color-teal);
   font-size: .84rem;
   font-weight: 950;
 }
 
 .uti-history-snapshot > p {
   margin: 10px 0 0;
-  color: #8d98b3;
+  color: var(--color-text-muted);
   font-size: .64rem;
 }
 
@@ -1302,9 +2255,9 @@ body.uti-profile-open {
   gap: 7px;
   margin: 0 52px 14px 0;
   padding: 5px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgb(var(--rgb-white) / 0.1);
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgb(var(--rgb-white) / 0.06);
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
@@ -1323,7 +2276,7 @@ body.uti-profile-open {
   border: 0;
   border-radius: 10px;
   background: transparent;
-  color: #8d98b3;
+  color: var(--color-text-muted);
   cursor: pointer;
   white-space: normal;
   text-align: center;
@@ -1343,19 +2296,19 @@ body.uti-profile-open {
 }
 
 .uti-profile-season-tabs button.is-active {
-  background: rgba(255, 255, 255, 0.05);
-  color: #e9eef8;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+  background: rgb(var(--rgb-white) / 0.05);
+  color: var(--color-text);
+  box-shadow: 0 3px 10px rgb(var(--rgb-black) / 0.4);
 }
 
 .uti-profile-season-tabs button.is-active strong {
-  color: #19d3c5;
+  color: var(--color-teal);
 }
 
 .uti-profile-source-note {
   display: block;
   margin-top: 6px;
-  color: #8d98b3;
+  color: var(--color-text-muted);
   font-size: .61rem;
   font-weight: 700;
 }
@@ -1365,17 +2318,17 @@ body.uti-profile-open {
   gap: 9px;
   margin: -2px 0 12px;
   padding: 9px 11px;
-  border: 1px solid rgba(25, 211, 197, 0.3);
+  border: 1px solid rgb(var(--rgb-teal) / 0.3);
   border-radius: 11px;
-  background: rgba(25, 211, 197, 0.09);
-  color: #c3cce0;
+  background: rgb(var(--rgb-teal) / 0.09);
+  color: var(--color-text-soft);
   font-size: .62rem;
   line-height: 1.35;
 }
 
 .uti-history-notice strong {
   flex: 0 0 auto;
-  color: #19d3c5;
+  color: var(--color-teal);
 }
 
 /* Keep team artwork compact everywhere in the analytics UI. */
@@ -1444,7 +2397,6 @@ body.uti-profile-open {
   }
 }
 
-
 /* ---------- Team names across the homepage ---------- */
 .uti-global-team-profile-link {
   cursor: pointer !important;
@@ -1457,16 +2409,15 @@ a.uti-global-team-profile-link:hover,
 }
 
 .uti-global-team-profile-link:focus-visible {
-  outline: 3px solid rgba(25, 211, 197, 0.3);
+  outline: 3px solid rgb(var(--rgb-teal) / 0.3);
   outline-offset: 3px;
   border-radius: 5px;
 }
 
 .tag.uti-global-team-profile-link:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 12px rgb(var(--rgb-black) / 0.4);
 }
-
 
 /* ---------- Homepage UTI Intelligence preview ---------- */
 .uti-intelligence-preview-cta {
@@ -1476,9 +2427,9 @@ a.uti-global-team-profile-link:hover,
   gap: 18px;
   margin-top: 14px;
   padding: 13px 14px;
-  border: 1px solid rgba(25, 211, 197, 0.3);
+  border: 1px solid rgb(var(--rgb-teal) / 0.3);
   border-radius: 14px;
-  background: linear-gradient(90deg, rgba(25, 211, 197, 0.11), rgba(255, 255, 255, 0.05));
+  background: linear-gradient(90deg, rgb(var(--rgb-teal) / 0.11), rgb(var(--rgb-white) / 0.05));
 }
 
 .uti-intelligence-preview-cta strong,
@@ -1487,13 +2438,13 @@ a.uti-global-team-profile-link:hover,
 }
 
 .uti-intelligence-preview-cta strong {
-  color: #e9eef8;
+  color: var(--color-text);
   font-size: .88rem;
 }
 
 .uti-intelligence-preview-cta > div > span {
   margin-top: 3px;
-  color: #8d98b3;
+  color: var(--color-text-muted);
   font-size: .68rem;
   line-height: 1.35;
 }
@@ -1507,12 +2458,12 @@ a.uti-global-team-profile-link:hover,
   min-height: 42px;
   padding: 9px 13px;
   border-radius: 999px;
-  background: #24304d;
-  color: #fff !important;
+  background: var(--color-slate-deep);
+  color: var(--color-white) !important;
   font-size: .7rem;
   font-weight: 900;
   text-decoration: none !important;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.49);
+  box-shadow: 0 6px 16px rgb(var(--rgb-black) / 0.49);
 }
 
 .uti-intelligence-page-link:hover {
@@ -1523,8 +2474,8 @@ a.uti-global-team-profile-link:hover,
 .uti-intelligence-page-body {
   min-height: 100vh;
   background:
-    radial-gradient(circle at 92% 0%, rgba(25, 211, 197, 0.16), transparent 27%),
-    rgba(255, 255, 255, 0.05);
+    radial-gradient(circle at 92% 0%, rgb(var(--rgb-teal) / 0.16), transparent 27%),
+    rgb(var(--rgb-white) / 0.05);
 }
 
 .uti-intelligence-page-shell {
@@ -1533,55 +2484,21 @@ a.uti-global-team-profile-link:hover,
   padding: 18px 0 48px;
 }
 
-.uti-intelligence-page-nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  margin-bottom: 14px;
-}
-
-.uti-intelligence-back-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  color: #e9eef8;
-  font-size: .76rem;
-  font-weight: 850;
-  text-decoration: none;
-}
-
-.uti-intelligence-back-link:hover {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.uti-intelligence-page-badge {
-  padding: 6px 9px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.05);
-  color: #8d98b3;
-  font-size: .62rem;
-  font-weight: 800;
-}
-
 .uti-intelligence-page-hero {
   position: relative;
   overflow: hidden;
   margin-bottom: 14px;
   padding: 24px;
   border-radius: 22px;
-  background:
-    radial-gradient(circle at 86% 0%, rgba(25, 211, 197, 0.29), transparent 29%),
-    linear-gradient(135deg, #24304d, #24304d 62%, #13243f);
-  color: #fff;
-  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.5);
+  background: var(--gradient-hero);
+  border: 1px solid var(--color-accent-border);
+  color: var(--color-text);
+  box-shadow: var(--shadow-glow);
 }
 
 .uti-intelligence-page-hero .kicker {
   margin-bottom: 7px;
-  color: #7fc3ff;
+  color: var(--color-teal);
   font-size: .68rem;
   font-weight: 950;
   letter-spacing: .10em;
@@ -1599,7 +2516,7 @@ a.uti-global-team-profile-link:hover,
 .uti-intelligence-page-hero p {
   max-width: 760px;
   margin: 10px 0 0;
-  color: rgba(255,255,255,.76);
+  color: rgb(var(--rgb-white) / 0.76);
   font-size: .88rem;
   line-height: 1.5;
 }
@@ -1613,10 +2530,10 @@ a.uti-global-team-profile-link:hover,
 
 .uti-intelligence-page-hero-stats span {
   padding: 6px 9px;
-  border: 1px solid rgba(255,255,255,.12);
+  border: 1px solid rgb(var(--rgb-white) / 0.12);
   border-radius: 999px;
-  background: rgba(255,255,255,.07);
-  color: rgba(255,255,255,.84);
+  background: rgb(var(--rgb-white) / 0.07);
+  color: rgb(var(--rgb-white) / 0.84);
   font-size: .61rem;
   font-weight: 800;
 }
@@ -1658,12 +2575,7 @@ a.uti-global-team-profile-link:hover,
     padding: 20px 16px;
     border-radius: 18px;
   }
-
-  .uti-intelligence-page-nav {
-    padding: 0 4px;
-  }
 }
-
 
 /* ---------- Full historical intelligence board ---------- */
 .uti-history-board {
@@ -1677,7 +2589,7 @@ a.uti-global-team-profile-link:hover,
   position: absolute;
   inset: 0 0 auto;
   height: 4px;
-  background: linear-gradient(90deg, #ff9f5a, #f2c14e, #ff9f5a);
+  background: linear-gradient(90deg, var(--color-orange), var(--color-gold), var(--color-orange));
 }
 
 .uti-history-context {
@@ -1686,28 +2598,28 @@ a.uti-global-team-profile-link:hover,
   gap: 10px;
   margin: 14px 0 16px;
   padding: 12px 14px;
-  border: 1px solid rgba(255, 159, 90, 0.3);
+  border: 1px solid rgb(var(--rgb-orange) / 0.3);
   border-radius: 12px;
-  background: rgba(255, 159, 90, 0.12);
+  background: rgb(var(--rgb-orange) / 0.12);
 }
 
 .uti-history-context strong {
   flex: 0 0 auto;
-  color: #ff9f5a;
+  color: var(--color-orange);
   font-size: .72rem;
 }
 
 .uti-history-context span {
-  color: #8d98b3;
+  color: var(--color-text-muted);
   font-size: .68rem;
   line-height: 1.45;
 }
 
 .uti-history-headline-grid .uti-intel-card.is-history {
-  border-color: rgba(255, 159, 90, 0.3);
+  border-color: rgb(var(--rgb-orange) / 0.3);
   background:
-    radial-gradient(circle at 92% 5%, rgba(242, 193, 78, 0.18), transparent 31%),
-    rgba(255, 255, 255, 0.05);
+    radial-gradient(circle at 92% 5%, rgb(var(--rgb-gold) / 0.18), transparent 31%),
+    rgb(var(--rgb-white) / 0.05);
 }
 
 .uti-history-analytics-grid {
@@ -1717,9 +2629,9 @@ a.uti-global-team-profile-link:hover,
 .uti-franchise-trend-panel {
   margin-top: 18px;
   padding: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgb(var(--rgb-white) / 0.1);
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgb(var(--rgb-white) / 0.05);
 }
 
 .uti-franchise-trend-wrap {
@@ -1738,7 +2650,7 @@ a.uti-global-team-profile-link:hover,
   gap: 10px;
   min-height: 48px;
   padding: 8px 10px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgb(var(--rgb-white) / 0.1);
   font-size: .68rem;
 }
 
@@ -1746,8 +2658,8 @@ a.uti-global-team-profile-link:hover,
   min-height: 34px;
   border-top: 0;
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.05);
-  color: #8d98b3;
+  background: rgb(var(--rgb-white) / 0.05);
+  color: var(--color-text-muted);
   font-size: .59rem;
   font-weight: 900;
   letter-spacing: .04em;
@@ -1770,18 +2682,18 @@ a.uti-global-team-profile-link:hover,
 }
 
 .uti-history-delta.is-up {
-  background: rgba(52, 211, 153, 0.16);
-  color: #34d399;
+  background: rgb(var(--rgb-green) / 0.16);
+  color: var(--color-green);
 }
 
 .uti-history-delta.is-down {
-  background: rgba(255, 107, 74, 0.14);
-  color: #ff6b4a;
+  background: rgb(var(--rgb-coral) / 0.14);
+  color: var(--color-coral);
 }
 
 .uti-history-delta.is-flat {
-  background: rgba(255, 255, 255, 0.08);
-  color: #8d98b3;
+  background: rgb(var(--rgb-white) / 0.08);
+  color: var(--color-text-muted);
 }
 
 @media (max-width: 700px) {
@@ -1802,33 +2714,6 @@ a.uti-global-team-profile-link:hover,
   }
 }
 
-
-/* ---------- Intelligence / History page split ---------- */
-.uti-page-nav-links {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 3px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.uti-page-nav-links a {
-  padding: 6px 10px;
-  border-radius: 999px;
-  color: #8d98b3;
-  font-size: .62rem;
-  font-weight: 900;
-  text-decoration: none;
-}
-
-.uti-page-nav-links a:hover,
-.uti-page-nav-links a.is-active {
-  background: #24304d;
-  color: #fff;
-}
-
 .uti-history-teaser-section {
   margin-top: 18px;
 }
@@ -1840,15 +2725,15 @@ a.uti-global-team-profile-link:hover,
   min-height: 38px;
   padding: 8px 12px;
   border-radius: 999px;
-  background: #24304d;
-  color: #fff;
+  background: var(--color-slate-deep);
+  color: var(--color-white);
   font-size: .65rem;
   font-weight: 900;
   text-decoration: none;
 }
 
 .uti-history-page-cta:hover {
-  color: #fff;
+  color: var(--color-white);
   transform: translateY(-1px);
 }
 
@@ -1869,12 +2754,12 @@ a.uti-global-team-profile-link:hover,
   justify-content: space-between;
   gap: 8px;
   padding: 13px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgb(var(--rgb-white) / 0.1);
   border-radius: 14px;
   background:
-    radial-gradient(circle at 90% 8%, rgba(242, 193, 78, 0.16), transparent 34%),
-    rgba(255, 255, 255, 0.05);
-  color: #e9eef8;
+    radial-gradient(circle at 90% 8%, rgb(var(--rgb-gold) / 0.16), transparent 34%),
+    rgb(var(--rgb-white) / 0.05);
+  color: var(--color-text);
   text-decoration: none;
 }
 
@@ -1887,14 +2772,14 @@ a.uti-global-team-profile-link:hover,
 .uti-history-teaser-card:hover,
 .uti-history-overview-card[role="button"]:hover,
 .uti-history-teaser-card.is-link:hover {
-  border-color: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.31);
+  border-color: rgb(var(--rgb-white) / 0.1);
+  box-shadow: 0 10px 26px rgb(var(--rgb-black) / 0.31);
   transform: translateY(-1px);
 }
 
 .uti-history-teaser-card > span,
 .uti-history-overview-card > span {
-  color: #ff9f5a;
+  color: var(--color-orange);
   font-size: .58rem;
   font-weight: 950;
   letter-spacing: .06em;
@@ -1910,7 +2795,7 @@ a.uti-global-team-profile-link:hover,
 
 .uti-history-teaser-card small,
 .uti-history-overview-card small {
-  color: #8d98b3;
+  color: var(--color-text-muted);
   font-size: .62rem;
   line-height: 1.35;
 }
@@ -1942,11 +2827,6 @@ a.uti-global-team-profile-link:hover,
   white-space: nowrap;
 }
 
-.uti-history-page-hero {
-  background:
-    radial-gradient(circle at 86% 12%, rgba(242, 193, 78, 0.3), transparent 28%),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.12) 100%);
-}
 
 .uti-history-overview-section {
   margin: 0;
@@ -1961,19 +2841,19 @@ a.uti-global-team-profile-link:hover,
 
 .uti-history-season-nav a {
   padding: 7px 10px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgb(var(--rgb-white) / 0.1);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.05);
-  color: #c3cce0;
+  background: rgb(var(--rgb-white) / 0.05);
+  color: var(--color-text-soft);
   font-size: .61rem;
   font-weight: 900;
   text-decoration: none;
 }
 
 .uti-history-season-nav a:hover {
-  border-color: rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.05);
-  color: #e9eef8;
+  border-color: rgb(var(--rgb-white) / 0.1);
+  background: rgb(var(--rgb-white) / 0.05);
+  color: var(--color-text);
 }
 
 .uti-history-page-body .uti-history-board {
@@ -1988,16 +2868,6 @@ a.uti-global-team-profile-link:hover,
 }
 
 @media (max-width: 620px) {
-  .uti-intelligence-page-nav {
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .uti-page-nav-links {
-    order: 3;
-    width: 100%;
-    justify-content: center;
-  }
 
   .uti-history-teaser-grid,
   .uti-history-overview-grid {
@@ -2014,7 +2884,6 @@ a.uti-global-team-profile-link:hover,
   }
 }
 
-
 /* ---------- Franchise records ---------- */
 .uti-franchise-resume-wrap,
 .uti-season-results-panel {
@@ -2025,9 +2894,9 @@ a.uti-global-team-profile-link:hover,
 .uti-season-results-panel,
 .uti-h2h-summary,
 .uti-h2h-card {
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgb(var(--rgb-white) / 0.1);
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgb(var(--rgb-white) / 0.05);
 }
 
 .uti-franchise-resume-wrap {
@@ -2054,15 +2923,15 @@ a.uti-global-team-profile-link:hover,
   gap: 10px;
   min-height: 52px;
   padding: 8px 12px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgb(var(--rgb-white) / 0.1);
   font-size: .69rem;
 }
 
 .uti-franchise-resume-row.is-head {
   min-height: 38px;
   border-top: 0;
-  background: rgba(255, 255, 255, 0.05);
-  color: #8d98b3;
+  background: rgb(var(--rgb-white) / 0.05);
+  color: var(--color-text-muted);
   font-size: .57rem;
   font-weight: 950;
   letter-spacing: .04em;
@@ -2084,8 +2953,8 @@ a.uti-global-team-profile-link:hover,
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.05);
-  color: #8d98b3;
+  background: rgb(var(--rgb-white) / 0.05);
+  color: var(--color-text-muted);
   font-size: .58rem;
   font-weight: 950;
 }
@@ -2097,8 +2966,8 @@ a.uti-global-team-profile-link:hover,
   align-items: center;
   justify-content: center;
   border-radius: 9px;
-  background: rgba(255, 255, 255, 0.05);
-  color: #c3cce0;
+  background: rgb(var(--rgb-white) / 0.05);
+  color: var(--color-text-soft);
   font-weight: 950;
 }
 
@@ -2119,15 +2988,15 @@ a.uti-global-team-profile-link:hover,
   min-width: 790px;
   min-height: 48px;
   padding: 8px 10px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgb(var(--rgb-white) / 0.1);
 }
 
 .uti-season-results-row.is-head {
   min-height: 34px;
   border-top: 0;
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.05);
-  color: #8d98b3;
+  background: rgb(var(--rgb-white) / 0.05);
+  color: var(--color-text-muted);
   font-size: .57rem;
   font-weight: 950;
   letter-spacing: .04em;
@@ -2135,7 +3004,7 @@ a.uti-global-team-profile-link:hover,
 }
 
 .uti-season-result-pending {
-  color: #19d3c5;
+  color: var(--color-teal);
   font-size: .64rem;
   font-style: italic;
   font-weight: 750;
@@ -2143,7 +3012,7 @@ a.uti-global-team-profile-link:hover,
 
 .uti-history-empty {
   padding: 18px;
-  color: #8d98b3;
+  color: var(--color-text-muted);
   font-size: .7rem;
   text-align: center;
 }
@@ -2157,7 +3026,7 @@ a.uti-global-team-profile-link:hover,
 }
 
 .uti-h2h-selector > span {
-  color: #8d98b3;
+  color: var(--color-text-muted);
   font-size: .55rem;
   font-weight: 950;
   letter-spacing: .05em;
@@ -2167,10 +3036,10 @@ a.uti-global-team-profile-link:hover,
 .uti-h2h-selector select {
   min-height: 38px;
   padding: 7px 30px 7px 10px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgb(var(--rgb-white) / 0.1);
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.05);
-  color: #e9eef8;
+  background: rgb(var(--rgb-white) / 0.05);
+  color: var(--color-text);
   font-size: .68rem;
   font-weight: 850;
 }
@@ -2183,8 +3052,8 @@ a.uti-global-team-profile-link:hover,
   margin-top: 14px;
   padding: 14px;
   background:
-    radial-gradient(circle at 90% 0%, rgba(25, 211, 197, 0.13), transparent 34%),
-    rgba(255, 255, 255, 0.05);
+    radial-gradient(circle at 90% 0%, rgb(var(--rgb-teal) / 0.13), transparent 34%),
+    rgb(var(--rgb-white) / 0.05);
 }
 
 .uti-h2h-summary-team {
@@ -2205,7 +3074,7 @@ a.uti-global-team-profile-link:hover,
 .uti-h2h-summary-team span,
 .uti-h2h-summary-record span {
   display: block;
-  color: #8d98b3;
+  color: var(--color-text-muted);
   font-size: .61rem;
   font-weight: 750;
 }
@@ -2213,7 +3082,7 @@ a.uti-global-team-profile-link:hover,
 .uti-h2h-summary-team strong {
   display: block;
   margin-top: 2px;
-  color: #e9eef8;
+  color: var(--color-text);
   font-size: .94rem;
   font-weight: 950;
 }
@@ -2224,7 +3093,7 @@ a.uti-global-team-profile-link:hover,
 
 .uti-h2h-summary-record strong {
   display: block;
-  color: #e9eef8;
+  color: var(--color-text);
   font-size: 1.35rem;
   font-weight: 950;
   letter-spacing: -.03em;
@@ -2261,7 +3130,7 @@ a.uti-global-team-profile-link:hover,
 
 .uti-h2h-card-team span {
   display: block;
-  color: #19d3c5;
+  color: var(--color-teal);
   font-size: .52rem;
   font-weight: 850;
   text-transform: uppercase;
@@ -2271,7 +3140,7 @@ a.uti-global-team-profile-link:hover,
   display: block;
   max-width: 170px;
   overflow: hidden;
-  color: #e9eef8;
+  color: var(--color-text);
   font-size: .7rem;
   font-weight: 950;
   text-overflow: ellipsis;
@@ -2284,13 +3153,13 @@ a.uti-global-team-profile-link:hover,
 
 .uti-h2h-card-record strong {
   display: block;
-  color: #e9eef8;
+  color: var(--color-text);
   font-size: .9rem;
   font-weight: 950;
 }
 
 .uti-h2h-card-record span {
-  color: #8d98b3;
+  color: var(--color-text-muted);
   font-size: .59rem;
   font-weight: 800;
 }
@@ -2301,19 +3170,19 @@ a.uti-global-team-profile-link:hover,
   flex-wrap: wrap;
   gap: 5px;
   padding-top: 8px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgb(var(--rgb-white) / 0.1);
 }
 
 .uti-h2h-season-splits > span {
   padding: 4px 7px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.05);
-  color: #8d98b3;
+  background: rgb(var(--rgb-white) / 0.05);
+  color: var(--color-text-muted);
   font-size: .56rem;
 }
 
 .uti-h2h-season-splits strong {
-  color: #c3cce0;
+  color: var(--color-text-soft);
 }
 
 @media (max-width: 900px) {
@@ -2341,7 +3210,6 @@ a.uti-global-team-profile-link:hover,
   }
 }
 
-
 .uti-record-split {
   display: inline-flex;
   width: fit-content;
@@ -2357,15 +3225,15 @@ a.uti-global-team-profile-link:hover,
 .uti-record-split.is-regular,
 .uti-h2h-record-splits .is-regular,
 .uti-h2h-summary-split.is-regular {
-  background: rgba(25, 211, 197, 0.13);
-  color: #19d3c5;
+  background: rgb(var(--rgb-teal) / 0.13);
+  color: var(--color-teal);
 }
 
 .uti-record-split.is-playoffs,
 .uti-h2h-record-splits .is-playoffs,
 .uti-h2h-summary-split.is-playoffs {
-  background: rgba(255, 159, 90, 0.16);
-  color: #ff9f5a;
+  background: rgb(var(--rgb-orange) / 0.16);
+  color: var(--color-orange);
 }
 
 .uti-h2h-summary-records {
@@ -2378,13 +3246,13 @@ a.uti-global-team-profile-link:hover,
 .uti-h2h-summary-split {
   padding: 9px 10px;
   border-radius: 11px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgb(var(--rgb-white) / 0.05);
 }
 
 .uti-h2h-summary-split > span,
 .uti-h2h-summary-split > small {
   display: block;
-  color: #8d98b3;
+  color: var(--color-text-muted);
   font-size: .54rem;
   font-weight: 800;
 }
@@ -2418,7 +3286,7 @@ a.uti-global-team-profile-link:hover,
 }
 
 .uti-h2h-season-splits small {
-  color: #19d3c5;
+  color: var(--color-teal);
   font-size: .49rem;
   font-weight: 750;
 }
@@ -2429,7 +3297,6 @@ a.uti-global-team-profile-link:hover,
     grid-template-columns: 1fr;
   }
 }
-
 
 /* ---------- Team profile: historical record split ---------- */
 .uti-profile-record-card {
@@ -2457,13 +3324,13 @@ a.uti-global-team-profile-link:hover,
 }
 
 .uti-profile-record-splits > span.is-regular {
-  background: rgba(25, 211, 197, 0.13);
-  color: #19d3c5;
+  background: rgb(var(--rgb-teal) / 0.13);
+  color: var(--color-teal);
 }
 
 .uti-profile-record-splits > span.is-playoffs {
-  background: rgba(255, 159, 90, 0.16);
-  color: #ff9f5a;
+  background: rgb(var(--rgb-orange) / 0.16);
+  color: var(--color-orange);
 }
 
 .uti-profile-record-splits small {

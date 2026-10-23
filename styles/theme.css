@@ -1,0 +1,309 @@
+@import url("https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,100..125,400..900;1,100..125,400..900&display=swap");
+
+/*
+  UTI theme: the single source for the site's look.
+
+  1. Tokens: every color, font, radius, and shadow the site uses. Change a value here and it
+     changes everywhere. Translucent colors use the channel tokens, e.g. rgb(var(--rgb-teal) / 0.14).
+  2. Base: page background, font, links, headings.
+  3. Broadcast pieces: hero banners, the site header, and the ticker.
+
+  Load this file last on every page.
+*/
+
+/* ---------- 1. Tokens ---------- */
+:root {
+  color-scheme: dark;
+
+  /* Palette channels (r g b) */
+  --rgb-bg: 11 15 28;
+  --rgb-bg-glow: 26 35 64;
+  --rgb-surface-solid: 17 27 46;
+  --rgb-navy: 19 36 63;
+  --rgb-text: 233 238 248;
+  --rgb-text-soft: 184 194 218;
+  --rgb-text-muted: 141 152 179;
+  --rgb-teal: 25 211 197;
+  --rgb-green: 52 211 153;
+  --rgb-coral: 255 107 74;
+  --rgb-orange: 255 159 90;
+  --rgb-gold: 242 193 78;
+  --rgb-purple: 185 166 255;
+  --rgb-teal-deep: 14 124 116;
+  --rgb-green-deep: 21 128 61;
+  --rgb-coral-deep: 194 65 12;
+  --rgb-gold-deep: 183 121 31;
+  --rgb-purple-deep: 109 40 217;
+  --rgb-slate-deep: 36 48 77;
+  --rgb-hero-teal: 19 48 74;
+  --rgb-hero-navy: 15 27 51;
+  --rgb-hero-plum: 42 22 48;
+  --rgb-white: 255 255 255;
+  --rgb-black: 0 0 0;
+
+  /* Palette colors */
+  --color-bg: rgb(var(--rgb-bg));
+  --color-bg-glow: rgb(var(--rgb-bg-glow));
+  --color-surface-solid: rgb(var(--rgb-surface-solid));
+  --color-navy: rgb(var(--rgb-navy));
+  --color-text: rgb(var(--rgb-text));
+  --color-text-soft: rgb(var(--rgb-text-soft));
+  --color-text-muted: rgb(var(--rgb-text-muted));
+  --color-teal: rgb(var(--rgb-teal));
+  --color-green: rgb(var(--rgb-green));
+  --color-coral: rgb(var(--rgb-coral));
+  --color-orange: rgb(var(--rgb-orange));
+  --color-gold: rgb(var(--rgb-gold));
+  --color-purple: rgb(var(--rgb-purple));
+  --color-teal-deep: rgb(var(--rgb-teal-deep));
+  --color-green-deep: rgb(var(--rgb-green-deep));
+  --color-coral-deep: rgb(var(--rgb-coral-deep));
+  --color-gold-deep: rgb(var(--rgb-gold-deep));
+  --color-purple-deep: rgb(var(--rgb-purple-deep));
+  --color-slate-deep: rgb(var(--rgb-slate-deep));
+  --color-hero-teal: rgb(var(--rgb-hero-teal));
+  --color-hero-navy: rgb(var(--rgb-hero-navy));
+  --color-hero-plum: rgb(var(--rgb-hero-plum));
+  --color-white: rgb(var(--rgb-white));
+  --color-black: rgb(var(--rgb-black));
+
+  /* Roles */
+  --color-surface: rgb(var(--rgb-white) / 0.05);
+  --color-surface-raised: rgb(var(--rgb-white) / 0.08);
+  --color-border: rgb(var(--rgb-white) / 0.09);
+  --color-accent: var(--color-teal);
+  --color-accent-soft: rgb(var(--rgb-teal) / 0.14);
+  --color-accent-border: rgb(var(--rgb-teal) / 0.35);
+  --color-alert: var(--color-coral);
+  --color-positive: var(--color-green);
+  --color-negative: var(--color-coral);
+
+  --gradient-page: radial-gradient(120% 60% at 50% -10%, var(--color-bg-glow) 0%, var(--color-bg) 60%);
+  --gradient-hero: linear-gradient(140deg, var(--color-hero-teal) 0%, var(--color-hero-navy) 55%, var(--color-hero-plum) 100%);
+  --shadow-glow: 0 0 0 1px rgb(var(--rgb-teal) / 0.08), 0 18px 60px rgb(var(--rgb-teal) / 0.12);
+  --shadow-card: 0 10px 30px rgb(var(--rgb-black) / 0.35);
+
+  /* Type */
+  --font-sans: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-wide: 118%;
+
+  /* Shape */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+  --radius-pill: 999px;
+}
+
+/* ---------- 2. Base ---------- */
+html {
+  background: var(--color-bg);
+}
+
+body {
+  background: var(--gradient-page) fixed, var(--color-bg) !important;
+  color: var(--color-text-soft);
+  font-family: var(--font-sans) !important;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+select option {
+  background: var(--color-surface-solid);
+  color: var(--color-text);
+}
+
+/* Replaces Bootstrap's default blue link color; component link styles still win. */
+a {
+  color: var(--color-accent);
+}
+
+h1,
+h2,
+.section-title {
+  font-stretch: var(--font-wide);
+  font-weight: 900;
+  color: var(--color-text);
+}
+
+h3 {
+  color: var(--color-text);
+}
+
+/* ---------- 3. Broadcast pieces ---------- */
+
+/* Shared site header + ticker (rendered by scripts/site-header.js) */
+.uti-header {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 60;
+  margin-bottom: 18px;
+  background: rgb(var(--rgb-bg) / 0.86);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.uti-header-bar,
+.uti-ticker-track {
+  max-width: 1180px;
+  margin-inline: auto;
+  padding-left: max(18px, env(safe-area-inset-left, 0px));
+  padding-right: max(18px, env(safe-area-inset-right, 0px));
+}
+
+.uti-header-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 24px;
+  padding-block: 12px;
+}
+
+.uti-wordmark {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.uti-wordmark b {
+  font-size: 1.55rem;
+  font-weight: 900;
+  font-stretch: 125%;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+.uti-wordmark span {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+}
+
+.uti-header-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 20px;
+}
+
+.uti-header-nav a {
+  font-size: 0.88rem;
+  font-weight: 650;
+  color: var(--color-text-soft);
+  text-decoration: none;
+  padding-block: 4px;
+  border-bottom: 2px solid transparent;
+}
+
+.uti-header-nav a:hover {
+  color: var(--color-accent);
+}
+
+.uti-header-nav a[aria-current="page"] {
+  color: var(--color-text);
+  border-bottom-color: var(--color-accent);
+}
+
+.uti-ticker {
+  border-top: 1px solid var(--color-border);
+  background: rgb(var(--rgb-black) / 0.25);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.uti-ticker::-webkit-scrollbar {
+  display: none;
+}
+
+.uti-ticker-track {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding-block: 8px;
+  white-space: nowrap;
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.uti-ticker-item b {
+  color: var(--color-text);
+  font-weight: 800;
+}
+
+.uti-ticker-sep {
+  color: var(--color-text-muted);
+}
+
+.uti-ticker-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  color: var(--color-alert);
+}
+
+.uti-ticker-live::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-alert);
+  box-shadow: 0 0 8px var(--color-alert);
+}
+
+@media (max-width: 600px) {
+  .uti-header-bar {
+    padding-block: 10px 8px;
+  }
+
+  .uti-wordmark span {
+    display: none;
+  }
+
+  .uti-header-nav {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    gap: 16px;
+    width: 100%;
+  }
+
+  .uti-header-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .uti-header-nav a {
+    flex: none;
+  }
+}
+
+/* Hero banners use --gradient-hero and --shadow-glow in their own rules. */
+.hero .kicker,
+.hero .badge {
+  color: var(--color-accent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .uti-ticker-live::before {
+    animation: pt-pulse 1.8s ease-in-out infinite;
+  }
+
+  @keyframes pt-pulse {
+    50% {
+      opacity: 0.35;
+    }
+  }
+}

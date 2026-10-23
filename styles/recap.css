@@ -1,37 +1,14 @@
-@import url("https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,100..125,400..900;1,100..125,400..900&display=swap");
-
 /*
-  Weekly recap pages: "Primetime" styling.
-  Dark broadcast look with glass cards and teal/coral accents.
-  Layout (grid, sidebar, breakpoints) is unchanged; only the visual styling lives here.
+  Weekly recap pages (2026/week*.html).
+  Colors, fonts, and the hero gradient come from theme.css, which each recap loads after this file.
+  Layout (grid, sidebar, breakpoints) is unchanged from the original recap design.
 */
 :root {
-    color-scheme: dark;
-
-    --bg: #0b0f1c;
-    --bg-glow: #1a2340;
-    --card-top: rgba(255, 255, 255, 0.07);
-    --card-bottom: rgba(255, 255, 255, 0.03);
-    --border: rgba(255, 255, 255, 0.09);
-    --rule: rgba(255, 255, 255, 0.08);
-
-    --text: #e9eef8;
-    --text-soft: #b8c2da;
-    --muted: #8d98b3;
-
-    --teal: #19d3c5;
-    --teal-soft: rgba(25, 211, 197, 0.14);
-    --teal-border: rgba(25, 211, 197, 0.35);
-    --coral: #ff6b4a;
-    --coral-soft: rgba(255, 107, 74, 0.1);
-    --coral-border: rgba(255, 107, 74, 0.32);
-
-    --hero-gradient: linear-gradient(140deg, #13304a 0%, #0f1b33 55%, #2a1630 100%);
-    --glow: 0 0 0 1px rgba(25, 211, 197, 0.08), 0 18px 60px rgba(25, 211, 197, 0.12);
-    --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-
-    --font: "Archivo", "Helvetica Neue", Arial, sans-serif;
-    --wide: 118%;
+    --card-top: rgb(var(--rgb-white) / 0.07);
+    --card-bottom: rgb(var(--rgb-white) / 0.03);
+    --rule: rgb(var(--rgb-white) / 0.08);
+    --coral-soft: rgb(var(--rgb-coral) / 0.1);
+    --coral-border: rgb(var(--rgb-coral) / 0.32);
 }
 
 * {
@@ -40,20 +17,20 @@
 
 body {
     margin: 0;
-    font-family: var(--font);
-    background: radial-gradient(120% 60% at 50% -10%, var(--bg-glow) 0%, var(--bg) 60%) fixed, var(--bg);
-    color: var(--text-soft);
+    font-family: var(--font-sans);
+    background: var(--gradient-page) fixed, var(--color-bg);
+    color: var(--color-text-soft);
     line-height: 1.7;
     -webkit-font-smoothing: antialiased;
 }
 
 strong,
 b {
-    color: var(--text);
+    color: var(--color-text);
 }
 
 a {
-    color: var(--teal);
+    color: var(--color-teal);
 }
 
 .page {
@@ -62,45 +39,18 @@ a {
     padding: 28px 18px 48px;
 }
 
-/* Top bar styled like a broadcast ticker with a live dot. */
-.top-banner {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid var(--border);
-    color: var(--text);
-    border-radius: 12px;
-    padding: 12px 18px;
-    margin-bottom: 22px;
-    font-weight: 800;
-    font-size: 0.85rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-}
-
-.top-banner::before {
-    content: "";
-    flex: none;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--coral);
-    box-shadow: 0 0 8px var(--coral);
-}
-
 .hero {
-    background: var(--hero-gradient);
-    border: 1px solid var(--teal-border);
+    background: var(--gradient-hero);
+    border: 1px solid var(--color-accent-border);
     border-radius: 18px;
     overflow: hidden;
-    box-shadow: var(--glow);
+    box-shadow: var(--shadow-glow);
     margin-bottom: 24px;
 }
 
 .hero-header {
     padding: 34px 30px 28px;
-    color: var(--text);
+    color: var(--color-text);
 }
 
 .kicker {
@@ -111,7 +61,7 @@ a {
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.12em;
-    color: var(--teal);
+    color: var(--color-teal);
     margin-bottom: 14px;
 }
 
@@ -120,24 +70,24 @@ a {
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background: var(--coral);
-    box-shadow: 0 0 8px var(--coral);
+    background: var(--color-coral);
+    box-shadow: 0 0 8px var(--color-coral);
 }
 
 h1 {
     margin: 0 0 14px;
     font-size: clamp(2rem, 4.4vw, 3.4rem);
     font-weight: 900;
-    font-stretch: var(--wide);
+    font-stretch: var(--font-wide);
     line-height: 1.03;
-    color: var(--text);
+    color: var(--color-text);
     text-wrap: balance;
 }
 
 .deck {
     max-width: 860px;
     font-size: 1.08rem;
-    color: var(--text-soft);
+    color: var(--color-text-soft);
     margin: 0;
 }
 
@@ -146,9 +96,9 @@ h1 {
     flex-wrap: wrap;
     gap: 14px 24px;
     padding: 16px 30px;
-    background: rgba(0, 0, 0, 0.25);
-    color: var(--muted);
-    border-top: 1px solid var(--border);
+    background: rgb(var(--rgb-black) / 0.25);
+    color: var(--color-text-muted);
+    border-top: 1px solid var(--color-border);
     font-size: 0.9rem;
 }
 
@@ -170,9 +120,9 @@ h1 {
 .section-card,
 .sidebar {
     background: linear-gradient(180deg, var(--card-top), var(--card-bottom));
-    border: 1px solid var(--border);
+    border: 1px solid var(--color-border);
     border-radius: 14px;
-    box-shadow: var(--shadow);
+    box-shadow: var(--shadow-card);
 }
 
 .intro-section {
@@ -185,12 +135,12 @@ h1 {
 }
 
 .special-callout {
-    background: var(--teal-soft);
-    border: 1px solid var(--teal-border);
+    background: var(--color-accent-soft);
+    border: 1px solid var(--color-accent-border);
     padding: 18px 20px;
     border-radius: 12px;
     margin-top: 18px;
-    color: var(--text-soft);
+    color: var(--color-text-soft);
 }
 
 .special-callout strong {
@@ -199,7 +149,7 @@ h1 {
     font-size: 1.05rem;
     font-weight: 800;
     font-stretch: 110%;
-    color: var(--teal);
+    color: var(--color-teal);
 }
 
 .matchup-card {
@@ -220,27 +170,27 @@ h1 {
     margin: 0;
     font-size: 1.45rem;
     font-weight: 900;
-    font-stretch: var(--wide);
+    font-stretch: var(--font-wide);
     line-height: 1.2;
-    color: var(--text);
+    color: var(--color-text);
 }
 
 .score-pill {
     white-space: nowrap;
-    background: var(--teal-soft);
-    color: var(--teal);
-    border: 1px solid var(--teal-border);
+    background: var(--color-accent-soft);
+    color: var(--color-teal);
+    border: 1px solid var(--color-accent-border);
     border-radius: 999px;
     padding: 8px 14px;
     font-weight: 900;
-    font-stretch: var(--wide);
+    font-stretch: var(--font-wide);
     font-size: 0.95rem;
     font-variant-numeric: tabular-nums;
 }
 
 .winner-line {
     font-size: 0.92rem;
-    color: var(--muted);
+    color: var(--color-text-muted);
     margin-top: 6px;
 }
 
@@ -255,11 +205,11 @@ h1 {
     border-radius: 12px;
     padding: 14px 16px;
     margin-top: 8px;
-    color: var(--text-soft);
+    color: var(--color-text-soft);
 }
 
 .tone-box strong {
-    color: var(--coral);
+    color: var(--color-coral);
 }
 
 .league-takeaway {
@@ -288,10 +238,10 @@ h1 {
     margin: 0 0 10px;
     font-size: 0.9rem;
     font-weight: 900;
-    font-stretch: var(--wide);
+    font-stretch: var(--font-wide);
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--text);
+    color: var(--color-text);
 }
 
 .list {
@@ -322,20 +272,20 @@ h1 {
 }
 
 .badge-green {
-    background: var(--teal-soft);
-    color: var(--teal);
-    border: 1px solid var(--teal-border);
+    background: var(--color-accent-soft);
+    color: var(--color-teal);
+    border: 1px solid var(--color-accent-border);
 }
 
 .badge-red {
     background: var(--coral-soft);
-    color: var(--coral);
+    color: var(--color-coral);
     border: 1px solid var(--coral-border);
 }
 
 .footer-note {
     text-align: center;
-    color: var(--muted);
+    color: var(--color-text-muted);
     font-size: 0.88rem;
     margin-top: 28px;
 }
@@ -351,7 +301,6 @@ h1 {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-    .top-banner::before,
     .kicker::before {
         animation: recap-pulse 1.8s ease-in-out infinite;
     }
@@ -400,25 +349,9 @@ h1 {
     }
 }
 
-
 @media (max-width: 600px) {
     .page {
         padding: 12px 10px 32px;
-    }
-
-    .top-banner {
-        position: sticky;
-        top: 0;
-        z-index: 50;
-        justify-content: center;
-        border-radius: 0 0 14px 14px;
-        border-top: 0;
-        margin: -12px -10px 14px;
-        background: rgba(11, 15, 28, 0.92);
-        backdrop-filter: blur(8px);
-        font-size: 0.74rem;
-        line-height: 1.35;
-        padding: 12px 14px;
     }
 
     .hero {
@@ -499,15 +432,15 @@ h1 {
     }
 
     .sidebar-section {
-        background: rgba(0, 0, 0, 0.2);
-        border: 1px solid var(--border);
+        background: rgb(var(--rgb-black) / 0.2);
+        border: 1px solid var(--color-border);
         border-radius: 12px;
         padding: 16px;
         margin-bottom: 14px;
     }
 
     .sidebar-section:last-child {
-        border-bottom: 1px solid var(--border);
+        border-bottom: 1px solid var(--color-border);
     }
 
     .list li {
