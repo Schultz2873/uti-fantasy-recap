@@ -1,6 +1,6 @@
 /*
   Homepage: latest recap hero, latest-result scoreboard, standings, latest recaps, and the
-  season-aware prize pool card.
+  season-aware prize pool card, swapped for the draft order in the offseason.
 
   Reads data/recaps.js, data/weekly-team-stats.js (via league-analytics.js),
   data/prize-money.js, and data/team-logos.js, so the page updates when those files do.
@@ -158,17 +158,27 @@
     return !championshipPlayed || inMarchThroughAugust;
   }
 
-  /* ---------- Draft order card: shown in the offseason instead of the prize pool ---------- */
+  /* ---------- Draft order card: shown in the offseason instead of the standings ---------- */
 
   function renderDraftOrder(draft) {
-    const card = document.getElementById("draft-order");
+    const clock = document.getElementById("draftOnClock");
     const list = document.getElementById("draftOrderList");
-    if (!card || !list || !draft?.picks?.length) return false;
+    if (!clock || !list || !draft?.picks?.length) return false;
 
+    const [onTheClock, onDeck, ...rest] = draft.picks;
     document.getElementById("draftTitle").textContent = `${draft.season} draft order`;
-    list.innerHTML = draft.picks.map((team, index) => `
+
+    clock.innerHTML = `
+      ${teamPhoto(onTheClock, "home-clock-photo")}
+      <div class="home-clock-copy">
+        <span class="home-clock-live"><span class="home-clock-dot" aria-hidden="true"></span>Pick 1 · On the clock</span>
+        <h3>${teamLink(onTheClock)} are on the clock</h3>
+        ${onDeck ? `<p>On deck: ${escapeHtml(onDeck)}</p>` : ""}
+      </div>`;
+
+    list.innerHTML = [onDeck, ...rest].filter(Boolean).map((team, index) => `
       <li>
-        <span class="home-draft-pick">${index + 1}</span>
+        <span class="home-draft-pick">${index + 2}</span>
         <span class="ui-team">${teamPhoto(team, "ui-team-photo is-small")}${teamLink(team)}</span>
       </li>
     `).join("");
@@ -200,12 +210,15 @@
     renderStandings(summary);
     renderRecordBookLink(rows);
 
-    // In season: the prize pool card. Offseason: the draft order card in the same spot.
+    // In season: standings and the prize pool. Offseason: the draft order takes the standings' spot.
     const inSeason = isPrizeSeason(rows, window.PRIZE_MONEY_DATA?.homepageCard);
     const prizeCard = document.getElementById("league-money");
     if (prizeCard) prizeCard.hidden = !inSeason;
 
+    const showDraft = !inSeason && renderDraftOrder(window.UTI_DRAFT_ORDER);
     const draftCard = document.getElementById("draft-order");
-    if (draftCard) draftCard.hidden = inSeason || !renderDraftOrder(window.UTI_DRAFT_ORDER);
+    const standingsCard = document.getElementById("standings");
+    if (draftCard) draftCard.hidden = !showDraft;
+    if (standingsCard) standingsCard.hidden = showDraft;
   });
 })();
