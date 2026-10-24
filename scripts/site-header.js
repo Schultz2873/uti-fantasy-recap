@@ -80,7 +80,10 @@
         </div>
       </header>
       <div class="uti-ticker" id="utiTicker" aria-label="Championship odds" hidden>
-        <div class="uti-ticker-track" id="utiTickerTrack"></div>
+        <span class="uti-ticker-heading" id="utiTickerHeading"></span>
+        <div class="uti-ticker-window">
+          <div class="uti-ticker-track" id="utiTickerTrack"></div>
+        </div>
       </div>
     `);
 
@@ -117,17 +120,16 @@
     return now.getFullYear() + (championshipPlayed && now.getMonth() >= 8 ? 1 : 0);
   }
 
-  function oddsTickerItems(season, odds) {
-    return [
-      `<span class="uti-ticker-heading">${season} championship odds</span>`,
-      ...odds.map(({ team, odds: line }) => `<span class="uti-ticker-item">${escapeHtml(team)} <b>${escapeHtml(line)}</b></span>`)
-    ];
+  function oddsTickerItems(odds) {
+    return odds.map(({ team, odds: line }) => `<span class="uti-ticker-item">${escapeHtml(team)} <b>${escapeHtml(line)}</b></span>`);
   }
 
+  // The heading stays put on the left; the items slide past it.
   // Two identical runs side by side; sliding the track left by one run loops seamlessly.
-  function showTicker(items) {
+  function showTicker(heading, items) {
     const ticker = document.getElementById("utiTicker");
     const track = document.getElementById("utiTickerTrack");
+    document.getElementById("utiTickerHeading").innerHTML = heading;
     const run = `<div class="uti-ticker-run">${items.join("")}</div>`;
 
     track.innerHTML = run + run.replace('class="uti-ticker-run"', 'class="uti-ticker-run" aria-hidden="true"');
@@ -146,7 +148,8 @@
 
     const summary = window.UTIAnalytics.buildSummary(rows);
     const odds = window.UTITitleOdds?.titleOdds(window.FANTASY_OWNERS, summary.powerRankings) || [];
-    if (odds.length) showTicker(oddsTickerItems(oddsSeason(rows), odds));
+    // "championship" is dropped on phones to leave room for the odds.
+    if (odds.length) showTicker(`${oddsSeason(rows)} <span class="uti-ticker-heading-long">championship </span>odds`, oddsTickerItems(odds));
   }
 
   renderHeader();
