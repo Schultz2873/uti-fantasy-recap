@@ -1511,14 +1511,33 @@
     return profile;
   }
 
-  // Weekly all-play rank as small bars; taller = better week.
+  // Weekly all-play finish as bars from the middle of the league:
+  // up = better than the middle that week, down = worse. Taller = further from the middle.
   function renderProfileTrend(weeklyRanks) {
+    if (!weeklyRanks.length) return "";
+
+    const teamCount = Math.max(10, ...weeklyRanks.map(row => row.rank));
+    const middle = (teamCount + 1) / 2;
+    const halfRange = middle - 1;
+    const firstWeek = weeklyRanks[0].week;
+    const lastWeek = weeklyRanks[weeklyRanks.length - 1].week;
+
     return `
-      <div class="pf-bars" aria-label="All-Play rank by week">
-        ${weeklyRanks.map(row => {
-          const strength = Math.max(8, ((11 - row.rank) / 10) * 100);
-          return `<span class="${row.rank <= 3 ? "is-top" : ""}" style="height:${strength.toFixed(0)}%" title="Week ${row.week}: #${row.rank}"></span>`;
-        }).join("")}
+      <div class="pf-rank-chart">
+        <div class="pf-rank-axis" aria-hidden="true"><span>#1</span><span>#${teamCount}</span></div>
+        <div class="pf-rank-plot">
+          ${weeklyRanks.map(row => {
+            const isUp = row.rank < middle;
+            const size = Math.max(4, (Math.abs(middle - row.rank) / halfRange) * 50);
+            const tip = `Week ${row.week}: #${row.rank} of ${teamCount}`;
+            return `<span class="pf-rank-col" tabindex="0" role="img" aria-label="${tip}" data-tip="${tip}"><span class="pf-rank-bar ${isUp ? "is-up" : "is-down"}" style="height:${size.toFixed(1)}%"></span></span>`;
+          }).join("")}
+        </div>
+      </div>
+      <div class="pf-rank-weeks" aria-hidden="true"><span>Wk ${firstWeek}</span><span>Wk ${lastWeek}</span></div>
+      <div class="pf-rank-legend">
+        <span><i class="is-up"></i>Top half that week</span>
+        <span><i class="is-down"></i>Bottom half</span>
       </div>
     `;
   }
@@ -1628,7 +1647,10 @@
       </div>
 
       <div class="pf-trend">
-        <div class="pf-trend-head"><span>All-Play rank by week</span><span>avg #${profile.avgWeeklyRank.toFixed(1)}</span></div>
+        <div class="pf-trend-head">
+          <span><b>Weekly finish</b> · where they ranked among all teams each week</span>
+          <span>avg #${profile.avgWeeklyRank.toFixed(1)}</span>
+        </div>
         ${renderProfileTrend(profile.weeklyRanks)}
       </div>
 

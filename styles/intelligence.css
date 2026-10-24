@@ -1992,26 +1992,159 @@ a.uti-global-team-profile-link:hover,
 .pf-trend-head {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 6px;
+  gap: 12px;
+  margin-bottom: 10px;
   font-size: 0.8rem;
   color: var(--color-text-muted);
 }
 
-.pf-bars {
+.pf-trend-head b {
+  color: var(--color-text);
+  font-weight: 700;
+}
+
+.pf-trend-head span:last-child {
+  flex-shrink: 0;
+}
+
+.pf-rank-chart {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  gap: 6px;
+  height: 120px;
+}
+
+.pf-rank-axis {
   display: flex;
-  align-items: flex-end;
-  gap: 3px;
-  height: 44px;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  text-align: right;
 }
 
-.pf-bars span {
+/* Bars hang off the middle line: up for top-half weeks, down for bottom-half */
+.pf-rank-plot {
+  position: relative;
+  display: flex;
+  gap: 2px;
+  border-top: 1px dashed var(--color-border);
+  border-bottom: 1px dashed var(--color-border);
+}
+
+.pf-rank-plot::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  border-top: 1px solid rgb(var(--rgb-white) / 0.22);
+}
+
+.pf-rank-col {
+  position: relative;
   flex: 1;
-  border-radius: 2px;
-  background: rgb(var(--rgb-teal) / 0.45);
+  outline: none;
 }
 
-.pf-bars span.is-top {
+.pf-rank-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+.pf-rank-bar.is-up {
+  bottom: 50%;
+  border-radius: 4px 4px 0 0;
   background: var(--color-teal);
+}
+
+.pf-rank-bar.is-down {
+  top: 50%;
+  border-radius: 0 0 4px 4px;
+  background: var(--color-coral);
+}
+
+.pf-rank-col:hover .pf-rank-bar,
+.pf-rank-col:focus-visible .pf-rank-bar {
+  filter: brightness(1.25);
+}
+
+.pf-rank-col:hover,
+.pf-rank-col:focus-visible {
+  background: rgb(var(--rgb-white) / 0.06);
+}
+
+/* Hover readout */
+.pf-rank-col::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  z-index: 2;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--color-navy);
+  border: 1px solid var(--color-border);
+  font-size: 0.75rem;
+  white-space: nowrap;
+  color: var(--color-text);
+  transform: translateX(-50%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.pf-rank-col:nth-child(-n + 4)::after {
+  left: 0;
+  transform: none;
+}
+
+.pf-rank-col:nth-last-child(-n + 4)::after {
+  left: auto;
+  right: 0;
+  transform: none;
+}
+
+.pf-rank-col:hover::after,
+.pf-rank-col:focus-visible::after {
+  opacity: 1;
+}
+
+.pf-rank-weeks {
+  display: flex;
+  justify-content: space-between;
+  margin: 4px 0 0 calc(2rem + 6px);
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+}
+
+.pf-rank-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin-top: 8px;
+  font-size: 0.75rem;
+  color: var(--color-text-soft);
+}
+
+.pf-rank-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pf-rank-legend i {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+.pf-rank-legend i.is-up {
+  background: var(--color-teal);
+}
+
+.pf-rank-legend i.is-down {
+  background: var(--color-coral);
 }
 
 .pf-more {
