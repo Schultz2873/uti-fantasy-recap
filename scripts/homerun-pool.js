@@ -105,30 +105,21 @@
     return Number(grid.dataset.limit || (isPreviewGrid ? 3 : 0));
   }
 
-  // One line per team: rank, logo, team (with its best hitter), total.
-  function renderCompactRows(visibleStandings) {
-    return visibleStandings.map((team, index) => {
-      const topHitter = [...team.players].sort((a, b) => b.homeRuns - a.homeRuns)[0];
-      return `
-      <div class="hr-compact-row">
-        <span class="hr-compact-rank">${index + 1}</span>
-        <span class="hr-compact-team">
-          ${team.logo ? `<img src="${team.logo}" alt="">` : ""}
-          <span>${team.fantasyTeam}${topHitter ? `<small>Top bat: ${topHitter.mlbName} (${topHitter.homeRuns})</small>` : ""}</span>
-        </span>
-        <span class="hr-compact-total">${team.totalHomeRuns}<small>HR</small></span>
-      </div>`;
-    }).join("");
+  // Homepage link row (data-variant="leader"): just the current leader and total.
+  function renderLeaderLine(standings) {
+    const leader = standings[0];
+    if (!leader) return `<span>Home Run Pool<small>Standings unavailable</small></span><b>View <span aria-hidden="true">→</span></b>`;
+    return `<span>Home Run Pool<small>Leader: ${leader.fantasyTeam}</small></span><b>${leader.totalHomeRuns} HR <span aria-hidden="true">→</span></b>`;
   }
 
   function renderHomeRunPoolGrid(grid, standings) {
-    const limit = getHomeRunPoolLimit(grid);
-    const visibleStandings = limit > 0 ? standings.slice(0, limit) : standings;
-
-    if (grid.hasAttribute("data-compact")) {
-      grid.innerHTML = renderCompactRows(visibleStandings);
+    if (grid.dataset.variant === "leader") {
+      grid.innerHTML = renderLeaderLine(standings);
       return;
     }
+
+    const limit = getHomeRunPoolLimit(grid);
+    const visibleStandings = limit > 0 ? standings.slice(0, limit) : standings;
 
     grid.innerHTML = visibleStandings.map((team, index) => `
       <article class="home-run-card ${index === 0 ? "home-run-card-leader" : ""}">
@@ -187,6 +178,11 @@
       renderHomeRunPool(buildHomeRunPoolStandings(buildHomeRunLookup(splits)));
     } catch (error) {
       console.error(error);
+
+      if (grid.dataset.variant === "leader") {
+        grid.innerHTML = renderLeaderLine([]);
+        return;
+      }
 
       grid.innerHTML = `
         <article class="article-card">

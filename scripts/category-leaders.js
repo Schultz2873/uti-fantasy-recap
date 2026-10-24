@@ -25,7 +25,6 @@ const weeklyLeaderCategories = [
 
 const MLB_STATS_API = "https://statsapi.mlb.com/api/v1";
 
-const leaderRotationState = new Map(); // category label -> which tied leader is showing
 let weeklyLeadersCache = [];
 let leaderRangeMode = "weekly"; // "weekly" | "past" | "season"
 let selectedPastWeek = null;
@@ -406,8 +405,7 @@ function buildLeaderEntry(category, players) {
       name: "N/A",
       team: "",
       value: "N/A",
-      tiedLeaders: [{ name: "N/A", team: "" }],
-      currentIndex: 0
+      tiedLeaders: [{ name: "N/A", team: "" }]
     };
   }
 
@@ -421,87 +419,66 @@ function buildLeaderEntry(category, players) {
     name: tiedLeaders[0]?.name || "N/A",
     team: tiedLeaders[0]?.team || "",
     value: formatLeaderValue(leader.value, category),
-    tiedLeaders,
-    currentIndex: wrapIndex(leaderRotationState.get(category.label) || 0, tiedLeaders.length || 1)
+    tiedLeaders
   };
 }
 
-// Index modulo total that stays positive, for cycling forward and back.
-function wrapIndex(index, total) {
-  return ((index % total) + total) % total;
-}
+// Categories shown before "Show all 12 categories": a mix of hitting and pitching.
+const FEATURED_LEADER_CATEGORIES = ["R", "HR", "RBI", "K", "ERA", "SV+H-BS"];
+const FEATURED_LEADER_COUNT = FEATURED_LEADER_CATEGORIES.length;
 
-function renderOwnerBadge(fantasyOwner) {
-  if (!fantasyOwner) {
-    return `<span class="available-badge">Available</span>`;
-  }
+// One compact row per category: category, player (MLB team · UTI owner), value.
+function renderLeaderRows(leaders) {
+  const list = document.getElementById("weeklyLeadersGrid");
 
-  const ownerLogo = getTeamLogo(fantasyOwner);
+  if (!list) return;
 
-  return `
-            <span class="fantasy-owner-badge fantasy-owner-badge-with-thumb">
-              ${ownerLogo ? `<img src="${ownerLogo}" alt="${fantasyOwner}" class="owner-thumb">` : ""}
-              <span>${fantasyOwner}</span>
-            </span>
-          `;
-}
+  // Featured categories in their listed order, then the rest in their usual order.
+  const sortKey = (leader, index) => {
+    const featured = FEATURED_LEADER_CATEGORIES.indexOf(leader.label);
+    return featured === -1 ? FEATURED_LEADER_COUNT + index : featured;
+  };
+  const featuredFirst = leaders
+    .map((leader, index) => ({ leader, key: sortKey(leader, index) }))
+    .sort((a, b) => a.key - b.key)
+    .map(item => item.leader);
 
-function renderLeaderCards(leaders) {
-  const grid = document.getElementById("weeklyLeadersGrid");
-
-  if (!grid) return;
-
-  grid.innerHTML = leaders.map(leader => {
-    const tieCount = leader.tiedLeaders.length;
-    const hasTie = tieCount > 1;
-    const currentIndex = wrapIndex(leader.currentIndex || 0, tieCount || 1);
-    const currentLeader = leader.tiedLeaders[currentIndex] || { name: leader.name, team: leader.team };
+  list.innerHTML = featuredFirst.map((leader, index) => {
+    const owner = getFantasyOwner(leader.name);
+    const tieNote = leader.tiedLeaders.length > 1 ? ` · +${leader.tiedLeaders.length - 1} tied` : "";
 
     return `
-      <article class="leader-card">
-        <div class="leader-top-row">
-          <div class="leader-category">${leader.label}</div>
-          ${hasTie ? `<div class="leader-tie">${tieCount} tied</div>` : ""}
-        </div>
-        <div class="leader-name">${currentLeader.name}</div>
-        <div class="leader-team">${currentLeader.team}</div>
-        <div class="leader-owner-line">
-          ${renderOwnerBadge(getFantasyOwner(currentLeader.name))}
-        </div>
-        <div class="leader-bottom-row">
-          <div class="leader-value">${leader.value}</div>
-          ${hasTie ? `
-            <div class="leader-switcher" aria-label="Switch tied ${leader.label} leaders">
-              <button class="leader-switch-btn" type="button" data-leader-nav data-category="${leader.label}" data-direction="-1" aria-label="Previous tied leader">‹</button>
-              <span class="leader-count-note">${currentIndex + 1}/${tieCount}</span>
-              <button class="leader-switch-btn" type="button" data-leader-nav data-category="${leader.label}" data-direction="1" aria-label="Next tied leader">›</button>
-            </div>
-          ` : ""}
-        </div>
-      </article>
+      <li class="${index >= FEATURED_LEADER_COUNT ? "is-extra" : ""}">
+        <span class="home-leader-cat">${escapeHtml(leader.label.replace("SV+H-BS", "SV+H"))}</span>
+        <span class="home-leader-who">
+          <strong>${escapeHtml(leader.name)}</strong>
+          <small>${escapeHtml(leader.team || "—")} · ${owner ? `<b>${escapeHtml(owner)}</b>` : "Available"}${tieNote}</small>
+        </span>
+        <span class="home-leader-value">${escapeHtml(leader.value)}</span>
+      </li>
     `;
   }).join("");
+}
 
-  grid.querySelectorAll("[data-leader-nav]").forEach(button => {
-    button.addEventListener("click", event => {
-      const category = event.currentTarget.dataset.category;
-      const direction = Number(event.currentTarget.dataset.direction || 1);
-      const leader = weeklyLeadersCache.find(item => item.label === category);
-
-      if (!leader || leader.tiedLeaders.length <= 1) return;
-
-      leader.currentIndex = wrapIndex((leader.currentIndex || 0) + direction, leader.tiedLeaders.length);
-      leaderRotationState.set(category, leader.currentIndex);
-      renderLeaderCards(weeklyLeadersCache);
-    });
-  });
+function renderLeaderMessage(message) {
+  const list = document.getElementById("weeklyLeadersGrid");
+  if (list) list.innerHTML = `<li class="home-leader-message">${escapeHtml(message)}</li>`;
 }
 
 function resetLeaderLoadingCards() {
-  const grid = document.getElementById("weeklyLeadersGrid");
-  if (grid) {
-    grid.innerHTML = renderMessageCard("Loading category leaders...");
-  }
+  renderLeaderMessage("Loading category leaders…");
+}
+
+function setupLeadersMoreButton() {
+  const button = document.getElementById("leadersMore");
+  const list = document.getElementById("weeklyLeadersGrid");
+  if (!button || !list) return;
+
+  button.addEventListener("click", () => {
+    const expanded = list.classList.toggle("is-expanded");
+    button.dataset.expanded = String(expanded);
+    button.textContent = expanded ? "Show fewer" : "Show all 12 categories";
+  });
 }
 
 async function loadWeeklyLeaders() {
@@ -534,7 +511,7 @@ async function loadWeeklyLeaders() {
 
       if (!range) {
         rangeTag.textContent = "No past weeks yet";
-        grid.innerHTML = renderMessageCard("No completed past weeks are available yet.");
+        renderLeaderMessage("No completed past weeks are available yet.");
         return;
       }
     } else {
@@ -564,10 +541,10 @@ async function loadWeeklyLeaders() {
 
     if (section) section.hidden = !hasLeaders && leaderRangeMode === "season";
 
-    renderLeaderCards(weeklyLeadersCache);
+    renderLeaderRows(weeklyLeadersCache);
   } catch (error) {
     console.error(error);
-    grid.innerHTML = renderMessageCard("MLB category leaders could not load right now.");
+    renderLeaderMessage("MLB category leaders could not load right now.");
   }
 }
 
@@ -596,6 +573,7 @@ function setupPastWeekSelect() {
 
 document.addEventListener("DOMContentLoaded", () => {
   setupPastWeekSelect();
+  setupLeadersMoreButton();
 
   setupModeToggle("data-leader-mode", "weekly", mode => {
     leaderRangeMode = mode;

@@ -22,8 +22,6 @@
   margin-top: 10px;
 }
 
-
-
 .section-eyebrow {
   color: var(--accent);
   font-size: .72rem;
@@ -72,29 +70,13 @@
 
 /* --- Leaders / HR Pool slightly denser -------------------------- */
 
-#mlb-weekly-leaders .weekly-leaders-grid {
-  margin-top: 14px;
-}
-
-#mlb-weekly-leaders .leader-card {
-  min-height: 138px;
-  padding: 14px;
-}
-
 #home-run-pool .home-run-pool-grid {
   margin-top: 12px;
 }
 
-#home-run-pool .home-run-pool-link-wrap {
-  margin-top: 14px;
-}
-
-
 /* --- Slightly less visual noise across cards -------------------- */
 
-.article-card,
-.tool-card,
-.leader-card {
+.article-card {
   box-shadow: 0 9px 22px rgb(var(--rgb-black) / 0.3);
 }
 
@@ -102,17 +84,11 @@
   transform: translateY(-2px);
 }
 
-.tag-row {
-  margin-bottom: 14px;
-}
-
 .tag {
   padding: 4px 9px;
 }
 
 /* --- Responsive -------------------------------------------------- */
-
-
 
 @media (max-width: 520px) {
 
@@ -843,396 +819,6 @@ body.uti-profile-open {
   padding: 24px;
 }
 
-.uti-profile-hero {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  padding: 8px 54px 20px 0;
-}
-
-.uti-profile-team-block {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  min-width: 0;
-}
-
-.uti-profile-logo {
-  width: 68px;
-  height: 68px;
-  flex: 0 0 auto;
-  border-radius: 18px;
-  object-fit: cover;
-  background: rgb(var(--rgb-white) / 0.05);
-  box-shadow: 0 8px 24px rgb(var(--rgb-black) / 0.5);
-}
-
-.uti-profile-kicker {
-  display: block;
-  margin-bottom: 4px;
-  color: var(--color-teal);
-  font-size: .68rem;
-  font-weight: 950;
-  letter-spacing: .09em;
-  text-transform: uppercase;
-}
-
-.uti-profile-team-block h2 {
-  margin: 0 0 7px;
-  font-size: clamp(1.5rem, 4vw, 2.25rem);
-  font-weight: 950;
-  line-height: 1;
-  letter-spacing: -.03em;
-}
-
-.uti-profile-verdict {
-  display: inline-flex;
-  align-items: center;
-  min-height: 28px;
-  padding: 5px 10px;
-  border-radius: 999px;
-  background: var(--color-slate-deep);
-  color: var(--color-white);
-  font-size: .7rem;
-  font-weight: 900;
-  letter-spacing: .03em;
-  text-transform: uppercase;
-}
-
-.uti-profile-power-badge {
-  flex: 0 0 auto;
-  min-width: 118px;
-  padding: 12px 14px;
-  border: 1px solid rgb(var(--rgb-teal) / 0.3);
-  border-radius: 16px;
-  background: rgb(var(--rgb-white) / 0.05);
-  text-align: center;
-  box-shadow: 0 8px 22px rgb(var(--rgb-black) / 0.28);
-}
-
-.uti-profile-power-badge span,
-.uti-profile-power-badge small {
-  display: block;
-}
-
-.uti-profile-power-badge span {
-  color: var(--color-text-muted);
-  font-size: .62rem;
-  font-weight: 900;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-}
-
-.uti-profile-power-badge strong {
-  display: block;
-  margin: 2px 0;
-  color: var(--color-teal);
-  font-size: 2rem;
-  line-height: 1;
-}
-
-.uti-profile-power-badge small {
-  color: var(--color-text-muted);
-  font-size: .62rem;
-  font-weight: 700;
-}
-
-.uti-profile-stat-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 10px;
-  margin-bottom: 12px;
-}
-
-.uti-profile-stat-grid article {
-  min-width: 0;
-  padding: 13px;
-  border: 1px solid rgb(var(--rgb-white) / 0.1);
-  border-radius: 14px;
-  background: rgb(var(--rgb-white) / 0.05);
-}
-
-.uti-profile-stat-grid span,
-.uti-profile-stat-grid small {
-  display: block;
-}
-
-.uti-profile-stat-grid span {
-  margin-bottom: 4px;
-  color: var(--color-text-muted);
-  font-size: .62rem;
-  font-weight: 900;
-  letter-spacing: .05em;
-  text-transform: uppercase;
-}
-
-.uti-profile-stat-grid strong {
-  display: block;
-  margin-bottom: 3px;
-  font-size: 1.22rem;
-  font-weight: 950;
-}
-
-.uti-profile-stat-grid strong.is-positive {
-  color: var(--color-orange);
-}
-
-.uti-profile-stat-grid strong.is-negative {
-  color: var(--color-coral);
-}
-
-.uti-profile-stat-grid small {
-  color: var(--color-text-muted);
-  font-size: .62rem;
-}
-
-.uti-profile-split-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-  margin-bottom: 12px;
-}
-
-.uti-profile-split-card {
-  padding: 14px;
-  border: 1px solid rgb(var(--rgb-white) / 0.1);
-  border-radius: 15px;
-  background: rgb(var(--rgb-white) / 0.05);
-}
-
-.uti-profile-split-card.is-hitting {
-  background: linear-gradient(135deg, rgb(var(--rgb-green) / 0.13), rgb(var(--rgb-white) / 0.05) 58%);
-}
-
-.uti-profile-split-card.is-pitching {
-  background: linear-gradient(135deg, rgb(var(--rgb-teal) / 0.13), rgb(var(--rgb-white) / 0.05) 58%);
-}
-
-.uti-profile-card-label {
-  color: var(--color-text-muted);
-  font-size: .62rem;
-  font-weight: 950;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-}
-
-.uti-profile-rank-line {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 8px;
-  margin: 5px 0 8px;
-}
-
-.uti-profile-rank-line strong {
-  font-size: 1.55rem;
-  line-height: 1;
-}
-
-.uti-profile-rank-line span {
-  color: var(--color-text-muted);
-  font-size: .74rem;
-  font-weight: 800;
-}
-
-.uti-profile-meter {
-  height: 8px;
-  overflow: hidden;
-  border-radius: 999px;
-  background: rgb(var(--rgb-teal) / 0.29);
-}
-
-.uti-profile-meter span {
-  display: block;
-  height: 100%;
-  border-radius: inherit;
-}
-
-.uti-profile-split-card.is-hitting .uti-profile-meter span {
-  background: linear-gradient(90deg, var(--color-green), var(--color-green));
-}
-
-.uti-profile-split-card.is-pitching .uti-profile-meter span {
-  background: linear-gradient(90deg, var(--color-teal), var(--color-teal));
-}
-
-.uti-profile-section {
-  margin-bottom: 12px;
-  padding: 15px;
-  border: 1px solid rgb(var(--rgb-white) / 0.1);
-  border-radius: 16px;
-  background: rgb(var(--rgb-white) / 0.05);
-}
-
-.uti-profile-section-head {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 13px;
-}
-
-.uti-profile-section-head h3 {
-  margin: 2px 0 0;
-  font-size: 1rem;
-}
-
-.uti-profile-form {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.uti-form-chip {
-  display: grid;
-  width: 30px;
-  height: 30px;
-  place-items: center;
-  border-radius: 9px;
-  font-size: .72rem;
-  font-weight: 950;
-  line-height: .85;
-}
-
-.uti-form-chip small {
-  display: block;
-  font-size: .48rem;
-  font-weight: 800;
-}
-
-.uti-form-chip.is-w {
-  background: rgb(var(--rgb-green) / 0.19);
-  color: var(--color-green);
-}
-
-.uti-form-chip.is-l {
-  background: rgb(var(--rgb-coral) / 0.18);
-  color: var(--color-coral);
-}
-
-.uti-form-chip.is-t {
-  background: rgb(var(--rgb-white) / 0.08);
-  color: var(--color-text-muted);
-}
-
-.uti-profile-trend {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(34px, 1fr));
-  align-items: end;
-  gap: 5px;
-  min-height: 122px;
-  padding: 8px 3px 0;
-}
-
-.uti-profile-trend-item {
-  display: grid;
-  grid-template-rows: 74px auto auto;
-  gap: 3px;
-  align-items: end;
-  min-width: 0;
-  text-align: center;
-}
-
-.uti-profile-trend-bar-wrap {
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  height: 74px;
-  overflow: hidden;
-  border-radius: 7px 7px 4px 4px;
-  background: rgb(var(--rgb-teal) / 0.18);
-}
-
-.uti-profile-trend-bar {
-  display: block;
-  width: 100%;
-  min-height: 8px;
-  border-radius: 7px 7px 3px 3px;
-  background: linear-gradient(180deg, var(--color-teal), var(--color-teal));
-}
-
-.uti-profile-trend-item strong {
-  font-size: .64rem;
-}
-
-.uti-profile-trend-item small {
-  color: var(--color-teal);
-  font-size: .52rem;
-}
-
-.uti-profile-detail-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 9px;
-}
-
-.uti-profile-detail-card {
-  min-width: 0;
-  padding: 12px;
-  border: 1px solid rgb(var(--rgb-white) / 0.1);
-  border-radius: 14px;
-  background: rgb(var(--rgb-white) / 0.05);
-}
-
-.uti-profile-detail-card span,
-.uti-profile-detail-card strong,
-.uti-profile-detail-card small {
-  display: block;
-}
-
-.uti-profile-detail-card span {
-  margin-bottom: 5px;
-  color: var(--color-text-muted);
-  font-size: .61rem;
-  font-weight: 900;
-  text-transform: uppercase;
-}
-
-.uti-profile-detail-card strong {
-  margin-bottom: 3px;
-  overflow: hidden;
-  font-size: .88rem;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.uti-profile-detail-card small {
-  color: var(--color-text-muted);
-  font-size: .59rem;
-  line-height: 1.25;
-}
-
-.uti-profile-detail-card.is-best,
-.uti-profile-detail-card.is-best-cat {
-  border-top: 3px solid var(--color-green);
-}
-
-.uti-profile-detail-card.is-worst,
-.uti-profile-detail-card.is-worst-cat {
-  border-top: 3px solid var(--color-coral);
-}
-
-.uti-profile-footer-stats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 11px;
-}
-
-.uti-profile-footer-stats span {
-  padding: 7px 10px;
-  border-radius: 999px;
-  background: rgb(var(--rgb-white) / 0.06);
-  color: var(--color-text-muted);
-  font-size: .65rem;
-  font-weight: 750;
-}
-
-.uti-profile-footer-stats strong {
-  color: var(--color-text);
-}
-
 @media (max-width: 720px) {
   .uti-profile-backdrop {
     align-items: end;
@@ -1247,78 +833,6 @@ body.uti-profile-open {
 
   #utiTeamProfileContent {
     padding: 18px 14px 24px;
-  }
-
-  .uti-profile-hero {
-    align-items: flex-start;
-    padding-right: 42px;
-  }
-
-  .uti-profile-logo {
-    width: 54px;
-    height: 54px;
-    border-radius: 15px;
-  }
-
-  .uti-profile-team-block {
-    align-items: flex-start;
-  }
-
-  .uti-profile-power-badge {
-    min-width: 94px;
-    padding: 10px;
-  }
-
-  .uti-profile-power-badge strong {
-    font-size: 1.55rem;
-  }
-
-  .uti-profile-stat-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .uti-profile-detail-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 480px) {
-  .uti-profile-hero {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  .uti-profile-power-badge {
-    display: grid;
-    grid-template-columns: auto auto auto;
-    align-items: baseline;
-    gap: 8px;
-    width: 100%;
-    text-align: left;
-  }
-
-  .uti-profile-power-badge strong {
-    margin-left: auto;
-  }
-
-  .uti-profile-split-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .uti-profile-section-head {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .uti-profile-trend {
-    overflow-x: auto;
-    grid-template-columns: repeat(var(--weeks, 16), 34px);
-    justify-content: start;
-  }
-
-  .uti-profile-detail-grid {
-    gap: 7px;
   }
 }
 
@@ -1422,71 +936,6 @@ body.uti-profile-open {
   font-size: .64rem;
 }
 
-.uti-profile-season-tabs {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(0, 1fr);
-  gap: 7px;
-  margin: 0 52px 14px 0;
-  padding: 5px;
-  border: 1px solid rgb(var(--rgb-white) / 0.1);
-  border-radius: 14px;
-  background: rgb(var(--rgb-white) / 0.06);
-  overflow-x: auto;
-  overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
-}
-
-.uti-profile-season-tabs button {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  min-width: 0;
-  min-height: 54px;
-  padding: 8px 10px;
-  border: 0;
-  border-radius: 10px;
-  background: transparent;
-  color: var(--color-text-muted);
-  cursor: pointer;
-  white-space: normal;
-  text-align: center;
-}
-
-.uti-profile-season-tabs button strong {
-  font-size: .88rem;
-  line-height: 1.2;
-}
-
-.uti-profile-season-tabs button span {
-  font-size: .59rem;
-  font-weight: 750;
-  max-width: 100%;
-  line-height: 1.35;
-  overflow-wrap: anywhere;
-}
-
-.uti-profile-season-tabs button.is-active {
-  background: rgb(var(--rgb-white) / 0.05);
-  color: var(--color-text);
-  box-shadow: 0 3px 10px rgb(var(--rgb-black) / 0.4);
-}
-
-.uti-profile-season-tabs button.is-active strong {
-  color: var(--color-teal);
-}
-
-.uti-profile-source-note {
-  display: block;
-  margin-top: 6px;
-  color: var(--color-text-muted);
-  font-size: .61rem;
-  font-weight: 700;
-}
-
 .uti-history-notice {
   display: flex;
   gap: 9px;
@@ -1526,14 +975,6 @@ body.uti-profile-open {
   object-fit: cover !important;
 }
 
-.uti-profile-logo {
-  width: 48px !important;
-  height: 48px !important;
-  flex: 0 0 48px !important;
-  border-radius: 14px !important;
-  object-fit: cover !important;
-}
-
 @media (max-width: 620px) {
   .uti-history-snapshot-grid {
     grid-template-columns: 1fr;
@@ -1543,31 +984,9 @@ body.uti-profile-open {
     grid-template-columns: minmax(0, 1fr) auto;
   }
 
-  .uti-profile-season-tabs {
-    margin-right: 42px;
-  }
-
-  .uti-profile-season-tabs button {
-    align-items: center;
-    flex-direction: row;
-    gap: 5px;
-    padding: 5px 8px;
-  }
-
-  .uti-profile-season-tabs button strong,
-  .uti-profile-season-tabs button span {
-    white-space: nowrap;
-  }
-
   .uti-history-notice {
     flex-direction: column;
     gap: 3px;
-  }
-
-  .uti-profile-logo {
-    width: 42px !important;
-    height: 42px !important;
-    flex-basis: 42px !important;
   }
 }
 
@@ -2000,7 +1419,6 @@ a.uti-global-team-profile-link:hover,
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
 
 .uti-history-overview-section {
   margin: 0;
@@ -2456,118 +1874,203 @@ a.uti-global-team-profile-link:hover,
 }
 
 /* ---------- Team profile: historical record split ---------- */
-.uti-profile-record-card {
-  min-width: 0;
-}
-
-.uti-profile-record-card > strong {
-  margin-bottom: 8px;
-}
-
-.uti-profile-record-splits {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px;
-  width: 100%;
-}
-
-.uti-profile-record-splits > span {
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  gap: 1px;
-  padding: 6px 7px;
-  border-radius: 9px;
-}
-
-.uti-profile-record-splits > span.is-regular {
-  background: rgb(var(--rgb-teal) / 0.13);
-  color: var(--color-teal);
-}
-
-.uti-profile-record-splits > span.is-playoffs {
-  background: rgb(var(--rgb-orange) / 0.16);
-  color: var(--color-orange);
-}
-
-.uti-profile-record-splits small {
-  color: inherit;
-  font-size: .48rem;
-  font-weight: 850;
-  line-height: 1.15;
-  opacity: .8;
-}
-
-.uti-profile-record-splits b {
-  color: inherit;
-  font-size: .68rem;
-  font-weight: 950;
-  line-height: 1.15;
-}
-
-@media (max-width: 560px) {
-  .uti-profile-record-splits {
-    grid-template-columns: 1fr;
-  }
-}
 
 /* === SHARED MOBILE PROFILE SEASON TABS ===
    Keep the profile identical whether opened from index, Intelligence, or History.
    Higher-specificity selectors intentionally beat older page-level inline overrides.
 */
-@media (max-width: 620px) {
-  body .uti-profile-season-tabs {
-    display: grid !important;
-    grid-auto-flow: row;
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 5px !important;
 
-    width: auto !important;
-    margin: 0 58px 14px 0 !important;
-    padding: 5px !important;
-
-    overflow: visible !important;
-  }
-
-  body .uti-profile-season-tabs > button,
-  body .uti-profile-season-tabs button {
-    display: flex !important;
-    flex: none !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-
-    width: 100% !important;
-    min-width: 0 !important;
-    min-height: 48px !important;
-
-    gap: 2px !important;
-    padding: 7px 4px !important;
-
-    line-height: 1 !important;
-    white-space: nowrap !important;
-  }
-
-  body .uti-profile-season-tabs button strong {
-    display: block !important;
-    margin: 0 !important;
-    font-size: .82rem !important;
-    line-height: 1 !important;
-    white-space: nowrap !important;
-  }
-
-  body .uti-profile-season-tabs button span {
-    display: block !important;
-    max-width: 100% !important;
-    margin: 0 !important;
-
-    font-size: .56rem !important;
-    line-height: 1.1 !important;
-    font-weight: 800 !important;
-
-    white-space: normal !important;
-    overflow: visible !important;
-  }
-}
 /* === END SHARED MOBILE PROFILE SEASON TABS === */
 
+/* ---------- Team profile modal content (calm layout) ---------- */
+/* Rendered by openTeamProfile() in scripts/uti-intelligence.js. */
+.uti-profile-modal {
+  width: min(660px, 100%);
+}
+
+#utiTeamProfileContent {
+  padding: 26px;
+}
+
+.pf-top {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-right: 44px;
+}
+
+.pf-photo {
+  width: 56px;
+  height: 56px;
+  flex: none;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.pf-top h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 900;
+  font-stretch: var(--font-wide);
+  line-height: 1.1;
+  color: var(--color-text);
+}
+
+.pf-top p {
+  margin: 3px 0 0;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.pf-verdict {
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.pf-seasons {
+  display: flex;
+  gap: 16px;
+  margin: 16px 0 18px;
+}
+
+.pf-seasons button {
+  padding: 0 0 4px;
+  border: 0;
+  background: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.pf-seasons button[aria-pressed="true"] {
+  color: var(--color-text);
+  box-shadow: inset 0 -2px 0 var(--color-accent);
+}
+
+.pf-keys {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.pf-key {
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.pf-key span,
+.pf-key small {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.pf-key strong {
+  display: block;
+  margin: 2px 0;
+  font-size: 1.35rem;
+  font-weight: 900;
+  font-stretch: var(--font-wide);
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.pf-key strong.is-up {
+  color: var(--color-teal);
+}
+
+.pf-key strong.is-down {
+  color: var(--color-coral);
+}
+
+.pf-trend {
+  margin-top: 18px;
+}
+
+.pf-trend-head {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.pf-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 44px;
+}
+
+.pf-bars span {
+  flex: 1;
+  border-radius: 2px;
+  background: rgb(var(--rgb-teal) / 0.45);
+}
+
+.pf-bars span.is-top {
+  background: var(--color-teal);
+}
+
+.pf-more {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-border);
+}
+
+.pf-more summary {
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+.pf-more dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 24px;
+  margin: 10px 0 0;
+}
+
+.pf-more dl div {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 0;
+  border-top: 1px solid var(--color-border);
+  font-size: 0.86rem;
+}
+
+.pf-more dt {
+  font-weight: 400;
+  color: var(--color-text-muted);
+}
+
+.pf-more dd {
+  margin: 0;
+  font-weight: 600;
+  text-align: right;
+  color: var(--color-text);
+}
+
+.pf-note {
+  margin: 12px 0 0;
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+}
+
+@media (max-width: 720px) {
+  #utiTeamProfileContent {
+    padding: 20px 16px 24px;
+  }
+
+  .pf-keys {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pf-more dl {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

@@ -1,13 +1,15 @@
 /*
-  Homepage dashboard: latest-result scoreboard, stat strip, and the Power Rankings table (with streaks).
-  Everything here is computed from data/weekly-team-stats.js (via league-analytics.js),
-  data/prize-money.js, and data/team-logos.js, so it updates when those files do.
+  Homepage: latest recap hero, latest-result scoreboard, standings, latest recaps, and the
+  season-aware prize pool card.
 
+  Reads data/recaps.js, data/weekly-team-stats.js (via league-analytics.js),
+  data/prize-money.js, and data/team-logos.js, so the page updates when those files do.
   Team names carry data-team-profile, so clicking one opens the team profile from uti-intelligence.js.
 */
 (() => {
   const HITTING_CATEGORIES = ["R", "HR", "RBI", "BB", "SO", "NSB", "AVG", "TB"];
   const PITCHING_CATEGORIES = ["W", "L", "QS", "NS", "K", "ERA", "WHIP", "BAA"];
+  const LATEST_RECAPS_SHOWN = 3;
 
   function escapeHtml(value) {
     return String(value ?? "")
@@ -18,9 +20,7 @@
       .replaceAll("'", "&#039;");
   }
 
-  const formatPct = value => `${(Number(value || 0) * 100).toFixed(1)}%`;
   const formatRecord = record => `${record.wins}-${record.losses}-${record.ties}`;
-  const formatSigned = value => `${value >= 0 ? "+" : "−"}${Math.abs(value).toFixed(2)}`;
 
   function teamPhoto(team, className = "ui-team-photo") {
     const src = window.TEAM_LOGOS?.[team];
@@ -33,6 +33,22 @@
   function teamLink(team) {
     return `<span class="ui-team-link" data-team-profile="${escapeHtml(team)}" data-profile-open-season="2026" role="button" tabindex="0">${escapeHtml(team)}</span>`;
   }
+
+  /* ---------- Hero: newest recap ---------- */
+
+  function renderHero(recap) {
+    const target = document.getElementById("homeHeroCopy");
+    if (!target || !recap) return;
+
+    target.innerHTML = `
+      <span class="ui-kicker">${escapeHtml(recap.label)}</span>
+      <h1>${escapeHtml(recap.title)}</h1>
+      <p class="home-deck">${escapeHtml(recap.summary)}</p>
+      <a class="home-button" href="${escapeHtml(recap.href)}">Read the recap <span aria-hidden="true">→</span></a>
+    `;
+  }
+
+  /* ---------- Scoreboard: latest week ---------- */
 
   // Category points for one side of a matchup (win = 1, tie = 0.5).
   function categoryPoints(row, opponentRow, categories) {
@@ -53,116 +69,36 @@
 
     const latestWeek = Math.max(...rows.map(row => Number(row.week)).filter(Number.isFinite));
     const weekRows = rows.filter(row => Number(row.week) === latestWeek);
-    const round = weekRows[0]?.round;
-    const isChampionship = /championship/i.test(round || "");
-    const seen = new Set();
+    const matchups = window.UTIAnalytics.uniqueMatchups(weekRows);
+    const round = matchups[0]?.round;
 
-    const matchups = weekRows.filter(row => {
-      const key = [row.team, row.opponent].sort().join("|");
-      if (seen.has(key)) return false;
-      seen.add(key);
-      return true;
-    }).map(row => {
-      const opponentRow = weekRows.find(other => other.team === row.opponent) || {};
-      const sides = [[row, opponentRow], [opponentRow, row]].map(([side, other]) => ({
-        team: side.team,
-        score: Number(side.official_score_for),
-        hitting: categoryPoints(side, other, HITTING_CATEGORIES),
-        pitching: categoryPoints(side, other, PITCHING_CATEGORIES)
-      }));
-      return sides.sort((a, b) => b.score - a.score);
-    });
-
+    const rowFor = team => weekRows.find(row => row.team === team) || {};
     const sideRow = (side, isWinner) => `
       <div class="home-score-row${isWinner ? " is-winner" : ""}">
         ${teamPhoto(side.team)}
-        <span class="home-score-team">
-          <span class="home-score-name">${teamLink(side.team)}${isWinner && isChampionship ? ' <span class="home-chip">Champ</span>' : ""}</span>
-          <span class="home-score-split">Hitting ${side.hitting} · Pitching ${side.pitching}</span>
-        </span>
+        <span class="home-score-name">${teamLink(side.team)}</span>
         <strong class="home-score-total">${side.score}</strong>
       </div>`;
 
     target.innerHTML = `
-      <span class="ui-label">${escapeHtml(round || `Week ${latestWeek}`)} · Final · 16 categories</span>
-      ${matchups.map(([winner, loser]) => `
-        <div class="home-score-matchup">
-          ${sideRow(winner, winner.score > loser.score)}
-          ${sideRow(loser, false)}
-        </div>`).join("")}
+      <span class="home-score-label">${escapeHtml(round || `Week ${latestWeek}`)} · Final</span>
+      ${matchups.map(({ winner, loser, tie }) => {
+        const winnerRow = rowFor(winner.team);
+        const loserRow = rowFor(loser.team);
+        const hitting = `${categoryPoints(winnerRow, loserRow, HITTING_CATEGORIES)}–${categoryPoints(loserRow, winnerRow, HITTING_CATEGORIES)}`;
+        const pitching = `${categoryPoints(winnerRow, loserRow, PITCHING_CATEGORIES)}–${categoryPoints(loserRow, winnerRow, PITCHING_CATEGORIES)}`;
+        return `
+          <div class="home-score-matchup">
+            ${sideRow(winner, !tie)}
+            ${sideRow(loser, false)}
+            <span class="home-score-note">Hitting ${hitting} · Pitching ${pitching}</span>
+          </div>`;
+      }).join("")}
     `;
   }
 
-  function prizePoolTotal(data) {
-    const isNumber = value => typeof value === "number" && Number.isFinite(value);
-    if (isNumber(data.currentTotal)) return data.currentTotal;
-    if (!isNumber(data.basePool) || !isNumber(data.waiverWireAdded)) return null;
-    return data.basePool + data.waiverWireAdded + (isNumber(data.manualAdjustments) ? data.manualAdjustments : 0);
-  }
+  /* ---------- Standings ---------- */
 
-  function renderStats(summary) {
-    const target = document.getElementById("homeStats");
-    if (!target) return;
-
-    const allPlayKing = Object.entries(summary.allPlayRecords)
-      .map(([team, record]) => ({ team, ...record }))
-      .sort((a, b) => b.winPct - a.winPct || b.points - a.points)[0];
-    const luckiest = summary.luckIndex[0];
-    const unluckiest = summary.luckIndex[summary.luckIndex.length - 1];
-    const prizePool = prizePoolTotal(window.PRIZE_MONEY_DATA || {});
-
-    const tile = (label, value, valueClass, who, note) => `
-      <div class="ui-stat">
-        <span class="ui-label">${label}</span>
-        <strong class="ui-stat-value ${valueClass}">${value}</strong>
-        ${who ? `<span class="ui-stat-who">${teamPhoto(who, "ui-team-photo is-small")}${teamLink(who)}</span>` : `<span class="ui-stat-note">${note}</span>`}
-      </div>`;
-
-    target.innerHTML = [
-      tile("Prize pool", prizePool === null ? "—" : `$${prizePool.toLocaleString("en-US")}`, "is-money", null, "Grows with waiver spending"),
-      allPlayKing ? tile("All-Play king", formatRecord(allPlayKing), "", allPlayKing.team) : "",
-      luckiest ? tile("Luckiest", formatSigned(luckiest.luck), "is-up", luckiest.team) : "",
-      unluckiest ? tile("Unluckiest", formatSigned(unluckiest.luck), "is-down", unluckiest.team) : ""
-    ].join("");
-  }
-
-  function renderPowerRankings(summary) {
-    const target = document.getElementById("powerRankingsBody");
-    if (!target) return;
-
-    const luckByTeam = Object.fromEntries(summary.luckIndex.map(row => [row.team, row.luck]));
-    // Streaks count every 2026 matchup, playoffs included.
-    const streaks = window.UTIAnalytics.teamStreaks(summary.allRows);
-
-    target.innerHTML = summary.powerRankings.map((row, index) => {
-      const record = summary.officialRecords[row.team];
-      const allPlay = summary.allPlayRecords[row.team];
-      const luck = luckByTeam[row.team] ?? 0;
-      const rating = row.rating * 100;
-      const recordText = record ? formatRecord(record) : "—";
-      const streak = streakBadge(streaks[row.team]?.current);
-
-      return `
-        <tr>
-          <td class="home-rank">${index + 1}</td>
-          <td class="home-team-cell">
-            <span class="home-team">${teamPhoto(row.team)}<span>${teamLink(row.team)}<span class="home-team-sub">${recordText} ${streak}</span></span></span>
-          </td>
-          <td>${recordText}</td>
-          <td>${streak}</td>
-          <td>${allPlay ? formatRecord(allPlay) : "—"}<span class="home-sub">${allPlay ? formatPct(allPlay.winPct) : ""}</span></td>
-          <td class="${luck >= 0 ? "is-up" : "is-down"}">${formatSigned(luck)}</td>
-          <td>
-            <span class="home-power">
-              <span class="home-power-track"><span style="width:${rating.toFixed(1)}%"></span></span>
-              <b>${rating.toFixed(1)}</b>
-            </span>
-          </td>
-        </tr>`;
-    }).join("");
-  }
-
-  // e.g. W3 (teal) or L2 (coral).
   function streakBadge(run) {
     if (!run?.type) return "";
     const tone = run.type === "W" ? " is-win" : run.type === "L" ? " is-loss" : "";
@@ -170,27 +106,84 @@
     return `<span class="ui-streak${tone}" title="${run.length}-game ${label} streak">${run.type}${run.length}</span>`;
   }
 
-  // On phones the table shows the top five until "Show all 10 teams" is pressed.
-  function setupShowAllTeams() {
-    const button = document.getElementById("powerRankingsMore");
-    const table = document.querySelector(".home-standings");
-    if (!button || !table) return;
+  function renderStandings(summary) {
+    const target = document.getElementById("standingsBody");
+    if (!target) return;
 
-    button.addEventListener("click", () => {
-      const expanded = table.classList.toggle("is-expanded");
-      button.dataset.expanded = String(expanded);
-      button.textContent = expanded ? "Show top 5" : "Show all 10 teams";
-    });
+    // Streaks count every matchup, playoffs included.
+    const streaks = window.UTIAnalytics.teamStreaks(summary.allRows);
+
+    target.innerHTML = summary.powerRankings.map((row, index) => {
+      const record = summary.officialRecords[row.team];
+      return `
+        <tr>
+          <td class="home-rank">${index + 1}</td>
+          <td class="home-team-cell"><span class="ui-team">${teamPhoto(row.team, "ui-team-photo is-medium")}${teamLink(row.team)}</span></td>
+          <td>${record ? formatRecord(record) : "—"}</td>
+          <td>${streakBadge(streaks[row.team]?.current)}</td>
+        </tr>`;
+    }).join("");
+  }
+
+  /* ---------- Latest recaps ---------- */
+
+  function renderLatestRecaps(recaps) {
+    const target = document.getElementById("latestRecaps");
+    if (!target) return;
+
+    target.innerHTML = recaps.slice(1, 1 + LATEST_RECAPS_SHOWN).map(recap => `
+      <li>
+        <a class="ui-link-row is-recap" href="${escapeHtml(recap.href)}">
+          <span class="home-recap-week">Wk ${recap.week}</span>
+          <span>${escapeHtml(recap.title)}</span>
+        </a>
+      </li>
+    `).join("");
+
+    const allLink = document.getElementById("allRecapsLink");
+    if (allLink) allLink.firstChild.textContent = `All ${recaps.length} `;
+  }
+
+  /* ---------- Prize pool card: shown during the season ---------- */
+
+  // "auto" shows the card from March 1 until the championship has been played.
+  // Override with homepageCard: "show" or "hide" in data/prize-money.js.
+  function isPrizeSeason(rows, setting = "auto") {
+    if (setting === "show") return true;
+    if (setting === "hide") return false;
+
+    const championshipPlayed = rows.some(row => /championship/i.test(row.round || ""));
+    const month = new Date().getMonth(); // 0 = January
+    const inMarchThroughAugust = month >= 2 && month <= 7;
+    return !championshipPlayed || inMarchThroughAugust;
+  }
+
+  function renderRecordBookLink(rows) {
+    const link = document.getElementById("recordBookLink");
+    if (!link) return;
+
+    const blowout = [...window.UTIAnalytics.uniqueMatchups(rows)].sort((a, b) => b.margin - a.margin)[0];
+    if (!blowout) return;
+
+    link.innerHTML = `
+      <span>Record Book<small>Biggest blowout: ${escapeHtml(blowout.winner.team)} over ${escapeHtml(blowout.loser.team)}</small></span>
+      <b>${blowout.winner.score}–${blowout.loser.score} <span aria-hidden="true">→</span></b>`;
   }
 
   document.addEventListener("DOMContentLoaded", () => {
+    const recaps = Array.isArray(window.UTI_RECAPS) ? window.UTI_RECAPS : [];
+    renderHero(recaps[0]);
+    renderLatestRecaps(recaps);
+
     const rows = window.UTI_WEEKLY_TEAM_STATS;
     if (!Array.isArray(rows) || !rows.length || !window.UTIAnalytics) return;
 
     const summary = window.UTIAnalytics.buildSummary(rows);
     renderScoreboard(rows);
-    renderStats(summary);
-    renderPowerRankings(summary);
-    setupShowAllTeams();
+    renderStandings(summary);
+    renderRecordBookLink(rows);
+
+    const prizeCard = document.getElementById("league-money");
+    if (prizeCard) prizeCard.hidden = !isPrizeSeason(rows, window.PRIZE_MONEY_DATA?.homepageCard);
   });
 })();

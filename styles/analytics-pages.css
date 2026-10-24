@@ -93,65 +93,6 @@
 @media (max-width: 620px) {
 
   /* =========================================================
-     PROFILE SEASON TOGGLE
-     Keep the same segmented-control look, but stop labels from
-     running into each other and give each option breathing room.
-     ========================================================= */
-  .uti-profile-season-tabs {
-    display: grid !important;
-    grid-auto-flow: row;
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 5px !important;
-
-    width: auto !important;
-    margin: 0 58px 14px 0 !important;
-    padding: 5px !important;
-
-    overflow: visible !important;
-  }
-
-  .uti-profile-season-tabs > button,
-  .uti-profile-season-tabs button {
-    display: flex !important;
-    flex: none !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-
-    width: 100% !important;
-    min-width: 0 !important;
-    min-height: 48px !important;
-
-    gap: 2px !important;
-    padding: 7px 4px !important;
-
-    line-height: 1 !important;
-    white-space: nowrap !important;
-  }
-
-  .uti-profile-season-tabs button strong {
-    display: block !important;
-    margin: 0 !important;
-
-    font-size: .82rem !important;
-    line-height: 1 !important;
-    white-space: nowrap !important;
-  }
-
-  .uti-profile-season-tabs button span {
-    display: block !important;
-    max-width: 100% !important;
-    margin: 0 !important;
-
-    font-size: .56rem !important;
-    line-height: 1.1 !important;
-    font-weight: 800 !important;
-
-    white-space: normal !important;
-    overflow: visible !important;
-  }
-
-  /* =========================================================
      RECORD VS. EVERY TEAM — SELECTED TEAM SUMMARY
      The three record blocks were becoming three huge full-width
      stacked cards. Keep all three on ONE compact row.

@@ -1511,126 +1511,61 @@
     return profile;
   }
 
+  // Weekly all-play rank as small bars; taller = better week.
   function renderProfileTrend(weeklyRanks) {
     return `
-      <div class="uti-profile-trend">
+      <div class="pf-bars" aria-label="All-Play rank by week">
         ${weeklyRanks.map(row => {
-          const strength = Math.max(10, ((11 - row.rank) / 10) * 100);
-          return `
-            <div class="uti-profile-trend-item" title="Week ${row.week}: #${row.rank}">
-              <div class="uti-profile-trend-bar-wrap">
-                <span class="uti-profile-trend-bar" style="height:${strength.toFixed(0)}%"></span>
-              </div>
-              <strong>#${row.rank}</strong>
-              <small>W${row.week}</small>
-            </div>
-          `;
+          const strength = Math.max(8, ((11 - row.rank) / 10) * 100);
+          return `<span class="${row.rank <= 3 ? "is-top" : ""}" style="height:${strength.toFixed(0)}%" title="Week ${row.week}: #${row.rank}"></span>`;
         }).join("")}
       </div>
     `;
   }
 
   function renderRecentForm(recentForm) {
-    if (!recentForm.length) return "<span>—</span>";
-    return recentForm.map(row => `
-      <span class="uti-form-chip is-${row.result.toLowerCase()}" title="Week ${row.week}: ${row.score}">
-        ${row.result}<small>${row.week}</small>
-      </span>
-    `).join("");
+    if (!recentForm.length) return "—";
+    return recentForm.map(row =>
+      `<span class="${row.result === "W" ? "is-up" : row.result === "L" ? "is-down" : ""}" title="Week ${row.week}: ${row.score}">${row.result}</span>`
+    ).join(" ");
   }
 
   function renderProfileSeasonTabs(team) {
-    const buttons = [
-      { season: "2026", label: "Fantrax" },
-      ...[2025, 2024, 2023]
-        .filter(season => yahooAnalytics(season))
-        .map(season => ({ season: String(season), label: "Yahoo" }))
-    ].filter(button => teamHasSeasonData(team, button.season));
+    const seasons = ["2026", ...[2025, 2024, 2023].filter(season => yahooAnalytics(season)).map(String)]
+      .filter(season => teamHasSeasonData(team, season));
 
     return `
-      <div class="uti-profile-season-tabs" aria-label="Team profile season">
-        ${buttons.map(button => `
-          <button type="button" class="${activeProfileSeason === button.season ? "is-active" : ""}" data-profile-season="${button.season}">
-            <strong>${button.season}</strong><span>${button.label}</span>
-          </button>
+      <div class="pf-seasons" role="group" aria-label="Season">
+        ${seasons.map(season => `
+          <button type="button" aria-pressed="${activeProfileSeason === season}" data-profile-season="${season}">${season}</button>
         `).join("")}
       </div>
     `;
   }
 
-  function renderProfileSeasonNotice(profile) {
+  // Short note on how the season's numbers are calculated, shown under "More stats".
+  function profileSeasonNote(profile) {
     if (profile.source === "yahoo") {
-      return `
-        <div class="uti-history-notice">
-          <strong>${profile.season} Yahoo scoring</strong>
-          <span>This season is calculated with its own Yahoo categories, including BSV and SV+H, so it is not mixed directly into the 2026 Fantrax category ratings.</span>
-        </div>
-      `;
+      return `${profile.season} used Yahoo scoring (including BSV and SV+H), so it isn't compared directly with 2026 Fantrax ratings.`;
     }
-
     if (currentPlayoffRows().length) {
-      return `
-        <div class="uti-history-notice">
-          <strong>2026 playoffs tracked separately</strong>
-          <span>Actual records include playoff matchups. All-Play, Luck, Power, category strength, and weekly-rank metrics stay regular-season-only so the eight-team playoff field does not distort the ten-team league comparisons.</span>
-        </div>
-      `;
+      return "Records include playoffs. All-Play, Luck, Power, and weekly ranks use the regular season only.";
     }
-
     return "";
   }
 
-  function renderProfileSeasonRecord(team, season) {
-    const overallRecord = franchiseRecord(team, null, season, "all");
-    const regularRecord = franchiseRecord(team, null, season, "regular");
-    const playoffRecord = franchiseRecord(team, null, season, "playoffs");
-
+  function keyStat(label, value, note, valueClass = "") {
     return `
-      <strong>${formatRecord(overallRecord)}</strong>
-      <div class="uti-profile-record-splits">
-        <span class="is-regular">
-          <small>Regular Season</small>
-          <b>${formatRecord(regularRecord)}</b>
-        </span>
-        <span class="is-playoffs">
-          <small>Playoffs</small>
-          <b>${playoffRecord.games ? formatRecord(playoffRecord) : "—"}</b>
-        </span>
+      <div class="pf-key">
+        <span>${label}</span>
+        <strong class="${valueClass}">${value}</strong>
+        <small>${note}</small>
       </div>
     `;
   }
 
-  function renderIdentityCard(kind, label, rank, pct) {
-    return `
-        <article class="uti-profile-split-card is-${kind}">
-          <span class="uti-profile-card-label">${label}</span>
-          <div class="uti-profile-rank-line">
-            <strong>#${rank}</strong>
-            <span>${formatPct(pct)}</span>
-          </div>
-          <div class="uti-profile-meter"><span style="width:${Math.max(3, pct * 100).toFixed(1)}%"></span></div>
-        </article>
-    `;
-  }
-
-  function renderWeekDetailCard(kind, label, week) {
-    return `
-        <article class="uti-profile-detail-card is-${kind}">
-          <span>${label}</span>
-          <strong>Week ${week?.week ?? "—"} · #${week?.rank ?? "—"}</strong>
-          <small>${week ? `${week.wins}-${week.losses}-${week.ties} all-play` : "—"}</small>
-        </article>
-    `;
-  }
-
-  function renderCategoryDetailCard(kind, label, category) {
-    return `
-        <article class="uti-profile-detail-card is-${kind}">
-          <span>${label}</span>
-          <strong>${category?.category ?? "—"}</strong>
-          <small>${category ? `${formatPct(category.winPct)} league-wide win rate` : "—"}</small>
-        </article>
-    `;
+  function detailRow(label, value) {
+    return `<div><dt>${label}</dt><dd>${value}</dd></div>`;
   }
 
   function ensureProfileModal() {
@@ -1665,86 +1600,54 @@
     ensureProfileModal();
 
     const profile = buildTeamProfile(data, team);
-    const isYahoo = profile.source === "yahoo";
-    const weeksLabel = String(profile.season) === "2026"
-      ? currentSeasonStatusLabel(false)
-      : (profile.trackedWeeks.length
-        ? `Weeks ${weekSpan(profile.trackedWeeks)} imported`
-        : "No weeks imported");
+    const profileSeason = Number(profile.season);
+    const overallRecord = franchiseRecord(team, null, profileSeason, "all");
+    const regularRecord = franchiseRecord(team, null, profileSeason, "regular");
+    const playoffRecord = franchiseRecord(team, null, profileSeason, "playoffs");
+    const recordNote = playoffRecord.games ? `Playoffs ${formatRecord(playoffRecord)}` : "Regular season";
+    const weekLabel = week => week ? `Week ${week.week} · #${week.rank}` : "—";
+    const categoryLabel = category => category ? `${category.category} · ${formatPct(category.winPct)}` : "—";
+    const note = profileSeasonNote(profile);
 
     document.getElementById("utiTeamProfileContent").innerHTML = `
+      <div class="pf-top">
+        <img class="pf-photo" src="${logoFor(team)}" alt="">
+        <div>
+          <h2 id="utiProfileTeamName">${escapeHtml(team)}</h2>
+          <p><span class="pf-verdict">${escapeHtml(profile.verdict)}</span> · ${profile.season} ${profile.source === "yahoo" ? "Yahoo" : "Fantrax"}</p>
+        </div>
+      </div>
+
       ${renderProfileSeasonTabs(team)}
 
-      <div class="uti-profile-hero">
-        <div class="uti-profile-team-block">
-          <img class="uti-profile-logo" src="${logoFor(team)}" alt="">
-          <div>
-            <span class="uti-profile-kicker">${profile.season} ${isYahoo ? "Yahoo History" : "UTI Team Intel Profile"}</span>
-            <h2 id="utiProfileTeamName">${escapeHtml(team)}</h2>
-            <span class="uti-profile-verdict">${escapeHtml(profile.verdict)}</span>
-            <span class="uti-profile-source-note">${weeksLabel}${isYahoo ? " · Historical import is still in progress" : ""}</span>
-          </div>
-        </div>
-
-        <div class="uti-profile-power-badge">
-          <span>${isYahoo ? "Imported Power" : "Power Rank"}</span>
-          <strong>#${profile.powerRank || "—"}</strong>
-          <small>${profile.powerRating.toFixed(1)} / 100</small>
-        </div>
+      <div class="pf-keys">
+        ${keyStat("Record", formatRecord(overallRecord), recordNote)}
+        ${keyStat("Power rank", `#${profile.powerRank || "—"}`, `${profile.powerRating.toFixed(1)} rating`, profile.powerRank && profile.powerRank <= 3 ? "is-up" : "")}
+        ${keyStat("All-Play", formatPct(profile.allPlayPct), formatRecord(profile.allPlayRecord))}
+        ${keyStat("Luck", formatSigned(profile.luck), `${profile.expectedPoints.toFixed(1)} expected wins`, profile.luck >= 0 ? "is-up" : "is-down")}
       </div>
 
-      ${renderProfileSeasonNotice(profile)}
-
-      <div class="uti-profile-stat-grid">
-        <article>
-          <span>All-Play</span>
-          <strong>${formatRecord(profile.allPlayRecord)}</strong>
-          <small>${formatPct(profile.allPlayPct)} vs league</small>
-        </article>
-        <article class="uti-profile-record-card">
-          <span>${profile.season} Record</span>
-          ${renderProfileSeasonRecord(team, Number(profile.season))}
-        </article>
-        <article>
-          <span>Luck Index</span>
-          <strong class="${profile.luck >= 0 ? "is-positive" : "is-negative"}">${formatSigned(profile.luck)}</strong>
-          <small>${profile.expectedPoints.toFixed(2)} expected wins</small>
-        </article>
-        <article>
-          <span>Avg Weekly Rank</span>
-          <strong>#${profile.avgWeeklyRank.toFixed(1)}</strong>
-          <small>${profile.top3Finishes} top-3 finishes</small>
-        </article>
-      </div>
-
-      <div class="uti-profile-split-grid">
-        ${renderIdentityCard("hitting", "Hitting Identity", profile.hittingRank, profile.hittingPct)}
-        ${renderIdentityCard("pitching", "Pitching Identity", profile.pitchingRank, profile.pitchingPct)}
-      </div>
-
-      <section class="uti-profile-section">
-        <div class="uti-profile-section-head">
-          <div>
-            <span class="uti-profile-card-label">Weekly Performance</span>
-            <h3>All-Play Rank by Week</h3>
-          </div>
-          <div class="uti-profile-form">${renderRecentForm(profile.recentForm)}</div>
-        </div>
+      <div class="pf-trend">
+        <div class="pf-trend-head"><span>All-Play rank by week</span><span>avg #${profile.avgWeeklyRank.toFixed(1)}</span></div>
         ${renderProfileTrend(profile.weeklyRanks)}
-      </section>
-
-      <div class="uti-profile-detail-grid">
-        ${renderWeekDetailCard("best", "💪 Best Week", profile.bestWeek)}
-        ${renderWeekDetailCard("worst", "💩 Worst Week", profile.worstWeek)}
-        ${renderCategoryDetailCard("best-cat", "👑 Best Category", profile.bestCategory)}
-        ${renderCategoryDetailCard("worst-cat", "☠️ Achilles Heel", profile.worstCategory)}
       </div>
 
-      <div class="uti-profile-footer-stats">
-        <span><strong>${profile.blowoutWins}</strong> blowout wins</span>
-        <span><strong>${profile.blowoutLosses}</strong> blowout losses</span>
-        <span><strong>${profile.volatility.toFixed(1)}</strong> volatility</span>
-      </div>
+      <details class="pf-more">
+        <summary>More stats</summary>
+        <dl>
+          ${detailRow("Regular season", formatRecord(regularRecord))}
+          ${detailRow("Recent form", renderRecentForm(profile.recentForm))}
+          ${detailRow("Hitting rank", `#${profile.hittingRank} · ${formatPct(profile.hittingPct)}`)}
+          ${detailRow("Pitching rank", `#${profile.pitchingRank} · ${formatPct(profile.pitchingPct)}`)}
+          ${detailRow("Best week", weekLabel(profile.bestWeek))}
+          ${detailRow("Worst week", weekLabel(profile.worstWeek))}
+          ${detailRow("Best category", categoryLabel(profile.bestCategory))}
+          ${detailRow("Weakest category", categoryLabel(profile.worstCategory))}
+          ${detailRow("Top-3 weeks", `${profile.top3Finishes} of ${profile.weeklyRanks.length}`)}
+          ${detailRow("Blowouts", `${profile.blowoutWins} won · ${profile.blowoutLosses} lost`)}
+        </dl>
+        ${note ? `<p class="pf-note">${note}</p>` : ""}
+      </details>
     `;
 
     document.getElementById("utiTeamProfileModal").hidden = false;

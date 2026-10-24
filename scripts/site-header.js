@@ -15,13 +15,17 @@
 
   const NAV_LINKS = [
     { label: "Home", href: "index.html" },
-    { label: "Recaps", href: "index.html#recaps", matches: /\/2026\/week\d+\.html$/ },
-    { label: "Intelligence", href: "uti-intelligence.html" },
+    { label: "Recaps", href: "recaps.html", matches: /\/(recaps\.html|2026\/week\d+\.html)$/ },
+    { label: "Standings", href: "uti-intelligence.html" },
     { label: "History", href: "history.html" },
-    { label: "Record Book", href: "record-book.html" },
-    { label: "HR Pool", href: "tools/home-run-pool.html" },
+    { label: "Record Book", href: "record-book.html" }
+  ];
+
+  // Grouped under one "Tools" menu.
+  const TOOL_LINKS = [
+    { label: "Home Run Pool", href: "tools/home-run-pool.html" },
     { label: "Trade Analyzer", href: "tools/uti-trade-analyzer.html" },
-    { label: "Top 100", href: "tools/mlb-top-100.html" }
+    { label: "MLB Top 100", href: "tools/mlb-top-100.html" }
   ];
 
   // Short names for the ticker.
@@ -68,11 +72,13 @@
     return TEAM_SHORT_NAMES[team] || String(team || "").toUpperCase();
   }
 
+  function navLink(link) {
+    const current = isCurrentPage(link) ? ' aria-current="page"' : "";
+    return `<a href="${siteUrl(link.href)}"${current}>${link.label}</a>`;
+  }
+
   function renderHeader() {
-    const links = NAV_LINKS.map(link => {
-      const current = isCurrentPage(link) ? ' aria-current="page"' : "";
-      return `<a href="${siteUrl(link.href)}"${current}>${link.label}</a>`;
-    }).join("");
+    const onToolPage = TOOL_LINKS.some(isCurrentPage);
 
     script.insertAdjacentHTML("beforebegin", `
       <header class="uti-header">
@@ -80,13 +86,28 @@
           <a class="uti-wordmark" href="${siteUrl("index.html")}">
             <b>UTI</b><span>Union of Ten Idiots</span>
           </a>
-          <nav class="uti-header-nav" aria-label="Site">${links}</nav>
+          <nav class="uti-header-nav" aria-label="Site">
+            ${NAV_LINKS.map(navLink).join("")}
+            <details class="uti-nav-menu">
+              <summary${onToolPage ? ' aria-current="page"' : ""}>Tools</summary>
+              <div class="uti-nav-menu-list">${TOOL_LINKS.map(navLink).join("")}</div>
+            </details>
+          </nav>
         </div>
         <div class="uti-ticker" id="utiTicker" aria-label="League ticker" hidden>
           <div class="uti-ticker-track" id="utiTickerTrack"></div>
         </div>
       </header>
     `);
+
+    // Close the Tools menu when clicking elsewhere or pressing Escape.
+    const menu = script.previousElementSibling.querySelector(".uti-nav-menu");
+    document.addEventListener("click", event => {
+      if (menu.open && !menu.contains(event.target)) menu.open = false;
+    });
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") menu.open = false;
+    });
   }
 
   function loadScript(src) {
@@ -128,25 +149,18 @@
     const matchups = analytics.uniqueMatchups(rows);
     const latestWeek = Math.max(...matchups.map(matchup => matchup.week));
     const latest = matchups.filter(matchup => matchup.week === latestWeek);
-    const blowout = [...matchups].sort((a, b) => b.margin - a.margin)[0];
-
-    const summary = analytics.buildSummary(rows);
-    const power = summary.powerRankings[0];
-    const luckiest = summary.luckIndex[0];
-    const unluckiest = summary.luckIndex[summary.luckIndex.length - 1];
+    const power = analytics.buildSummary(rows).powerRankings[0];
     const prizePool = prizePoolTotal(window.PRIZE_MONEY_DATA || {});
 
+    // Kept to three things: the latest result, Power #1, and the prize pool.
     const items = [
       `<span class="uti-ticker-live">${escapeHtml(latest[0]?.round || `Week ${latestWeek}`)}</span>`,
       ...latest.map(matchup => `<span class="uti-ticker-item">${scoreLine(matchup)}</span>`),
-      power ? tickerItem("Power #1", `${shortName(power.team)} ${(power.rating * 100).toFixed(1)}`) : "",
-      luckiest ? tickerItem("Luckiest", `${shortName(luckiest.team)} +${luckiest.luck.toFixed(2)}`) : "",
-      unluckiest ? tickerItem("Unluckiest", `${shortName(unluckiest.team)} ${unluckiest.luck.toFixed(2)}`) : "",
-      prizePool !== null ? tickerItem("Prize pool", `$${prizePool.toLocaleString("en-US")}`) : "",
-      blowout ? `<a class="uti-ticker-item" href="${siteUrl("record-book.html")}">Biggest blowout ${scoreLine(blowout)} · W${blowout.week}</a>` : ""
+      power ? tickerItem("Power #1", shortName(power.team)) : "",
+      prizePool !== null ? tickerItem("Prize pool", `$${prizePool.toLocaleString("en-US")}`) : ""
     ].filter(Boolean);
 
-    document.getElementById("utiTickerTrack").innerHTML = items.join('<span class="uti-ticker-sep" aria-hidden="true">/</span>');
+    document.getElementById("utiTickerTrack").innerHTML = items.join("");
     document.getElementById("utiTicker").hidden = false;
   }
 

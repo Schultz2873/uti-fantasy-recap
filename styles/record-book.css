@@ -356,8 +356,6 @@
   font-weight: 900;
 }
 
-
-
 @media (max-width: 420px) {
   .allstar-compact-head {
     padding: 10px 11px;
@@ -392,7 +390,6 @@
     font-size: .42rem;
   }
 }
-
 
 /* ===== Small All-Star cards (no dropdowns) ===== */
 
@@ -455,8 +452,6 @@
   font-weight: 900;
 }
 
-
-
 @media (max-width: 640px) {
 
   .allstar-player-card {
@@ -475,9 +470,6 @@
     font-size: .45rem;
   }
 }
-
-
-
 
 /* ===== Compact All-Star owner ranking and thumbnails ===== */
 
@@ -563,8 +555,6 @@
     flex-basis: 18px;
   }
 }
-
-
 
 /* ===== Smaller All-Star cards + original starter badges ===== */
 .allstar-player-card {
@@ -656,7 +646,6 @@
     flex-basis: 26px;
   }
 }
-
 
 /* ===== All-Star team dropdowns: compact grouped owner view ===== */
 .allstar-team-dropdowns {
@@ -780,7 +769,6 @@
     padding: 6px;
   }
 }
-
 
 .allstar-archive-section {
   background: rgb(var(--rgb-white) / 0.05);

@@ -16,6 +16,10 @@ window.PRIZE_MONEY_DATA = {
   ],
   currentTotal: null,
 
+  // Homepage prize pool card: "auto" shows it from March 1 until the championship is played.
+  // Use "show" or "hide" to override.
+  homepageCard: "auto",
+
   waiverRule: "Prize pool grows based on waiver-wire spending.",
   updatedLabel: "Season total",
 

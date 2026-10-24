@@ -6,44 +6,29 @@
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
   <title>UTI Fantasy Baseball Recaps</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="styles/styles.css?v=theme-3" rel="stylesheet" />
-  <link href="styles/home.css?v=theme-3" rel="stylesheet" />
-  <link href="styles/intelligence.css?v=theme-3" rel="stylesheet" />
-  <link href="styles/theme.css?v=theme-3" rel="stylesheet" />
+  <link href="styles/styles.css?v=calm-1" rel="stylesheet" />
+  <link href="styles/home.css?v=calm-1" rel="stylesheet" />
+  <link href="styles/intelligence.css?v=calm-1" rel="stylesheet" />
+  <link href="styles/theme.css?v=calm-1" rel="stylesheet" />
 </head>
 
 <body>
-  <script src="scripts/site-header.js"></script>
+  <script src="scripts/site-header.js?v=calm-1"></script>
   <div class="page home" data-uti-profiles>
 
-    <!--
-      Latest recap. Each week: update the kicker, headline, summary, tags, and link here,
-      then copy last week's recap into the top of the Recaps list below.
-      The scoreboard next to it fills in automatically from data/weekly-team-stats.js.
-    -->
+    <!-- Latest recap + latest result. Filled in from data/recaps.js and data/weekly-team-stats.js. -->
     <section class="home-hero" id="featured-recap">
-      <div class="home-hero-copy">
-        <span class="ui-kicker">Championship · Playoff Recap</span>
-        <h1>All Hail the Gila: Goodyear Wins the 2026 Championship</h1>
-        <p class="home-deck">Goodyear Gila Monsters beat Gunnarrhea 9.5&ndash;6.5 to claim the 2026 UTI championship. A 9&ndash;0 net stolen base advantage and dominant pitching ratios brought the trophy home for the No. 1 seed.</p>
-        <div class="tag-row">
-          <span class="tag">Champion: Goodyear Gila Monsters</span>
-          <span class="tag">Runner-up: Gunnarrhea</span>
-        </div>
-        <a class="home-button" href="2026/week24.html">Read the recap <span aria-hidden="true">→</span></a>
-      </div>
+      <div class="home-hero-copy" id="homeHeroCopy"></div>
       <div class="home-scoreboard" id="homeScoreboard"></div>
     </section>
 
-    <section class="home-stats" id="homeStats" aria-label="League numbers"></section>
-
-    <section class="ui-panel" id="power-rankings" aria-labelledby="powerRankingsTitle">
-      <div class="ui-panel-head">
-        <h2 id="powerRankingsTitle">Power Rankings</h2>
-        <p>Regular season · 50% all-play, 30% categories, 20% recent form</p>
-        <a href="uti-intelligence.html">Full Intelligence <span aria-hidden="true">→</span></a>
-      </div>
-      <div class="home-table-scroll">
+    <div class="home-columns">
+      <section class="ui-panel" id="standings" aria-labelledby="standingsTitle">
+        <div class="ui-panel-head">
+          <h2 id="standingsTitle">Standings</h2>
+          <a href="uti-intelligence.html">Full rankings <span aria-hidden="true">→</span></a>
+        </div>
+        <p class="ui-panel-note">Ordered by Power Rating · regular season</p>
         <table class="home-standings">
           <thead>
             <tr>
@@ -51,407 +36,58 @@
               <th scope="col">Team</th>
               <th scope="col">Record</th>
               <th scope="col">Streak</th>
-              <th scope="col">All-Play</th>
-              <th scope="col">Luck</th>
-              <th scope="col">Power</th>
             </tr>
           </thead>
-          <tbody id="powerRankingsBody"></tbody>
+          <tbody id="standingsBody"></tbody>
         </table>
-      </div>
-      <button class="ui-text-button home-standings-more" data-expanded="false" id="powerRankingsMore" type="button">Show all 10 teams</button>
-    </section>
-
-    <div class="home-two-up">
-      <section class="ui-panel" id="recaps" aria-labelledby="recapsTitle">
-        <div class="ui-panel-head">
-          <h2 id="recapsTitle">Recaps</h2>
-          <p>22 recaps this season</p>
-        </div>
-        <ol class="recap-list" id="recapList">
-          <li class="recap-row">
-            <a class="recap-row-link" href="2026/week23.html">
-              <span class="recap-week"><small>Week</small>23</span>
-              <span class="recap-body">
-                <span class="recap-meta">Semifinals • Playoff Recap</span>
-                <strong class="recap-title">Semifinals Recap: Gunnarrhea &amp; Goodyear Punch Their Tickets to the Championship</strong>
-                <span class="recap-summary">Gunnarrhea sent This Is Mizerable home 11.5–4.5, while the No. 1 seed Goodyear Gila Monsters beat John's Super Team 10.5–5.5. The 2026 UTI championship is set: Gunnarrhea vs Goodyear.</span>
-              </span>
-            </a>
-            <div class="tag-row">
-              <span class="tag">Championship Bound</span>
-              <span class="tag">Gunnarrhea vs Goodyear</span>
-            </div>
-          </li>
-          <li class="recap-row">
-            <a class="recap-row-link" href="2026/week22.html">
-              <span class="recap-week"><small>Week</small>22</span>
-              <span class="recap-body">
-                <span class="recap-meta">Round 1 • Playoff Recap</span>
-                <strong class="recap-title">Round 1 Recap: Three Top Seeds Get Sent Home</strong>
-                <span class="recap-summary">Goodyear was the only top-four seed to survive, while Gunnarrhea, John's Super Team and This Is Mizerable all pulled first-round upsets to reach the semifinals.</span>
-              </span>
-            </a>
-          </li>
-          <li class="recap-row">
-            <a class="recap-row-link" href="2026/week21.html">
-              <span class="recap-week"><small>Week</small>21</span>
-              <span class="recap-body">
-                <span class="recap-meta">Week 21 • Matchup Recap</span>
-                <strong class="recap-title">Week 21 Recap: Goodyear Takes the 1 Seed, Mactown Sneaks In, Bo & BTA Get Sent Home</strong>
-                <span class="recap-summary">The regular season closes with Goodyear locking up the top seed, Mactown backing into the final playoff spot, Bo choking away his last chance, and BTA officially finishing 10th with the 2027 first overall pick waiting for them.</span>
-              </span>
-            </a>
-          </li>
-          <li class="recap-row">
-            <a class="recap-row-link" href="2026/week20.html">
-              <span class="recap-week"><small>Week</small>20</span>
-              <span class="recap-body">
-                <span class="recap-meta">Week 20 • Matchup Recap</span>
-                <strong class="recap-title">Week 20 Recap: Dixon Cider Headlines a Weekend of Beatdowns</strong>
-                <span class="recap-summary">Dixon Cider dropped a 14–2 hammer, You Don’t Know Bo stunned the fake 3 seed, and Week 20 turned into a full-blown league-wide ass kicking with playoff pressure starting to hit hard.</span>
-              </span>
-            </a>
-            <div class="tag-row">
-              <span class="tag">Net Stolen Bases (9) - BB's Bold Team</span>
-            </div>
-          </li>
-          <li class="recap-row">
-            <a class="recap-row-link" href="2026/week19.html">
-              <span class="recap-week"><small>Week</small>19</span>
-              <span class="recap-body">
-                <span class="recap-meta">Week 19 • Matchup Recap</span>
-                <strong class="recap-title">Week 19 Recap: The Idiots are Heating Up, Kinda</strong>
-                <span class="recap-summary">Gunnarrhea gives the defending champ a NAAASSSTTYY case, BTA somehow becomes competent, the Ice Man stays frozen, the fake 3 seed survives by the skin of its ass, and Me So Heorny drops $86 on Joshua Baez.</span>
-              </span>
-            </a>
-            <div class="tag-row">
-              <span class="tag">ERA (2.79) - Me So Heorny</span>
-            </div>
-          </li>
-          <li class="recap-row">
-            <a class="recap-row-link" href="2026/week18.html">
-              <span class="recap-week"><small>Week</small>18</span>
-              <span class="recap-body">
-                <span class="recap-meta">Week 18 • Matchup Recap</span>
-                <strong class="recap-title">Week 18 Recap: Goodyear Is on Fire and Everybody Else Is a Fucking Mess</strong>
-                <span class="recap-summary">The Gila Monsters keep steamrolling the league, two matchups end in completely useless ties, John's offense gets betrayed by its own pitching staff, and Bo finds another way to stay out of the playoff picture.</span>
-              </span>
-            </a>
-            <div class="tag-row">
-              <span class="tag">Hitting Strikeouts (55) - You Don't Know Bo</span>
-              <span class="tag">ANTI-GUNNARRHEA</span>
-              <span class="tag">WORTHLESS TIE</span>
-              <span class="tag">MID-OFF</span>
-              <span class="tag">NEEDS MORE PCA</span>
-              <span class="tag">BO KNOWS LOSING</span>
-              <span class="tag">PITCHING SWEEP</span>
-              <span class="tag">ICE MAN</span>
-            </div>
-          </li>
-          <li class="recap-row">
-            <a class="recap-row-link" href="2026/week17.html">
-              <span class="recap-week"><small>Week</small>17</span>
-              <span class="recap-body">
-                <span class="recap-meta">Week 17 • Matchup Recap</span>
-                <strong class="recap-title">Week 17 Recap: The Throne Changes Hands and the 13 Game Losing Streak Finally Snaps</strong>
-                <span class="recap-summary">Goodyear claimed the No. 1 seed, Dixon Cider looked ready to defend her crown, and John’s Super Team became the bum who finally lost to BTA Boyz.</span>
-              </span>
-            </a>
-            <div class="tag-row">
-              <span class="tag">Total Bases (169) - Dixon Cider</span>
-              <span class="tag">NewKing</span>
-              <span class="tag">TitleDefenseLoading</span>
-              <span class="tag">FraudExposed</span>
-              <span class="tag">ThroneLost</span>
-              <span class="tag">StreakSnapped</span>
-              <span class="tag">History’sLoser</span>
-              <span class="tag">ThreeAndDone</span>
-              <span class="tag">Mid-Off</span>
-            </div>
-          </li>
-          <li class="recap-row">
-            <a class="recap-row-link" href="2026/week16.html">
-              <span class="recap-week"><small>Week</small>16</span>
-              <span class="recap-body">
-                <span class="recap-meta">Week 16 • Matchup Recap</span>
-                <strong class="recap-title">Week 16 Recap: Second Place, First-Class Beatdown</strong>
-                <span class="recap-summary">Me So Heorny humiliated the league’s No. 1 seed without taking the throne, three matchups became ended in blowouts, and BTA Boyz extended their historic march toward complete irrelevance.</span>
-              </span>
-            </a>
-            <div class="tag-row">
-              <span class="tag">Homeruns (25) - Me So Heorny</span>
-            </div>
-          </li>
-          <li class="recap-row">
-            <a class="recap-row-link" href="2026/week15.html">
-              <span class="recap-week"><small>Week</small>15</span>
-              <span class="recap-body">
-                <span class="recap-meta">Week 15 • Matchup Recap</span>
-                <strong class="recap-title">Week 15 Recap: Upsets Everywhere: Nobody is Safe, Except for The BTA Boyz Opponent</strong>
-                <span class="recap-summary">Week 15 brought shocking upsets, dominant pitching, playoff contenders getting humbled, and one forgotten bottom-feeder suddenly looking like the team nobody wants to face. Oh yeah and the BTA Boyz need to check their lineup.</span>
-              </span>
-            </a>
-            <div class="tag-row">
-              <span class="tag">BTA: Barely Trying Again</span>
-              <span class="tag">Bo Found the Power Button</span>
-              <span class="tag">Mactown Meltdown</span>
-              <span class="tag">Dixon Choked Another One</span>
-              <span class="tag">Gunnarrhea Can't Be Tamed</span>
-              <span class="tag">John's Super Team... For One Week</span>
-              <span class="tag">Dixon Survives</span>
-              <span class="tag">Playoff Fraud Watch</span>
-              <span class="tag">One Quality Start 💀</span>
-            </div>
-          </li>
-          <li class="recap-row">
-            <a class="recap-row-link" href="2026/week14.html">
-              <span class="recap-week"><small>Week</small>14</span>
-              <span class="recap-body">
-                <span class="recap-meta">Week 14 • Matchup Recap</span>
-                <strong class="recap-title">Week 14 Recap: BTA Boyz, You There?</strong>
-                <span class="recap-summary">Week 14 brought 3 upsets, collapses, nail biters, and one team proving that the only thing worse than losing is losing while barely logging in.</span>
-              </span>
-            </a>
-            <div class="tag-row">
-              <span class="tag">BTA: Barely Trying Again</span>
-              <span class="tag">Me So Heorny Back On Top</span>
-              <span class="tag">Upset Week</span>
-              <span class="tag">Gunnarrhea Is Spreading</span>
-              <span class="tag">John’s Mid Team</span>
-              <span class="tag">BB Panic Meter</span>
-              <span class="tag">Dixon Survives</span>
-              <span class="tag">Goodyear Fumbles the Win</span>
-            </div>
-          </li>
-          <li class="recap-row">
-            <a class="recap-row-link" href="2026/week13.html">
-              <span class="recap-week"><small>Week</small>13</span>
-              <span class="recap-body">
-                <span class="recap-meta">Week 13 • Matchup Recap</span>
-                <strong class="recap-title">Week 13 Recap: Goodyear Cracks BB’s Armor</strong>
-                <span class="recap-summary">Week 13 gave us a heavyweight upset, a top-of-the-standings shakeup, and another brutal reminder that no lead is safe when Bo is involved.</span>
-              </span>
-            </a>
-            <div class="tag-row">
-              <span class="tag">Walks (36) - Dixon Cider</span>
-              <span class="tag">BB Streak Snapped</span>
-              <span class="tag">Gunnarrhea Outbreak</span>
-              <span class="tag">Bo Blew It</span>
-              <span class="tag">BTA L10</span>
-              <span class="tag">Heorny Bounceback</span>
-              <span class="tag">Dixon Escapes</span>
-              <span class="tag">John’s Mid Team</span>
-              <span class="tag">Mactown Survives</span>
-            </div>
-          </li>
-          <li class="recap-row">
-            <a class="recap-row-link" href="2026/week12.html">
-              <span class="recap-week"><small>Week</small>12</span>
-              <span class="recap-body">
-                <span class="recap-meta">Week 12 • Matchup Recap</span>
-                <strong class="recap-title">Week 12 Recap: BB’s Bold Team Moves to 11-1 and Looks Unbeatable</strong>
-                <span class="recap-summary">BB’s Bold Team kept rolling, Goodyear sent a warning shot, Gunnarrhea pulled off the upset, and BTA Boyz officially became the league’s biggest concern.</span>
-              </span>
-            </a>
-            <div class="tag-row">
-              <span class="tag">Strikeouts (40) - BTA Boyz</span>
-              <span class="tag">BB Final Boss Mode</span>
-              <span class="tag">Gunnarrhea Outbreak</span>
-              <span class="tag">Roch Watch Transfer</span>
-              <span class="tag">Goodyear is Back</span>
-              <span class="tag">Heorny Folded</span>
-              <span class="tag">Dixon Forgot and Won</span>
-            </div>
-          </li>
-          <li class="recap-row">
-            <a class="recap-row-link" href="2026/week11.html">
-              <span class="recap-week"><small>Week</small>11</span>
-              <span class="recap-body">
-                <span class="recap-meta">Week 11 • Matchup Recap</span>
-                <strong class="recap-title">Week 11 Recap: BB Stays on Top, Me So Heorny and Goodyear stay right beind, BTA Keeps Sinking, and Gunnarrhea Loses Hope</strong>
-                <span class="recap-summary">Top teams handled business, bottom teams kept embarrassing themselves, and Week 11 gave the league plenty of bad pitching and worse excuses</span>
-              </span>
-            </a>
-            <div class="tag-row">
-              <span class="tag">BAA (.217) - This is Mizerable</span>
-              <span class="tag">Checked Out</span>
-              <span class="tag">Defending Champs Stomped</span>
-              <span class="tag">Top Teams Rolling</span>
-              <span class="tag">Bo Still Doesn’t Know</span>
-              <span class="tag">Skenes Deserves Better</span>
-              <span class="tag">Gunnarrhea Weekly Meltdown</span>
-            </div>
-          </li>
-          <li class="recap-row">
-            <a class="recap-row-link" href="2026/week10.html">
-              <span class="recap-week"><small>Week</small>10</span>
-              <span class="recap-body">
-                <span class="recap-meta">Week 10 • Matchup Recap</span>
-                <strong class="recap-title">Week 10 Recap: BB Keeps Rolling, Heorny Goes Nuclear, and Gunnarrhea Hits Rock Bottom</strong>
-                <span class="recap-summary">From close calls to brutal blowouts, and a few teams making very different statements. Here is the full league recap for Week 10 of UTI Fantasy Baseball.</span>
-              </span>
-            </a>
-            <div class="tag-row">
-              <span class="tag">Losses (1) - You Don't Know Bo</span>
-              <span class="tag">Heorny Nukes Nuketown</span>
-              <span class="tag">The Commish Curse Continues</span>
-              <span class="tag">BTA Losing Streak</span>
-              <span class="tag">BB Keeps Rolling</span>
-              <span class="tag">Basement Bowl</span>
-            </div>
-          </li>
-          <li class="recap-row">
-            <a class="recap-row-link" href="2026/week9.html">
-              <span class="recap-week"><small>Week</small>9</span>
-              <span class="recap-body">
-                <span class="recap-meta">Week 9 • Matchup Recap</span>
-                <strong class="recap-title">Week 9 Recap: Nuketown Made a Statement, Bo Made Excuses, and Gunnarrhea Made Another Sad Recap</strong>
-                <span class="recap-summary">Comebacks got stolen, bad teams got buried, and the league learned real quick who can actually survive a full matchup.</span>
-              </span>
-            </a>
-            <div class="tag-row">
-              <span class="tag">Pitching Strikeouts (91) - BTA Boyz</span>
-              <span class="tag">This Is Miraculous</span>
-              <span class="tag">Nuketown is Back</span>
-              <span class="tag">The Commish Curse Continues</span>
-              <span class="tag">Tatis Finally Remembered</span>
-              <span class="tag">BB Keeps Stealing Wins</span>
-            </div>
-          </li>
-          <li class="recap-row">
-            <a class="recap-row-link" href="2026/week8.html">
-              <span class="recap-week"><small>Week</small>8</span>
-              <span class="recap-body">
-                <span class="recap-meta">Week 8 • Matchup Recap</span>
-                <strong class="recap-title">Week 8 Recap: Fantasy Baseball Weekly Recap</strong>
-                <span class="recap-summary">From half-point escapes to 12-4 beatdowns by a winless team, Week 8 was pure separation as the contenders kept climbing, the frauds started sweating, and the basement teams continued building their case for getting throwin in fantasy jail.</span>
-              </span>
-            </a>
-            <div class="tag-row">
-              <span class="tag">Wins (6) - Me So Heorny</span>
-              <span class="tag">Mizerable Miracle</span>
-              <span class="tag">First Place Panic</span>
-              <span class="tag">Mactown Meltdown</span>
-              <span class="tag">Sunday Collapse</span>
-              <span class="tag">Pitching Problems</span>
-            </div>
-          </li>
-          <li class="recap-row">
-            <a class="recap-row-link" href="2026/week7.html">
-              <span class="recap-week"><small>Week</small>7</span>
-              <span class="recap-body">
-                <span class="recap-meta">Week 7 • Matchup Recap</span>
-                <strong class="recap-title">Week 7 Recap: Undefeated No More, Winless Still</strong>
-                <span class="recap-summary">From undefeated streaks ending to 14-2 massacres, Week 7 was choas as we witnessed our top 2 win streaks and top 2 losing streaks come to an end</span>
-              </span>
-            </a>
-            <div class="tag-row">
-              <span class="tag">SV+H (5) - This is Mizerable</span>
-              <span class="tag">Winless Watch</span>
-              <span class="tag">Nuketown</span>
-              <span class="tag">Undefeated No More</span>
-              <span class="tag">Change in 1st</span>
-              <span class="tag">Back to Back Championships?</span>
-            </div>
-          </li>
-          <li class="recap-row">
-            <a class="recap-row-link" href="2026/week6.html">
-              <span class="recap-week"><small>Week</small>6</span>
-              <span class="recap-body">
-                <span class="recap-meta">Week 6 • Matchup Recap</span>
-                <strong class="recap-title">Week 6 Recap: Perfect Runs and Complete Collapses Continue</strong>
-                <span class="recap-summary">Perfect teams kept flexing, struggling teams kept spiraling, and the league split wide open.</span>
-              </span>
-            </a>
-            <div class="tag-row">
-              <span class="tag">WHIP (0.995) - Dixon Cider</span>
-              <span class="tag">Pretenders Exposed</span>
-              <span class="tag">Roch Watch</span>
-              <span class="tag">Undefeated Watch</span>
-              <span class="tag">Winless Watch</span>
-            </div>
-          </li>
-          <li class="recap-row">
-            <a class="recap-row-link" href="2026/week5.html">
-              <span class="recap-week"><small>Week</small>5</span>
-              <span class="recap-body">
-                <span class="recap-meta">Week 5 • Matchup Recap</span>
-                <strong class="recap-title">Week 5 Recap: Separation Season Begins</strong>
-                <span class="recap-summary">Blowouts continue everywhere — the top teams are rolling, and the bottom teams are just trying to survive.</span>
-              </span>
-            </a>
-            <div class="tag-row">
-              <span class="tag">QS (7) - Me So Heorny</span>
-              <span class="tag">Blowout</span>
-              <span class="tag">Sunday Collapse</span>
-              <span class="tag">Undefeated Watch</span>
-              <span class="tag">Winless Watch</span>
-            </div>
-          </li>
-          <li class="recap-row">
-            <a class="recap-row-link" href="2026/week4.html">
-              <span class="recap-week"><small>Week</small>4</span>
-              <span class="recap-body">
-                <span class="recap-meta">Week 4 • Matchup Recap</span>
-                <strong class="recap-title">Week 4 Recap: And Then There Was One</strong>
-                <span class="recap-summary">Undefeated teams dropped, big leads collapsed, and late-week chaos decided everything.</span>
-              </span>
-            </a>
-            <div class="tag-row">
-              <span class="tag">TB (182) - Goodyear Gila Monsters</span>
-              <span class="tag">Blowout</span>
-              <span class="tag">Weekly Recap</span>
-              <span class="tag">Undefeated Watch</span>
-              <span class="tag">Choke Job</span>
-            </div>
-          </li>
-          <li class="recap-row">
-            <a class="recap-row-link" href="2026/week3.html">
-              <span class="recap-week"><small>Week</small>3</span>
-              <span class="recap-body">
-                <span class="recap-meta">Week 3 • Matchup Recap</span>
-                <strong class="recap-title">Week 3 Recap: Blowouts Everywhere</strong>
-                <span class="recap-summary">Big wins, ugly pitching lines, undefeated teams, and a full matchup-by-matchup rundown from the latest week in UTI fantasy baseball.</span>
-              </span>
-            </a>
-            <div class="tag-row">
-              <span class="tag">SB (10) - Gunnarrhea</span>
-              <span class="tag">Undefeated Watch</span>
-              <span class="tag">Weekly Recap</span>
-            </div>
-          </li>
-        </ol>
-        <button class="ui-text-button" data-expanded="false" id="viewMoreArticlesBtn" type="button">Show all recaps</button>
       </section>
 
-      <section class="ui-panel" id="league-money" aria-labelledby="leagueMoneyTitle">
-        <div class="ui-panel-head">
-          <h2 id="leagueMoneyTitle">League Money</h2>
-          <p id="prizeMoneyUpdatedAt">Season total</p>
-        </div>
-        <span class="ui-label">Current prize pool</span>
-        <div class="money-total" id="prizePoolTotal">—</div>
-        <div class="money-bar" id="prizePoolBar" role="img" aria-label="Prize pool breakdown"></div>
-        <ul class="money-legend" id="prizePoolBreakdown"></ul>
-        <p class="money-description" id="prizePoolRule">Prize pool grows based on waiver-wire spending.</p>
-
-        <div class="weekly-winner">
-          <span class="ui-label">Weekly category winner · <span id="weeklyWinnerWeek">Latest</span></span>
-          <div class="weekly-winner-row">
-            <div>
-              <strong class="weekly-winner-name" id="weeklyWinnerTeam">Winner TBD</strong>
-              <span class="weekly-result"><span id="weeklyWinnerCategory">Category TBD</span> · <span id="weeklyWinnerResult">Result will appear here.</span></span>
-            </div>
-            <strong class="weekly-prize" id="weeklyWinnerPrize">—</strong>
+      <div class="home-stack">
+        <!-- Shown during the season (March 1 through the championship); see homepageCard in data/prize-money.js. -->
+        <section class="ui-panel home-prize" id="league-money" aria-labelledby="prizeTitle" hidden>
+          <div class="ui-panel-head">
+            <h2 id="prizeTitle">Prize pool</h2>
           </div>
-          <details class="weekly-history" id="weeklyWinnerHistoryWrap" hidden>
-            <summary>Past weekly winners</summary>
-            <div class="weekly-history-list" id="weeklyWinnerHistory"></div>
-          </details>
-        </div>
-      </section>
+          <strong class="home-prize-total" id="prizePoolTotal">—</strong>
+          <div class="home-prize-bar" id="prizePoolBar" role="img" aria-label="Prize pool breakdown"></div>
+          <p class="ui-panel-note" id="prizePoolBreakdown"></p>
+          <p class="home-prize-winner" id="weeklyWinnerLine" hidden></p>
+        </section>
+
+        <section class="ui-panel" id="recaps" aria-labelledby="recapsTitle">
+          <div class="ui-panel-head">
+            <h2 id="recapsTitle">Latest recaps</h2>
+            <a href="recaps.html" id="allRecapsLink">All recaps <span aria-hidden="true">→</span></a>
+          </div>
+          <ul class="ui-link-list" id="latestRecaps"></ul>
+        </section>
+
+        <section class="ui-panel" aria-labelledby="aroundTitle">
+          <div class="ui-panel-head">
+            <h2 id="aroundTitle">Around the league</h2>
+          </div>
+          <ul class="ui-link-list">
+            <li><a class="ui-link-row" href="tools/home-run-pool.html" id="homeRunPoolGrid" data-variant="leader"><span>Home Run Pool<small>Loading standings…</small></span><b>View <span aria-hidden="true">→</span></b></a></li>
+            <li><a class="ui-link-row" href="record-book.html" id="recordBookLink"><span>Record Book<small>Records, streaks, and rivalries</small></span><b>View <span aria-hidden="true">→</span></b></a></li>
+          </ul>
+        </section>
+      </div>
     </div>
+
+    <section class="ui-panel" id="mlb-weekly-leaders" aria-labelledby="mlbLeadersTitle">
+      <div class="ui-panel-head">
+        <h2 id="mlbLeadersTitle">Top MLB players</h2>
+        <div class="home-leader-modes" role="group" aria-label="Leader range">
+          <button aria-pressed="true" class="active" data-leader-mode="weekly" type="button">This week</button>
+          <button aria-pressed="false" data-leader-mode="past" type="button">Past weeks</button>
+          <button aria-pressed="false" data-leader-mode="season" type="button">Season</button>
+        </div>
+      </div>
+      <p class="ui-panel-note"><span id="weeklyLeaderRange">Loading…</span> · category leaders and the UTI team that owns them</p>
+      <select aria-label="Select past week" class="home-week-select" hidden id="pastWeekSelect"></select>
+      <ul class="home-leaders" id="weeklyLeadersGrid"></ul>
+      <button class="ui-text-button" data-expanded="false" id="leadersMore" type="button">Show all 12 categories</button>
+    </section>
 
     <!-- <section class="section-card" id="top-pickups">
       <div class="leader-section-header">
@@ -480,84 +116,32 @@
         </article>
       </div>
     </section> -->
-    <section class="section-card home-run-pool-preview" id="home-run-pool">
-      <div class="section-heading home-run-pool-heading">
-        <div>
-          <div class="section-eyebrow">Season Race</div>
-          <h2 class="section-title">Home Run Pool</h2>
-          <p class="section-subtitle">Season-long HR race. Top teams show here, full standings live on the pool page.
-          </p>
-        </div>
-        <span class="tag" id="homeRunPoolUpdatedAt">Loading...</span>
-      </div>
-      <div class="home-run-pool-grid home-run-pool-grid-preview" data-limit="3" data-compact id="homeRunPoolGrid">
-        <article class="article-card">
-          <p class="article-summary">Loading Home Run Pool...</p>
-        </article>
-      </div>
-      <div class="view-more-wrap home-run-pool-link-wrap">
-        <a class="article-link" href="tools/home-run-pool.html">View Full Home Run Pool</a>
-      </div>
-    </section>
-    <section class="section-card" id="mlb-weekly-leaders">
-      <div class="leader-section-header">
-        <div>
-          <div class="section-eyebrow">Around MLB</div>
-          <h2 class="section-title" style="margin-bottom:4px;">MLB Category Leaders</h2>
-          <p class="section-subtitle">
-            Switch between the current week, any completed past week, and full-season leaders.
-          </p>
-        </div>
-        <div class="leader-header-actions">
-          <div aria-label="Leader range filter" class="leader-mode-toggle">
-            <button aria-pressed="true" class="leader-mode-btn active" data-leader-mode="weekly" type="button">
-              Current Week
-            </button>
-            <button aria-pressed="false" class="leader-mode-btn" data-leader-mode="past" type="button">
-              Past Weeks
-            </button>
-            <button aria-pressed="false" class="leader-mode-btn" data-leader-mode="season" type="button">
-              Season
-            </button>
-          </div>
-          <select aria-label="Select past week" class="leader-week-select" hidden="" id="pastWeekSelect"></select>
-          <span class="tag" id="weeklyLeaderRange">Loading...</span>
-        </div>
-      </div>
-      <div class="weekly-leaders-grid" id="weeklyLeadersGrid">
-        <article class="article-card">
-          <p class="article-summary">Loading category leaders...</p>
-        </article>
-      </div>
-    </section>
 
     <div class="footer-note">UTI Fantasy Baseball is powered by Busch Light, Malort, and weekly shots from your
       weekly losers.</div>
   </div>
 
-  <!-- Vendor and generated league data -->
+  <!-- League data -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="data/fantasy-owners.js?v=owners-updated-shohei-latz"></script>
-  <script src="scripts/load-trending-players.js"></script>
   <script src="data/team-logos.js"></script>
   <script src="data/homerun-pool.js"></script>
-
-  <!-- Existing feature scripts -->
-  <script src="scripts/category-leaders.js?v=theme-3"></script>
-  <script src="scripts/top-pickups.js?v=split-v1"></script>
-  <script src="scripts/homerun-pool.js?v=theme-3"></script>
-
-  <!-- UTI league analytics -->
   <script src="data/weekly-team-stats.js?v=2026-week24-final"></script>
-  <script src="scripts/league-analytics.js?v=theme-3"></script>
-  <script src="scripts/uti-intelligence.js?v=theme-3"></script>
-  <script src="scripts/home-dashboard.js?v=theme-3"></script>
+  <script src="data/recaps.js?v=calm-1"></script>
+  <script src="data/prize-money.js?v=calm-1"></script>
 
-  <!-- Homepage-only behavior -->
-  <script src="scripts/homepage.js?v=theme-3"></script>
+  <!-- Hidden Trending Available section (still wired up if the section above is uncommented) -->
+  <script src="scripts/load-trending-players.js"></script>
+
+  <!-- Page scripts -->
+  <script src="scripts/category-leaders.js?v=calm-1"></script>
+  <script src="scripts/top-pickups.js?v=split-v1"></script>
   <script src="scripts/trending-range-stats.js"></script>
-  <script src="data/prize-money.js"></script>
-  <script src="scripts/prize-money.js?v=theme-3"></script>
+  <script src="scripts/homerun-pool.js?v=calm-1"></script>
+  <script src="scripts/league-analytics.js?v=calm-1"></script>
+  <script src="scripts/uti-intelligence.js?v=calm-1"></script>
+  <script src="scripts/home-dashboard.js?v=calm-1"></script>
+  <script src="scripts/prize-money.js?v=calm-1"></script>
 </body>
 
 </html>

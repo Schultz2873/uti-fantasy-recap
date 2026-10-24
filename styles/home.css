@@ -139,18 +139,6 @@
   }
 }
 
-.home-run-pool-heading {
-  align-items: center;
-}
-
-.home-run-pool-link-wrap {
-  margin-top: 18px;
-}
-
-.home-run-pool-link-wrap .article-link {
-  text-align: center;
-}
-
 @media (max-width: 700px) {
   .home-run-pool-preview .home-run-pool-grid {
     gap: 10px;
@@ -219,11 +207,6 @@
   .home-run-pool-preview .home-run-player-hr {
     font-size: 1rem;
   }
-
-  .home-run-pool-link-wrap .article-link {
-    display: block;
-    width: 100%;
-  }
 }
 
 /* Hard fallback: the homepage preview should never show more than 3 teams,
@@ -276,57 +259,9 @@
       box-shadow: 0 8px 18px rgb(var(--rgb-teal) / 0.2);
     }
 
-    .leader-week-select {
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      background: rgb(var(--rgb-white) / 0.05);
-      color: var(--accent-dark);
-      padding: 8px 12px;
-      font-size: 0.78rem;
-      font-weight: 900;
-      cursor: pointer;
-      max-width: 250px;
-    }
-
-    .leader-owner-line {
-      width: 100%;
-      margin-top: 8px;
-    }
-
-    .fantasy-owner-badge,
     .available-badge {
       width: 100%;
       max-width: 100%;
-    }
-
-    .fantasy-owner-badge-with-thumb {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      width: 100%;
-      max-width: 100%;
-      min-width: 0;
-    }
-
-    .fantasy-owner-badge-with-thumb span {
-      flex: 1;
-      min-width: 0;
-      overflow-wrap: anywhere;
-    }
-
-    .fantasy-owner-badge-with-thumb .owner-thumb {
-      width: 22px;
-      height: 22px;
-      min-width: 22px;
-      max-width: 22px;
-      min-height: 22px;
-      max-height: 22px;
-      border-radius: 50%;
-      object-fit: cover;
-      object-position: center;
-      flex: 0 0 22px;
-      border: 1px solid rgb(var(--rgb-teal) / 0.3);
-      background: rgb(var(--rgb-white) / 0.05);
     }
 
     .available-badge {
@@ -415,9 +350,8 @@
     @media (max-width: 520px) {
 
       .leader-section-header,
-      .leader-header-actions,
-      .leader-mode-toggle,
-      .leader-week-select {
+.leader-header-actions,
+.leader-mode-toggle {
         width: 100%;
       }
 
@@ -433,72 +367,51 @@
         text-align: center;
         width: 100%;
       }
-
-      .leader-week-select {
-        max-width: none;
-        text-align: center;
-      }
     }
 
-/* ---------- Homepage dashboard (index.html) ---------- */
-/* Scoreboard hero, stat strip, Power Rankings, Category Kings, Recaps, League Money.
-   Data-driven pieces are rendered by scripts/home-dashboard.js and scripts/prize-money.js. */
+/* ---------- Homepage (index.html) ---------- */
+/* Rendered by scripts/home-dashboard.js, category-leaders.js, homerun-pool.js, and prize-money.js.
+   The hero is the only loud element; everything else uses the quiet ui- components in theme.css. */
 
-/* Scoreboard hero */
+/* Hero: latest recap + latest result */
 .home-hero {
   display: grid;
   grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
   gap: 32px;
   align-items: center;
-  margin-bottom: 20px;
-  padding: 32px;
+  margin-bottom: 28px;
+  padding: 30px;
   border-radius: 18px;
   background: var(--gradient-hero);
   border: 1px solid var(--color-accent-border);
   box-shadow: var(--shadow-glow);
 }
 
-.home-hero-copy {
-  display: grid;
-  gap: 14px;
-  justify-items: start;
-}
-
 .home-hero h1 {
-  margin: 0;
-  font-size: clamp(2rem, 3.6vw, 3rem);
+  margin: 8px 0 12px;
+  font-size: clamp(1.8rem, 3.2vw, 2.6rem);
   font-weight: 900;
   font-stretch: var(--font-wide);
-  line-height: 1.02;
+  line-height: 1.05;
   color: var(--color-text);
   text-wrap: balance;
 }
 
 .home-deck {
-  margin: 0;
-  max-width: 50ch;
-  font-size: 1.05rem;
-  line-height: 1.55;
+  margin: 0 0 18px;
+  max-width: 48ch;
   color: var(--color-text-soft);
 }
 
-.home-hero .tag-row {
-  margin: 0;
-}
-
 .home-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 4px;
-  padding: 12px 18px;
+  display: inline-block;
+  padding: 11px 16px;
   border-radius: 10px;
   background: var(--color-accent);
   color: var(--color-bg);
   font-weight: 800;
   font-size: 0.92rem;
   text-decoration: none;
-  box-shadow: 0 6px 24px rgb(var(--rgb-teal) / 0.3);
 }
 
 .home-button:hover {
@@ -508,7 +421,13 @@
 
 .home-scoreboard {
   display: grid;
-  gap: 10px;
+  gap: 8px;
+}
+
+.home-score-label,
+.home-score-note {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
 }
 
 .home-score-matchup {
@@ -517,50 +436,32 @@
 }
 
 .home-score-matchup + .home-score-matchup {
-  margin-top: 8px;
+  margin-top: 10px;
 }
 
 .home-score-row {
   display: grid;
-  grid-template-columns: 48px minmax(0, 1fr) auto;
-  gap: 14px;
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+  gap: 12px;
   align-items: center;
-  padding: 14px 16px;
+  padding: 10px 14px;
   border-radius: 12px;
-  background: rgb(var(--rgb-black) / 0.25);
-  border: 1px solid var(--color-border);
+  background: rgb(var(--rgb-black) / 0.22);
 }
 
 .home-score-row .ui-team-photo {
-  width: 48px;
-  height: 48px;
-}
-
-.home-score-row.is-winner {
-  border-color: var(--color-accent-border);
-}
-
-.home-score-team {
-  display: grid;
-  gap: 2px;
-  min-width: 0;
+  width: 40px;
+  height: 40px;
 }
 
 .home-score-name {
+  min-width: 0;
   font-weight: 700;
-  font-size: 1.02rem;
-  line-height: 1.2;
   color: var(--color-text);
 }
 
-.home-score-split {
-  font-size: 0.78rem;
-  color: var(--color-text-muted);
-  font-variant-numeric: tabular-nums;
-}
-
 .home-score-total {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 900;
   font-stretch: var(--font-wide);
   line-height: 1;
@@ -570,53 +471,41 @@
 
 .home-score-row.is-winner .home-score-total {
   color: var(--color-accent);
-  text-shadow: 0 0 18px rgb(var(--rgb-teal) / 0.5);
 }
 
-.home-chip {
-  display: inline-block;
-  vertical-align: 2px;
-  margin-left: 4px;
-  padding: 3px 7px;
-  border-radius: 5px;
-  background: var(--color-alert);
-  color: var(--color-bg);
-  font-size: 0.62rem;
-  font-weight: 900;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-/* Stat strip */
-.home-stats {
+/* Standings + side column */
+.home-columns {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 14px;
-  margin-bottom: 20px;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
 }
 
-/* Panels */
+.home-columns .ui-panel {
+  margin-bottom: 0;
+}
 
-/* Power Rankings table */
-.home-table-scroll {
-  overflow-x: auto;
+.home-stack {
+  display: grid;
+  gap: 24px;
+}
+
+.home-columns + .ui-panel {
+  margin-top: 24px;
 }
 
 .home-standings {
   width: 100%;
-  min-width: 680px;
   border-collapse: collapse;
-  color: var(--color-text);
+  color: var(--color-text-soft);
   font-variant-numeric: tabular-nums;
 }
 
 .home-standings th {
-  padding: 12px 10px 10px;
+  padding: 8px 6px;
   border-bottom: 1px solid var(--color-border);
-  font-size: 0.68rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-size: 0.75rem;
+  font-weight: 600;
   text-align: right;
   color: var(--color-text-muted);
 }
@@ -626,495 +515,221 @@
 }
 
 .home-standings td {
-  padding: 11px 10px;
-  white-space: nowrap;
+  padding: 9px 6px;
   border-bottom: 1px solid var(--color-border);
   text-align: right;
+  white-space: nowrap;
 }
 
 .home-standings tr:last-child td {
   border-bottom: 0;
 }
 
-.home-standings tbody tr:hover {
-  background: var(--color-surface);
-}
-
 .home-rank {
-  width: 40px;
+  width: 28px;
   text-align: left !important;
-  font-size: 1.1rem;
-  font-weight: 900;
-  font-stretch: var(--font-wide);
-  color: var(--color-accent);
+  font-weight: 700;
+  color: var(--color-text-muted);
 }
 
 .home-team-cell {
   text-align: left !important;
-  font-weight: 700;
-}
-
-.home-team {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-width: 0;
-}
-
-.home-sub {
-  display: block;
-  font-size: 0.74rem;
-  color: var(--color-text-muted);
-}
-
-.home-power {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 12px;
-}
-
-.home-power-track {
-  width: 130px;
-  height: 6px;
-  overflow: hidden;
-  border-radius: var(--radius-pill);
-  background: rgb(var(--rgb-white) / 0.08);
-}
-
-.home-power-track span {
-  display: block;
-  height: 100%;
-  border-radius: var(--radius-pill);
-  background: linear-gradient(90deg, var(--color-teal), rgb(var(--rgb-teal) / 0.6));
-  box-shadow: 0 0 10px rgb(var(--rgb-teal) / 0.45);
-}
-
-.home-power b {
-  min-width: 3.2ch;
-  font-size: 1.05rem;
-  font-weight: 900;
-  font-stretch: var(--font-wide);
-}
-
-/* Record + streak under the team name, shown on phones in place of the hidden columns. */
-.home-team-sub {
-  display: none;
-  margin-top: 2px;
-  font-size: 0.76rem;
+  white-space: normal !important;
   font-weight: 600;
-  color: var(--color-text-muted);
+  color: var(--color-text);
 }
 
-.home-standings-more {
-  display: none;
-}
-
-/* Compact Home Run Pool preview (homerun-pool.js, data-compact grids) */
-.home-run-pool-grid[data-compact] {
+/* Prize pool card (in season only) */
+.home-prize-total {
   display: block;
-}
-
-.hr-compact-row {
-  display: grid;
-  grid-template-columns: 2rem minmax(0, 1fr) auto;
-  gap: 12px;
-  align-items: center;
-  padding: 10px 0;
-  border-top: 1px solid var(--color-border);
-}
-
-.hr-compact-row:first-child {
-  border-top: 0;
-}
-
-.hr-compact-rank {
+  margin: 2px 0 10px;
+  font-size: 2.2rem;
   font-weight: 900;
   font-stretch: var(--font-wide);
+  line-height: 1;
   color: var(--color-accent);
-}
-
-.hr-compact-team {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-width: 0;
-  font-weight: 700;
-  color: var(--color-text);
-}
-
-.hr-compact-team img {
-  width: 32px;
-  height: 32px;
-  flex: none;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.hr-compact-team small {
-  display: block;
-  font-weight: 500;
-  font-size: 0.76rem;
-  color: var(--color-text-muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.hr-compact-total {
-  font-size: 1.4rem;
-  font-weight: 900;
-  font-stretch: var(--font-wide);
-  color: var(--color-text);
   font-variant-numeric: tabular-nums;
 }
 
-.hr-compact-total small {
-  margin-left: 3px;
-  font-size: 0.7rem;
+.home-prize-bar {
+  display: flex;
+  gap: 2px;
+  height: 6px;
+  margin-bottom: 8px;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+}
+
+.home-prize-bar span {
+  display: block;
+}
+
+.home-prize-base {
+  background: rgb(var(--rgb-text-muted) / 0.5);
+}
+
+.home-prize-waivers {
+  background: var(--color-teal);
+}
+
+.home-prize-extra-1 {
+  background: var(--color-coral);
+}
+
+.home-prize-extra-2 {
+  background: var(--color-gold);
+}
+
+.home-prize-extra-3 {
+  background: var(--color-purple);
+}
+
+.home-prize-winner {
+  margin: 0;
+  padding-top: 8px;
+  border-top: 1px solid var(--color-border);
+  font-size: 0.85rem;
+  color: var(--color-text-soft);
+}
+
+/* Latest recaps */
+.ui-link-row.is-recap {
+  grid-template-columns: 3rem minmax(0, 1fr);
+  color: var(--color-text);
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.ui-link-row.is-recap:hover {
+  color: var(--color-accent);
+}
+
+.home-recap-week {
+  font-size: 0.78rem;
+  font-weight: 500;
   color: var(--color-text-muted);
 }
 
-/* Recaps + League Money */
-.home-two-up {
+/* Top MLB players */
+.home-leader-modes {
+  display: flex;
+  gap: 14px;
+}
+
+.home-leader-modes button {
+  padding: 0 0 3px;
+  border: 0;
+  background: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.home-leader-modes button.active {
+  color: var(--color-text);
+  box-shadow: inset 0 -2px 0 var(--color-accent);
+}
+
+.home-week-select {
+  margin: 0 0 8px;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 0.85rem;
+}
+
+.home-leaders {
   display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
-  gap: 20px;
-  align-items: start;
-  margin-bottom: 20px;
-}
-
-.home-two-up > .ui-panel {
-  margin-bottom: 0;
-}
-
-.recap-list {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 28px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.recap-row {
-  padding: 14px 0;
+.home-leaders li {
+  display: grid;
+  grid-template-columns: 3.4rem minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  padding: 9px 0;
   border-top: 1px solid var(--color-border);
 }
 
-.recap-row:first-child {
-  border-top: 0;
+.home-leaders li.is-extra {
+  display: none;
 }
 
-.recap-row-link {
+.home-leaders.is-expanded li.is-extra {
   display: grid;
-  grid-template-columns: 3.2rem minmax(0, 1fr);
-  gap: 14px;
-  color: inherit;
-  text-decoration: none;
 }
 
-.recap-week {
-  font-size: 1.6rem;
-  font-weight: 900;
-  font-stretch: var(--font-wide);
-  line-height: 1;
+.home-leader-cat {
+  font-size: 0.78rem;
+  font-weight: 700;
   color: var(--color-text-muted);
-  font-variant-numeric: tabular-nums;
 }
 
-.recap-week small {
-  display: block;
-  margin-bottom: 2px;
-  font-size: 0.58rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.recap-row:first-child .recap-week {
-  color: var(--color-accent);
-}
-
-.recap-body {
-  display: grid;
-  gap: 3px;
+.home-leader-who {
   min-width: 0;
 }
 
-.recap-meta {
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  color: var(--color-text-muted);
-}
-
-.recap-title {
-  font-size: 1rem;
-  line-height: 1.3;
-  color: var(--color-text);
-  text-wrap: balance;
-}
-
-.recap-row-link:hover .recap-title {
-  color: var(--color-accent);
-}
-
-.recap-summary {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+.home-leader-who strong,
+.home-leader-who small {
+  display: block;
   overflow: hidden;
-  font-size: 0.86rem;
-  line-height: 1.45;
-  color: var(--color-text-soft);
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.recap-row .tag-row {
-  margin: 8px 0 0 calc(3.2rem + 14px);
-}
-
-.money-total {
-  margin: 6px 0 14px;
-  font-size: 3rem;
-  font-weight: 900;
-  font-stretch: var(--font-wide);
-  line-height: 1;
-  color: var(--color-accent);
-  text-shadow: 0 0 24px rgb(var(--rgb-teal) / 0.35);
-  font-variant-numeric: tabular-nums;
-}
-
-.money-bar {
-  display: flex;
-  gap: 3px;
-  height: 10px;
-  overflow: hidden;
-  border-radius: var(--radius-pill);
-}
-
-.money-bar span {
-  display: block;
-  height: 100%;
-}
-
-.money-bar-base {
-  background: rgb(var(--rgb-text-muted) / 0.45);
-}
-
-.money-bar-waivers {
-  background: var(--color-teal);
-}
-
-.money-bar-extra-1 {
-  background: var(--color-coral);
-}
-
-.money-bar-extra-2 {
-  background: var(--color-gold);
-}
-
-.money-bar-extra-3 {
-  background: var(--color-purple);
-}
-
-.money-legend {
-  display: grid;
-  gap: 7px;
-  margin: 12px 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.money-legend li {
-  display: grid;
-  grid-template-columns: 10px minmax(0, 1fr) auto;
-  gap: 10px;
-  align-items: center;
-  font-size: 0.88rem;
-  color: var(--color-text-soft);
-}
-
-.money-legend i {
-  width: 10px;
-  height: 10px;
-  border-radius: 3px;
-}
-
-.money-legend b {
-  color: var(--color-text);
-  font-variant-numeric: tabular-nums;
-}
-
-.money-description {
-  margin: 12px 0 0;
-  font-size: 0.8rem;
-  color: var(--color-text-muted);
-}
-
-.weekly-winner {
-  margin-top: 20px;
-  padding-top: 16px;
-  border-top: 1px solid var(--color-border);
-}
-
-.weekly-winner-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-top: 8px;
-}
-
-.weekly-winner-name {
-  display: block;
-  font-size: 1.15rem;
+.home-leader-who strong {
+  font-weight: 600;
   color: var(--color-text);
 }
 
-.weekly-result {
-  display: block;
-  margin-top: 2px;
-  font-size: 0.82rem;
+.home-leader-who small {
+  font-size: 0.76rem;
   color: var(--color-text-muted);
 }
 
-.weekly-prize {
-  font-size: 1.5rem;
-  font-weight: 900;
-  font-stretch: var(--font-wide);
+.home-leader-who small b {
+  font-weight: 600;
   color: var(--color-accent);
 }
 
-.weekly-history {
-  margin-top: 14px;
-}
-
-.weekly-history summary {
-  cursor: pointer;
-  font-size: 0.86rem;
-  font-weight: 700;
-  color: var(--color-accent);
-}
-
-.weekly-history-list {
-  display: grid;
-  margin-top: 8px;
-}
-
-.weekly-history-item {
-  display: grid;
-  grid-template-columns: 4.6rem minmax(0, 1fr) auto;
-  gap: 10px;
-  align-items: baseline;
-  padding: 8px 0;
-  border-top: 1px solid var(--color-border);
-  font-size: 0.86rem;
-  color: var(--color-text-soft);
-}
-
-.weekly-history-item .history-week {
-  font-size: 0.66rem;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--color-text-muted);
-}
-
-.weekly-history-item .history-prize {
+.home-leader-value {
   font-weight: 800;
   color: var(--color-text);
   font-variant-numeric: tabular-nums;
+}
+
+.home-leaders li.home-leader-message {
+  display: block;
+  grid-column: 1 / -1;
+  color: var(--color-text-muted);
 }
 
 @media (max-width: 900px) {
   .home-hero,
-  .home-two-up {
+  .home-columns {
     grid-template-columns: minmax(0, 1fr);
   }
 
   .home-hero {
-    gap: 24px;
-    padding: 24px;
-  }
-
-  .home-stats {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+    padding: 22px;
   }
 }
 
 @media (max-width: 600px) {
-  .home-hero {
-    padding: 18px;
+  .home-hero h1 {
+    font-size: 1.75rem;
   }
 
-  .home-stats {
-    gap: 10px;
-  }
-
-  .home-score-row {
-    grid-template-columns: 40px minmax(0, 1fr) auto;
-    gap: 10px;
-    padding: 12px;
-  }
-
-  .home-score-row .ui-team-photo {
-    width: 40px;
-    height: 40px;
-  }
-
-  .home-score-total {
-    font-size: 2rem;
-  }
-
-  .recap-row .tag-row {
-    margin-left: 0;
-  }
-
-  /* Power Rankings: rank, team (with record + streak underneath), power. Top five until expanded. */
-  .home-standings {
-    min-width: 0;
-  }
-
-  .home-standings th:nth-child(n + 3):nth-child(-n + 6),
-  .home-standings td:nth-child(n + 3):nth-child(-n + 6) {
-    display: none;
-  }
-
-  .home-standings tbody tr:nth-child(n + 6) {
-    display: none;
-  }
-
-  .home-standings.is-expanded tbody tr:nth-child(n + 6) {
-    display: table-row;
-  }
-
-  .home-standings .home-team-cell {
-    white-space: normal;
-  }
-
-  .home-team-sub {
-    display: block;
-  }
-
-  .home-standings-more {
-    display: block;
-  }
-
-  .home-power-track {
-    width: 48px;
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .home-power-track span {
-    animation: home-fill 800ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
-    transform-origin: left;
-  }
-
-  @keyframes home-fill {
-    from {
-      transform: scaleX(0.05);
-    }
-
-    to {
-      transform: scaleX(1);
-    }
+  .home-leaders {
+    grid-template-columns: minmax(0, 1fr);
   }
 }

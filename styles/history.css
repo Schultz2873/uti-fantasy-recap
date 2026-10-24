@@ -1,33 +1,8 @@
 /* History page (history.html) only. Moved from an inline <style> block. */
 
 /* Keep the profile season/year selectors on a single row. */
-.uti-profile-season-tabs {
-  display: flex !important;
-  flex-wrap: nowrap !important;
-  width: 100%;
-  gap: 8px;
-}
 
-.uti-profile-season-tabs > button {
-  flex: 1 1 0;
-  min-width: 0;
-  white-space: nowrap;
-}
 
-@media (max-width: 560px) {
-  .uti-profile-season-tabs {
-    gap: 5px;
-  }
-
-  .uti-profile-season-tabs > button {
-    padding-left: 7px;
-    padding-right: 7px;
-  }
-
-  .uti-profile-season-tabs > button span {
-    font-size: 0.72rem;
-  }
-}
 
 /* Mobile H2H cards: true compact 2-column layout */
 @media (max-width: 620px) {
