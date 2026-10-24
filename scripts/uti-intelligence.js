@@ -2,7 +2,7 @@
   UTI Intelligence: renders the analytics boards (All-Play, Luck, Power, Category Kings),
   the Yahoo season archives, franchise records, and the team profile modal.
 
-  Used by index.html (preview), uti-intelligence.html (full board), and history.html (archives).
+  Used by index.html (team profiles) and uti-intelligence.html (Standings: every season, trophies, all-time records).
   Depends on window.UTIAnalytics from scripts/league-analytics.js.
 
   Sections:
@@ -1870,7 +1870,10 @@
   }
 
   function renderCurrentBoard(grid, data, isPreview) {
-    grid.innerHTML = renderLeaderCards(data, "2026", CURRENT_BOARD_CARDS);
+    // The Standings page shows the 2026 tab in the same tile style as the past seasons.
+    grid.innerHTML = grid.classList.contains("hist-tiles")
+      ? renderHistoryTiles(data, "2026", CURRENT_BOARD_CARDS)
+      : renderLeaderCards(data, "2026", CURRENT_BOARD_CARDS);
 
     document.getElementById("utiIntelligencePreviewCta")?.remove();
 

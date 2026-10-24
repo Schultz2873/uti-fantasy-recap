@@ -15,8 +15,8 @@
   const NAV_LINKS = [
     { label: "Home", href: "index.html" },
     { label: "Recaps", href: "recaps.html", matches: /\/(recaps\.html|2026\/week\d+\.html)$/ },
-    { label: "Standings", href: "uti-intelligence.html" },
-    { label: "History", href: "history.html" },
+    // Standings also covers the old History page, which now redirects here.
+    { label: "Standings", href: "uti-intelligence.html", matches: /\/(uti-intelligence|history)\.html$/ },
     { label: "Record Book", href: "record-book.html" }
   ];
 
