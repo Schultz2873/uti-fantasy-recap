@@ -15,8 +15,8 @@
   const NAV_LINKS = [
     { label: "Home", href: "index.html" },
     { label: "Recaps", href: "recaps.html", matches: /\/(recaps\.html|2026\/week\d+\.html)$/ },
-    { label: "Standings", href: "uti-intelligence.html" },
-    { label: "History", href: "history.html" },
+    // Standings also covers the old History page, which now redirects here.
+    { label: "Standings", href: "uti-intelligence.html", matches: /\/(uti-intelligence|history)\.html$/ },
     { label: "Record Book", href: "record-book.html" }
   ];
 
@@ -78,14 +78,17 @@
             </details>
           </nav>
         </div>
-        <div class="uti-ticker" id="utiTicker" aria-label="Championship odds" hidden>
+      </header>
+      <div class="uti-ticker" id="utiTicker" aria-label="Championship odds" hidden>
+        <span class="uti-ticker-heading" id="utiTickerHeading"></span>
+        <div class="uti-ticker-window">
           <div class="uti-ticker-track" id="utiTickerTrack"></div>
         </div>
-      </header>
+      </div>
     `);
 
     // Close the Tools menu when clicking elsewhere or pressing Escape.
-    const menu = script.previousElementSibling.querySelector(".uti-nav-menu");
+    const menu = document.querySelector(".uti-header .uti-nav-menu");
     document.addEventListener("click", event => {
       if (menu.open && !menu.contains(event.target)) menu.open = false;
     });
@@ -117,21 +120,23 @@
     return now.getFullYear() + (championshipPlayed && now.getMonth() >= 8 ? 1 : 0);
   }
 
-  function oddsTickerItems(season, odds) {
-    return [
-      `<span class="uti-ticker-heading">${season} championship odds</span>`,
-      ...odds.map(({ team, odds: line }) => `<span class="uti-ticker-item">${escapeHtml(team)} <b>${escapeHtml(line)}</b></span>`)
-    ];
+  function oddsTickerItems(odds) {
+    return odds.map(({ team, odds: line }) => `<span class="uti-ticker-item">${escapeHtml(team)} <b>${escapeHtml(line)}</b></span>`);
   }
 
+  // The heading stays put on the left; the items slide past it.
   // Two identical runs side by side; sliding the track left by one run loops seamlessly.
-  function showTicker(items) {
+  function showTicker(heading, items) {
     const ticker = document.getElementById("utiTicker");
     const track = document.getElementById("utiTickerTrack");
+    document.getElementById("utiTickerHeading").innerHTML = heading;
     const run = `<div class="uti-ticker-run">${items.join("")}</div>`;
 
     track.innerHTML = run + run.replace('class="uti-ticker-run"', 'class="uti-ticker-run" aria-hidden="true"');
     ticker.hidden = false;
+
+    // The ticker stays pinned to the top; other sticky elements sit below it using --sticky-top.
+    document.documentElement.style.setProperty("--sticky-top", `${ticker.offsetHeight}px`);
 
     const runWidth = track.firstElementChild.getBoundingClientRect().width;
     track.style.setProperty("--ticker-duration", `${Math.max(20, runWidth / TICKER_SPEED)}s`);
@@ -143,7 +148,8 @@
 
     const summary = window.UTIAnalytics.buildSummary(rows);
     const odds = window.UTITitleOdds?.titleOdds(window.FANTASY_OWNERS, summary.powerRankings) || [];
-    if (odds.length) showTicker(oddsTickerItems(oddsSeason(rows), odds));
+    // "championship" is dropped on phones to leave room for the odds.
+    if (odds.length) showTicker(`<span>${oddsSeason(rows)} <span class="uti-ticker-heading-long">Championship </span>Odds</span>`, oddsTickerItems(odds));
   }
 
   renderHeader();

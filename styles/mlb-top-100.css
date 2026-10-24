@@ -99,7 +99,7 @@ h1 {
 
 .controls {
   position: sticky;
-  top: 0;
+  top: var(--sticky-top, 0px);
   z-index: 20;
   display: grid;
   grid-template-columns: 1fr 180px 180px 150px 170px;

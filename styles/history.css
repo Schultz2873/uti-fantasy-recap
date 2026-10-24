@@ -1,262 +1,740 @@
-/* History page (history.html) only. Moved from an inline <style> block. */
+/*
+  History page: trophy room (the one loud, gold element), then quiet panels for
+  all-time standings, head-to-head, and a tabbed season archive.
+  Colors and type come from theme.css tokens.
+*/
 
-/* Keep the profile season/year selectors on a single row. */
-
-
-
-/* Mobile H2H cards: true compact 2-column layout */
-@media (max-width: 620px) {
-  #utiHeadToHeadGrid.uti-h2h-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 6px !important; }
-  #utiHeadToHeadGrid .uti-h2h-card { display:flex !important; min-width:0 !important; flex-direction:column !important; gap:5px !important; padding:7px !important; border-radius:10px !important; }
-  #utiHeadToHeadGrid .uti-h2h-card-team { gap:5px !important; min-width:0 !important; }
-  #utiHeadToHeadGrid .uti-h2h-card-team img { width:22px !important; height:22px !important; flex:0 0 22px !important; }
-  #utiHeadToHeadGrid .uti-h2h-card-team > div { min-width:0 !important; }
-  #utiHeadToHeadGrid .uti-h2h-card-team span { font-size:.40rem !important; line-height:1 !important; }
-  #utiHeadToHeadGrid .uti-h2h-card-team strong { max-width:none !important; font-size:.56rem !important; line-height:1.08 !important; white-space:normal !important; overflow:visible !important; text-overflow:clip !important; }
-  #utiHeadToHeadGrid .uti-h2h-card-record { display:flex !important; align-items:baseline !important; gap:4px !important; text-align:left !important; }
-  #utiHeadToHeadGrid .uti-h2h-card-record strong { font-size:.72rem !important; line-height:1 !important; }
-  #utiHeadToHeadGrid .uti-h2h-card-record span { font-size:.42rem !important; line-height:1 !important; }
-  #utiHeadToHeadGrid .uti-h2h-record-splits { display:grid !important; grid-template-columns:1fr 1fr !important; gap:3px !important; width:100% !important; }
-  #utiHeadToHeadGrid .uti-h2h-record-splits > span { min-width:0 !important; padding:3px 4px !important; border-radius:6px !important; font-size:.42rem !important; line-height:1.1 !important; white-space:nowrap !important; text-align:center !important; }
-  #utiHeadToHeadGrid .uti-h2h-season-splits { display:flex !important; flex-wrap:nowrap !important; gap:3px !important; width:100% !important; padding-top:4px !important; overflow-x:auto !important; scrollbar-width:none; }
-  #utiHeadToHeadGrid .uti-h2h-season-splits::-webkit-scrollbar { display:none; }
-  #utiHeadToHeadGrid .uti-h2h-season-splits > span { flex:0 0 auto !important; min-width:max-content !important; gap:0 !important; padding:3px 4px !important; border-radius:6px !important; font-size:.40rem !important; line-height:1.05 !important; }
-  #utiHeadToHeadGrid .uti-h2h-season-splits small { font-size:.35rem !important; line-height:1.05 !important; }
+.hist {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
 }
 
-/* Head-to-head season toggle */
-
-#utiHeadToHeadGrid .uti-h2h-season-splits > [hidden] {
-  display: none !important;
+.hist .ui-panel {
+  margin-bottom: 0;
+  min-width: 0;
 }
 
-@media (max-width: 620px) {
-
-  #utiHeadToHeadGrid .uti-h2h-season-splits {
-    overflow: visible !important;
-  }
-
-  #utiHeadToHeadGrid .uti-h2h-season-splits > span {
-    width: 100% !important;
-    min-width: 0 !important;
-    justify-content: center !important;
-    text-align: center !important;
-  }
+.hist-head {
+  display: grid;
+  gap: 6px;
+  padding-top: 8px;
 }
 
-
-/* Season archive selector: only one historical year is shown at a time */
-.uti-season-archive-selector {
-  margin: 18px 0 12px;
-  padding: 14px;
-  border: 1px solid rgb(var(--rgb-white) / 0.1);
-  border-radius: 18px;
-  background: rgb(var(--rgb-white) / 0.05);
+.hist-head h1 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 900;
+  font-stretch: var(--font-wide);
+  line-height: 1.02;
+  color: var(--color-text);
 }
 
-.uti-season-archive-selector-head {
+.hist-head p {
+  margin: 0;
+  color: var(--color-text-soft);
+}
+
+/* Segmented buttons: record type, season, leaderboard */
+.hist-seg {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 3px;
+  border-radius: var(--radius-pill);
+  background: rgb(var(--rgb-white) / 0.04);
+  border: 1px solid var(--color-border);
+}
+
+.hist-seg button {
+  padding: 5px 12px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: none;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.hist-seg button:hover {
+  color: var(--color-text);
+}
+
+.hist-seg button[aria-pressed="true"] {
+  background: var(--color-accent);
+  color: var(--color-bg);
+}
+
+.hist-dash {
+  color: var(--color-text-muted);
+}
+
+/* ---------- Trophy room ---------- */
+
+.hist-trophy {
+  padding: 24px;
+  border-radius: var(--radius-xl);
+  border: 1px solid rgb(var(--rgb-gold) / 0.4);
+  background:
+    radial-gradient(80% 90% at 100% 0%, rgb(var(--rgb-gold) / 0.16), transparent 60%),
+    linear-gradient(160deg, rgb(var(--rgb-gold-deep) / 0.16), transparent 55%),
+    var(--color-surface-solid);
+  box-shadow: 0 16px 48px rgb(var(--rgb-gold) / 0.1);
+}
+
+.hist-trophy-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin-bottom: 18px;
+}
+
+.hist-trophy-head h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 900;
+  font-stretch: var(--font-wide);
+  color: var(--color-text);
+}
+
+.hist-eyebrow {
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.hist-title-count {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  font-size: 0.85rem;
+  color: var(--color-text-soft);
+}
+
+.hist-title-count b {
+  color: var(--color-gold);
+}
+
+.hist-champs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+}
+
+.hist-champ {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  padding: 18px;
+  border-radius: var(--radius-md);
+  background: rgb(var(--rgb-black) / 0.22);
+  border: 1px solid rgb(var(--rgb-gold) / 0.16);
+  min-width: 0;
+}
+
+.hist-champ.is-latest {
+  border-color: rgb(var(--rgb-gold) / 0.5);
+  background: rgb(var(--rgb-gold) / 0.07);
+}
+
+.hist-champ-year {
+  font-size: 2.4rem;
+  font-weight: 900;
+  font-stretch: 125%;
+  line-height: 0.9;
+  color: transparent;
+  -webkit-text-stroke: 1.2px var(--color-gold);
+}
+
+.hist-champ.is-latest .hist-champ-year {
+  color: var(--color-gold);
+  -webkit-text-stroke: 0;
+}
+
+.hist-champ-who {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 12px;
-  margin-bottom: 10px;
+  min-width: 0;
 }
 
-.uti-season-archive-selector-head strong {
+.hist-champ-who img {
+  width: 52px;
+  height: 52px;
+  flex: none;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--color-gold);
+}
+
+.hist-champ-who small {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.hist-champ-who strong {
+  display: block;
+  font-size: 1.08rem;
+  font-weight: 800;
+  line-height: 1.2;
   color: var(--color-text);
-  font-size: 0.95rem;
-  font-weight: 950;
 }
 
-.uti-season-archive-toggle {
-  display: inline-grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 4px;
-  padding: 4px;
-  border-radius: 999px;
-  background: rgb(var(--rgb-white) / 0.06);
-  width: min(100%, 260px);
+.hist-champ dl {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 4px 12px;
+  margin: 0;
+  padding-top: 10px;
+  border-top: 1px solid var(--color-border);
+  font-size: 0.82rem;
 }
 
-.uti-season-archive-toggle button {
-  border: 0;
-  border-radius: 999px;
-  background: transparent;
-  color: var(--color-text-soft);
-  padding: 8px 14px;
-  font-size: 0.78rem;
-  line-height: 1;
-  font-weight: 950;
-  cursor: pointer;
+.hist-champ dt {
+  font-weight: 400;
+  color: var(--color-text-muted);
   white-space: nowrap;
 }
 
-.uti-season-archive-toggle button.is-active {
-  background: var(--color-slate-deep);
-  color: var(--color-white);
-  box-shadow: 0 3px 10px rgb(var(--rgb-black) / 0.5);
+.hist-champ dd {
+  display: flex;
+  justify-content: flex-end;
+  min-width: 0;
+  margin: 0;
+  color: var(--color-text-soft);
 }
 
-#season-2024[hidden],
-#season-2025[hidden] {
-  display: none !important;
+.hist-champ .ui-team-link {
+  color: inherit;
 }
 
-@media (max-width: 620px) {
-  .uti-season-archive-selector {
-    padding: 10px;
-    margin-top: 12px;
+.hist-trophy-note {
+  margin: 14px 0 0;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+/* ---------- Tables (all-time standings, 2025 → 2026) ---------- */
+
+.hist-table-wrap {
+  overflow-x: auto;
+}
+
+.hist-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-soft);
+}
+
+.hist-table th {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.hist-table td {
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+
+.hist-table .num {
+  text-align: right;
+}
+
+.hist-table td.is-up {
+  color: var(--color-positive);
+}
+
+.hist-table td.is-down {
+  color: var(--color-negative);
+}
+
+.hist-table .ui-team {
+  display: inline-flex;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.hist-team-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hist-rank {
+  width: 2rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
+
+.hist-standings tr.is-former td,
+.hist-standings tr.is-former .ui-team {
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+.hist-pct {
+  display: inline-grid;
+  grid-template-columns: 64px auto;
+  align-items: center;
+  gap: 8px;
+}
+
+.hist-pct i {
+  height: 6px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: rgb(var(--rgb-white) / 0.07);
+}
+
+.hist-pct i b {
+  display: block;
+  height: 100%;
+  border-radius: 3px;
+  background: var(--color-teal);
+}
+
+.hist-finish {
+  display: inline-flex;
+  gap: 4px;
+}
+
+/* Medals under the team name replace the four medal columns on phones (see below). */
+.hist-team-medals {
+  display: none;
+}
+
+.hist-table .hist-place {
+  min-width: 4.2rem;
+  text-align: center;
+}
+
+.hist-medal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 5px;
+  border-radius: var(--radius-pill);
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+
+.hist-medal i {
+  font-style: normal;
+  font-size: 0.85rem;
+  line-height: 1;
+}
+
+.hist-medal.is-champion {
+  background: rgb(var(--rgb-gold) / 0.18);
+  color: var(--color-gold);
+}
+
+.hist-medal.is-runnerUp {
+  background: rgb(200 210 230 / 0.14);
+  color: rgb(213 220 234);
+}
+
+.hist-medal.is-thirdPlace {
+  background: rgb(205 127 50 / 0.2);
+  color: rgb(224 160 102);
+}
+
+.hist-medal.is-regularSeasonFirst {
+  background: rgb(var(--rgb-teal) / 0.12);
+  color: var(--color-teal);
+}
+
+/* ---------- Head-to-head ---------- */
+
+.hist-h2h-pick {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+  margin: 6px 0 16px;
+}
+
+.hist-h2h-pick label {
+  font-size: 0.85rem;
+  color: var(--color-text-soft);
+}
+
+.hist-h2h-pick select {
+  padding: 7px 12px;
+  border-radius: var(--radius-md);
+  background: var(--color-navy);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+
+.hist-h2h-total {
+  font-size: 0.86rem;
+  color: var(--color-text-soft);
+}
+
+.hist-h2h-total b {
+  color: var(--color-text);
+}
+
+.hist-h2h {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hist-h2h li {
+  display: grid;
+  gap: 8px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  background: var(--color-navy);
+  border: 1px solid var(--color-border);
+  min-width: 0;
+}
+
+.hist-h2h-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 0;
+}
+
+.hist-h2h-top .ui-team {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.hist-h2h-top em {
+  display: block;
+  font-style: normal;
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.hist-h2h-record {
+  flex: none;
+  font-size: 1.15rem;
+  font-weight: 900;
+  line-height: 1.1;
+  text-align: right;
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.hist-h2h-record small {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.hist-wl {
+  display: flex;
+  gap: 2px;
+  height: 6px;
+  overflow: hidden;
+  border-radius: 3px;
+}
+
+.hist-wl b {
+  display: block;
+}
+
+.hist-wl .is-win,
+.hist-legend .is-win {
+  background: var(--color-teal);
+}
+
+.hist-wl .is-tie,
+.hist-legend .is-tie {
+  background: rgb(var(--rgb-text-muted) / 0.7);
+}
+
+.hist-wl .is-loss,
+.hist-legend .is-loss {
+  background: var(--color-coral);
+}
+
+.hist-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.hist-chip {
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background: rgb(var(--rgb-teal) / 0.1);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--color-teal);
+  font-variant-numeric: tabular-nums;
+}
+
+.hist-chip.is-playoff {
+  background: rgb(var(--rgb-orange) / 0.12);
+  color: var(--color-orange);
+}
+
+.hist-chip.is-empty {
+  background: rgb(var(--rgb-white) / 0.04);
+  color: var(--color-text-muted);
+}
+
+.hist-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin-top: 12px;
+  font-size: 0.76rem;
+  color: var(--color-text-soft);
+}
+
+.hist-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hist-legend i {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+/* ---------- Season archive ---------- */
+
+.hist-season {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+}
+
+.hist-season > *,
+.hist-board {
+  min-width: 0;
+}
+
+.hist-tiles {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.hist-tile {
+  display: grid;
+  gap: 4px;
+  padding: 14px;
+  border-radius: var(--radius-md);
+  background: var(--color-navy);
+  min-width: 0;
+}
+
+.hist-tile small {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
+
+.hist-tile strong {
+  font-size: 1.35rem;
+  font-weight: 900;
+  font-stretch: var(--font-wide);
+  line-height: 1.1;
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.hist-tile strong.is-up {
+  color: var(--color-teal);
+}
+
+.hist-tile strong.is-down {
+  color: var(--color-coral);
+}
+
+.hist-tile .ui-team {
+  font-size: 0.85rem;
+  color: var(--color-text-soft);
+}
+
+.hist-season > .hist-seg {
+  justify-self: start;
+}
+
+.hist-board .ui-panel-note {
+  margin-bottom: 4px;
+}
+
+.hist-more {
+  padding-top: 12px;
+  border-top: 1px solid var(--color-border);
+}
+
+#season-archives > .hist-more {
+  margin-top: 16px;
+}
+
+.hist-more summary {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  cursor: pointer;
+}
+
+.hist-more p {
+  max-width: 70ch;
+  margin: 8px 0 0;
+  font-size: 0.85rem;
+  color: var(--color-text-soft);
+}
+
+.hist-more .hist-table-wrap {
+  margin-top: 12px;
+}
+
+/* Phones: drop Win % and Playoffs, and let long team names shorten so the rest fits. */
+@media (max-width: 600px) {
+  .hist-col-pct,
+  .hist-col-playoffs,
+  .hist-col-medal {
+    display: none;
   }
 
-  .uti-season-archive-selector-head {
-    align-items: stretch;
-    flex-direction: column;
-    gap: 8px;
+  .hist-team-medals {
+    display: flex;
+    gap: 4px;
+    margin: 4px 0 0 32px;
   }
 
-  .uti-season-archive-toggle {
+  .hist-former {
+    display: none;
+  }
+
+  /* Tabs stay on one line and scroll sideways if they run out of room. */
+  .hist-seg {
+    flex-wrap: nowrap;
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .hist-seg button {
+    flex: none;
+    padding: 5px 9px;
+    font-size: 0.76rem;
+  }
+
+  .hist-table th,
+  .hist-table td {
+    padding-inline: 6px;
+  }
+
+  .hist-table .hist-col-team {
     width: 100%;
+    max-width: 0;
   }
 
-  .uti-season-archive-toggle button {
-    padding: 8px 6px;
-    font-size: 0.74rem;
-  }
-}
-
-
-/* Rivalry section polish */
-
-/* Mobile: let the rivalry intro use the full row and give the controls their own rows. */
-@media (max-width: 620px) {
-  #head-to-head .uti-intelligence-heading {
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr) !important;
-    align-items: stretch !important;
-    gap: 10px !important;
-    width: 100% !important;
+  .hist-col-team .ui-team,
+  .hist-team-cell {
+    max-width: 100%;
   }
 
-  #head-to-head .uti-intelligence-heading > div:first-child {
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: none !important;
+  .hist-team-cell {
+    overflow: hidden;
   }
 
-  #head-to-head .uti-intelligence-heading .section-title,
-  #head-to-head .uti-intelligence-heading .section-subtitle {
-    width: 100% !important;
-    max-width: none !important;
+  .hist-table .hist-place {
+    min-width: 2rem;
   }
 
-  #head-to-head .uti-intelligence-heading .section-subtitle {
-    margin-right: 0 !important;
-    padding-right: 0 !important;
-  }
-
-  #head-to-head .uti-h2h-selector {
-    width: 100% !important;
-    min-width: 0 !important;
-  }
-
-  #head-to-head .uti-h2h-selector select {
-    width: 100% !important;
-  }
-
-  /* Give opponent names the entire remaining width of each compact card. */
-  #utiHeadToHeadGrid .uti-h2h-card-team {
-    width: 100% !important;
-  }
-
-  #utiHeadToHeadGrid .uti-h2h-card-team > div {
-    flex: 1 1 auto !important;
-    width: auto !important;
-    min-width: 0 !important;
-  }
-
-  #utiHeadToHeadGrid .uti-h2h-card-team strong {
-    display: block !important;
-    width: 100% !important;
-    max-width: none !important;
-    white-space: normal !important;
-    overflow: visible !important;
-    text-overflow: clip !important;
-    overflow-wrap: anywhere !important;
-  }
-
-  #utiHeadToHeadGrid .uti-h2h-card-record {
-    width: 100% !important;
-  }
-
-  #utiHeadToHeadGrid .uti-h2h-season-splits > span:not([hidden]) {
-    width: 100% !important;
+  .hist-table .ui-team-photo.is-medium {
+    width: 24px;
+    height: 24px;
   }
 }
 
-
-/* Rivalry cleanup: overall / regular-season / playoff records only. */
-#utiHeadToHeadGrid .uti-h2h-season-splits {
-  display: none !important;
-}
-
-@media (max-width: 620px) {
-  /* Rivalry controls use the full width without the extra season control. */
-  #head-to-head .uti-intelligence-heading {
-    display: block !important;
+@media (max-width: 760px) {
+  .hist-trophy,
+  .hist .ui-panel {
+    padding: 16px;
   }
 
-  #head-to-head .uti-h2h-selector {
-    display: block !important;
-    width: 100% !important;
-    margin-top: 12px !important;
+  .hist-tiles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  #head-to-head .uti-h2h-selector > span {
-    display: block !important;
-    margin-bottom: 5px !important;
-    font-size: .66rem !important;
-    font-weight: 900 !important;
-    letter-spacing: .06em !important;
-    text-transform: uppercase !important;
+  .hist-h2h {
+    grid-template-columns: minmax(0, 1fr);
   }
 
-  #head-to-head .uti-h2h-selector select {
-    width: 100% !important;
-    min-height: 40px !important;
+  .hist-champ dl {
+    grid-template-columns: minmax(0, 1fr) auto;
   }
 
-  /* Date/range labels look better as simple metadata on phones, not grey chips. */
-  #utiFranchiseRecordRange,
-  #utiHistory2024Range,
-  #utiHistoryRange {
-    display: block !important;
-    width: 100% !important;
-    margin: 6px 0 0 !important;
-    padding: 0 !important;
-    border: 0 !important;
-    border-radius: 0 !important;
-    background: transparent !important;
-    box-shadow: none !important;
-    color: var(--color-text-muted) !important;
-    font-size: .68rem !important;
-    line-height: 1.25 !important;
-    font-weight: 800 !important;
-    text-align: left !important;
-    white-space: normal !important;
+  /* Compact trophy cards */
+  .hist-champs {
+    gap: 10px;
   }
 
-  /* Keep archive headings full width when the range metadata drops underneath. */
-  #franchise-records .uti-intelligence-heading,
-  #season-2024 .uti-intelligence-heading,
-  #season-2025 .uti-intelligence-heading {
-    display: block !important;
+  .hist-champ {
+    gap: 10px;
+    padding: 14px;
   }
 
-  #franchise-records .uti-intelligence-heading > div,
-  #season-2024 .uti-intelligence-heading > div,
-  #season-2025 .uti-intelligence-heading > div {
-    width: 100% !important;
-    max-width: none !important;
+  .hist-champ-year {
+    font-size: 1.7rem;
+  }
+
+  .hist-champ-who img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .hist-champ-who strong {
+    font-size: 1rem;
+  }
+
+  .hist-tile {
+    padding: 12px;
+  }
+
+  .hist-tile strong {
+    font-size: 1.15rem;
+  }
+
+  .hist-pct {
+    grid-template-columns: auto;
+  }
+
+  .hist-pct i {
+    display: none;
   }
 }
-
