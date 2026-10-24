@@ -652,7 +652,7 @@
 
 .home-leaders li {
   display: grid;
-  grid-template-columns: 3.4rem minmax(0, 1fr) auto;
+  grid-template-columns: 3.4rem 28px minmax(0, 1fr) auto;
   gap: 10px;
   align-items: center;
   padding: 9px 0;
@@ -675,6 +675,13 @@
 
 .home-leader-who {
   min-width: 0;
+}
+
+.home-leader-nophoto {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px dashed var(--color-border);
 }
 
 .home-leader-who strong,

@@ -47,8 +47,10 @@ function displayDate(date) {
   });
 }
 
+// Before April there are no new MLB stats yet, so keep showing last season.
 function getCurrentSeason() {
-  return new Date().getFullYear();
+  const today = new Date();
+  return today.getMonth() < 3 ? today.getFullYear() - 1 : today.getFullYear();
 }
 
 function getMonday(date) {
@@ -446,10 +448,16 @@ function renderLeaderRows(leaders) {
   list.innerHTML = featuredFirst.map((leader, index) => {
     const owner = getFantasyOwner(leader.name);
     const tieNote = leader.tiedLeaders.length > 1 ? ` · +${leader.tiedLeaders.length - 1} tied` : "";
+    const ownerLogo = owner ? getTeamLogo(owner) : "";
+    // Owner photo, or an empty slot so rows stay aligned when the player is available.
+    const ownerPhoto = ownerLogo
+      ? `<img class="ui-team-photo is-medium" src="${escapeHtml(ownerLogo)}" alt="" loading="lazy">`
+      : `<span class="home-leader-nophoto" aria-hidden="true"></span>`;
 
     return `
       <li class="${index >= FEATURED_LEADER_COUNT ? "is-extra" : ""}">
         <span class="home-leader-cat">${escapeHtml(leader.label.replace("SV+H-BS", "SV+H"))}</span>
+        ${ownerPhoto}
         <span class="home-leader-who">
           <strong>${escapeHtml(leader.name)}</strong>
           <small>${escapeHtml(leader.team || "—")} · ${owner ? `<b>${escapeHtml(owner)}</b>` : "Available"}${tieNote}</small>
@@ -572,6 +580,7 @@ function setupPastWeekSelect() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  leaderRangeMode = document.getElementById("mlb-weekly-leaders")?.dataset.leaderMode || leaderRangeMode;
   setupPastWeekSelect();
   setupLeadersMoreButton();
 
