@@ -151,8 +151,7 @@ h3 {
   border-bottom: 1px solid var(--color-border);
 }
 
-.uti-header-bar,
-.uti-ticker-track {
+.uti-header-bar {
   max-width: 1180px;
   margin-inline: auto;
   padding-left: max(18px, env(safe-area-inset-left, 0px));
@@ -265,26 +264,63 @@ h3 {
   background: var(--color-surface);
 }
 
+/* Scrolling ticker: the track holds two identical runs and slides left by one run, forever.
+   site-header.js sets --ticker-duration from the run width so the speed stays constant. */
 .uti-ticker {
+  overflow: hidden;
   border-top: 1px solid var(--color-border);
   background: rgb(var(--rgb-black) / 0.25);
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-
-.uti-ticker::-webkit-scrollbar {
-  display: none;
 }
 
 .uti-ticker-track {
   display: flex;
-  align-items: center;
-  gap: 18px;
+  width: max-content;
   padding-block: 8px;
   white-space: nowrap;
   font-size: 0.8rem;
   font-variant-numeric: tabular-nums;
   color: var(--color-text-muted);
+  animation: uti-ticker-scroll var(--ticker-duration, 40s) linear infinite;
+}
+
+.uti-ticker:hover .uti-ticker-track,
+.uti-ticker:focus-within .uti-ticker-track {
+  animation-play-state: paused;
+}
+
+.uti-ticker-run {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding-right: 22px;
+}
+
+.uti-ticker-heading {
+  font-weight: 800;
+  color: var(--color-accent);
+}
+
+@keyframes uti-ticker-scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Reduced motion: no sliding; the strip scrolls by hand and shows one copy. */
+@media (prefers-reduced-motion: reduce) {
+  .uti-ticker {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .uti-ticker-track {
+    animation: none;
+    padding-left: 18px;
+  }
+
+  .uti-ticker-run[aria-hidden="true"] {
+    display: none;
+  }
 }
 
 .uti-ticker-item b {

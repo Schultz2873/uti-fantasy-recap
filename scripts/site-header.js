@@ -46,8 +46,11 @@
   const DATA_SCRIPTS = [
     { src: "data/weekly-team-stats.js", isLoaded: () => Array.isArray(window.UTI_WEEKLY_TEAM_STATS) },
     { src: "scripts/league-analytics.js", isLoaded: () => Boolean(window.UTIAnalytics) },
-    { src: "data/prize-money.js", isLoaded: () => Boolean(window.PRIZE_MONEY_DATA) }
+    { src: "data/prize-money.js", isLoaded: () => Boolean(window.PRIZE_MONEY_DATA) },
+    { src: "data/fantasy-owners.js", isLoaded: () => Boolean(window.FANTASY_OWNERS) }
   ];
+
+  const TICKER_SPEED = 40; // pixels per second
 
   function escapeHtml(value) {
     return String(value ?? "")
@@ -141,27 +144,63 @@
     return `<span class="uti-ticker-item">${escapeHtml(label)} <b>${escapeHtml(value)}</b></span>`;
   }
 
-  function renderTicker() {
-    const rows = window.UTI_WEEKLY_TEAM_STATS || [];
-    if (!rows.length || !window.UTIAnalytics) return;
+  // The season the odds are for: next year once this year's championship has been played (September on).
+  function oddsSeason(rows) {
+    const now = new Date();
+    const championshipPlayed = rows.some(row => /championship/i.test(row.round || ""));
+    return now.getFullYear() + (championshipPlayed && now.getMonth() >= 8 ? 1 : 0);
+  }
 
-    const analytics = window.UTIAnalytics;
-    const matchups = analytics.uniqueMatchups(rows);
+  function baseTickerItems(rows, summary) {
+    const matchups = window.UTIAnalytics.uniqueMatchups(rows);
     const latestWeek = Math.max(...matchups.map(matchup => matchup.week));
     const latest = matchups.filter(matchup => matchup.week === latestWeek);
-    const power = analytics.buildSummary(rows).powerRankings[0];
+    const power = summary.powerRankings[0];
     const prizePool = prizePoolTotal(window.PRIZE_MONEY_DATA || {});
 
-    // Kept to three things: the latest result, Power #1, and the prize pool.
-    const items = [
+    return [
       `<span class="uti-ticker-live">${escapeHtml(latest[0]?.round || `Week ${latestWeek}`)}</span>`,
       ...latest.map(matchup => `<span class="uti-ticker-item">${scoreLine(matchup)}</span>`),
       power ? tickerItem("Power #1", shortName(power.team)) : "",
       prizePool !== null ? tickerItem("Prize pool", `$${prizePool.toLocaleString("en-US")}`) : ""
     ].filter(Boolean);
+  }
 
-    document.getElementById("utiTickerTrack").innerHTML = items.join("");
-    document.getElementById("utiTicker").hidden = false;
+  function oddsTickerItems(season, odds) {
+    return [
+      `<span class="uti-ticker-heading">${season} title odds</span>`,
+      ...odds.map(({ team, odds: line }) => `<span class="uti-ticker-item">${escapeHtml(shortName(team))} <b>${escapeHtml(line)}</b></span>`)
+    ];
+  }
+
+  // Two identical runs side by side; sliding the track left by one run loops seamlessly.
+  function showTicker(items) {
+    const ticker = document.getElementById("utiTicker");
+    const track = document.getElementById("utiTickerTrack");
+    const run = `<div class="uti-ticker-run">${items.join("")}</div>`;
+
+    track.innerHTML = run + run.replace('class="uti-ticker-run"', 'class="uti-ticker-run" aria-hidden="true"');
+    ticker.hidden = false;
+
+    const runWidth = track.firstElementChild.getBoundingClientRect().width;
+    track.style.setProperty("--ticker-duration", `${Math.max(20, runWidth / TICKER_SPEED)}s`);
+  }
+
+  async function renderTicker() {
+    const rows = window.UTI_WEEKLY_TEAM_STATS || [];
+    if (!rows.length || !window.UTIAnalytics) return;
+
+    const summary = window.UTIAnalytics.buildSummary(rows);
+    const items = baseTickerItems(rows, summary);
+    showTicker(items);
+
+    // Odds need the player value engine (an ES module), so they load after the rest of the ticker.
+    try {
+      const { titleOdds } = await import(siteUrl("scripts/title-odds.js"));
+      showTicker([...items, ...oddsTickerItems(oddsSeason(rows), titleOdds(window.FANTASY_OWNERS, summary.powerRankings))]);
+    } catch (error) {
+      console.warn("Title odds could not load.", error);
+    }
   }
 
   renderHeader();
