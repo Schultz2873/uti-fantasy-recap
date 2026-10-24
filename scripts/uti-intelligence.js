@@ -930,7 +930,7 @@
 
     if (range && weeks.length) range.textContent = rangeText(weeks);
     if (badge && weeks.length) badge.textContent = yahooSeasonBadgeText(season);
-    if (grid) grid.innerHTML = renderLeaderCards(data, String(season), cards);
+    if (grid) grid.innerHTML = renderHistoryTiles(data, String(season), cards);
 
     renderChartTables(idPrefix, data, String(season));
 
@@ -940,6 +940,42 @@
         franchiseTrendTable.innerHTML = renderFranchiseTrend(latestAnalytics, data);
       }
     }
+  }
+
+  // Four headline numbers for a season in the History archive: label, value, team.
+  function renderHistoryTiles(data, season, cards) {
+    const luck = data.luckIndex || [];
+    const rows = {
+      allPlay: sortedAllPlayFor(data)[0],
+      power: (data.powerRankings || [])[0],
+      luckiest: luck[0],
+      unluckiest: luck[luck.length - 1]
+    };
+    const values = {
+      allPlay: row => formatPct(row.winPct),
+      power: row => (row.rating * 100).toFixed(1),
+      luckiest: row => formatSigned(row.luck),
+      unluckiest: row => formatSigned(row.luck)
+    };
+    const tones = { luckiest: "is-up", unluckiest: "is-down" };
+
+    return cards.map(card => {
+      const row = rows[card.kind];
+      const label = card.eyebrow.replace(/^\d{4}\s+(Imported\s+)?/, "");
+      return `
+        <div class="hist-tile">
+          <small>${escapeHtml(label)}</small>
+          <strong class="${tones[card.kind] || ""}">${row ? values[card.kind](row) : "—"}</strong>
+          ${row ? historyTeamLink(row.team, season) : "<span>—</span>"}
+        </div>`;
+    }).join("");
+  }
+
+  // Team name that opens the profile, used across the History page.
+  function historyTeamLink(team, season, withPhoto = false) {
+    const safeTeam = escapeHtml(team);
+    const photo = withPhoto ? `<img class="ui-team-photo is-medium" src="${logoFor(team)}" alt="" loading="lazy">` : "";
+    return `<span class="ui-team">${photo}<span class="ui-team-link" data-team-profile="${safeTeam}" data-profile-open-season="${escapeHtml(season)}" role="button" tabindex="0">${safeTeam}</span></span>`;
   }
 
   // 2025 vs 2026 All-Play and Power comparison table.
@@ -964,44 +1000,44 @@
       return bRating - aRating || a.localeCompare(b);
     });
 
-    const deltaClass = value => value > 0.001 ? "is-up" : value < -0.001 ? "is-down" : "is-flat";
+    const deltaClass = value => value > 0.001 ? "is-up" : value < -0.001 ? "is-down" : "";
     const signedOne = value => `${value > 0 ? "+" : ""}${value.toFixed(1)}`;
 
     return `
-      <div class="uti-franchise-trend-table">
-        <div class="uti-franchise-trend-row is-head">
-          <span>Franchise</span>
-          <span>2025 All-Play %</span>
-          <span>2026 All-Play %</span>
-          <span>All-Play Change</span>
-          <span>2025 Power Rating</span>
-          <span>2026 Power Rating</span>
-          <span>Power Change</span>
-        </div>
+      <table class="hist-table">
+        <thead>
+          <tr>
+            <th>Team</th>
+            <th class="num">2025 All-Play</th>
+            <th class="num">2026 All-Play</th>
+            <th class="num">Change</th>
+            <th class="num">2025 Power</th>
+            <th class="num">2026 Power</th>
+            <th class="num">Change</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${teams.map(team => {
+            const ap25 = Number(historyAllPlay[team]?.winPct || 0);
+            const ap26 = Number(currentAllPlay[team]?.winPct || 0);
+            const power25 = Number(historyPower[team]?.rating || 0) * 100;
+            const power26 = Number(currentPower[team]?.rating || 0) * 100;
+            const apDelta = (ap26 - ap25) * 100;
+            const powerDelta = power26 - power25;
 
-        ${teams.map(team => {
-          const ap25 = Number(historyAllPlay[team]?.winPct || 0);
-          const ap26 = Number(currentAllPlay[team]?.winPct || 0);
-          const power25 = Number(historyPower[team]?.rating || 0) * 100;
-          const power26 = Number(currentPower[team]?.rating || 0) * 100;
-          const apDelta = (ap26 - ap25) * 100;
-          const powerDelta = power26 - power25;
-
-          return `
-            <div class="uti-franchise-trend-row">
-              <div class="uti-franchise-trend-team">
-                ${teamIdentity(team, false, "2026")}
-              </div>
-              <strong>${formatPct(ap25)}</strong>
-              <strong>${formatPct(ap26)}</strong>
-              <span class="uti-history-delta ${deltaClass(apDelta)}">${signedOne(apDelta)} pts</span>
-              <strong>${power25.toFixed(1)}</strong>
-              <strong>${power26.toFixed(1)}</strong>
-              <span class="uti-history-delta ${deltaClass(powerDelta)}">${signedOne(powerDelta)}</span>
-            </div>
-          `;
-        }).join("")}
-      </div>
+            return `
+              <tr>
+                <td>${historyTeamLink(team, "2026", true)}</td>
+                <td class="num">${formatPct(ap25)}</td>
+                <td class="num">${formatPct(ap26)}</td>
+                <td class="num ${deltaClass(apDelta)}">${signedOne(apDelta)}</td>
+                <td class="num">${power25.toFixed(1)}</td>
+                <td class="num">${power26.toFixed(1)}</td>
+                <td class="num ${deltaClass(powerDelta)}">${signedOne(powerDelta)}</td>
+              </tr>`;
+          }).join("")}
+        </tbody>
+      </table>
     `;
   }
 
@@ -1182,36 +1218,38 @@
     return knownSeasonResults().filter(result => result?.[field] === team).length;
   }
 
-  function placementDisplay(team, field) {
-    const hasAnyResults = knownSeasonResults().some(result => result?.[field]);
-    if (!hasAnyResults) return "—";
-
-    const meta = PLACEMENT_META[field] || { icon: "🏅", label: field };
-    const count = placementCount(team, field);
-
-    if (count <= 0) return "—";
-
-    return `
-      <span class="uti-placement-icon-count" title="${escapeHtml(meta.label)}: ${count}">
-        <span aria-hidden="true">${meta.icon}</span>
-        <strong>x${count}</strong>
-      </span>
-    `;
+  // Medal badges for a team's finishes: 🥇×2 🥉 👑, each with a hover label.
+  function placementMedals(team) {
+    const medals = Object.entries(PLACEMENT_META).map(([field, meta]) => {
+      const count = placementCount(team, field);
+      if (!count) return "";
+      const label = `${meta.label}: ${count}`;
+      return `<span class="hist-medal is-${field}" title="${escapeHtml(label)}" aria-label="${escapeHtml(label)}"><i aria-hidden="true">${meta.icon}</i>${count > 1 ? `×${count}` : ""}</span>`;
+    }).join("");
+    return medals ? `<span class="hist-medals">${medals}</span>` : `<span class="hist-dash">—</span>`;
   }
 
-  function renderFranchiseResume() {
+  // Teams no longer in the league have no current logo in data/team-logos.js.
+  function isFormerTeam(team) {
+    return !window.TEAM_LOGOS?.[team];
+  }
+
+  let franchiseRecordPhase = "all";
+
+  function renderFranchiseResume(phase = franchiseRecordPhase) {
     const target = document.getElementById("utiFranchiseResumeTable");
     if (!target) return;
+    franchiseRecordPhase = phase;
 
     const records = franchiseTeams().map(team => ({
       team,
-      overall: franchiseRecord(team),
-      regular: franchiseRecord(team, null, null, "regular"),
-      playoffs: franchiseRecord(team, null, null, "playoffs")
+      former: isFormerTeam(team),
+      record: franchiseRecord(team, null, null, phase)
     })).sort((a, b) =>
-      b.overall.winPct - a.overall.winPct ||
-      b.overall.wins - a.overall.wins ||
-      a.overall.losses - b.overall.losses ||
+      Number(a.former) - Number(b.former) ||
+      Number(b.record.games > 0) - Number(a.record.games > 0) ||
+      b.record.winPct - a.record.winPct ||
+      b.record.wins - a.record.wins ||
       a.team.localeCompare(b.team)
     );
 
@@ -1220,82 +1258,92 @@
 
     const range = document.getElementById("utiFranchiseRecordRange");
     if (range && seasons.length) {
-      range.textContent = `${seasons[0]}–${seasons[seasons.length - 1]} imported`;
+      range.textContent = `Every ${phase === "playoffs" ? "playoff matchup" : phase === "regular" ? "regular-season matchup" : "matchup"} since ${seasons[0]}`;
     }
 
+    let rank = 0;
     target.innerHTML = `
-      <div class="uti-franchise-resume-table">
-        <div class="uti-franchise-resume-row is-head">
-          <span>Franchise</span>
-          <span>Overall Record</span>
-          <span>Regular Season</span>
-          <span>Playoffs</span>
-          <span>Win %</span>
-          <span>1st</span>
-          <span>2nd</span>
-          <span>3rd</span>
-          <span>Reg. Season #1</span>
-        </div>
-
-        ${records.map((row, index) => `
-          <div class="uti-franchise-resume-row">
-            <div class="uti-franchise-resume-team">
-              <span class="uti-franchise-rank">${index + 1}</span>
-              ${teamIdentity(row.team, false, preferredSeasonForTeam(row.team, "2026"))}
-            </div>
-            <strong>${formatRecord(row.overall)}</strong>
-            <span class="uti-record-split is-regular">${formatRecord(row.regular)}</span>
-            <span class="uti-record-split is-playoffs">${row.playoffs.games ? formatRecord(row.playoffs) : "—"}</span>
-            <strong>${formatPct(row.overall.winPct)}</strong>
-            <span class="uti-placement-count">${placementDisplay(row.team, "champion")}</span>
-            <span class="uti-placement-count">${placementDisplay(row.team, "runnerUp")}</span>
-            <span class="uti-placement-count">${placementDisplay(row.team, "thirdPlace")}</span>
-            <span class="uti-placement-count">${placementDisplay(row.team, "regularSeasonFirst")}</span>
-          </div>
-        `).join("")}
-      </div>
+      <table class="hist-table hist-standings">
+        <thead>
+          <tr><th>#</th><th>Team</th><th class="num">Record</th><th>Win %</th><th>Finishes</th></tr>
+        </thead>
+        <tbody>
+          ${records.map(({ team, former, record }) => {
+            const played = record.games > 0;
+            const pct = played ? record.winPct * 100 : 0;
+            return `
+              <tr class="${former ? "is-former" : ""}">
+                <td class="hist-rank">${former ? "" : ++rank}</td>
+                <td><span class="hist-team-cell">${historyTeamLink(team, preferredSeasonForTeam(team, "2026"), true)}${former ? '<span class="hist-dash">former</span>' : ""}</span></td>
+                <td class="num">${played ? formatRecord(record) : "—"}</td>
+                <td>${played ? `<span class="hist-pct"><i><b style="width:${pct.toFixed(1)}%"></b></i>${pct.toFixed(1)}%</span>` : '<span class="hist-dash">—</span>'}</td>
+                <td>${placementMedals(team)}</td>
+              </tr>`;
+          }).join("")}
+        </tbody>
+      </table>
     `;
   }
 
+  // Trophy room: one card per completed season, newest first, plus a title count.
   function renderSeasonPlacements() {
     const target = document.getElementById("utiSeasonPlacements");
     if (!target) return;
 
-    const results = knownSeasonResults();
-
+    const results = knownSeasonResults().filter(result => result.champion);
     if (!results.length) {
-      target.innerHTML = `
-        <div class="uti-history-empty">
-          No completed-season placement data has been entered yet.
-        </div>
-      `;
+      target.innerHTML = `<p class="hist-trophy-note">No champions have been entered yet. Add them to data/history/season-results.js.</p>`;
       return;
     }
 
-    const resultTeam = (team, season) => team
-      ? teamIdentity(team, true, String(season))
-      : `<span class="uti-season-result-pending">Pending</span>`;
+    const place = (icon, label, team, season) => team
+      ? `<dt><span aria-hidden="true">${icon}</span> ${label}</dt><dd>${historyTeamLink(team, String(season))}</dd>`
+      : "";
 
-    target.innerHTML = `
-      <div class="uti-season-results-table">
-        <div class="uti-season-results-row is-head">
-          <span>Season</span>
-          <span>1st</span>
-          <span>2nd</span>
-          <span>3rd</span>
-          <span>Regular Season #1</span>
-        </div>
-        ${results.map(result => `
-          <div class="uti-season-results-row">
-            <strong>${escapeHtml(result.season)}</strong>
-            <div>${resultTeam(result.champion, result.season)}</div>
-            <div>${resultTeam(result.runnerUp, result.season)}</div>
-            <div>${resultTeam(result.thirdPlace, result.season)}</div>
-            <div>${resultTeam(result.regularSeasonFirst, result.season)}</div>
+    target.innerHTML = results.map((result, index) => `
+      <article class="hist-champ${index === 0 ? " is-latest" : ""}">
+        <span class="hist-champ-year">${escapeHtml(result.season)}</span>
+        <div class="hist-champ-who">
+          <img src="${logoFor(result.champion)}" alt="">
+          <div>
+            <small><span aria-hidden="true">🏆</span> Champion</small>
+            <strong>${historyTeamLink(result.champion, String(result.season))}</strong>
           </div>
-        `).join("")}
-      </div>
-    `;
+        </div>
+        <dl>
+          ${place("🥈", "Runner-up", result.runnerUp, result.season)}
+          ${place("🥉", "Third", result.thirdPlace, result.season)}
+          ${place("👑", "Reg. season #1", result.regularSeasonFirst, result.season)}
+        </dl>
+      </article>
+    `).join("");
+
+    const titles = {};
+    results.forEach(result => { titles[result.champion] = (titles[result.champion] || 0) + 1; });
+    const count = document.getElementById("utiTitleCount");
+    if (count) {
+      count.innerHTML = Object.entries(titles)
+        .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+        .map(([team, n]) => `<span><span aria-hidden="true">🏆</span> ${escapeHtml(team)} <b>×${n}</b></span>`)
+        .join("");
+    }
+
+    // Seasons with matchup data but no champion entered yet.
+    const tracked = [...new Set(trackedHistoryRows().map(row => Number(row.season)).filter(Number.isFinite))];
+    const missing = tracked.filter(season => !results.some(result => Number(result.season) === season)).sort();
+    const note = document.getElementById("utiTrophyNote");
+    if (note) {
+      note.hidden = !missing.length;
+      note.textContent = missing.length
+        ? `The ${missing.join(" and ")} champion isn't on record yet. Add it to data/history/season-results.js and it shows up here.`
+        : "";
+    }
+  }
+
+  // A thin wins / ties / losses bar.
+  function winLossBar(record) {
+    const part = (count, tone) => count ? `<b class="${tone}" style="flex:${count}"></b>` : "";
+    return `<span class="hist-wl" role="img" aria-label="${record.wins} wins, ${record.ties} ties, ${record.losses} losses">${part(record.wins, "is-win")}${part(record.ties, "is-tie")}${part(record.losses, "is-loss")}</span>`;
   }
 
   function renderHeadToHead(team) {
@@ -1306,93 +1354,64 @@
     const overall = franchiseRecord(team);
     const regular = franchiseRecord(team, null, null, "regular");
     const playoffs = franchiseRecord(team, null, null, "playoffs");
-    const opponents = franchiseTeams().filter(opponent => opponent !== team);
 
-    summary.innerHTML = `
-      <div class="uti-h2h-summary-team">
-        <img src="${logoFor(team)}" alt="">
-        <div>
-          <span>Tracked Franchise Record</span>
-          <strong>${escapeHtml(team)}</strong>
-        </div>
-      </div>
+    summary.innerHTML = `<b>${formatRecord(overall)}</b> overall · ${formatRecord(regular)} regular season · ${playoffs.games ? `${formatRecord(playoffs)} playoffs` : "no playoff games"}`;
 
-      <div class="uti-h2h-summary-records">
-        <div class="uti-h2h-summary-split">
-          <span>Overall</span>
-          <strong>${formatRecord(overall)}</strong>
-          <small>${formatPct(overall.winPct)} · ${overall.games} matchups</small>
-        </div>
-        <div class="uti-h2h-summary-split is-regular">
-          <span>Regular Season</span>
-          <strong>${formatRecord(regular)}</strong>
-          <small>${regular.games} matchups</small>
-        </div>
-        <div class="uti-h2h-summary-split is-playoffs">
-          <span>Playoffs</span>
-          <strong>${playoffs.games ? formatRecord(playoffs) : "—"}</strong>
-          <small>${playoffs.games ? `${playoffs.games} matchups` : "No playoff matchups"}</small>
-        </div>
-      </div>
-    `;
+    const matchups = franchiseTeams()
+      .filter(opponent => opponent !== team)
+      .map(opponent => ({
+        opponent,
+        allTime: franchiseRecord(team, opponent),
+        regular: franchiseRecord(team, opponent, null, "regular"),
+        playoffs: franchiseRecord(team, opponent, null, "playoffs")
+      }))
+      .filter(matchup => matchup.allTime.games > 0)
+      .sort((a, b) => b.allTime.winPct - a.allTime.winPct || b.allTime.games - a.allTime.games);
 
-    grid.innerHTML = opponents.map(opponent => {
-      const allTime = franchiseRecord(team, opponent);
-      const regularTime = franchiseRecord(team, opponent, null, "regular");
-      const playoffTime = franchiseRecord(team, opponent, null, "playoffs");
+    // Season-by-season split, shown on hover.
+    const seasonSplits = opponent => [...new Set(
+      trackedHistoryRows()
+        .filter(row => row.team === team && row.opponent === opponent)
+        .map(row => Number(row.season))
+        .filter(Number.isFinite)
+    )].sort((a, b) => a - b)
+      .map(season => `${season}: ${formatRecord(franchiseRecord(team, opponent, season))}`)
+      .join(" · ");
 
-      const seasonsPlayed = [...new Set(
-        trackedHistoryRows()
-          .filter(row => row.team === team && row.opponent === opponent)
-          .map(row => Number(row.season))
-          .filter(Number.isFinite)
-      )].sort((a, b) => a - b);
-
-      const splits = seasonsPlayed.map(season => {
-        const seasonOverall = franchiseRecord(team, opponent, season);
-        const seasonRegular = franchiseRecord(team, opponent, season, "regular");
-        const seasonPlayoffs = franchiseRecord(team, opponent, season, "playoffs");
-
-        return `
-          <span>
-            ${season}:
-            <strong>${formatRecord(seasonOverall)}</strong>
-            <small>Reg ${formatRecord(seasonRegular)}${seasonPlayoffs.games ? ` · PO ${formatRecord(seasonPlayoffs)}` : ""}</small>
+    grid.innerHTML = matchups.map(({ opponent, allTime, regular: regularTime, playoffs: playoffTime }) => `
+      <li title="${escapeHtml(seasonSplits(opponent))}">
+        <div class="hist-h2h-top">
+          <span class="ui-team">
+            <img class="ui-team-photo is-medium" src="${logoFor(opponent)}" alt="" loading="lazy">
+            <span><em>vs.</em><span class="ui-team-link" data-team-profile="${escapeHtml(opponent)}" data-profile-open-season="${escapeHtml(preferredSeasonForTeam(opponent, "2026"))}" role="button" tabindex="0">${escapeHtml(opponent)}</span></span>
           </span>
-        `;
-      }).join("");
-
-      return `
-        <article class="uti-h2h-card">
-          <div class="uti-h2h-card-team">
-            <img src="${logoFor(opponent)}" alt="">
-            <div>
-              <span>vs.</span>
-              <strong>${escapeHtml(opponent)}</strong>
-            </div>
-          </div>
-
-          <div class="uti-h2h-card-record">
-            <strong>${formatRecord(allTime)}</strong>
-            <span>${formatPct(allTime.winPct)} overall</span>
-          </div>
-
-          <div class="uti-h2h-record-splits">
-            <span class="is-regular">Regular <strong>${formatRecord(regularTime)}</strong></span>
-            <span class="is-playoffs">Playoffs <strong>${playoffTime.games ? formatRecord(playoffTime) : "—"}</strong></span>
-          </div>
-
-          <div class="uti-h2h-season-splits">
-            ${splits || "<span>No tracked matchups</span>"}
-          </div>
-        </article>
-      `;
-    }).join("");
+          <span class="hist-h2h-record">${formatRecord(allTime)}<small>${formatPct(allTime.winPct)} overall</small></span>
+        </div>
+        ${winLossBar(allTime)}
+        <div class="hist-chips">
+          <span class="hist-chip">Regular ${regularTime.games ? formatRecord(regularTime) : "—"}</span>
+          <span class="hist-chip ${playoffTime.games ? "is-playoff" : "is-empty"}">Playoffs ${playoffTime.games ? formatRecord(playoffTime) : "—"}</span>
+        </div>
+      </li>
+    `).join("");
   }
 
   function renderHistoryRecordSections() {
     renderFranchiseResume();
     renderSeasonPlacements();
+
+    const recordToggle = document.getElementById("utiRecordTypeToggle");
+    if (recordToggle && !recordToggle.dataset.listenerAttached) {
+      recordToggle.addEventListener("click", event => {
+        const button = event.target.closest("[data-record-type]");
+        if (!button) return;
+        recordToggle.querySelectorAll("[data-record-type]").forEach(other => {
+          other.setAttribute("aria-pressed", String(other === button));
+        });
+        renderFranchiseResume(button.dataset.recordType);
+      });
+      recordToggle.dataset.listenerAttached = "true";
+    }
 
     const selector = document.getElementById("utiHeadToHeadTeamSelect");
     if (!selector) return;
