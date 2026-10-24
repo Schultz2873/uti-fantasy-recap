@@ -1,9 +1,13 @@
 /*
   Home Run Pool standings (homepage preview and tools/home-run-pool.html).
-  Totals each fantasy team's picks from data/homerun-pool.js using live MLB season home runs.
+  Totals each fantasy team's picks from data/homerun-pool.js using MLB season home runs.
+  Once HOME_RUN_POOL_SETTINGS.final is true, it shows that season's final standings and champion.
 */
 (() => {
   const HOME_RUN_POOL_REFRESH_MS = 30 * 60 * 1000;
+  const POOL_SETTINGS = window.HOME_RUN_POOL_SETTINGS || {};
+  const POOL_SEASON = POOL_SETTINGS.season || new Date().getFullYear();
+  const POOL_IS_FINAL = Boolean(POOL_SETTINGS.final);
 
   function normalizeHomeRunPoolName(name) {
     return String(name || "")
@@ -32,7 +36,6 @@
   }
 
   async function fetchMlbSeasonHomeRuns() {
-    const season = new Date().getFullYear();
     const url =
       `https://statsapi.mlb.com/api/v1/stats` +
       `?stats=season` +
@@ -40,7 +43,7 @@
       `&playerPool=all` +
       `&sportIds=1` +
       `&gameType=R` +
-      `&season=${season}` +
+      `&season=${POOL_SEASON}` +
       `&limit=5000`;
 
     const response = await fetch(url);
@@ -105,10 +108,13 @@
     return Number(grid.dataset.limit || (isPreviewGrid ? 3 : 0));
   }
 
-  // Homepage link row (data-variant="leader"): just the current leader and total.
+  // Homepage link row (data-variant="leader"): just the current leader (or champion) and total.
   function renderLeaderLine(standings) {
     const leader = standings[0];
     if (!leader) return `<span>Home Run Pool<small>Standings unavailable</small></span><b>View <span aria-hidden="true">→</span></b>`;
+    if (POOL_IS_FINAL) {
+      return `<span>Home Run Pool<small>${POOL_SEASON} champion: ${leader.fantasyTeam} · back in ${POOL_SEASON + 1}</small></span><b>${leader.totalHomeRuns} HR <span aria-hidden="true">→</span></b>`;
+    }
     return `<span>Home Run Pool<small>Leader: ${leader.fantasyTeam}</small></span><b>${leader.totalHomeRuns} HR <span aria-hidden="true">→</span></b>`;
   }
 
@@ -125,7 +131,7 @@
       <article class="home-run-card ${index === 0 ? "home-run-card-leader" : ""}">
         <div class="home-run-card-top">
           <div>
-            <div class="home-run-rank">#${index + 1}</div>
+            <div class="home-run-rank">#${index + 1}${POOL_IS_FINAL && index === 0 ? " · Champion" : ""}</div>
             <h3 class="home-run-team">
               ${team.logo ? `<img src="${team.logo}" alt="${team.fantasyTeam}" class="home-run-team-logo">` : ""}
               <span>${team.fantasyTeam}</span>
@@ -152,6 +158,16 @@
     `).join("");
   }
 
+  // Pool page headings once the season is over.
+  function renderFinalHeadings(champion) {
+    const title = document.getElementById("homeRunPoolTitle");
+    const subtitle = document.getElementById("homeRunPoolSubtitle");
+    if (title) title.textContent = `${POOL_SEASON} Final Standings`;
+    if (subtitle && champion) {
+      subtitle.textContent = `${champion.fantasyTeam} won the ${POOL_SEASON} pool with ${champion.totalHomeRuns} HR. A new pool starts in ${POOL_SEASON + 1}.`;
+    }
+  }
+
   function renderHomeRunPool(standings) {
     const grids = document.querySelectorAll("#homeRunPoolGrid, [data-home-run-pool-grid]");
     const updatedAt = document.getElementById("homeRunPoolUpdatedAt");
@@ -159,6 +175,12 @@
     if (!grids.length) return;
 
     grids.forEach(grid => renderHomeRunPoolGrid(grid, standings));
+
+    if (POOL_IS_FINAL) {
+      renderFinalHeadings(standings[0]);
+      if (updatedAt) updatedAt.textContent = `Final · ${POOL_SEASON} season`;
+      return;
+    }
 
     if (updatedAt) {
       updatedAt.textContent = `Updated ${new Date().toLocaleTimeString("en-US", {
@@ -194,6 +216,6 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     loadHomeRunPool();
-    setInterval(loadHomeRunPool, HOME_RUN_POOL_REFRESH_MS);
+    if (!POOL_IS_FINAL) setInterval(loadHomeRunPool, HOME_RUN_POOL_REFRESH_MS);
   });
 })();

@@ -1,3 +1,11 @@
+// Home Run Pool: four hitters per team, ranked by total MLB regular-season home runs.
+//
+// season: the MLB season the picks count toward.
+// final: true once the pool is over. The homepage and tools/home-run-pool.html then show
+//   the champion and final totals instead of live standings.
+// Next year: set season to 2027, final to false, and replace the picks below.
+window.HOME_RUN_POOL_SETTINGS = { season: 2026, final: true };
+
 window.HOME_RUN_POOL = [
   {
     fantasyTeam: "Gunnarrhea",
