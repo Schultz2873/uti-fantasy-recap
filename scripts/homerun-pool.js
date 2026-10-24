@@ -174,7 +174,7 @@
         <h2><span class="ui-team-link" data-team-profile="${champion.fantasyTeam}" role="button" tabindex="0">${champion.fantasyTeam}</span></h2>
         <div class="home-hr-champ-total"><strong>${champion.totalHomeRuns}</strong><span>HR</span></div>
       </div>
-      ${runnerUp ? `<p class="home-hr-champ-note">Won by ${margin} over ${runnerUp.fantasyTeam}</p>` : ""}
+      ${runnerUp ? `<p class="home-hr-champ-note">Won by ${margin} HR over ${runnerUp.fantasyTeam}</p>` : ""}
       <ul class="home-hr-champ-hitters">
         ${hitters.map(player => `<li><span>${player.mlbName}</span><b>${player.homeRuns}</b></li>`).join("")}
       </ul>
