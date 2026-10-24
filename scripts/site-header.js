@@ -149,7 +149,7 @@
     const summary = window.UTIAnalytics.buildSummary(rows);
     const odds = window.UTITitleOdds?.titleOdds(window.FANTASY_OWNERS, summary.powerRankings) || [];
     // "championship" is dropped on phones to leave room for the odds.
-    if (odds.length) showTicker(`${oddsSeason(rows)} <span class="uti-ticker-heading-long">championship </span>odds`, oddsTickerItems(odds));
+    if (odds.length) showTicker(`<span>${oddsSeason(rows)} <span class="uti-ticker-heading-long">Championship </span>Odds</span>`, oddsTickerItems(odds));
   }
 
   renderHeader();
