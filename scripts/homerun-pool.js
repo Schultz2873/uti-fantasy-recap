@@ -158,6 +158,35 @@
     `).join("");
   }
 
+  // Homepage champion card (#homeRunChampion) once the pool is final. It replaces the leader row.
+  function renderChampionCard(standings) {
+    const card = document.getElementById("homeRunChampion");
+    const [champion, runnerUp] = standings;
+    if (!card || !champion) return;
+
+    const margin = runnerUp ? champion.totalHomeRuns - runnerUp.totalHomeRuns : 0;
+    const hitters = [...champion.players].sort((a, b) => b.homeRuns - a.homeRuns);
+
+    card.innerHTML = `
+      <span class="home-hr-champ-kicker">${POOL_SEASON} Home Run Pool champion</span>
+      <div class="home-hr-champ-main">
+        ${champion.logo ? `<img class="home-hr-champ-photo" src="${champion.logo}" alt="">` : ""}
+        <h2><span class="ui-team-link" data-team-profile="${champion.fantasyTeam}" role="button" tabindex="0">${champion.fantasyTeam}</span></h2>
+        <div class="home-hr-champ-total"><strong>${champion.totalHomeRuns}</strong><span>HR</span></div>
+      </div>
+      ${runnerUp ? `<p class="home-hr-champ-note">Won by ${margin} over ${runnerUp.fantasyTeam}</p>` : ""}
+      <ul class="home-hr-champ-hitters">
+        ${hitters.map(player => `<li><span>${player.mlbName}</span><b>${player.homeRuns}</b></li>`).join("")}
+      </ul>
+      <a class="home-hr-champ-link" href="tools/home-run-pool.html">Final standings <span aria-hidden="true">→</span></a>
+      <span class="home-hr-champ-next">Back in ${POOL_SEASON + 1}</span>
+    `;
+    card.hidden = false;
+
+    const leaderRow = document.getElementById("homeRunPoolRow");
+    if (leaderRow) leaderRow.hidden = true;
+  }
+
   // Pool page headings once the season is over.
   function renderFinalHeadings(champion) {
     const title = document.getElementById("homeRunPoolTitle");
@@ -177,6 +206,7 @@
     grids.forEach(grid => renderHomeRunPoolGrid(grid, standings));
 
     if (POOL_IS_FINAL) {
+      renderChampionCard(standings);
       renderFinalHeadings(standings[0]);
       if (updatedAt) updatedAt.textContent = `Final · ${POOL_SEASON} season`;
       return;

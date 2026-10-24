@@ -894,3 +894,158 @@
     height: 60px;
   }
 }
+
+/* Home Run Pool champion card (homepage, once the pool is final) */
+.home-hr-champ {
+  position: relative;
+  display: grid;
+  gap: 14px;
+  overflow: hidden;
+  border-color: rgb(var(--rgb-gold) / 0.45);
+  background:
+    radial-gradient(90% 70% at 100% 0%, rgb(var(--rgb-gold) / 0.2), transparent 60%),
+    linear-gradient(160deg, rgb(var(--rgb-gold-deep) / 0.18), transparent 55%),
+    var(--color-surface-solid);
+  box-shadow: 0 0 0 1px rgb(var(--rgb-gold) / 0.1), 0 16px 48px rgb(var(--rgb-gold) / 0.14);
+}
+
+/* Light sweep, same rhythm as the draft banner */
+.home-hr-champ::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 35%, rgb(var(--rgb-white) / 0.07) 50%, transparent 65%);
+  transform: translateX(-100%);
+  animation: home-clock-sweep 5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.home-hr-champ-kicker {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.home-hr-champ-main {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+}
+
+.home-hr-champ-photo {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--color-gold);
+  box-shadow: 0 0 0 5px rgb(var(--rgb-gold) / 0.16);
+}
+
+.home-hr-champ h2 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 900;
+  font-stretch: var(--font-wide);
+  line-height: 1.1;
+  color: var(--color-text);
+}
+
+.home-hr-champ-total {
+  display: grid;
+  justify-items: center;
+  line-height: 1;
+}
+
+.home-hr-champ-total strong {
+  font-size: 2.6rem;
+  font-weight: 900;
+  font-stretch: var(--font-wide);
+  background: linear-gradient(180deg, var(--color-gold), var(--color-orange));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.home-hr-champ-total span {
+  margin-top: 4px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--color-gold);
+}
+
+.home-hr-champ-note {
+  margin: -4px 0 0;
+  font-size: 0.85rem;
+  color: var(--color-text-soft);
+}
+
+.home-hr-champ-hitters {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.home-hr-champ-hitters li {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 7px 0;
+  border-top: 1px solid var(--color-border);
+  font-size: 0.88rem;
+  color: var(--color-text-soft);
+}
+
+.home-hr-champ-hitters b {
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.home-hr-champ-link {
+  position: relative;
+  z-index: 1;
+  justify-self: start;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--color-gold);
+  text-decoration: none;
+}
+
+.home-hr-champ-link:hover {
+  text-decoration: underline;
+}
+
+.home-hr-champ-next {
+  position: absolute;
+  right: 22px;
+  bottom: 22px;
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-hr-champ::after {
+    animation: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .home-hr-champ-hitters {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .home-hr-champ-photo {
+    width: 52px;
+    height: 52px;
+  }
+
+  .home-hr-champ-total strong {
+    font-size: 2.1rem;
+  }
+}
