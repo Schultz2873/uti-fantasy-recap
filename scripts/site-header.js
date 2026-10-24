@@ -77,11 +77,6 @@
               <div class="uti-nav-menu-list">${TOOL_LINKS.map(navLink).join("")}</div>
             </details>
           </nav>
-          <!-- Narrow screens: every link in one menu so the header stays on one line. -->
-          <details class="uti-nav-menu uti-nav-compact">
-            <summary>Menu</summary>
-            <nav class="uti-nav-menu-list" aria-label="Site">${[...NAV_LINKS, ...TOOL_LINKS].map(navLink).join("")}</nav>
-          </details>
         </div>
       </header>
       <div class="uti-ticker" id="utiTicker" aria-label="Championship odds" hidden>
@@ -92,15 +87,13 @@
       </div>
     `);
 
-    // Close the menus when clicking elsewhere or pressing Escape.
-    const menus = [...document.querySelectorAll(".uti-header .uti-nav-menu")];
+    // Close the Tools menu when clicking elsewhere or pressing Escape.
+    const menu = document.querySelector(".uti-header .uti-nav-menu");
     document.addEventListener("click", event => {
-      menus.forEach(menu => {
-        if (menu.open && !menu.contains(event.target)) menu.open = false;
-      });
+      if (menu.open && !menu.contains(event.target)) menu.open = false;
     });
     document.addEventListener("keydown", event => {
-      if (event.key === "Escape") menus.forEach(menu => { menu.open = false; });
+      if (event.key === "Escape") menu.open = false;
     });
   }
 
