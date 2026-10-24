@@ -713,6 +713,29 @@
   font-variant-numeric: tabular-nums;
 }
 
+.home-leader-value {
+  display: grid;
+  justify-items: end;
+  gap: 2px;
+}
+
+.home-leader-flip {
+  padding: 1px 7px;
+  border: 1px solid var(--color-accent-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-accent-soft);
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.home-leader-flip:hover,
+.home-leader-flip:focus-visible {
+  background: rgb(var(--rgb-teal) / 0.24);
+}
+
 .home-leaders li.home-leader-message {
   display: block;
   grid-column: 1 / -1;

@@ -30,6 +30,7 @@ let leaderRangeMode = "weekly"; // "weekly" | "past" | "season"
 let selectedPastWeek = null;
 let hasFallenBackToSeason = false; // switched to season leaders once because the current week had no games
 let fantasyOwnersLookupCache = null;
+let shownLeaders = []; // leaders in the order their rows were rendered, for the tie buttons
 
 /* ---------- Dates ---------- */
 
@@ -445,27 +446,63 @@ function renderLeaderRows(leaders) {
     .sort((a, b) => a.key - b.key)
     .map(item => item.leader);
 
-  list.innerHTML = featuredFirst.map((leader, index) => {
-    const owner = getFantasyOwner(leader.name);
-    const tieNote = leader.tiedLeaders.length > 1 ? ` · +${leader.tiedLeaders.length - 1} tied` : "";
-    const ownerLogo = owner ? getTeamLogo(owner) : "";
-    // Owner photo, or an empty slot so rows stay aligned when the player is available.
-    const ownerPhoto = ownerLogo
-      ? `<img class="ui-team-photo is-medium" src="${escapeHtml(ownerLogo)}" alt="" loading="lazy">`
-      : `<span class="home-leader-nophoto" aria-hidden="true"></span>`;
+  shownLeaders = featuredFirst;
+  list.innerHTML = featuredFirst.map((leader, index) => `
+    <li class="${index >= FEATURED_LEADER_COUNT ? "is-extra" : ""}" data-leader-index="${index}">
+      <span class="home-leader-cat">${escapeHtml(leader.label.replace("SV+H-BS", "SV+H"))}</span>
+      ${renderLeaderPlayer(leader.tiedLeaders[0] || leader)}
+      <span class="home-leader-value">
+        ${escapeHtml(leader.value)}
+        ${leader.tiedLeaders.length > 1 ? renderTieFlip(0, leader.tiedLeaders.length) : ""}
+      </span>
+    </li>
+  `).join("");
+}
 
-    return `
-      <li class="${index >= FEATURED_LEADER_COUNT ? "is-extra" : ""}">
-        <span class="home-leader-cat">${escapeHtml(leader.label.replace("SV+H-BS", "SV+H"))}</span>
-        ${ownerPhoto}
-        <span class="home-leader-who">
-          <strong>${escapeHtml(leader.name)}</strong>
-          <small>${escapeHtml(leader.team || "—")} · ${owner ? `<b>${escapeHtml(owner)}</b>` : "Available"}${tieNote}</small>
-        </span>
-        <span class="home-leader-value">${escapeHtml(leader.value)}</span>
-      </li>
-    `;
-  }).join("");
+// Owner photo plus player name, MLB team, and UTI owner.
+function renderLeaderPlayer(player) {
+  const owner = getFantasyOwner(player.name);
+  const ownerLogo = owner ? getTeamLogo(owner) : "";
+  // Owner photo, or an empty slot so rows stay aligned when the player is available.
+  const ownerPhoto = ownerLogo
+    ? `<img class="ui-team-photo is-medium" src="${escapeHtml(ownerLogo)}" alt="" loading="lazy">`
+    : `<span class="home-leader-nophoto" aria-hidden="true"></span>`;
+
+  return `
+    ${ownerPhoto}
+    <span class="home-leader-who">
+      <strong>${escapeHtml(player.name)}</strong>
+      <small>${escapeHtml(player.team || "—")} · ${owner ? `<b>${escapeHtml(owner)}</b>` : "Available"}</small>
+    </span>
+  `;
+}
+
+// Button under the value that steps through players tied for the lead.
+function renderTieFlip(tieIndex, tieCount) {
+  return `<button class="home-leader-flip" type="button" data-tie-index="${tieIndex}" aria-label="Tied for the lead: showing ${tieIndex + 1} of ${tieCount}. Show the next one.">Tied ${tieIndex + 1}/${tieCount} <span aria-hidden="true">›</span></button>`;
+}
+
+// One listener on the list handles every tie button, since rows are re-rendered on each load.
+function setupTieFlips() {
+  const list = document.getElementById("weeklyLeadersGrid");
+  if (!list) return;
+
+  list.addEventListener("click", event => {
+    const button = event.target.closest(".home-leader-flip");
+    if (!button) return;
+
+    const row = button.closest("li");
+    const leader = shownLeaders[Number(row.dataset.leaderIndex)];
+    if (!leader) return;
+
+    const tieCount = leader.tiedLeaders.length;
+    const nextIndex = (Number(button.dataset.tieIndex) + 1) % tieCount;
+
+    row.querySelector(".ui-team-photo, .home-leader-nophoto").remove();
+    row.querySelector(".home-leader-who").outerHTML = renderLeaderPlayer(leader.tiedLeaders[nextIndex]);
+    button.outerHTML = renderTieFlip(nextIndex, tieCount);
+    row.querySelector(".home-leader-flip").focus();
+  });
 }
 
 function renderLeaderMessage(message) {
@@ -580,9 +617,10 @@ function setupPastWeekSelect() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  leaderRangeMode = document.getElementById("mlb-weekly-leaders")?.dataset.leaderMode || leaderRangeMode;
+  leaderRangeMode = document.getElementById("mlb-weekly-leaders")?.dataset.leaderRange || leaderRangeMode;
   setupPastWeekSelect();
   setupLeadersMoreButton();
+  setupTieFlips();
 
   setupModeToggle("data-leader-mode", "weekly", mode => {
     leaderRangeMode = mode;

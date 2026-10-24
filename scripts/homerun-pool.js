@@ -201,8 +201,6 @@
     const grids = document.querySelectorAll("#homeRunPoolGrid, [data-home-run-pool-grid]");
     const updatedAt = document.getElementById("homeRunPoolUpdatedAt");
 
-    if (!grids.length) return;
-
     grids.forEach(grid => renderHomeRunPoolGrid(grid, standings));
 
     if (POOL_IS_FINAL) {
@@ -222,14 +220,17 @@
 
   async function loadHomeRunPool() {
     const grid = document.getElementById("homeRunPoolGrid");
+    const championCard = document.getElementById("homeRunChampion");
 
-    if (!grid) return;
+    if (!grid && !championCard) return;
 
     try {
       const splits = await fetchMlbSeasonHomeRuns();
       renderHomeRunPool(buildHomeRunPoolStandings(buildHomeRunLookup(splits)));
     } catch (error) {
       console.error(error);
+
+      if (!grid) return;
 
       if (grid.dataset.variant === "leader") {
         grid.innerHTML = renderLeaderLine([]);

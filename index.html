@@ -7,7 +7,7 @@
   <title>UTI Fantasy Baseball Recaps</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="styles/styles.css?v=calm-1" rel="stylesheet" />
-  <link href="styles/home.css?v=season-1" rel="stylesheet" />
+  <link href="styles/home.css?v=ties-1" rel="stylesheet" />
   <link href="styles/intelligence.css?v=rankchart-1" rel="stylesheet" />
   <link href="styles/theme.css?v=odds-2" rel="stylesheet" />
 </head>
@@ -77,6 +77,7 @@
           <ul class="ui-link-list" id="latestRecaps"></ul>
         </section> -->
 
+        <!-- Around the league, hidden for now. Uncomment to bring back the Home Run Pool leader and Record Book links.
         <section class="ui-panel" aria-labelledby="aroundTitle">
           <div class="ui-panel-head">
             <h2 id="aroundTitle">Around the league</h2>
@@ -85,12 +86,12 @@
             <li id="homeRunPoolRow"><a class="ui-link-row" href="tools/home-run-pool.html" id="homeRunPoolGrid" data-variant="leader"><span>Home Run Pool<small>Loading standings…</small></span><b>View <span aria-hidden="true">→</span></b></a></li>
             <li><a class="ui-link-row" href="record-book.html" id="recordBookLink"><span>Record Book<small>Records, streaks, and rivalries</small></span><b>View <span aria-hidden="true">→</span></b></a></li>
           </ul>
-        </section>
+        </section> -->
       </div>
     </div>
 
-    <!-- data-leader-mode picks the starting range: weekly, past, or season. -->
-    <section class="ui-panel" id="mlb-weekly-leaders" aria-labelledby="mlbLeadersTitle" data-leader-mode="season">
+    <!-- data-leader-range picks the starting range: weekly, past, or season. -->
+    <section class="ui-panel" id="mlb-weekly-leaders" aria-labelledby="mlbLeadersTitle" data-leader-range="season">
       <div class="ui-panel-head">
         <h2 id="mlbLeadersTitle">Top MLB players</h2>
         <!-- Range buttons, hidden for now (full season only). Uncomment to bring back weekly and past weeks.
@@ -152,10 +153,10 @@
   <script src="scripts/load-trending-players.js"></script>
 
   <!-- Page scripts -->
-  <script src="scripts/category-leaders.js?v=season-1"></script>
+  <script src="scripts/category-leaders.js?v=ties-2"></script>
   <script src="scripts/top-pickups.js?v=split-v1"></script>
   <script src="scripts/trending-range-stats.js"></script>
-  <script src="scripts/homerun-pool.js?v=champ-1"></script>
+  <script src="scripts/homerun-pool.js?v=ties-1"></script>
   <script src="scripts/league-analytics.js?v=calm-1"></script>
   <script src="scripts/uti-intelligence.js?v=rankchart-1"></script>
   <script src="scripts/home-dashboard.js?v=draft-2"></script>
