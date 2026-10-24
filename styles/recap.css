@@ -219,7 +219,7 @@ h1 {
 .sidebar {
     padding: 22px;
     position: sticky;
-    top: 18px;
+    top: calc(var(--sticky-top, 0px) + 18px);
 }
 
 .sidebar-section {

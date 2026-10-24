@@ -78,14 +78,14 @@
             </details>
           </nav>
         </div>
-        <div class="uti-ticker" id="utiTicker" aria-label="Championship odds" hidden>
-          <div class="uti-ticker-track" id="utiTickerTrack"></div>
-        </div>
       </header>
+      <div class="uti-ticker" id="utiTicker" aria-label="Championship odds" hidden>
+        <div class="uti-ticker-track" id="utiTickerTrack"></div>
+      </div>
     `);
 
     // Close the Tools menu when clicking elsewhere or pressing Escape.
-    const menu = script.previousElementSibling.querySelector(".uti-nav-menu");
+    const menu = document.querySelector(".uti-header .uti-nav-menu");
     document.addEventListener("click", event => {
       if (menu.open && !menu.contains(event.target)) menu.open = false;
     });
@@ -132,6 +132,9 @@
 
     track.innerHTML = run + run.replace('class="uti-ticker-run"', 'class="uti-ticker-run" aria-hidden="true"');
     ticker.hidden = false;
+
+    // The ticker stays pinned to the top; other sticky elements sit below it using --sticky-top.
+    document.documentElement.style.setProperty("--sticky-top", `${ticker.offsetHeight}px`);
 
     const runWidth = track.firstElementChild.getBoundingClientRect().width;
     track.style.setProperty("--ticker-duration", `${Math.max(20, runWidth / TICKER_SPEED)}s`);
