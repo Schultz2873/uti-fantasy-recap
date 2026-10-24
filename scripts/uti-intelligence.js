@@ -933,6 +933,7 @@
     if (grid) grid.innerHTML = renderHistoryTiles(data, String(season), cards);
 
     renderChartTables(idPrefix, data, String(season));
+    if (latestAnalytics) renderSeasonStandings(season, idPrefix);
 
     if (season === 2025) {
       const franchiseTrendTable = document.getElementById("utiFranchiseTrendTable");
@@ -1280,6 +1281,69 @@
           }).join("")}
         </tbody>
       </table>
+    `;
+  }
+
+  // One season's standings: regular-season record, playoff record, and final finish.
+  function renderSeasonStandings(season, idPrefix) {
+    const target = document.getElementById(`${idPrefix}StandingsTable`);
+    if (!target) return;
+
+    const seasonTeams = new Set(trackedHistoryRows()
+      .filter(row => Number(row.season) === Number(season))
+      .map(row => row.team)
+      .filter(Boolean));
+    if (Number(season) === 2023) {
+      Object.keys(window.UTI_YAHOO_2023_FINAL_REGULAR_SEASON_RECORDS || {}).forEach(team => seasonTeams.add(team));
+    }
+
+    const result = knownSeasonResults().find(row => Number(row.season) === Number(season)) || {};
+    const finishes = [
+      ["champion", "🏆", "Champion"],
+      ["runnerUp", "🥈", "Runner-up"],
+      ["thirdPlace", "🥉", "Third place"],
+      ["regularSeasonFirst", "👑", "Best regular season"]
+    ];
+    const finishBadges = team => {
+      const badges = finishes
+        .filter(([field]) => result[field] === team)
+        .map(([field, icon, label]) => `<span class="hist-medal is-${field}" title="${label}" aria-label="${label}"><i aria-hidden="true">${icon}</i></span>`)
+        .join("");
+      return badges ? `<span class="hist-finish">${badges}</span>` : `<span class="hist-dash">—</span>`;
+    };
+
+    const rows = [...seasonTeams].map(team => ({
+      team,
+      regular: franchiseRecord(team, null, season, "regular"),
+      playoffs: franchiseRecord(team, null, season, "playoffs")
+    })).sort((a, b) =>
+      b.regular.winPct - a.regular.winPct ||
+      b.regular.wins - a.regular.wins ||
+      a.team.localeCompare(b.team)
+    );
+
+    target.innerHTML = `
+      <div class="hist-table-wrap">
+        <table class="hist-table hist-standings">
+          <thead>
+            <tr><th>#</th><th>Team</th><th class="num">Record</th><th>Win %</th><th class="num">Playoffs</th><th class="hist-place">Finish</th></tr>
+          </thead>
+          <tbody>
+            ${rows.map((row, index) => {
+              const pct = row.regular.winPct * 100;
+              return `
+                <tr>
+                  <td class="hist-rank">${index + 1}</td>
+                  <td>${historyTeamLink(row.team, String(season), true)}</td>
+                  <td class="num">${formatRecord(row.regular)}</td>
+                  <td><span class="hist-pct"><i><b style="width:${pct.toFixed(1)}%"></b></i>${pct.toFixed(1)}%</span></td>
+                  <td class="num">${row.playoffs.games ? formatRecord(row.playoffs) : '<span class="hist-dash">—</span>'}</td>
+                  <td class="hist-place">${finishBadges(row.team)}</td>
+                </tr>`;
+            }).join("")}
+          </tbody>
+        </table>
+      </div>
     `;
   }
 
@@ -1894,6 +1958,7 @@
     }
 
     renderChartTables("uti", data, "2026");
+    renderSeasonStandings(2026, "uti");
   }
 
   function renderLoadError(grid) {

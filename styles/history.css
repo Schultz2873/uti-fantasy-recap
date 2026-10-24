@@ -308,8 +308,13 @@
   background: var(--color-teal);
 }
 
+.hist-finish {
+  display: inline-flex;
+  gap: 4px;
+}
+
 .hist-table .hist-place {
-  width: 4.2rem;
+  min-width: 4.2rem;
   text-align: center;
 }
 

@@ -10,7 +10,7 @@
   <link href="styles/styles.css?v=theme-1" rel="stylesheet" />
   <link href="styles/intelligence.css?v=rankchart-1" rel="stylesheet" />
   <link href="styles/analytics-pages.css?v=theme-1" rel="stylesheet" />
-  <link href="styles/history.css?v=standings-1" rel="stylesheet" />
+  <link href="styles/history.css?v=standings-2" rel="stylesheet" />
   <link href="styles/theme.css?v=sticky-3" rel="stylesheet" />
 </head>
 
@@ -40,12 +40,17 @@
         <div class="hist-tiles" id="utiIntelligenceGrid"></div>
 
         <div class="hist-seg" role="group" aria-label="2026 leaderboard">
-          <button type="button" data-board="power" aria-pressed="true">Power</button>
+          <button type="button" data-board="standings" aria-pressed="true">Standings</button>
+          <button type="button" data-board="power" aria-pressed="false">Power</button>
           <button type="button" data-board="allPlay" aria-pressed="false">All-Play</button>
           <button type="button" data-board="luck" aria-pressed="false">Luck</button>
           <button type="button" data-board="category" aria-pressed="false">Categories</button>
         </div>
-        <div class="hist-board" data-board-panel="power">
+        <div class="hist-board" data-board-panel="standings">
+          <p class="ui-panel-note">Regular-season record, playoff record, and where each team finished.</p>
+          <div class="uti-analytics-table-wrap" id="utiStandingsTable"></div>
+        </div>
+        <div class="hist-board" data-board-panel="power" hidden>
           <p class="ui-panel-note">50% all-play, 30% category strength, 20% recent form.</p>
           <div class="uti-analytics-table-wrap" id="utiPowerTable"></div>
         </div>
@@ -73,12 +78,17 @@
         <div class="hist-tiles" id="utiHistoryGrid"></div>
 
         <div class="hist-seg" role="group" aria-label="2025 leaderboard">
-          <button type="button" data-board="power" aria-pressed="true">Power</button>
+          <button type="button" data-board="standings" aria-pressed="true">Standings</button>
+          <button type="button" data-board="power" aria-pressed="false">Power</button>
           <button type="button" data-board="allPlay" aria-pressed="false">All-Play</button>
           <button type="button" data-board="luck" aria-pressed="false">Luck</button>
           <button type="button" data-board="category" aria-pressed="false">Categories</button>
         </div>
-        <div class="hist-board" data-board-panel="power">
+        <div class="hist-board" data-board-panel="standings">
+          <p class="ui-panel-note">Regular-season record, playoff record, and where each team finished.</p>
+          <div class="uti-analytics-table-wrap" id="utiHistoryStandingsTable"></div>
+        </div>
+        <div class="hist-board" data-board-panel="power" hidden>
           <p class="ui-panel-note">50% all-play, 30% category strength, 20% recent form.</p>
           <div class="uti-analytics-table-wrap" id="utiHistoryPowerTable"></div>
         </div>
@@ -106,12 +116,17 @@
         <div class="hist-tiles" id="utiHistory2024Grid"></div>
 
         <div class="hist-seg" role="group" aria-label="2024 leaderboard">
-          <button type="button" data-board="power" aria-pressed="true">Power</button>
+          <button type="button" data-board="standings" aria-pressed="true">Standings</button>
+          <button type="button" data-board="power" aria-pressed="false">Power</button>
           <button type="button" data-board="allPlay" aria-pressed="false">All-Play</button>
           <button type="button" data-board="luck" aria-pressed="false">Luck</button>
           <button type="button" data-board="category" aria-pressed="false">Categories</button>
         </div>
-        <div class="hist-board" data-board-panel="power">
+        <div class="hist-board" data-board-panel="standings">
+          <p class="ui-panel-note">Regular-season record, playoff record, and where each team finished.</p>
+          <div class="uti-analytics-table-wrap" id="utiHistory2024StandingsTable"></div>
+        </div>
+        <div class="hist-board" data-board-panel="power" hidden>
           <p class="ui-panel-note">50% all-play, 30% category strength, 20% recent form.</p>
           <div class="uti-analytics-table-wrap" id="utiHistory2024PowerTable"></div>
         </div>
@@ -139,12 +154,17 @@
         <div class="hist-tiles" id="utiHistory2023Grid"></div>
 
         <div class="hist-seg" role="group" aria-label="2023 leaderboard">
-          <button type="button" data-board="power" aria-pressed="true">Power</button>
+          <button type="button" data-board="standings" aria-pressed="true">Standings</button>
+          <button type="button" data-board="power" aria-pressed="false">Power</button>
           <button type="button" data-board="allPlay" aria-pressed="false">All-Play</button>
           <button type="button" data-board="luck" aria-pressed="false">Luck</button>
           <button type="button" data-board="category" aria-pressed="false">Categories</button>
         </div>
-        <div class="hist-board" data-board-panel="power">
+        <div class="hist-board" data-board-panel="standings">
+          <p class="ui-panel-note">Regular-season record, playoff record, and where each team finished.</p>
+          <div class="uti-analytics-table-wrap" id="utiHistory2023StandingsTable"></div>
+        </div>
+        <div class="hist-board" data-board-panel="power" hidden>
           <p class="ui-panel-note">Based only on the imported 2023 weeks.</p>
           <div class="uti-analytics-table-wrap" id="utiHistory2023PowerTable"></div>
         </div>
@@ -219,7 +239,7 @@
   <script src="data/weekly-team-stats.js?v=2026-week24-final"></script>
   <script src="data/history/season-results.js?v=2026-week24-final"></script>
   <script src="scripts/league-analytics.js?v=2026-week22-r1-fix2"></script>
-  <script src="scripts/uti-intelligence.js?v=standings-1"></script>
+  <script src="scripts/uti-intelligence.js?v=standings-2"></script>
 
   <script>
     // Season archive: one season and one leaderboard visible at a time.
