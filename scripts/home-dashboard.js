@@ -158,6 +158,23 @@
     return !championshipPlayed || inMarchThroughAugust;
   }
 
+  /* ---------- Draft order card: shown in the offseason instead of the prize pool ---------- */
+
+  function renderDraftOrder(draft) {
+    const card = document.getElementById("draft-order");
+    const list = document.getElementById("draftOrderList");
+    if (!card || !list || !draft?.picks?.length) return false;
+
+    document.getElementById("draftTitle").textContent = `${draft.season} draft order`;
+    list.innerHTML = draft.picks.map((team, index) => `
+      <li>
+        <span class="home-draft-pick">${index + 1}</span>
+        <span class="ui-team">${teamPhoto(team, "ui-team-photo is-small")}${teamLink(team)}</span>
+      </li>
+    `).join("");
+    return true;
+  }
+
   function renderRecordBookLink(rows) {
     const link = document.getElementById("recordBookLink");
     if (!link) return;
@@ -183,7 +200,12 @@
     renderStandings(summary);
     renderRecordBookLink(rows);
 
+    // In season: the prize pool card. Offseason: the draft order card in the same spot.
+    const inSeason = isPrizeSeason(rows, window.PRIZE_MONEY_DATA?.homepageCard);
     const prizeCard = document.getElementById("league-money");
-    if (prizeCard) prizeCard.hidden = !isPrizeSeason(rows, window.PRIZE_MONEY_DATA?.homepageCard);
+    if (prizeCard) prizeCard.hidden = !inSeason;
+
+    const draftCard = document.getElementById("draft-order");
+    if (draftCard) draftCard.hidden = inSeason || !renderDraftOrder(window.UTI_DRAFT_ORDER);
   });
 })();
