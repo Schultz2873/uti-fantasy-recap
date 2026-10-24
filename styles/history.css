@@ -6,6 +6,7 @@
 
 .hist {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 24px;
 }
 
@@ -313,6 +314,11 @@
   gap: 4px;
 }
 
+/* Medals under the team name replace the four medal columns on phones (see below). */
+.hist-team-medals {
+  display: none;
+}
+
 .hist-table .hist-place {
   min-width: 4.2rem;
   text-align: center;
@@ -527,7 +533,13 @@
 
 .hist-season {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 12px;
+}
+
+.hist-season > *,
+.hist-board {
+  min-width: 0;
 }
 
 .hist-tiles {
@@ -608,6 +620,67 @@
   margin-top: 12px;
 }
 
+/* Phones: drop Win % and Playoffs, and let long team names shorten so the rest fits. */
+@media (max-width: 600px) {
+  .hist-col-pct,
+  .hist-col-playoffs,
+  .hist-col-medal {
+    display: none;
+  }
+
+  .hist-team-medals {
+    display: flex;
+    gap: 4px;
+    margin: 4px 0 0 32px;
+  }
+
+  .hist-former {
+    display: none;
+  }
+
+  /* Tabs stay on one line and scroll sideways if they run out of room. */
+  .hist-seg {
+    flex-wrap: nowrap;
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .hist-seg button {
+    flex: none;
+    padding: 5px 9px;
+    font-size: 0.76rem;
+  }
+
+  .hist-table th,
+  .hist-table td {
+    padding-inline: 6px;
+  }
+
+  .hist-table .hist-col-team {
+    width: 100%;
+    max-width: 0;
+  }
+
+  .hist-col-team .ui-team,
+  .hist-team-cell {
+    max-width: 100%;
+  }
+
+  .hist-team-cell {
+    overflow: hidden;
+  }
+
+  .hist-table .hist-place {
+    min-width: 2rem;
+  }
+
+  .hist-table .ui-team-photo.is-medium {
+    width: 24px;
+    height: 24px;
+  }
+}
+
 @media (max-width: 760px) {
   .hist-trophy,
   .hist .ui-panel {
@@ -624,6 +697,37 @@
 
   .hist-champ dl {
     grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  /* Compact trophy cards */
+  .hist-champs {
+    gap: 10px;
+  }
+
+  .hist-champ {
+    gap: 10px;
+    padding: 14px;
+  }
+
+  .hist-champ-year {
+    font-size: 1.7rem;
+  }
+
+  .hist-champ-who img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .hist-champ-who strong {
+    font-size: 1rem;
+  }
+
+  .hist-tile {
+    padding: 12px;
+  }
+
+  .hist-tile strong {
+    font-size: 1.15rem;
   }
 
   .hist-pct {

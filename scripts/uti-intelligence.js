@@ -1228,6 +1228,15 @@
     return `<span class="hist-medal is-${field}" title="${escapeHtml(label)}" aria-label="${escapeHtml(label)}"><i aria-hidden="true">${meta.icon}</i>${count > 1 ? `×${count}` : ""}</span>`;
   }
 
+  // All of a team's medals on one line under its name, shown on phones where four columns don't fit.
+  function placementSummary(team) {
+    const medals = Object.keys(PLACEMENT_META)
+      .filter(field => placementCount(team, field))
+      .map(field => placementMedal(team, field))
+      .join("");
+    return medals ? `<span class="hist-team-medals">${medals}</span>` : "";
+  }
+
   // Teams no longer in the league have no current logo in data/team-logos.js.
   function isFormerTeam(team) {
     return !window.TEAM_LOGOS?.[team];
@@ -1264,7 +1273,7 @@
     target.innerHTML = `
       <table class="hist-table hist-standings">
         <thead>
-          <tr><th>#</th><th>Team</th><th class="num">Record</th><th>Win %</th>${Object.values(PLACEMENT_META).map(meta => `<th class="hist-place" title="${escapeHtml(meta.label)}">${escapeHtml(meta.header === "Reg. #1" ? "Reg. #1" : { Gold: "1st", Silver: "2nd", Bronze: "3rd" }[meta.header])}</th>`).join("")}</tr>
+          <tr><th>#</th><th class="hist-col-team">Team</th><th class="num">Record</th><th class="hist-col-pct">Win %</th>${Object.values(PLACEMENT_META).map(meta => `<th class="hist-place hist-col-medal" title="${escapeHtml(meta.label)}">${escapeHtml(meta.header === "Reg. #1" ? "Reg. #1" : { Gold: "1st", Silver: "2nd", Bronze: "3rd" }[meta.header])}</th>`).join("")}</tr>
         </thead>
         <tbody>
           ${records.map(({ team, former, record }) => {
@@ -1273,10 +1282,10 @@
             return `
               <tr class="${former ? "is-former" : ""}">
                 <td class="hist-rank">${former ? "" : ++rank}</td>
-                <td><span class="hist-team-cell">${historyTeamLink(team, preferredSeasonForTeam(team, "2026"), true)}${former ? '<span class="hist-dash">former</span>' : ""}</span></td>
+                <td class="hist-col-team"><span class="hist-team-cell">${historyTeamLink(team, preferredSeasonForTeam(team, "2026"), true)}${former ? '<span class="hist-dash hist-former">former</span>' : ""}</span>${placementSummary(team)}</td>
                 <td class="num">${played ? formatRecord(record) : "—"}</td>
-                <td>${played ? `<span class="hist-pct"><i><b style="width:${pct.toFixed(1)}%"></b></i>${pct.toFixed(1)}%</span>` : '<span class="hist-dash">—</span>'}</td>
-                ${Object.keys(PLACEMENT_META).map(field => `<td class="hist-place">${placementMedal(team, field)}</td>`).join("")}
+                <td class="hist-col-pct">${played ? `<span class="hist-pct"><i><b style="width:${pct.toFixed(1)}%"></b></i>${pct.toFixed(1)}%</span>` : '<span class="hist-dash">—</span>'}</td>
+                ${Object.keys(PLACEMENT_META).map(field => `<td class="hist-place hist-col-medal">${placementMedal(team, field)}</td>`).join("")}
               </tr>`;
           }).join("")}
         </tbody>
@@ -1326,7 +1335,7 @@
       <div class="hist-table-wrap">
         <table class="hist-table hist-standings">
           <thead>
-            <tr><th>#</th><th>Team</th><th class="num">Record</th><th>Win %</th><th class="num">Playoffs</th><th class="hist-place">Finish</th></tr>
+            <tr><th>#</th><th class="hist-col-team">Team</th><th class="num">Record</th><th class="hist-col-pct">Win %</th><th class="num hist-col-playoffs">Playoffs</th><th class="hist-place">Finish</th></tr>
           </thead>
           <tbody>
             ${rows.map((row, index) => {
@@ -1334,10 +1343,10 @@
               return `
                 <tr>
                   <td class="hist-rank">${index + 1}</td>
-                  <td>${historyTeamLink(row.team, String(season), true)}</td>
+                  <td class="hist-col-team">${historyTeamLink(row.team, String(season), true)}</td>
                   <td class="num">${formatRecord(row.regular)}</td>
-                  <td><span class="hist-pct"><i><b style="width:${pct.toFixed(1)}%"></b></i>${pct.toFixed(1)}%</span></td>
-                  <td class="num">${row.playoffs.games ? formatRecord(row.playoffs) : '<span class="hist-dash">—</span>'}</td>
+                  <td class="hist-col-pct"><span class="hist-pct"><i><b style="width:${pct.toFixed(1)}%"></b></i>${pct.toFixed(1)}%</span></td>
+                  <td class="num hist-col-playoffs">${row.playoffs.games ? formatRecord(row.playoffs) : '<span class="hist-dash">—</span>'}</td>
                   <td class="hist-place">${finishBadges(row.team)}</td>
                 </tr>`;
             }).join("")}
