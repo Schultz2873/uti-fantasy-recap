@@ -1218,15 +1218,13 @@
     return knownSeasonResults().filter(result => result?.[field] === team).length;
   }
 
-  // Medal badges for a team's finishes: 🥇×2 🥉 👑, each with a hover label.
-  function placementMedals(team) {
-    const medals = Object.entries(PLACEMENT_META).map(([field, meta]) => {
-      const count = placementCount(team, field);
-      if (!count) return "";
-      const label = `${meta.label}: ${count}`;
-      return `<span class="hist-medal is-${field}" title="${escapeHtml(label)}" aria-label="${escapeHtml(label)}"><i aria-hidden="true">${meta.icon}</i>${count > 1 ? `×${count}` : ""}</span>`;
-    }).join("");
-    return medals ? `<span class="hist-medals">${medals}</span>` : `<span class="hist-dash">—</span>`;
+  // One medal badge (🥇×2) for a finish, or a dash when the team never finished there.
+  function placementMedal(team, field) {
+    const meta = PLACEMENT_META[field];
+    const count = placementCount(team, field);
+    if (!count) return `<span class="hist-dash">—</span>`;
+    const label = `${meta.label}: ${count}`;
+    return `<span class="hist-medal is-${field}" title="${escapeHtml(label)}" aria-label="${escapeHtml(label)}"><i aria-hidden="true">${meta.icon}</i>${count > 1 ? `×${count}` : ""}</span>`;
   }
 
   // Teams no longer in the league have no current logo in data/team-logos.js.
@@ -1265,7 +1263,7 @@
     target.innerHTML = `
       <table class="hist-table hist-standings">
         <thead>
-          <tr><th>#</th><th>Team</th><th class="num">Record</th><th>Win %</th><th>Finishes</th></tr>
+          <tr><th>#</th><th>Team</th><th class="num">Record</th><th>Win %</th>${Object.values(PLACEMENT_META).map(meta => `<th class="hist-place" title="${escapeHtml(meta.label)}">${escapeHtml(meta.header === "Reg. #1" ? "Reg. #1" : { Gold: "1st", Silver: "2nd", Bronze: "3rd" }[meta.header])}</th>`).join("")}</tr>
         </thead>
         <tbody>
           ${records.map(({ team, former, record }) => {
@@ -1277,7 +1275,7 @@
                 <td><span class="hist-team-cell">${historyTeamLink(team, preferredSeasonForTeam(team, "2026"), true)}${former ? '<span class="hist-dash">former</span>' : ""}</span></td>
                 <td class="num">${played ? formatRecord(record) : "—"}</td>
                 <td>${played ? `<span class="hist-pct"><i><b style="width:${pct.toFixed(1)}%"></b></i>${pct.toFixed(1)}%</span>` : '<span class="hist-dash">—</span>'}</td>
-                <td>${placementMedals(team)}</td>
+                ${Object.keys(PLACEMENT_META).map(field => `<td class="hist-place">${placementMedal(team, field)}</td>`).join("")}
               </tr>`;
           }).join("")}
         </tbody>

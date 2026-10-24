@@ -308,9 +308,9 @@
   background: var(--color-teal);
 }
 
-.hist-medals {
-  display: inline-flex;
-  gap: 4px;
+.hist-table .hist-place {
+  width: 4.2rem;
+  text-align: center;
 }
 
 .hist-medal {
