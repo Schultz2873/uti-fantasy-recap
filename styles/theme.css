@@ -328,23 +328,6 @@ h3 {
   font-weight: 700;
 }
 
-.uti-ticker-live {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  font-weight: 800;
-  color: var(--color-alert);
-}
-
-.uti-ticker-live::before {
-  content: "";
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--color-alert);
-  box-shadow: 0 0 8px var(--color-alert);
-}
-
 @media (max-width: 600px) {
   .uti-header-bar {
     padding-block: 10px 8px;
@@ -370,18 +353,6 @@ h3 {
 .hero .kicker,
 .hero .badge {
   color: var(--color-accent);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .uti-ticker-live::before {
-    animation: pt-pulse 1.8s ease-in-out infinite;
-  }
-
-  @keyframes pt-pulse {
-    50% {
-      opacity: 0.35;
-    }
-  }
 }
 
 /* ---------- 4. Shared components ---------- */
