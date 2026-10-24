@@ -40,8 +40,7 @@
 }
 
 .section-heading,
-.leader-section-header,
-.allstar-compact-head {
+.leader-section-header {
   margin-bottom: 13px;
 }
 
@@ -90,93 +89,6 @@
   margin-top: 14px;
 }
 
-/* --- Latest recap gets stronger prominence ---------------------- */
-
-#featured-recap {
-  padding: 20px;
-  background:
-    linear-gradient(135deg, rgb(var(--rgb-teal) / 0.08), rgb(var(--rgb-green) / 0.08)),
-    rgb(var(--rgb-white) / 0.05);
-  border-color: rgb(var(--rgb-teal) / 0.35);
-}
-
-/* --- Tools stay useful but quieter ------------------------------ */
-
-#fantasy-tools .tools-grid {
-  gap: 12px;
-}
-
-#fantasy-tools .tool-card {
-  box-shadow: 0 10px 24px rgb(var(--rgb-black) / 0.31);
-}
-
-/* --- All-Stars become an archive instead of a giant section ----- */
-
-.allstar-archive-section {
-  background: rgb(var(--rgb-white) / 0.05);
-}
-
-.allstar-archive-shell {
-  overflow: hidden;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  background: rgb(var(--rgb-white) / 0.05);
-}
-
-.allstar-archive-shell > summary {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  padding: 15px 16px;
-  cursor: pointer;
-  list-style: none;
-  transition: background .16s ease;
-}
-
-.allstar-archive-shell > summary::-webkit-details-marker {
-  display: none;
-}
-
-.allstar-archive-shell > summary:hover {
-  background: rgb(var(--rgb-white) / 0.05);
-}
-
-.allstar-archive-shell > summary > span:first-child {
-  display: grid;
-  gap: 2px;
-  min-width: 0;
-}
-
-.allstar-archive-shell > summary strong {
-  color: var(--text);
-  font-size: .95rem;
-}
-
-.allstar-archive-shell > summary small {
-  color: var(--muted);
-  font-size: .78rem;
-  line-height: 1.3;
-}
-
-.allstar-archive-action {
-  flex: 0 0 auto;
-  padding: 7px 10px;
-  color: var(--accent-dark);
-  background: rgb(var(--rgb-white) / 0.05);
-  border-radius: 999px;
-  font-size: .75rem;
-  font-weight: 900;
-}
-
-.allstar-archive-shell[open] .allstar-archive-action {
-  color: var(--color-white);
-  background: var(--accent);
-}
-
-.allstar-archive-shell .allstar-team-dropdowns {
-  padding: 0 12px 12px;
-}
 
 /* --- Slightly less visual noise across cards -------------------- */
 
@@ -209,15 +121,6 @@
     padding: 15px;
   }
 
-  .allstar-archive-shell > summary {
-    align-items: flex-start;
-    padding: 13px;
-  }
-
-  .allstar-archive-action {
-    padding: 6px 8px;
-    font-size: .68rem;
-  }
 }
 
 /* ---------- Intelligence boards, history, team profiles ---------- */

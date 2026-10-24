@@ -105,9 +105,30 @@
     return Number(grid.dataset.limit || (isPreviewGrid ? 3 : 0));
   }
 
+  // One line per team: rank, logo, team (with its best hitter), total.
+  function renderCompactRows(visibleStandings) {
+    return visibleStandings.map((team, index) => {
+      const topHitter = [...team.players].sort((a, b) => b.homeRuns - a.homeRuns)[0];
+      return `
+      <div class="hr-compact-row">
+        <span class="hr-compact-rank">${index + 1}</span>
+        <span class="hr-compact-team">
+          ${team.logo ? `<img src="${team.logo}" alt="">` : ""}
+          <span>${team.fantasyTeam}${topHitter ? `<small>Top bat: ${topHitter.mlbName} (${topHitter.homeRuns})</small>` : ""}</span>
+        </span>
+        <span class="hr-compact-total">${team.totalHomeRuns}<small>HR</small></span>
+      </div>`;
+    }).join("");
+  }
+
   function renderHomeRunPoolGrid(grid, standings) {
     const limit = getHomeRunPoolLimit(grid);
     const visibleStandings = limit > 0 ? standings.slice(0, limit) : standings;
+
+    if (grid.hasAttribute("data-compact")) {
+      grid.innerHTML = renderCompactRows(visibleStandings);
+      return;
+    }
 
     grid.innerHTML = visibleStandings.map((team, index) => `
       <article class="home-run-card ${index === 0 ? "home-run-card-leader" : ""}">

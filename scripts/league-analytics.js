@@ -363,6 +363,74 @@
     };
   }
 
+  // "W", "L", or "T" for one team-week row, honoring a recorded tiebreak winner.
+  function matchupResult(row) {
+    const scoreFor = Number(row.official_score_for);
+    const scoreAgainst = Number(row.official_score_against);
+    if (scoreFor > scoreAgainst) return "W";
+    if (scoreFor < scoreAgainst) return "L";
+    if (row.tiebreak_winner === row.team) return "W";
+    if (row.tiebreak_winner === row.opponent) return "L";
+    return "T";
+  }
+
+  // One entry per matchup (each matchup appears twice in the rows, once per team).
+  function uniqueMatchups(rows) {
+    const seen = new Set();
+    const matchups = [];
+
+    rows.forEach(row => {
+      const key = [row.season || "", row.week, ...[row.team, row.opponent].sort()].join("|");
+      if (seen.has(key) || !row.opponent) return;
+      seen.add(key);
+
+      const result = matchupResult(row);
+      const home = { team: row.team, score: Number(row.official_score_for) };
+      const away = { team: row.opponent, score: Number(row.official_score_against) };
+      const [winner, loser] = result === "L" ? [away, home] : [home, away];
+
+      matchups.push({
+        season: row.season,
+        week: Number(row.week),
+        round: row.round || "",
+        phase: phaseFor(row),
+        winner,
+        loser,
+        tie: result === "T",
+        margin: Math.abs(home.score - away.score)
+      });
+    });
+
+    return matchups;
+  }
+
+  // Longest win/loss streaks and the current streak for each team, in week order.
+  function teamStreaks(rows) {
+    const byTeam = {};
+    [...rows]
+      .sort((a, b) => Number(a.week) - Number(b.week))
+      .forEach(row => (byTeam[row.team] = byTeam[row.team] || []).push(row));
+
+    const streaks = {};
+    Object.entries(byTeam).forEach(([team, teamRows]) => {
+      const best = { W: { length: 0 }, L: { length: 0 } };
+      let run = { type: null, length: 0, startWeek: null };
+
+      teamRows.forEach(row => {
+        const result = matchupResult(row);
+        run = result === run.type
+          ? { ...run, length: run.length + 1 }
+          : { type: result, length: 1, startWeek: Number(row.week) };
+        run.endWeek = Number(row.week);
+        if ((result === "W" || result === "L") && run.length > best[result].length) best[result] = { ...run };
+      });
+
+      streaks[team] = { longestWin: best.W, longestLoss: best.L, current: run };
+    });
+
+    return streaks;
+  }
+
   // Prefers the preloaded window.UTI_WEEKLY_TEAM_STATS; falls back to fetching the CSV.
   async function load(csvPath = DEFAULT_CSV_PATH) {
     if (Array.isArray(window.UTI_WEEKLY_TEAM_STATS) && window.UTI_WEEKLY_TEAM_STATS.length) {
@@ -384,6 +452,9 @@
     parseCSV,
     compareTeams,
     phaseFor,
+    matchupResult,
+    uniqueMatchups,
+    teamStreaks,
     buildSummary,
     load
   };

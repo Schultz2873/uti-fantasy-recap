@@ -15,9 +15,10 @@
 
   const NAV_LINKS = [
     { label: "Home", href: "index.html" },
-    { label: "Recaps", href: "index.html#featured-recap", matches: /\/2026\/week\d+\.html$/ },
+    { label: "Recaps", href: "index.html#recaps", matches: /\/2026\/week\d+\.html$/ },
     { label: "Intelligence", href: "uti-intelligence.html" },
     { label: "History", href: "history.html" },
+    { label: "Record Book", href: "record-book.html" },
     { label: "HR Pool", href: "tools/home-run-pool.html" },
     { label: "Trade Analyzer", href: "tools/uti-trade-analyzer.html" },
     { label: "Top 100", href: "tools/mlb-top-100.html" }
@@ -104,27 +105,8 @@
     }
   }
 
-  // One entry per matchup in the most recent week, winner first.
-  function latestMatchups(rows) {
-    const latestWeek = Math.max(...rows.map(row => Number(row.week)).filter(Number.isFinite));
-    const weekRows = rows.filter(row => Number(row.week) === latestWeek);
-    const seen = new Set();
-    const matchups = [];
-
-    weekRows.forEach(row => {
-      const key = [row.team, row.opponent].sort().join("|");
-      if (seen.has(key)) return;
-      seen.add(key);
-
-      const scoreFor = Number(row.official_score_for);
-      const scoreAgainst = Number(row.official_score_against);
-      const [winner, loser] = scoreFor >= scoreAgainst
-        ? [{ team: row.team, score: scoreFor }, { team: row.opponent, score: scoreAgainst }]
-        : [{ team: row.opponent, score: scoreAgainst }, { team: row.team, score: scoreFor }];
-      matchups.push({ winner, loser });
-    });
-
-    return { label: weekRows[0]?.round || `Week ${latestWeek}`, matchups };
+  function scoreLine({ winner, loser }) {
+    return `<b>${escapeHtml(shortName(winner.team))} ${winner.score}</b> · ${escapeHtml(shortName(loser.team))} ${loser.score}`;
   }
 
   function prizePoolTotal(data) {
@@ -142,22 +124,26 @@
     const rows = window.UTI_WEEKLY_TEAM_STATS || [];
     if (!rows.length || !window.UTIAnalytics) return;
 
-    const { label, matchups } = latestMatchups(rows);
-    const summary = window.UTIAnalytics.buildSummary(rows);
+    const analytics = window.UTIAnalytics;
+    const matchups = analytics.uniqueMatchups(rows);
+    const latestWeek = Math.max(...matchups.map(matchup => matchup.week));
+    const latest = matchups.filter(matchup => matchup.week === latestWeek);
+    const blowout = [...matchups].sort((a, b) => b.margin - a.margin)[0];
+
+    const summary = analytics.buildSummary(rows);
     const power = summary.powerRankings[0];
     const luckiest = summary.luckIndex[0];
     const unluckiest = summary.luckIndex[summary.luckIndex.length - 1];
     const prizePool = prizePoolTotal(window.PRIZE_MONEY_DATA || {});
 
     const items = [
-      `<span class="uti-ticker-live">${escapeHtml(label)}</span>`,
-      ...matchups.map(({ winner, loser }) =>
-        `<span class="uti-ticker-item"><b>${escapeHtml(shortName(winner.team))} ${winner.score}</b> · ${escapeHtml(shortName(loser.team))} ${loser.score}</span>`
-      ),
+      `<span class="uti-ticker-live">${escapeHtml(latest[0]?.round || `Week ${latestWeek}`)}</span>`,
+      ...latest.map(matchup => `<span class="uti-ticker-item">${scoreLine(matchup)}</span>`),
       power ? tickerItem("Power #1", `${shortName(power.team)} ${(power.rating * 100).toFixed(1)}`) : "",
       luckiest ? tickerItem("Luckiest", `${shortName(luckiest.team)} +${luckiest.luck.toFixed(2)}`) : "",
       unluckiest ? tickerItem("Unluckiest", `${shortName(unluckiest.team)} ${unluckiest.luck.toFixed(2)}`) : "",
-      prizePool !== null ? tickerItem("Prize pool", `$${prizePool.toLocaleString("en-US")}`) : ""
+      prizePool !== null ? tickerItem("Prize pool", `$${prizePool.toLocaleString("en-US")}`) : "",
+      blowout ? `<a class="uti-ticker-item" href="${siteUrl("record-book.html")}">Biggest blowout ${scoreLine(blowout)} · W${blowout.week}</a>` : ""
     ].filter(Boolean);
 
     document.getElementById("utiTickerTrack").innerHTML = items.join('<span class="uti-ticker-sep" aria-hidden="true">/</span>');

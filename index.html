@@ -6,10 +6,10 @@
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
   <title>UTI Fantasy Baseball Recaps</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="styles/styles.css?v=theme-2" rel="stylesheet" />
-  <link href="styles/home.css?v=theme-2" rel="stylesheet" />
-  <link href="styles/intelligence.css?v=theme-2" rel="stylesheet" />
-  <link href="styles/theme.css?v=theme-2" rel="stylesheet" />
+  <link href="styles/styles.css?v=theme-3" rel="stylesheet" />
+  <link href="styles/home.css?v=theme-3" rel="stylesheet" />
+  <link href="styles/intelligence.css?v=theme-3" rel="stylesheet" />
+  <link href="styles/theme.css?v=theme-3" rel="stylesheet" />
 </head>
 
 <body>
@@ -23,7 +23,7 @@
     -->
     <section class="home-hero" id="featured-recap">
       <div class="home-hero-copy">
-        <span class="home-kicker">Championship · Playoff Recap</span>
+        <span class="ui-kicker">Championship · Playoff Recap</span>
         <h1>All Hail the Gila: Goodyear Wins the 2026 Championship</h1>
         <p class="home-deck">Goodyear Gila Monsters beat Gunnarrhea 9.5&ndash;6.5 to claim the 2026 UTI championship. A 9&ndash;0 net stolen base advantage and dominant pitching ratios brought the trophy home for the No. 1 seed.</p>
         <div class="tag-row">
@@ -37,8 +37,8 @@
 
     <section class="home-stats" id="homeStats" aria-label="League numbers"></section>
 
-    <section class="home-panel" id="power-rankings" aria-labelledby="powerRankingsTitle">
-      <div class="home-panel-head">
+    <section class="ui-panel" id="power-rankings" aria-labelledby="powerRankingsTitle">
+      <div class="ui-panel-head">
         <h2 id="powerRankingsTitle">Power Rankings</h2>
         <p>Regular season · 50% all-play, 30% categories, 20% recent form</p>
         <a href="uti-intelligence.html">Full Intelligence <span aria-hidden="true">→</span></a>
@@ -50,6 +50,7 @@
               <th scope="col">#</th>
               <th scope="col">Team</th>
               <th scope="col">Record</th>
+              <th scope="col">Streak</th>
               <th scope="col">All-Play</th>
               <th scope="col">Luck</th>
               <th scope="col">Power</th>
@@ -58,28 +59,12 @@
           <tbody id="powerRankingsBody"></tbody>
         </table>
       </div>
-    </section>
-
-    <section class="home-panel" id="category-kings" aria-labelledby="categoryKingsTitle">
-      <div class="home-panel-head">
-        <h2 id="categoryKingsTitle">Category Kings</h2>
-        <p>Best head-to-head win rate in each category against the whole league</p>
-      </div>
-      <div class="home-kings">
-        <div>
-          <h3>Hitting</h3>
-          <div id="homeKingsHitting"></div>
-        </div>
-        <div>
-          <h3>Pitching</h3>
-          <div id="homeKingsPitching"></div>
-        </div>
-      </div>
+      <button class="ui-text-button home-standings-more" data-expanded="false" id="powerRankingsMore" type="button">Show all 10 teams</button>
     </section>
 
     <div class="home-two-up">
-      <section class="home-panel" id="recaps" aria-labelledby="recapsTitle">
-        <div class="home-panel-head">
+      <section class="ui-panel" id="recaps" aria-labelledby="recapsTitle">
+        <div class="ui-panel-head">
           <h2 id="recapsTitle">Recaps</h2>
           <p>22 recaps this season</p>
         </div>
@@ -437,22 +422,22 @@
             </div>
           </li>
         </ol>
-        <button class="home-text-button" data-expanded="false" id="viewMoreArticlesBtn" type="button">Show all recaps</button>
+        <button class="ui-text-button" data-expanded="false" id="viewMoreArticlesBtn" type="button">Show all recaps</button>
       </section>
 
-      <section class="home-panel" id="league-money" aria-labelledby="leagueMoneyTitle">
-        <div class="home-panel-head">
+      <section class="ui-panel" id="league-money" aria-labelledby="leagueMoneyTitle">
+        <div class="ui-panel-head">
           <h2 id="leagueMoneyTitle">League Money</h2>
           <p id="prizeMoneyUpdatedAt">Season total</p>
         </div>
-        <span class="home-label">Current prize pool</span>
+        <span class="ui-label">Current prize pool</span>
         <div class="money-total" id="prizePoolTotal">—</div>
         <div class="money-bar" id="prizePoolBar" role="img" aria-label="Prize pool breakdown"></div>
         <ul class="money-legend" id="prizePoolBreakdown"></ul>
         <p class="money-description" id="prizePoolRule">Prize pool grows based on waiver-wire spending.</p>
 
         <div class="weekly-winner">
-          <span class="home-label">Weekly category winner · <span id="weeklyWinnerWeek">Latest</span></span>
+          <span class="ui-label">Weekly category winner · <span id="weeklyWinnerWeek">Latest</span></span>
           <div class="weekly-winner-row">
             <div>
               <strong class="weekly-winner-name" id="weeklyWinnerTeam">Winner TBD</strong>
@@ -495,6 +480,25 @@
         </article>
       </div>
     </section> -->
+    <section class="section-card home-run-pool-preview" id="home-run-pool">
+      <div class="section-heading home-run-pool-heading">
+        <div>
+          <div class="section-eyebrow">Season Race</div>
+          <h2 class="section-title">Home Run Pool</h2>
+          <p class="section-subtitle">Season-long HR race. Top teams show here, full standings live on the pool page.
+          </p>
+        </div>
+        <span class="tag" id="homeRunPoolUpdatedAt">Loading...</span>
+      </div>
+      <div class="home-run-pool-grid home-run-pool-grid-preview" data-limit="3" data-compact id="homeRunPoolGrid">
+        <article class="article-card">
+          <p class="article-summary">Loading Home Run Pool...</p>
+        </article>
+      </div>
+      <div class="view-more-wrap home-run-pool-link-wrap">
+        <a class="article-link" href="tools/home-run-pool.html">View Full Home Run Pool</a>
+      </div>
+    </section>
     <section class="section-card" id="mlb-weekly-leaders">
       <div class="leader-section-header">
         <div>
@@ -526,95 +530,6 @@
         </article>
       </div>
     </section>
-    <section class="section-card home-run-pool-preview" id="home-run-pool">
-      <div class="section-heading home-run-pool-heading">
-        <div>
-          <div class="section-eyebrow">Season Race</div>
-          <h2 class="section-title">Home Run Pool</h2>
-          <p class="section-subtitle">Season-long HR race. Top teams show here, full standings live on the pool page.
-          </p>
-        </div>
-        <span class="tag" id="homeRunPoolUpdatedAt">Loading...</span>
-      </div>
-      <div class="home-run-pool-grid home-run-pool-grid-preview" data-limit="3" id="homeRunPoolGrid">
-        <article class="article-card">
-          <p class="article-summary">Loading Home Run Pool...</p>
-        </article>
-      </div>
-      <div class="view-more-wrap home-run-pool-link-wrap">
-        <a class="article-link" href="tools/home-run-pool.html">View Full Home Run Pool</a>
-      </div>
-    </section>
-    <section class="section-card" id="fantasy-tools">
-      <div class="section-heading">
-        <div>
-          <div class="section-eyebrow">League Resources</div>
-          <h2 class="section-title">Fantasy Tools</h2>
-          <p class="section-subtitle">Dynasty resources and league tools that are actually useful.</p>
-        </div>
-      </div>
-      <div class="tools-grid">
-        <article class="tool-card">
-          <div>
-            <div class="article-meta">Prospect Rankings • Dynasty Resource</div>
-            <h3 class="article-title">MLB Top 100 Prospects</h3>
-            <p class="article-summary">
-              Search, filter, and sort the current Top 100 prospects by team, position, level, age, and ETA.
-            </p>
-            <div class="tag-row">
-              <span class="tag">Prospects</span>
-              <span class="tag">Dynasty</span>
-              <span class="tag">Top 100</span>
-              <span class="tag">Draft Prep</span>
-            </div>
-          </div>
-          <div class="tool-actions">
-            <a class="article-link" href="tools/mlb-top-100.html">View Top 100</a>
-          </div>
-        </article>
-        <article class="tool-card">
-          <div>
-            <div class="article-meta">Dynasty Trade Tool • UTI League</div>
-            <h3 class="article-title">UTI Trade Analyzer</h3>
-            <p class="article-summary">
-              Check trade fairness using UTI dynasty values, team ownership, category fit, age, risk, and future upside.
-            </p>
-            <div class="tag-row">
-              <span class="tag">Trades</span>
-              <span class="tag">Dynasty Values</span>
-              <span class="tag">Category Fit</span>
-              <span class="tag">Deadline Prep</span>
-            </div>
-          </div>
-          <div class="tool-actions">
-            <a class="article-link" href="tools/uti-trade-analyzer.html">Open Trade Analyzer</a>
-          </div>
-        </article>
-      </div>
-    </section>
-    <section class="section-card allstar-compact-section allstar-archive-section" id="all-star-week">
-      <div class="allstar-compact-head">
-        <div>
-          <div class="section-eyebrow">Season Archive</div>
-          <h2 class="section-title">2026 MLB All-Stars in UTI</h2>
-          <p class="section-subtitle">
-            The full 2026 All-Star roster is still here, just tucked away so it does not dominate the homepage.
-          </p>
-        </div>
-        <div class="allstar-total-pill"><b id="allStarTotal">0</b><span>All-Stars</span></div>
-      </div>
-
-      <details class="allstar-archive-shell">
-        <summary>
-          <span>
-            <strong>Browse the full All-Star archive</strong>
-            <small>Fantasy teams, starters, leagues, positions and MLB teams</small>
-          </span>
-          <span class="allstar-archive-action">Open archive</span>
-        </summary>
-        <div class="allstar-team-dropdowns" id="allStarTeamDropdowns"></div>
-      </details>
-    </section>
 
     <div class="footer-note">UTI Fantasy Baseball is powered by Busch Light, Malort, and weekly shots from your
       weekly losers.</div>
@@ -628,24 +543,21 @@
   <script src="data/homerun-pool.js"></script>
 
   <!-- Existing feature scripts -->
-  <script src="scripts/category-leaders.js?v=split-v1"></script>
+  <script src="scripts/category-leaders.js?v=theme-3"></script>
   <script src="scripts/top-pickups.js?v=split-v1"></script>
-  <script src="scripts/homerun-pool.js?v=logos"></script>
+  <script src="scripts/homerun-pool.js?v=theme-3"></script>
 
   <!-- UTI league analytics -->
   <script src="data/weekly-team-stats.js?v=2026-week24-final"></script>
-  <script src="scripts/league-analytics.js"></script>
-  <script src="scripts/uti-intelligence.js?v=theme-2"></script>
-  <script src="scripts/home-dashboard.js"></script>
+  <script src="scripts/league-analytics.js?v=theme-3"></script>
+  <script src="scripts/uti-intelligence.js?v=theme-3"></script>
+  <script src="scripts/home-dashboard.js?v=theme-3"></script>
 
   <!-- Homepage-only behavior -->
-  <script src="scripts/homepage.js?v=theme-2"></script>
+  <script src="scripts/homepage.js?v=theme-3"></script>
   <script src="scripts/trending-range-stats.js"></script>
   <script src="data/prize-money.js"></script>
-  <script src="scripts/prize-money.js?v=theme-2"></script>
-  <script src="data/all-stars.js"></script>
-  <script src="scripts/all-stars.js"></script>
-  <script src="scripts/all-star-owner-ui.js"></script>
+  <script src="scripts/prize-money.js?v=theme-3"></script>
 </body>
 
 </html>

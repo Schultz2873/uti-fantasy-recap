@@ -29,6 +29,7 @@ const leaderRotationState = new Map(); // category label -> which tied leader is
 let weeklyLeadersCache = [];
 let leaderRangeMode = "weekly"; // "weekly" | "past" | "season"
 let selectedPastWeek = null;
+let hasFallenBackToSeason = false; // switched to season leaders once because the current week had no games
 let fantasyOwnersLookupCache = null;
 
 /* ---------- Dates ---------- */
@@ -549,6 +550,19 @@ async function loadWeeklyLeaders() {
     weeklyLeadersCache = weeklyLeaderCategories.map(category =>
       buildLeaderEntry(category, category.group === "hitting" ? hittingStats : pitchingStats)
     );
+
+    // No MLB games this week (offseason, All-Star break): show season leaders instead,
+    // and hide the section entirely if there is no season data either.
+    const hasLeaders = weeklyLeadersCache.some(leader => leader.value !== "N/A");
+    const section = document.getElementById("mlb-weekly-leaders");
+
+    if (!hasLeaders && leaderRangeMode === "weekly" && !hasFallenBackToSeason) {
+      hasFallenBackToSeason = true;
+      document.querySelector('[data-leader-mode="season"]')?.click();
+      return;
+    }
+
+    if (section) section.hidden = !hasLeaders && leaderRangeMode === "season";
 
     renderLeaderCards(weeklyLeadersCache);
   } catch (error) {
