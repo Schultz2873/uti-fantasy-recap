@@ -26,8 +26,11 @@ jobs:
       - name: Update trending players
         run: node scripts/update-trending-players.js
 
+      - name: Update player values for title odds
+        run: node scripts/update-player-values.js
+
       - name: Commit updated trend data
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Update trending available players"
-          file_pattern: data/trending-players.js
+          file_pattern: data/trending-players.js data/player-values.js

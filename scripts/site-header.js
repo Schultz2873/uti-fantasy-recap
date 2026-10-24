@@ -47,7 +47,9 @@
     { src: "data/weekly-team-stats.js", isLoaded: () => Array.isArray(window.UTI_WEEKLY_TEAM_STATS) },
     { src: "scripts/league-analytics.js", isLoaded: () => Boolean(window.UTIAnalytics) },
     { src: "data/prize-money.js", isLoaded: () => Boolean(window.PRIZE_MONEY_DATA) },
-    { src: "data/fantasy-owners.js", isLoaded: () => Boolean(window.FANTASY_OWNERS) }
+    { src: "data/fantasy-owners.js", isLoaded: () => Boolean(window.FANTASY_OWNERS) },
+    { src: "data/player-values.js", isLoaded: () => Array.isArray(window.UTI_PLAYER_VALUES) },
+    { src: "scripts/title-odds.js", isLoaded: () => Boolean(window.UTITitleOdds) }
   ];
 
   const TICKER_SPEED = 40; // pixels per second
@@ -186,21 +188,15 @@
     track.style.setProperty("--ticker-duration", `${Math.max(20, runWidth / TICKER_SPEED)}s`);
   }
 
-  async function renderTicker() {
+  function renderTicker() {
     const rows = window.UTI_WEEKLY_TEAM_STATS || [];
     if (!rows.length || !window.UTIAnalytics) return;
 
     const summary = window.UTIAnalytics.buildSummary(rows);
     const items = baseTickerItems(rows, summary);
-    showTicker(items);
+    const odds = window.UTITitleOdds?.titleOdds(window.FANTASY_OWNERS, summary.powerRankings) || [];
 
-    // Odds need the player value engine (an ES module), so they load after the rest of the ticker.
-    try {
-      const { titleOdds } = await import(siteUrl("scripts/title-odds.js"));
-      showTicker([...items, ...oddsTickerItems(oddsSeason(rows), titleOdds(window.FANTASY_OWNERS, summary.powerRankings))]);
-    } catch (error) {
-      console.warn("Title odds could not load.", error);
-    }
+    showTicker(odds.length ? [...items, ...oddsTickerItems(oddsSeason(rows), odds)] : items);
   }
 
   renderHeader();
