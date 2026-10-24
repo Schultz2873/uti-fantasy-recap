@@ -1,0 +1,38 @@
+name: Import Fantrax Weekly Stats
+
+on:
+  schedule:
+    # Mondays and Tuesdays at 8:30 AM Central, after each Sunday finish.
+    # Tuesday picks up any stat corrections Fantrax applies after the weekend.
+    # GitHub cron uses UTC.
+    - cron: "30 13 * * 1,2"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import-fantrax:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v5
+
+      - name: Set up Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+
+      # Needs the FANTRAX_COOKIE repository secret (Settings → Secrets and variables → Actions).
+      # If this step fails with "cookie has expired", paste a fresh cookie into that secret.
+      - name: Import weekly stats from Fantrax
+        run: node scripts/import-fantrax.js
+        env:
+          FANTRAX_COOKIE: ${{ secrets.FANTRAX_COOKIE }}
+
+      - name: Commit updated stats
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Import weekly stats from Fantrax"
+          file_pattern: data/weekly-team-stats.js data/weekly-team-stats.csv *.html

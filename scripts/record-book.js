@@ -74,12 +74,17 @@
   function categoryRecords(rows) {
     const eligible = rows.filter(row => Number(row.week) >= FIRST_RECORD_WEEK);
 
+    // Blank cells are missing data, not zero (Number("") is 0).
+    const hasValue = value => value !== "" && value != null && Number.isFinite(Number(value));
+
     return CATEGORY_RECORDS.map(category => {
       const candidates = eligible.filter(row => {
-        if (!Number.isFinite(Number(row[category.key]))) return false;
+        if (!hasValue(row[category.key])) return false;
         if (!category.minimum) return true;
+        // AB and IP aren't in the Fantrax import; a week without them still qualifies
+        // (every imported week so far has had well over the minimum).
         const [field, min] = category.minimum;
-        return Number(row[field]) >= min;
+        return !hasValue(row[field]) || Number(row[field]) >= min;
       });
 
       const sorted = [...candidates].sort((a, b) => category.lowerIsBetter
