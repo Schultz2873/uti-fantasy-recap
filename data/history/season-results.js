@@ -20,7 +20,7 @@ window.UTI_SEASON_RESULTS = [
     season: 2026,
     champion: "Goodyear Gila Monsters",
     runnerUp: "Gunnarrhea",
-    thirdPlace: null,
+    thirdPlace: "This Is Mizerable",
     regularSeasonFirst: "Goodyear Gila Monsters"
   }
 ];
