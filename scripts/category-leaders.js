@@ -427,7 +427,7 @@ function buildLeaderEntry(category, players) {
   };
 }
 
-// Categories shown before "Show all 12 categories": a mix of hitting and pitching.
+// Categories shown first: a mix of hitting and pitching.
 const FEATURED_LEADER_CATEGORIES = ["R", "HR", "RBI", "K", "ERA", "SV+H-BS"];
 const FEATURED_LEADER_COUNT = FEATURED_LEADER_CATEGORIES.length;
 
@@ -463,7 +463,7 @@ function renderLeaderRows(leaders) {
 
   shownLeaders = featuredFirst;
   list.innerHTML = featuredFirst.map((leader, index) => `
-    <li class="${index >= FEATURED_LEADER_COUNT ? "is-extra" : ""}" data-leader-index="${index}">
+    <li data-leader-index="${index}">
       <span class="home-leader-top">
         <span class="home-leader-cat">${escapeHtml(leader.label.replace("SV+H-BS", "SV+H"))}</span>
         ${leader.tiedLeaders.length > 1 ? renderTieFlip(0, leader.tiedLeaders.length) : ""}
@@ -527,18 +527,6 @@ function renderLeaderMessage(message) {
 
 function resetLeaderLoadingCards() {
   renderLeaderMessage("Loading category leaders…");
-}
-
-function setupLeadersMoreButton() {
-  const button = document.getElementById("leadersMore");
-  const list = document.getElementById("weeklyLeadersGrid");
-  if (!button || !list) return;
-
-  button.addEventListener("click", () => {
-    const expanded = list.classList.toggle("is-expanded");
-    button.dataset.expanded = String(expanded);
-    button.textContent = expanded ? "Show fewer" : "Show all 12 categories";
-  });
 }
 
 async function loadWeeklyLeaders() {
@@ -634,7 +622,6 @@ function setupPastWeekSelect() {
 document.addEventListener("DOMContentLoaded", () => {
   leaderRangeMode = document.getElementById("mlb-weekly-leaders")?.dataset.leaderRange || leaderRangeMode;
   setupPastWeekSelect();
-  setupLeadersMoreButton();
   setupTieFlips();
 
   setupModeToggle("data-leader-mode", "weekly", mode => {

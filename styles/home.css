@@ -662,14 +662,6 @@
   background: var(--color-surface);
 }
 
-.home-leaders li.is-extra {
-  display: none;
-}
-
-.home-leaders.is-expanded li.is-extra {
-  display: flex;
-}
-
 .home-leader-top {
   display: flex;
   align-items: center;
