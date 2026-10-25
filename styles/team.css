@@ -358,6 +358,18 @@
 
 .side-box button:first-of-type { border-top: 0; }
 
+.side-box .side-box-divider {
+  margin-top: 6px;
+  padding-top: 4px;
+  border-top: 1px dashed var(--color-border);
+  color: var(--color-text-muted);
+}
+
+.side-box button.is-benched { opacity: 0.72; }
+.side-box button.is-benched:hover,
+.side-box button.is-benched[aria-pressed="true"] { opacity: 1; }
+.side-box .status { flex: none; font-size: 0.56rem; }
+
 .side-box small {
   min-width: 1.7em;
   font-size: 0.6rem;
