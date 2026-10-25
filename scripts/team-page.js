@@ -213,6 +213,9 @@
     ];
     const bench = document.getElementById("bench");
     bench.innerHTML = "";
+    // Highest The Show rating first; players not in the game go last.
+    const byRating = (a, b) => (ratingFor(b) ?? -1) - (ratingFor(a) ?? -1) || a[2].localeCompare(b[2]);
+    groups.forEach(([, list]) => list.sort(byRating));
     groups.filter(([, list]) => list.length).forEach(([title, list]) => {
       const heading = document.createElement("h4");
       heading.textContent = `${title} (${list.length})`;
