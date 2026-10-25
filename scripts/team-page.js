@@ -54,9 +54,29 @@
       .replace(/\s+(jr|sr|ii|iii|iv)$/i, "").replace(/\s+/g, " ").toLowerCase().trim();
   }
 
+  // Fantrax and The Show sometimes disagree on first names ("Jake Latz" vs "Jacob Latz").
+  const NICKNAMES = [
+    ["jake", "jacob"], ["mike", "michael"], ["matt", "matthew"], ["nick", "nicholas"], ["alex", "alexander"],
+    ["josh", "joshua"], ["zach", "zachary"], ["chris", "christopher"], ["dan", "daniel"], ["danny", "daniel"],
+    ["joe", "joseph"], ["tom", "thomas"], ["will", "william"], ["rob", "robert"], ["sam", "samuel"],
+    ["ben", "benjamin"], ["tony", "anthony"], ["andy", "andrew"], ["drew", "andrew"], ["greg", "gregory"],
+    ["jon", "jonathan"], ["jeff", "jeffrey"], ["ken", "kenneth"], ["cam", "cameron"], ["ed", "edward"],
+    ["eddie", "edward"], ["steve", "steven"], ["dave", "david"], ["jim", "james"], ["pat", "patrick"]
+  ];
+
+  // The normalized name, then the same name with each other form of the first name.
+  function nameVariants(key) {
+    const [first, ...rest] = key.split(" ");
+    const others = NICKNAMES.flatMap(([short, full]) => first === short ? [full] : first === full ? [short] : []);
+    return [key, ...others.map(name => [name, ...rest].join(" "))];
+  }
+
   // The Show rating for a roster player, or null when the player isn't in the game.
   function ratingFor(player) {
-    const entry = window.UTI_SHOW_RATINGS?.ratings?.[normalizeName(player[2])];
+    const ratings = window.UTI_SHOW_RATINGS?.ratings || {};
+    // Fantrax splits two-way players into "Name-P" and "Name-H"; The Show has one card.
+    const key = nameVariants(normalizeName(player[2].replace(/-[PH]$/, ""))).find(name => ratings[name] != null);
+    const entry = ratings[key];
     if (entry == null) return null;
     if (!Array.isArray(entry)) return entry;
     const team = TEAM_ALIASES[player[3]] || player[3];
@@ -84,14 +104,14 @@
   const isStarter = player => player[0] === "SP" || (player[0] === "P" && player[4] === "SP");
   const isReliever = player => player[0] === "RP" || (player[0] === "P" && player[4] !== "SP");
 
-  // Average The Show rating of a team's active players: overall, hitters, pitchers.
+  // Average The Show rating of a team's active and bench players (not IL or minors): overall, hitters, pitchers.
   function teamRating(players) {
-    const active = players.filter(p => p[1] === "ACTIVE");
+    const counted = players.filter(p => p[1] === "ACTIVE" || p[1] === "RESERVE");
     const average = list => {
       const values = list.map(ratingFor).filter(Number.isFinite);
       return values.length ? values.reduce((sum, v) => sum + v, 0) / values.length : null;
     };
-    return { overall: average(active), hitting: average(active.filter(p => !isPitcherSlot(p))), pitching: average(active.filter(isPitcherSlot)) };
+    return { overall: average(counted), hitting: average(counted.filter(p => !isPitcherSlot(p))), pitching: average(counted.filter(isPitcherSlot)) };
   }
 
   /* ---------- Header and quick numbers ---------- */
@@ -228,12 +248,13 @@
 
     const benched = players.filter(p => p[1] !== "ACTIVE");
     document.getElementById("benchCount").textContent = `(${benched.length})`;
-    // Grouped: position players, pitchers, then minor leaguers. IL players stay in their group with an IL tag.
+    // Grouped: position players, pitchers, the injured list, then minor leaguers.
     const isPitcher = player => ["SP", "RP", "P"].includes(player[4]) || isPitcherSlot(player);
     const groups = [
-      ["Position players", benched.filter(p => p[1] !== "MINORS" && !isPitcher(p))],
-      ["Pitchers", benched.filter(p => p[1] !== "MINORS" && isPitcher(p))],
-      ["Minors", benched.filter(p => p[1] === "MINORS")]
+      ["Position players", benched.filter(p => p[1] === "RESERVE" && !isPitcher(p))],
+      ["Pitchers", benched.filter(p => p[1] === "RESERVE" && isPitcher(p))],
+      ["IL", benched.filter(p => p[1] === "INJURED_RESERVE")],
+      ["Minors", benched.filter(p => !["RESERVE", "INJURED_RESERVE"].includes(p[1]))]
     ];
     const bench = document.getElementById("bench");
     bench.innerHTML = "";
@@ -246,12 +267,9 @@
       const ul = document.createElement("ul");
       ul.className = "roster-list";
       list.forEach(player => {
-        const [cls, label] = STATUS[player[1]] || ["res", player[1]];
         const li = document.createElement("li");
         li.tabIndex = 0;
-        // Minors are already labeled by their group; only IL gets a tag elsewhere.
-        const tag = player[1] === "INJURED_RESERVE" ? `<em class="status ${cls}">${label}</em> ` : "";
-        li.innerHTML = `<span class="pos">${escapeHtml(player[0])}</span><span class="bench-name">${headshot(player)}<b>${escapeHtml(shortName(player[2]))}</b></span><span>${tag}${escapeHtml(player[3])} ${ovrBadge(player)}</span>`;
+        li.innerHTML = `<span class="pos">${escapeHtml(player[0])}</span><span class="bench-name">${headshot(player)}<b>${escapeHtml(shortName(player[2]))}</b></span><span>${escapeHtml(player[3])} ${ovrBadge(player)}</span>`;
         li.addEventListener("keydown", event => { if (event.key === "Enter") selectPlayer(player, li); });
         ul.appendChild(makeSelectable(li, player));
       });

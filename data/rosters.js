@@ -153,7 +153,7 @@ window.UTI_ROSTERS = {
       ["C","RESERVE","Carter Jensen","KC","C",695600],
       ["C","MINORS","Rainiel Rodriguez","STL","C",823787],
       ["SP","MINORS","Jamie Arnold","ATH","SP",701364],
-      ["SP","ACTIVE","Jake Latz","TEX","RP",null],
+      ["SP","ACTIVE","Jake Latz","TEX","RP",656641],
       ["SP","RESERVE","Kyle Harrison","MIL","SP",690986],
       ["RP","ACTIVE","Daniel Palencia","CHC","RP",694037],
       ["MI","ACTIVE","Bobby Witt Jr.","KC","SS",677951],

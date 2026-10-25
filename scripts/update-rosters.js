@@ -36,6 +36,24 @@ function normalizeName(name) {
     .replace(/\s+(jr|sr|ii|iii|iv)$/i, "").replace(/\s+/g, " ").toLowerCase().trim();
 }
 
+// Fantrax and MLB sometimes disagree on first names ("Jake Latz" vs "Jacob Latz").
+// Same list as scripts/team-page.js.
+const NICKNAMES = [
+  ["jake", "jacob"], ["mike", "michael"], ["matt", "matthew"], ["nick", "nicholas"], ["alex", "alexander"],
+  ["josh", "joshua"], ["zach", "zachary"], ["chris", "christopher"], ["dan", "daniel"], ["danny", "daniel"],
+  ["joe", "joseph"], ["tom", "thomas"], ["will", "william"], ["rob", "robert"], ["sam", "samuel"],
+  ["ben", "benjamin"], ["tony", "anthony"], ["andy", "andrew"], ["drew", "andrew"], ["greg", "gregory"],
+  ["jon", "jonathan"], ["jeff", "jeffrey"], ["ken", "kenneth"], ["cam", "cameron"], ["ed", "edward"],
+  ["eddie", "edward"], ["steve", "steven"], ["dave", "david"], ["jim", "james"], ["pat", "patrick"]
+];
+
+// The normalized name, then the same name with each other form of the first name.
+function nameVariants(key) {
+  const [first, ...rest] = key.split(" ");
+  const others = NICKNAMES.flatMap(([short, full]) => first === short ? [full] : first === full ? [short] : []);
+  return [key, ...others.map(name => [name, ...rest].join(" "))];
+}
+
 // normalized name → MLB player ID, from MLB and the minors (this season first, then last season
 // for players who missed this one, e.g. injured all year).
 async function mlbPlayerIds() {
@@ -74,7 +92,8 @@ async function main() {
     teams[siteName(roster.teamName)] = roster.rosterItems.map(item => {
       const player = players[item.id] || {};
       const name = displayName(player.name || item.id);
-      return [item.position, item.status, name, player.team || "", player.position || item.position, mlbIds.get(normalizeName(name)) || null];
+      const mlbId = nameVariants(normalizeName(name)).map(key => mlbIds.get(key)).find(Boolean) || null;
+      return [item.position, item.status, name, player.team || "", player.position || item.position, mlbId];
     });
   });
 
