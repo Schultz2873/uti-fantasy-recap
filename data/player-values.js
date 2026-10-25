@@ -3,9 +3,9 @@
 
 window.UTI_PLAYER_VALUES = [
   ["bobbywittjr",93],
-  ["juansoto",91],
   ["ellydelacruz",90],
   ["gunnarhenderson",90],
+  ["juansoto",89],
   ["corbincarroll",88],
   ["paulskenes",87],
   ["vladimirguerrerojr",86],
