@@ -641,22 +641,25 @@
   font-size: 0.85rem;
 }
 
+/* Top MLB players: one small card per category */
 .home-leaders {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0 28px;
+  grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+  gap: 10px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
 .home-leaders li {
-  display: grid;
-  grid-template-columns: 3.4rem 28px minmax(0, 1fr) auto;
+  display: flex;
+  flex-direction: column;
   gap: 10px;
-  align-items: center;
-  padding: 9px 0;
-  border-top: 1px solid var(--color-border);
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
 }
 
 .home-leaders li.is-extra {
@@ -664,63 +667,98 @@
 }
 
 .home-leaders.is-expanded li.is-extra {
-  display: grid;
+  display: flex;
+}
+
+.home-leader-top {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .home-leader-cat {
-  font-size: 0.78rem;
-  font-weight: 700;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
   color: var(--color-text-muted);
 }
 
+.home-leader-value {
+  margin-left: auto;
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+}
+
 .home-leader-who {
+  display: flex;
+  align-items: center;
+  gap: 9px;
   min-width: 0;
 }
 
-.home-leader-nophoto {
-  width: 28px;
-  height: 28px;
+.home-leader-who > span {
+  min-width: 0;
+}
+
+.home-leader-headshot {
+  width: 40px;
+  height: 40px;
+  flex: none;
   border-radius: 50%;
-  border: 1px dashed var(--color-border);
+  object-fit: cover;
+  background: var(--color-surface-raised);
 }
 
 .home-leader-who strong,
 .home-leader-who small {
   display: block;
+}
+
+/* Long names wrap onto a second line instead of being cut off */
+.home-leader-who strong {
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-text);
+  overflow-wrap: anywhere;
+}
+
+.home-leader-who small {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+/* The UTI team that owns him, pinned to the bottom so cards line up */
+.home-leader-owner {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: auto;
+  padding-top: 9px;
+  border-top: 1px solid var(--color-border);
+  min-width: 0;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.home-leader-owner > span {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.home-leader-who strong {
+.home-leader-owner.is-available {
   font-weight: 600;
-  color: var(--color-text);
-}
-
-.home-leader-who small {
-  font-size: 0.76rem;
   color: var(--color-text-muted);
 }
 
-.home-leader-who small b {
-  font-weight: 600;
-  color: var(--color-accent);
-}
-
-.home-leader-value {
-  font-weight: 800;
-  color: var(--color-text);
-  font-variant-numeric: tabular-nums;
-}
-
-.home-leader-value {
-  display: grid;
-  justify-items: end;
-  gap: 2px;
-}
-
 .home-leader-flip {
-  padding: 1px 7px;
+  padding: 1px 6px;
   border: 1px solid var(--color-accent-border);
   border-radius: var(--radius-pill);
   background: var(--color-accent-soft);
@@ -739,6 +777,9 @@
 .home-leaders li.home-leader-message {
   display: block;
   grid-column: 1 / -1;
+  border: 0;
+  background: none;
+  padding: 0;
   color: var(--color-text-muted);
 }
 
@@ -760,7 +801,7 @@
   }
 
   .home-leaders {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
