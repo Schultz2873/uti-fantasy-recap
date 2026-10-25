@@ -12,7 +12,8 @@
 const fs = require("fs");
 const path = require("path");
 
-const LEAGUE_ID = "6cjtuqcvmicf87yd";
+// League IDs live in scripts/fantrax-config.js (Fantrax gives the league a new ID each season).
+const LEAGUE_ID = require("./fantrax-config.js").rosterLeague;
 const ROOT = path.join(__dirname, "..");
 const OUT_FILE = path.join(ROOT, "data/rosters.js");
 
