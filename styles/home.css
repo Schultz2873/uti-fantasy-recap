@@ -1124,14 +1124,18 @@
   color: var(--color-accent);
 }
 
-/* Opening Day countdown under the draft order */
+/* Opening Day countdown at the top of the draft order card */
+.home-countdown + .home-clock {
+  margin-top: 0;
+}
+
 .home-countdown {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 12px 18px;
-  margin-top: 16px;
+  margin: 6px 0 12px;
   padding: 14px 16px;
   border-radius: var(--radius-md);
   border: 1px solid var(--color-accent-border);
