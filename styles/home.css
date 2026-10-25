@@ -1135,14 +1135,16 @@
   display: none;
 }
 
+/* Same neon orange as "On the clock" */
 .home-countdown b {
   font-weight: 700;
-  color: var(--color-text-soft);
+  color: var(--color-coral);
 }
 
 .home-countdown-time {
   font-weight: 700;
-  color: var(--color-accent);
+  color: var(--color-coral);
+  text-shadow: 0 0 10px rgb(var(--rgb-coral) / 0.45);
   font-variant-numeric: tabular-nums;
 }
 
