@@ -9,8 +9,7 @@
 (() => {
   const HITTING = ["R", "HR", "RBI", "BB", "SO", "NSB", "AVG", "TB"];
   const PITCHING = ["W", "L", "QS", "K", "ERA", "WHIP", "NS", "BAA"];
-  const SEASONS = [2026, 2025, 2024, 2023];
-
+  
   // Field spots in percent of the field box (100 wide x 106 tall; the pens use the top 16).
   const FIELD_SPOTS = {
     C: [[50, 92.5]],
@@ -106,6 +105,7 @@
         <h1>${escapeHtml(team)}</h1>
         <p class="team-sub">${seasons.length ? `In the league since ${seasons[0]} · ` : ""}${formatRecord(H.franchiseRecord(team))} all-time</p>
         ${chips.length ? `<div class="shelf">${chips.join("")}</div>` : ""}
+        <div class="shelf">${nextSeasonChips(H, team)}</div>
       </div>
       <label class="team-picker">
         <span>Team</span>
@@ -114,22 +114,31 @@
     document.title = `${team} | Union of Ten Idiots`;
   }
 
-  function renderFacts(H, team) {
+  // Next season's title odds and draft pick: the only numbers not shown elsewhere on the page.
+  function nextSeasonChips(H, team) {
     const current = H.current;
+    const next = (current.season || 2026) + 1;
     const odds = window.UTITitleOdds?.titleOdds(window.FANTASY_OWNERS, current.powerRankings || []) || [];
     const line = odds.find(row => row.team === team)?.odds;
     const draft = window.UTI_DRAFT_ORDER;
     const pick = draft?.picks?.indexOf(team) ?? -1;
-    const powerRank = (current.powerRankings || []).findIndex(row => row.team === team) + 1;
-    const season = current.season || 2026;
-    const facts = [
-      [`${season + 1} odds`, line || "—"],
-      [`${draft?.season || season + 1} pick`, pick >= 0 ? `#${pick + 1}` : "—"],
-      [`${season} record`, formatRecord(H.franchiseRecord(team, null, season, "regular"))],
-      ["Power rank", powerRank ? `#${powerRank}` : "—"]
-    ];
-    document.getElementById("teamFacts").innerHTML = facts
-      .map(([label, value]) => `<div class="fact"><small>${label}</small><strong>${escapeHtml(value)}</strong></div>`).join("");
+    return [
+      line ? `<span class="chip next">${next} odds <b>${escapeHtml(line)}</b></span>` : "",
+      pick >= 0 ? `<span class="chip next">${draft.season || next} pick <b>#${pick + 1}</b></span>` : ""
+    ].join("");
+  }
+
+  // Where the team finished a season's regular-season standings, plus any trophy.
+  function seasonFinish(H, team, season) {
+    const seasonTeams = [...new Set(H.trackedHistoryRows().filter(row => Number(row.season) === season).map(row => row.team))];
+    if (season === 2023) Object.keys(window.UTI_YAHOO_2023_FINAL_REGULAR_SEASON_RECORDS || {}).forEach(name => seasonTeams.includes(name) || seasonTeams.push(name));
+    if (!seasonTeams.includes(team)) return "";
+    const order = seasonTeams.map(name => ({ name, record: H.franchiseRecord(name, null, season, "regular") }))
+      .sort((a, b) => b.record.winPct - a.record.winPct || b.record.wins - a.record.wins || a.name.localeCompare(b.name));
+    const finish = order.findIndex(row => row.name === team) + 1;
+    const result = H.knownSeasonResults().find(row => Number(row.season) === season) || {};
+    const trophy = result.champion === team ? " · 🏆 Champion" : result.runnerUp === team ? " · 🥈 Runner-up" : result.thirdPlace === team ? " · 🥉 Third" : "";
+    return `${ordinal(finish)} in the standings${trophy}`;
   }
 
   /* ---------- Starting lineup ---------- */
@@ -270,36 +279,6 @@
 
   /* ---------- Seasons, categories, rivals ---------- */
 
-  function renderSeasons(H, team) {
-    const results = H.knownSeasonResults();
-    const rows = SEASONS.map(season => {
-      const seasonTeams = [...new Set(H.trackedHistoryRows().filter(row => Number(row.season) === season).map(row => row.team))];
-      if (season === 2023) Object.keys(window.UTI_YAHOO_2023_FINAL_REGULAR_SEASON_RECORDS || {}).forEach(name => seasonTeams.includes(name) || seasonTeams.push(name));
-      if (!seasonTeams.includes(team)) return null;
-
-      const records = seasonTeams.map(name => ({ name, record: H.franchiseRecord(name, null, season, "regular") }))
-        .sort((a, b) => b.record.winPct - a.record.winPct || b.record.wins - a.record.wins || a.name.localeCompare(b.name));
-      const finish = records.findIndex(row => row.name === team) + 1;
-      const playoffs = H.franchiseRecord(team, null, season, "playoffs");
-      const result = results.find(row => Number(row.season) === season) || {};
-      const medal = result.champion === team ? " 🏆" : result.runnerUp === team ? " 🥈" : result.thirdPlace === team ? " 🥉" : "";
-      const power = (H.seasonData(season)?.powerRankings || []).findIndex(row => row.team === team) + 1;
-      return `<tr>
-        <td class="year">${season}</td>
-        <td class="num">${formatRecord(records[finish - 1].record)}</td>
-        <td class="num">${ordinal(finish)}</td>
-        <td class="num">${playoffs.games ? `${playoffs.wins}-${playoffs.losses}${medal}` : "—"}</td>
-        <td class="num">${power ? `#${power}` : "—"}</td>
-      </tr>`;
-    }).filter(Boolean);
-
-    document.getElementById("teamSeasons").innerHTML = `
-      <table class="team-table">
-        <thead><tr><th>Year</th><th class="num">Record</th><th class="num">Finish</th><th class="num">Playoffs</th><th class="num">Power</th></tr></thead>
-        <tbody>${rows.join("")}</tbody>
-      </table>`;
-  }
-
   // Share of each category won in the current season's regular-season matchups.
   function renderCategories(H, team) {
     const { CATEGORY_RULES } = window.UTIAnalytics;
@@ -359,7 +338,8 @@
     const target = document.getElementById("teamProfile");
     if (!result) { target.innerHTML = ""; return; }
     const { profile, html } = result;
-    document.getElementById("teamVerdict").textContent = `${profile.verdict} · ${profile.season} ${profile.source === "yahoo" ? "Yahoo" : "Fantrax"}`;
+    const finish = seasonFinish(H, team, Number(profile.season));
+    document.getElementById("teamVerdict").textContent = `${profile.verdict} · ${finish || `${profile.season} ${profile.source === "yahoo" ? "Yahoo" : "Fantrax"}`}`;
     target.innerHTML = html;
     target.querySelector(".pf-more")?.setAttribute("open", "");
     target.dataset.team = team;
@@ -371,10 +351,8 @@
     const H = window.UTIHistory;
     const teams = Object.keys(window.UTI_ROSTERS?.teams || {}).sort((a, b) => a.localeCompare(b));
     renderHeader(H, team, teams);
-    renderFacts(H, team);
     renderLineup(team);
     renderProfile(H, team, String(H.current?.season || 2026));
-    renderSeasons(H, team);
     renderCategories(H, team);
     renderRivals(H, team);
 

@@ -97,6 +97,8 @@
 .chip.gold { background: rgb(var(--rgb-gold) / 0.16); color: var(--color-gold); }
 .chip.silver { background: rgb(200 210 230 / 0.14); color: rgb(213 220 234); }
 .chip.bronze { background: rgb(205 127 50 / 0.2); color: rgb(224 160 102); }
+.chip.next { border: 1px solid var(--color-border); background: none; font-weight: 600; }
+.chip.next b { margin-left: 4px; color: var(--color-text); }
 
 .team-picker {
   display: grid;
@@ -113,41 +115,6 @@
   border: 1px solid var(--color-border);
   color: var(--color-text);
   font-size: 0.85rem;
-}
-
-/* One compact strip of quick numbers, divided by thin lines. */
-.team-facts {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  padding: 8px 0;
-  border-radius: var(--radius-md);
-  background: var(--color-surface-solid);
-}
-
-.fact {
-  min-width: 0;
-  padding: 0 14px;
-  border-left: 1px solid var(--color-border);
-}
-
-.fact:first-child { border-left: 0; }
-
-.fact small {
-  display: block;
-  overflow: hidden;
-  font-size: 0.68rem;
-  font-weight: 700;
-  color: var(--color-text-muted);
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.fact strong {
-  display: block;
-  font-size: 1.02rem;
-  font-weight: 800;
-  color: var(--color-text);
-  font-variant-numeric: tabular-nums;
 }
 
 /* ---------- Ratings (MLB The Show card tiers) ---------- */
@@ -499,32 +466,6 @@
   gap: 22px;
 }
 
-.team-table-wrap { overflow-x: auto; }
-
-.team-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-variant-numeric: tabular-nums;
-}
-
-.team-table th {
-  padding: 6px 8px;
-  border-bottom: 1px solid var(--color-border);
-  font-size: 0.7rem;
-  font-weight: 700;
-  color: var(--color-text-muted);
-  text-align: left;
-}
-
-.team-table td {
-  padding: 9px 8px;
-  border-bottom: 1px solid var(--color-border);
-  color: var(--color-text-soft);
-}
-
-.team-table .year { font-weight: 800; color: var(--color-text); }
-.team-table .num { text-align: right; }
-
 .cats {
   display: grid;
   gap: 4px;
@@ -580,10 +521,10 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* Rivals share a row with the category fingerprint, so they stack. */
 .rivals {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
+  gap: 10px;
 }
 
 .rival {
@@ -629,13 +570,8 @@
   .team-picker { grid-column: 1 / -1; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 8px; }
   .team-photo { width: 64px; height: 64px; }
 
-  .fact { padding: 0 8px; }
-  .fact small { font-size: 0.6rem; }
-  .fact strong { font-size: 0.92rem; }
-
   .lineup,
-  .team-two,
-  .rivals { grid-template-columns: minmax(0, 1fr); }
+  .team-two { grid-template-columns: minmax(0, 1fr); }
 
   .field-wrap { margin-inline: -8px; }
 
