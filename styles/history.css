@@ -720,13 +720,37 @@
     gap: 10px;
   }
 
+  /* Year beside the champion; the podium rows below span the card */
   .hist-champ {
-    gap: 10px;
-    padding: 14px;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 8px 14px;
+    padding: 12px 14px;
+  }
+
+  .hist-champ dl {
+    grid-column: 1 / -1;
   }
 
   .hist-champ-year {
-    font-size: 1.7rem;
+    font-size: 1.5rem;
+  }
+
+  /* Label and team on one line instead of stacked */
+  .hist-champ dl {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 4px 12px;
+    padding-top: 8px;
+  }
+
+  .hist-champ dt,
+  .hist-champ dt:first-child {
+    margin-top: 0;
+  }
+
+  .hist-champ dd {
+    justify-content: flex-end;
+    text-align: right;
   }
 
   .hist-champ-who img {
