@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The UTI Weekly | Week 12</title>
+  <link rel="stylesheet" href="../styles/theme.css?v=sticky-3" />
+  <style>
+    /* MOCKUP of a newsletter-style recap in the site's own look: just the matchups.
+       Week 12 scores and stats are real; the write-ups are shortened stand-ins for the writer's. */
+    body {
+      margin: 0;
+      background: var(--gradient-page) fixed, var(--color-bg);
+      color: var(--color-text-soft);
+      font-family: var(--font-sans);
+    }
+
+    .nl-wrap {
+      max-width: 660px;
+      margin: 28px auto 48px;
+      padding: 0 14px;
+    }
+
+    .nl-issue {
+      overflow: hidden;
+      border: 1px solid var(--color-border);
+      border-radius: 18px;
+      background: var(--color-surface-solid);
+      box-shadow: var(--shadow-card);
+    }
+
+    /* ---------- Masthead ---------- */
+    .nl-mast {
+      padding: 26px 28px 20px;
+      background: var(--gradient-hero);
+      border-bottom: 1px solid var(--color-accent-border);
+      text-align: center;
+    }
+
+    .nl-name {
+      margin: 0;
+      font-size: clamp(1.7rem, 6vw, 2.4rem);
+      font-weight: 900;
+      font-stretch: var(--font-wide);
+      line-height: 1;
+      letter-spacing: -0.01em;
+      color: var(--color-text);
+    }
+
+    .nl-name span {
+      color: var(--color-accent);
+    }
+
+    .nl-issue-line {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 4px 14px;
+      margin-top: 10px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+    }
+
+    .nl-body {
+      padding: 26px 28px 30px;
+    }
+
+    /* ---------- Lead ---------- */
+    .nl-body h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.45rem, 4.4vw, 1.9rem);
+      font-weight: 900;
+      font-stretch: var(--font-wide);
+      line-height: 1.12;
+      color: var(--color-text);
+      text-wrap: balance;
+    }
+
+    .nl-from {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 22px;
+      font-size: 0.82rem;
+      color: var(--color-text-muted);
+    }
+
+    .nl-from img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .nl-from b {
+      color: var(--color-text);
+    }
+
+    /* "This week" scoreboard: the whole week in five lines */
+    .nl-glance {
+      margin-bottom: 8px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: rgb(var(--rgb-black) / 0.22);
+      border: 1px solid var(--color-border);
+    }
+
+    .nl-label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+    }
+
+    .nl-glance ol {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .nl-glance li + li {
+      border-top: 1px solid var(--color-border);
+    }
+
+    .nl-glance a {
+      display: grid;
+      grid-template-columns: 22px minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+      padding: 8px 0;
+      font-size: 0.9rem;
+      color: var(--color-text-muted);
+      text-decoration: none;
+    }
+
+    .nl-glance a:hover b {
+      color: var(--color-accent);
+    }
+
+    .nl-glance img {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .nl-glance span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .nl-glance strong {
+      color: var(--color-text);
+    }
+
+    .nl-glance b {
+      font-weight: 900;
+      font-stretch: var(--font-wide);
+      color: var(--color-text);
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    /* ---------- Matchup sections ---------- */
+    .nl-game {
+      padding-top: 26px;
+      scroll-margin-top: calc(var(--sticky-top, 0px) + 16px);
+    }
+
+    .nl-game + .nl-game {
+      margin-top: 26px;
+      border-top: 1px dashed var(--color-border);
+    }
+
+    .nl-game-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .nl-game-top .nl-label {
+      margin: 0;
+      color: var(--color-text-muted);
+    }
+
+    .nl-tag {
+      padding: 1px 8px;
+      border-radius: var(--radius-pill);
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .nl-tag.is-blowout {
+      background: rgb(var(--rgb-coral) / 0.14);
+      color: var(--color-coral);
+    }
+
+    .nl-tag.is-close {
+      background: var(--color-accent-soft);
+      color: var(--color-accent);
+    }
+
+    .nl-game h2 {
+      margin: 0 0 12px;
+      font-size: 1.3rem;
+      font-weight: 900;
+      font-stretch: var(--font-wide);
+      line-height: 1.18;
+      color: var(--color-text);
+      text-wrap: balance;
+    }
+
+    /* Score banner: winner photo, both scores, loser photo */
+    .nl-score {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 14px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: rgb(var(--rgb-black) / 0.22);
+    }
+
+    .nl-team {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-width: 0;
+      font-size: 0.86rem;
+      line-height: 1.2;
+      color: var(--color-text-muted);
+    }
+
+    .nl-team:last-child {
+      flex-direction: row-reverse;
+      text-align: right;
+    }
+
+    .nl-team img {
+      width: 36px;
+      height: 36px;
+      flex: none;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .nl-team.is-winner {
+      font-weight: 700;
+      color: var(--color-text);
+    }
+
+    .nl-team.is-winner img {
+      box-shadow: 0 0 0 2px var(--color-accent);
+    }
+
+    .nl-final {
+      font-size: 1.35rem;
+      font-weight: 900;
+      font-stretch: var(--font-wide);
+      color: var(--color-text);
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    .nl-final em {
+      font-style: normal;
+      color: var(--color-accent);
+    }
+
+    .nl-game p {
+      margin: 0 0 12px;
+      font-size: 1rem;
+      line-height: 1.65;
+    }
+
+    .nl-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .nl-stats li {
+      padding: 3px 9px;
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      font-size: 0.78rem;
+      color: var(--color-text-muted);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .nl-stats b {
+      color: var(--color-text);
+    }
+
+    /* ---------- Sign-off ---------- */
+    .nl-signoff {
+      margin-top: 30px;
+      padding: 18px 20px;
+      border-radius: 12px;
+      background: var(--color-accent-soft);
+      border: 1px solid var(--color-accent-border);
+      font-size: 0.95rem;
+      line-height: 1.55;
+    }
+
+    .nl-signoff p {
+      margin: 0;
+    }
+
+    .nl-signoff p + p {
+      margin-top: 6px;
+      color: var(--color-text-muted);
+      font-size: 0.85rem;
+    }
+
+    .nl-signoff a {
+      font-weight: 700;
+      color: var(--color-accent);
+    }
+
+    .nl-footer {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--color-text-muted);
+    }
+
+    @media (max-width: 560px) {
+      .nl-wrap {
+        margin-top: 14px;
+        padding: 0 8px;
+      }
+
+      .nl-mast,
+      .nl-body {
+        padding-inline: 18px;
+      }
+
+      /* Score banner stacks: names under the photos */
+      .nl-team,
+      .nl-team:last-child {
+        flex-direction: column;
+        text-align: center;
+        gap: 5px;
+        font-size: 0.78rem;
+      }
+
+      .nl-final {
+        font-size: 1.15rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <script src="../scripts/site-header.js?v=standings-1"></script>
+  <main class="nl-wrap">
+    <article class="nl-issue">
+      <header class="nl-mast">
+        <p class="nl-name">The UTI <span>Weekly</span></p>
+        <div class="nl-issue-line"><span>Issue 12</span><span>Week 12 · 2026</span><span>5 matchups</span></div>
+      </header>
+
+      <div class="nl-body">
+        <h1>BB's Bold Team moves to 11&#8209;1 and looks unbeatable</h1>
+        <div class="nl-from">
+          <img src="../images/owners/gunnarrhea.png" alt="" />
+          <span>From <b>Gunnarrhea</b> · 3 min read</span>
+        </div>
+
+        <nav class="nl-glance" aria-label="This week's results">
+          <span class="nl-label">This week</span>
+          <ol>
+            <li><a href="#goodyear"><img src="../images/owners/goodyear-gila-monsters.png" alt="" /><span><strong>Goodyear</strong> over Me So Heorny</span><b>13–3</b></a></li>
+            <li><a href="#bb"><img src="../images/owners/bbs-bold-team.png" alt="" /><span><strong>BB's Bold Team</strong> over You Don't Know Bo</span><b>11.5–4.5</b></a></li>
+            <li><a href="#gunnarrhea"><img src="../images/owners/gunnarrhea.png" alt="" /><span><strong>Gunnarrhea</strong> over John's Super Team</span><b>8.5–7.5</b></a></li>
+            <li><a href="#mizerable"><img src="../images/owners/this-is-mizerable.png" alt="" /><span><strong>This is Mizerable</strong> over BTA Boyz</span><b>11–5</b></a></li>
+            <li><a href="#dixon"><img src="../images/owners/dixon-cider.png" alt="" /><span><strong>Dixon Cider</strong> over Mactown</span><b>10–6</b></a></li>
+          </ol>
+        </nav>
+
+        <section class="nl-game" id="goodyear">
+          <div class="nl-game-top"><span class="nl-label">Matchup 1 of 5</span><span class="nl-tag is-blowout">Blowout</span></div>
+          <h2>The matchup of the week wasn't a matchup</h2>
+          <div class="nl-score">
+            <span class="nl-team is-winner"><img src="../images/owners/goodyear-gila-monsters.png" alt="" />Goodyear Gila Monsters</span>
+            <span class="nl-final"><em>13</em>–3</span>
+            <span class="nl-team"><img src="../images/owners/me-so-heorny.png" alt="" />Me So Heorny</span>
+          </div>
+          <p>Second against third was billed as a heavyweight fight. Goodyear swept all eight hitting categories, the staff posted a 1.81 ERA, and Me So Heorny hit .217 while throwing pool noodles.</p>
+          <ul class="nl-stats">
+            <li>Hitting <b>8–0</b></li>
+            <li>Pitching <b>5–3</b></li>
+            <li>ERA <b>1.81</b> vs 3.91</li>
+            <li>RBI <b>60</b> vs 32</li>
+          </ul>
+        </section>
+
+        <section class="nl-game" id="bb">
+          <div class="nl-game-top"><span class="nl-label">Matchup 2 of 5</span></div>
+          <h2>BB is 11-1 and nobody knows how to stop it</h2>
+          <div class="nl-score">
+            <span class="nl-team is-winner"><img src="../images/owners/bbs-bold-team.png" alt="" />BB's Bold Team</span>
+            <span class="nl-final"><em>11.5</em>–4.5</span>
+            <span class="nl-team"><img src="../images/owners/you-dont-know-bo.png" alt="" />You Don't Know Bo</span>
+          </div>
+          <p>Eight straight wins. BB hit .297 with seven quality starts, and last year's GM of the Year keeps sliding back toward ninth.</p>
+          <ul class="nl-stats">
+            <li>Hitting <b>5.5–2.5</b></li>
+            <li>Pitching <b>6–2</b></li>
+            <li>QS <b>7</b> vs 2</li>
+            <li>ERA <b>2.87</b> vs 4.62</li>
+          </ul>
+        </section>
+
+        <section class="nl-game" id="gunnarrhea">
+          <div class="nl-game-top"><span class="nl-label">Matchup 3 of 5</span><span class="nl-tag is-close">Nail-biter</span></div>
+          <h2>Johnboy caught the case</h2>
+          <div class="nl-score">
+            <span class="nl-team is-winner"><img src="../images/owners/gunnarrhea.png" alt="" />Gunnarrhea</span>
+            <span class="nl-final"><em>8.5</em>–7.5</span>
+            <span class="nl-team"><img src="../images/owners/johns-super-team.png" alt="" />John's Super Team</span>
+          </div>
+          <p>John led the week in home runs and still lost to a 2-9 team. His bats won six of eight hitting categories, but a 1.430 WHIP handed Gunnarrhea the pitching and the upset. Nobody is safe anymore.</p>
+          <ul class="nl-stats">
+            <li>Hitting <b>2–6</b></li>
+            <li>Pitching <b>6.5–1.5</b></li>
+            <li>K <b>65</b> vs 45</li>
+            <li>WHIP <b>1.295</b> vs 1.430</li>
+          </ul>
+        </section>
+
+        <section class="nl-game" id="mizerable">
+          <div class="nl-game-top"><span class="nl-label">Matchup 4 of 5</span></div>
+          <h2>Mize escapes Roch Watch and hands BTA the torch</h2>
+          <div class="nl-score">
+            <span class="nl-team is-winner"><img src="../images/owners/this-is-mizerable.png" alt="" />This is Mizerable</span>
+            <span class="nl-final"><em>11</em>–5</span>
+            <span class="nl-team"><img src="../images/owners/bta-boyz.png" alt="" />BTA Boyz</span>
+          </div>
+          <p>Nothing pretty, just functional, and against BTA that's all it takes. Nine straight losses for BTA, and rebuild number four is on the way.</p>
+          <ul class="nl-stats">
+            <li>Hitting <b>4.5–3.5</b></li>
+            <li>Pitching <b>6.5–1.5</b></li>
+            <li>ERA <b>3.90</b> vs 6.11</li>
+            <li>TB <b>134</b> vs 110</li>
+          </ul>
+        </section>
+
+        <section class="nl-game" id="dixon">
+          <div class="nl-game-top"><span class="nl-label">Matchup 5 of 5</span></div>
+          <h2>Dixon forgot to set a lineup and still won</h2>
+          <div class="nl-score">
+            <span class="nl-team is-winner"><img src="../images/owners/dixon-cider.png" alt="" />Dixon Cider</span>
+            <span class="nl-final"><em>10</em>–6</span>
+            <span class="nl-team"><img src="../images/owners/mactown-macdaddies.png" alt="" />Mactown MacDaddies</span>
+          </div>
+          <p>Three missed pitcher starts didn't matter. Mactown out-homered Dixon, but its staff was shelled for a 6.44 ERA and let a gift-wrapped win slip away.</p>
+          <ul class="nl-stats">
+            <li>Hitting <b>4.5–3.5</b></li>
+            <li>Pitching <b>5.5–2.5</b></li>
+            <li>ERA <b>3.21</b> vs 6.44</li>
+            <li>NSB <b>7</b> vs 1</li>
+          </ul>
+        </section>
+
+        <div class="nl-signoff">
+          <p>That's the week. See you next Monday, idiots.</p>
+          <p>Losers owe shots. <a href="../uti-intelligence.html">Check the standings →</a></p>
+        </div>
+      </div>
+    </article>
+
+    <p class="nl-footer">UTI Fantasy Baseball is powered by Busch Light, Malort, and weekly shots from your weekly losers.</p>
+  </main>
+</body>
+
+</html>
