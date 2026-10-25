@@ -224,7 +224,7 @@
     if (!target || !start || Number.isNaN(start.getTime())) return;
 
     const dateLabel = start.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
-    const units = [["days", 86400], ["hrs", 3600], ["min", 60], ["sec", 1]];
+    const units = [["d", 86400], ["h", 3600], ["m", 60], ["s", 1]];
 
     const tick = () => {
       let left = Math.floor((start - Date.now()) / 1000);
@@ -233,15 +233,12 @@
         clearInterval(timer);
         return;
       }
-      target.innerHTML = `
-        <span class="home-countdown-label">Opening Day<small>${escapeHtml(dateLabel)}</small></span>
-        <span class="home-countdown-units">
-          ${units.map(([unit, seconds]) => {
-            const value = Math.floor(left / seconds);
-            left -= value * seconds;
-            return `<span><b>${unit === "days" ? value : String(value).padStart(2, "0")}</b>${unit}</span>`;
-          }).join("")}
-        </span>`;
+      const parts = units.map(([unit, seconds]) => {
+        const value = Math.floor(left / seconds);
+        left -= value * seconds;
+        return `${unit === "d" ? value : String(value).padStart(2, "0")}${unit}`;
+      });
+      target.innerHTML = `<b>Opening Day</b> · ${escapeHtml(dateLabel)} · <span class="home-countdown-time">${parts.join(" ")}</span>`;
       target.hidden = false;
     };
 

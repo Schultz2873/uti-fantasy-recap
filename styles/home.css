@@ -1124,83 +1124,26 @@
   color: var(--color-accent);
 }
 
-/* Opening Day countdown at the top of the draft order card */
-.home-countdown + .home-clock {
-  margin-top: 0;
-}
-
+/* Opening Day countdown: one quiet line at the top of the draft order card */
 .home-countdown {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px 18px;
-  margin: 6px 0 12px;
-  padding: 14px 16px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-accent-border);
-  background: rgb(var(--rgb-black) / 0.24);
+  margin: 0 0 12px;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
 }
 
 .home-countdown[hidden] {
   display: none;
 }
 
-.home-countdown-label {
-  font-size: 0.75rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-accent);
-}
-
-.home-countdown-label small {
-  display: block;
-  margin-top: 2px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 0;
-  text-transform: none;
+.home-countdown b {
+  font-weight: 700;
   color: var(--color-text-soft);
 }
 
-.home-countdown-units {
-  display: flex;
-  gap: 8px;
-}
-
-.home-countdown-units span {
-  display: grid;
-  justify-items: center;
-  min-width: 52px;
-  padding: 6px 4px 5px;
-  border-radius: 10px;
-  background: var(--color-surface-raised);
-  font-size: 0.66rem;
+.home-countdown-time {
   font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-text-muted);
-}
-
-.home-countdown-units b {
-  font-size: 1.35rem;
-  font-weight: 900;
-  font-stretch: var(--font-wide);
-  line-height: 1.1;
-  color: var(--color-text);
+  color: var(--color-accent);
   font-variant-numeric: tabular-nums;
-}
-
-@media (max-width: 560px) {
-  .home-countdown-units {
-    width: 100%;
-  }
-
-  .home-countdown-units span {
-    flex: 1;
-    min-width: 0;
-  }
 }
 
 @keyframes home-clock-sweep {
