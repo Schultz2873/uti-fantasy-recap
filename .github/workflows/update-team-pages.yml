@@ -1,0 +1,36 @@
+name: Update Rosters and The Show Ratings
+
+on:
+  schedule:
+    # Every morning at 7:45 AM Central (daylight time; 6:45 AM in winter). GitHub cron uses UTC.
+    - cron: "45 12 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-team-pages:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v5
+
+      - name: Set up Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+
+      # Fantrax public API: no login needed.
+      - name: Update rosters for the team pages
+        run: node scripts/update-rosters.js
+
+      - name: Update MLB The Show ratings
+        run: node scripts/update-show-ratings.js
+
+      - name: Commit rosters and ratings
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Update rosters and MLB The Show ratings"
+          file_pattern: data/rosters.js data/show-ratings.js
