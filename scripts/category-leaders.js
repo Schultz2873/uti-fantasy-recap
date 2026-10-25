@@ -414,7 +414,8 @@ function buildLeaderEntry(category, players) {
 
   const tiedLeaders = leader.tiedLeaders.map(item => ({
     name: item.player.player?.fullName || "N/A",
-    team: item.player.team?.name || ""
+    team: MLB_TEAM_ABBREVIATIONS[item.player.team?.id] || item.player.team?.name || "",
+    id: item.player.player?.id
   }));
 
   return {
@@ -426,11 +427,25 @@ function buildLeaderEntry(category, players) {
   };
 }
 
-// Categories shown before "Show all 12 categories": a mix of hitting and pitching.
+// Categories shown first: a mix of hitting and pitching.
 const FEATURED_LEADER_CATEGORIES = ["R", "HR", "RBI", "K", "ERA", "SV+H-BS"];
 const FEATURED_LEADER_COUNT = FEATURED_LEADER_CATEGORIES.length;
 
-// One compact row per category: category, player (MLB team · UTI owner), value.
+// MLB Stats API team ID → abbreviation, for the leader cards.
+const MLB_TEAM_ABBREVIATIONS = {
+  108: "LAA", 109: "AZ", 110: "BAL", 111: "BOS", 112: "CHC", 113: "CIN", 114: "CLE", 115: "COL",
+  116: "DET", 117: "HOU", 118: "KC", 119: "LAD", 120: "WSH", 121: "NYM", 133: "ATH", 134: "PIT",
+  135: "SD", 136: "SEA", 137: "SF", 138: "STL", 139: "TB", 140: "TEX", 141: "TOR", 142: "MIN",
+  143: "PHI", 144: "ATL", 145: "CWS", 146: "MIA", 147: "NYY", 158: "MIL"
+};
+
+function playerHeadshot(id) {
+  if (!id) return `<span class="home-leader-headshot is-empty" aria-hidden="true"></span>`;
+  const src = `https://img.mlbstatic.com/mlb-photos/image/upload/d_people:generic:headshot:67:current.png/w_120,q_auto:best/v1/people/${id}/headshot/67/current`;
+  return `<img class="home-leader-headshot" src="${src}" alt="" loading="lazy">`;
+}
+
+// One small card per category: category and value on top, the player, then the UTI owner.
 function renderLeaderRows(leaders) {
   const list = document.getElementById("weeklyLeadersGrid");
 
@@ -448,32 +463,32 @@ function renderLeaderRows(leaders) {
 
   shownLeaders = featuredFirst;
   list.innerHTML = featuredFirst.map((leader, index) => `
-    <li class="${index >= FEATURED_LEADER_COUNT ? "is-extra" : ""}" data-leader-index="${index}">
-      <span class="home-leader-cat">${escapeHtml(leader.label.replace("SV+H-BS", "SV+H"))}</span>
-      ${renderLeaderPlayer(leader.tiedLeaders[0] || leader)}
-      <span class="home-leader-value">
-        ${escapeHtml(leader.value)}
+    <li data-leader-index="${index}">
+      <span class="home-leader-top">
+        <span class="home-leader-cat">${escapeHtml(leader.label.replace("SV+H-BS", "SV+H"))}</span>
         ${leader.tiedLeaders.length > 1 ? renderTieFlip(0, leader.tiedLeaders.length) : ""}
+        <span class="home-leader-value">${escapeHtml(leader.value)}</span>
       </span>
+      ${renderLeaderPlayer(leader.tiedLeaders[0] || leader)}
     </li>
   `).join("");
 }
 
-// Owner photo plus player name, MLB team, and UTI owner.
+// Headshot, name, and MLB team, then the UTI owner (or "Available").
 function renderLeaderPlayer(player) {
   const owner = getFantasyOwner(player.name);
   const ownerLogo = owner ? getTeamLogo(owner) : "";
-  // Owner photo, or an empty slot so rows stay aligned when the player is available.
-  const ownerPhoto = ownerLogo
-    ? `<img class="ui-team-photo is-medium" src="${escapeHtml(ownerLogo)}" alt="" loading="lazy">`
-    : `<span class="home-leader-nophoto" aria-hidden="true"></span>`;
+  const ownerPhoto = ownerLogo ? `<img class="ui-team-photo is-small" src="${escapeHtml(ownerLogo)}" alt="" loading="lazy">` : "";
 
   return `
-    ${ownerPhoto}
     <span class="home-leader-who">
-      <strong>${escapeHtml(player.name)}</strong>
-      <small>${escapeHtml(player.team || "—")} · ${owner ? `<b>${escapeHtml(owner)}</b>` : "Available"}</small>
+      ${playerHeadshot(player.id)}
+      <span>
+        <strong>${escapeHtml(player.name)}</strong>
+        <small>${escapeHtml(player.team || "—")}</small>
+      </span>
     </span>
+    <span class="home-leader-owner${owner ? "" : " is-available"}">${ownerPhoto}<span>${owner ? escapeHtml(owner) : "Available"}</span></span>
   `;
 }
 
@@ -498,7 +513,7 @@ function setupTieFlips() {
     const tieCount = leader.tiedLeaders.length;
     const nextIndex = (Number(button.dataset.tieIndex) + 1) % tieCount;
 
-    row.querySelector(".ui-team-photo, .home-leader-nophoto").remove();
+    row.querySelector(".home-leader-owner").remove();
     row.querySelector(".home-leader-who").outerHTML = renderLeaderPlayer(leader.tiedLeaders[nextIndex]);
     button.outerHTML = renderTieFlip(nextIndex, tieCount);
     row.querySelector(".home-leader-flip").focus();
@@ -512,18 +527,6 @@ function renderLeaderMessage(message) {
 
 function resetLeaderLoadingCards() {
   renderLeaderMessage("Loading category leaders…");
-}
-
-function setupLeadersMoreButton() {
-  const button = document.getElementById("leadersMore");
-  const list = document.getElementById("weeklyLeadersGrid");
-  if (!button || !list) return;
-
-  button.addEventListener("click", () => {
-    const expanded = list.classList.toggle("is-expanded");
-    button.dataset.expanded = String(expanded);
-    button.textContent = expanded ? "Show fewer" : "Show all 12 categories";
-  });
 }
 
 async function loadWeeklyLeaders() {
@@ -619,7 +622,6 @@ function setupPastWeekSelect() {
 document.addEventListener("DOMContentLoaded", () => {
   leaderRangeMode = document.getElementById("mlb-weekly-leaders")?.dataset.leaderRange || leaderRangeMode;
   setupPastWeekSelect();
-  setupLeadersMoreButton();
   setupTieFlips();
 
   setupModeToggle("data-leader-mode", "weekly", mode => {
