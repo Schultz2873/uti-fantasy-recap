@@ -1124,9 +1124,9 @@
   color: var(--color-accent);
 }
 
-/* Opening Day countdown: one quiet line at the top of the draft order card */
-.home-countdown {
-  margin: 0 0 12px;
+/* Opening Day countdown: one line in the on-the-clock banner, under "On deck" */
+.home-clock .home-countdown {
+  margin-top: 4px;
   font-size: 0.85rem;
   color: var(--color-text-muted);
 }
@@ -1146,6 +1146,7 @@
   color: var(--color-coral);
   text-shadow: 0 0 10px rgb(var(--rgb-coral) / 0.45);
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 @keyframes home-clock-sweep {

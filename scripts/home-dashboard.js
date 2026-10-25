@@ -206,6 +206,7 @@
         <span class="home-clock-live"><span class="home-clock-dot" aria-hidden="true"></span>Pick 1 · On the clock</span>
         <h3>${teamLink(onTheClock)} are on the clock</h3>
         ${onDeck ? `<p>On deck: ${escapeHtml(onDeck)}</p>` : ""}
+        <p class="home-countdown" id="openingDayCountdown" hidden></p>
       </div>`;
 
     list.innerHTML = [onDeck, ...rest].filter(Boolean).map((team, index) => `
