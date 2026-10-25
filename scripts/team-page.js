@@ -183,7 +183,7 @@
     chip.className = `spot ${extraClass}`.trim();
     chip.style.left = `${x}%`;
     chip.style.top = `${y}%`;
-    chip.innerHTML = `${headshot(player)}<span class="spot-text"><i>${escapeHtml(player[0])}${ovrBadge(player)}<span>${escapeHtml(player[3])}</span></i><b>${escapeHtml(shortName(player[2]))}</b></span>`;
+    chip.innerHTML = `${headshot(player)}<span class="spot-text"><i>${escapeHtml(player[0])}<span>${escapeHtml(player[3])}</span>${ovrBadge(player)}</i><b>${escapeHtml(shortName(player[2]))}</b></span>`;
     chip.setAttribute("aria-label", `${player[0]}: ${player[2]}, ${player[3]}`);
     field().appendChild(makeSelectable(chip, player));
   }
