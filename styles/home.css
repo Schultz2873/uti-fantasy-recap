@@ -980,6 +980,11 @@
     gap: 22px;
     padding: 22px;
   }
+
+  /* One column: the Home Run Pool champion goes above the draft order / standings */
+  .home-stack:has(#homeRunChampion:not([hidden])) {
+    order: -1;
+  }
 }
 
 @media (max-width: 600px) {
