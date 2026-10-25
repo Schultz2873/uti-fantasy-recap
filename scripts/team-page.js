@@ -84,14 +84,14 @@
   const isStarter = player => player[0] === "SP" || (player[0] === "P" && player[4] === "SP");
   const isReliever = player => player[0] === "RP" || (player[0] === "P" && player[4] !== "SP");
 
-  // Average The Show rating of a team's active players: overall, hitters, pitchers.
+  // Average The Show rating of a team's active and bench players (not IL or minors): overall, hitters, pitchers.
   function teamRating(players) {
-    const active = players.filter(p => p[1] === "ACTIVE");
+    const counted = players.filter(p => p[1] === "ACTIVE" || p[1] === "RESERVE");
     const average = list => {
       const values = list.map(ratingFor).filter(Number.isFinite);
       return values.length ? values.reduce((sum, v) => sum + v, 0) / values.length : null;
     };
-    return { overall: average(active), hitting: average(active.filter(p => !isPitcherSlot(p))), pitching: average(active.filter(isPitcherSlot)) };
+    return { overall: average(counted), hitting: average(counted.filter(p => !isPitcherSlot(p))), pitching: average(counted.filter(isPitcherSlot)) };
   }
 
   /* ---------- Header and quick numbers ---------- */
