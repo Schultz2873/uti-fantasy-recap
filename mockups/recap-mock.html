@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Week 12 Recap | UTI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/theme.css?v=sticky-3" />
+  <style>
+    /* MOCKUP of a news-article recap: just the matchups, laid out like a sports-section story.
+       Week 12 scores and stats are real; the write-ups are shortened stand-ins for the writer's. */
+    :root {
+      --paper: #f7f3ea;
+      --ink: #16181d;
+      --ink-soft: #3a3d44;
+      --ink-muted: #6b6d73;
+      --rule: #d9d2c3;
+      --news-red: #b3261e;
+      --font-head: "Playfair Display", Georgia, serif;
+      --font-body: "Source Serif 4", Georgia, "Times New Roman", serif;
+    }
+
+    /* Playfair's old-style figures make "11-1" read like "II-I" */
+    .np-paper h1,
+    .np-paper h2,
+    .np-quote {
+      font-variant-numeric: lining-nums;
+    }
+
+    body {
+      margin: 0;
+      background: var(--gradient-page) fixed, var(--color-bg);
+      font-family: var(--font-sans);
+    }
+
+    .np-wrap {
+      max-width: 860px;
+      margin: 28px auto 48px;
+      padding: 0 16px;
+    }
+
+    /* The newsprint sheet */
+    .np-paper {
+      padding: 36px 56px 44px;
+      background: var(--paper);
+      color: var(--ink-soft);
+      border-radius: 4px;
+      box-shadow: 0 24px 60px rgb(0 0 0 / 0.45);
+    }
+
+    /* Section flag: "UTI Sports · Weekly Recap" between rules */
+    .np-flag {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 6px 0;
+      border-block: 1px solid var(--ink);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+
+    .np-flag span:first-child {
+      color: var(--news-red);
+    }
+
+    .np-paper h1 {
+      margin: 22px 0 12px;
+      font-family: var(--font-head);
+      font-size: clamp(2rem, 5.4vw, 3.3rem);
+      font-weight: 900;
+      line-height: 1.04;
+      color: var(--ink);
+      text-wrap: balance;
+    }
+
+    .np-dek {
+      margin: 0 0 20px;
+      font-family: var(--font-body);
+      font-size: 1.25rem;
+      font-style: italic;
+      line-height: 1.45;
+      color: var(--ink-soft);
+    }
+
+    .np-byline {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-block: 1px solid var(--rule);
+      font-size: 0.8rem;
+      color: var(--ink-muted);
+    }
+
+    .np-byline img {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .np-byline strong {
+      display: block;
+      font-size: 0.88rem;
+      color: var(--ink);
+    }
+
+    /* Two columns: story on the left, box score on the right */
+    .np-body {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 220px;
+      gap: 36px;
+      margin-top: 26px;
+    }
+
+    .np-story p {
+      margin: 0 0 16px;
+      font-family: var(--font-body);
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: var(--ink-soft);
+    }
+
+    .np-dateline {
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+
+    .np-story h2 {
+      margin: 30px 0 4px;
+      font-family: var(--font-head);
+      font-size: 1.5rem;
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--ink);
+    }
+
+    /* "GOODYEAR 13, ME SO HEORNY 3" result line under each subhead */
+    .np-result {
+      display: block;
+      margin-bottom: 10px;
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--news-red);
+    }
+
+    .np-story .np-numbers {
+      margin-top: -4px;
+      font-family: var(--font-sans);
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: var(--ink-muted);
+    }
+
+    .np-numbers b {
+      color: var(--ink);
+    }
+
+    .np-quote {
+      margin: 26px 0;
+      padding: 14px 0;
+      border-block: 3px solid var(--ink);
+      font-family: var(--font-head);
+      font-size: 1.6rem;
+      font-style: italic;
+      font-weight: 700;
+      line-height: 1.25;
+      color: var(--ink);
+      text-align: center;
+    }
+
+    .np-quote cite {
+      display: block;
+      margin-top: 8px;
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-style: normal;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+    }
+
+    /* Box score sidebar in sports-page agate */
+    .np-box {
+      align-self: start;
+      position: sticky;
+      top: calc(var(--sticky-top, 0px) + 16px);
+      padding-top: 8px;
+      border-top: 3px solid var(--ink);
+    }
+
+    .np-box h3 {
+      margin: 0 0 8px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+
+    .np-box ol {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .np-box li {
+      padding: 7px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .np-box a {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 2px 8px;
+      font-size: 0.8rem;
+      color: var(--ink-muted);
+      text-decoration: none;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .np-box a:hover .is-winner {
+      text-decoration: underline;
+    }
+
+    .np-box .is-winner {
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    .np-box p {
+      margin: 10px 0 0;
+      font-size: 0.72rem;
+      line-height: 1.5;
+      color: var(--ink-muted);
+    }
+
+    .np-end {
+      margin: 28px 0 0;
+      text-align: center;
+      font-size: 1.2rem;
+      color: var(--ink);
+    }
+
+    .np-footer {
+      margin-top: 22px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--color-text-muted);
+    }
+
+    @media (max-width: 760px) {
+      .np-wrap {
+        margin-top: 16px;
+        padding: 0 10px;
+      }
+
+      .np-paper {
+        padding: 22px 20px 30px;
+      }
+
+      /* Box score moves above the story on phones */
+      .np-body {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 22px;
+      }
+
+      .np-box {
+        position: static;
+        order: -1;
+      }
+
+      .np-box ol {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: 16px;
+      }
+
+      .np-dek {
+        font-size: 1.08rem;
+      }
+
+      .np-story p {
+        font-size: 1.04rem;
+      }
+
+      .np-story h2 {
+        font-size: 1.3rem;
+      }
+
+      .np-quote {
+        font-size: 1.3rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <script src="../scripts/site-header.js?v=standings-1"></script>
+  <main class="np-wrap">
+    <article class="np-paper">
+      <div class="np-flag"><span>UTI Sports</span><span>Week 12 Recap</span></div>
+
+      <h1>BB's Bold Team moves to 11&#8209;1 and looks unbeatable</h1>
+      <p class="np-dek">Goodyear sends a warning shot, Gunnarrhea pulls off the upset, and BTA Boyz officially become the league's biggest concern.</p>
+
+      <div class="np-byline">
+        <img src="../images/owners/gunnarrhea.png" alt="" />
+        <span><strong>By Gunnarrhea</strong>UTI staff writer · Week 12, 2026 · 3 min read</span>
+      </div>
+
+      <div class="np-body">
+        <div class="np-story">
+          <p><span class="np-dateline">Union of Ten Idiots —</span> BB's Bold Team pushed its win streak to eight and its record to 11-1 on Sunday, and the rest of the league is running out of ideas. Behind them, Goodyear looked like the 2024 champions again, and BTA Boyz lost for the ninth straight week.</p>
+
+          <h2 id="goodyear">The matchup of the week wasn't a matchup</h2>
+          <span class="np-result">Goodyear 13, Me So Heorny 3</span>
+          <p>Second against third was billed as a heavyweight fight. Goodyear swept all eight hitting categories, the staff posted a 1.81 ERA, and Me So Heorny hit .217 while throwing pool noodles. The win moves Goodyear into second place.</p>
+          <p class="np-numbers">By the numbers: Hitting <b>8–0</b> · Pitching <b>5–3</b> · ERA <b>1.81</b> vs 3.91 · RBI <b>60</b> vs 32</p>
+
+          <h2 id="bb">BB is 11-1 and nobody knows how to stop it</h2>
+          <span class="np-result">BB's Bold Team 11.5, You Don't Know Bo 4.5</span>
+          <p>BB hit .297 and got seven quality starts against last year's GM of the Year, who keeps sliding back toward ninth place.</p>
+          <p class="np-numbers">By the numbers: Hitting <b>5.5–2.5</b> · Pitching <b>6–2</b> · QS <b>7</b> vs 2 · ERA <b>2.87</b> vs 4.62</p>
+
+          <blockquote class="np-quote">"Nobody is safe anymore."<cite>Gunnarrhea, after the upset</cite></blockquote>
+
+          <h2 id="gunnarrhea">Johnboy caught the case</h2>
+          <span class="np-result">Gunnarrhea 8.5, John's Super Team 7.5</span>
+          <p>John led the week in home runs and still lost to a 2-9 team. His bats won six of eight hitting categories, but a 1.430 WHIP handed Gunnarrhea the pitching and the upset.</p>
+          <p class="np-numbers">By the numbers: Hitting <b>2–6</b> · Pitching <b>6.5–1.5</b> · K <b>65</b> vs 45 · WHIP <b>1.295</b> vs 1.430</p>
+
+          <h2 id="mizerable">Mize escapes Roch Watch and hands BTA the torch</h2>
+          <span class="np-result">This is Mizerable 11, BTA Boyz 5</span>
+          <p>Nothing pretty, just functional, and against BTA that is all it takes. BTA's only win this year came against Mize, and rebuild number four is on the way.</p>
+          <p class="np-numbers">By the numbers: Hitting <b>4.5–3.5</b> · Pitching <b>6.5–1.5</b> · ERA <b>3.90</b> vs 6.11 · TB <b>134</b> vs 110</p>
+
+          <h2 id="dixon">Dixon forgot to set a lineup and still won</h2>
+          <span class="np-result">Dixon Cider 10, Mactown MacDaddies 6</span>
+          <p>Three missed pitcher starts didn't matter. Mactown out-homered Dixon and won RBI, but its staff was shelled for a 6.44 ERA and let a gift-wrapped win slip away.</p>
+          <p class="np-numbers">By the numbers: Hitting <b>4.5–3.5</b> · Pitching <b>5.5–2.5</b> · ERA <b>3.21</b> vs 6.44 · NSB <b>7</b> vs 1</p>
+
+          <p class="np-end" aria-hidden="true">■</p>
+        </div>
+
+        <aside class="np-box" aria-label="Week 12 box score">
+          <h3>Week 12 scores</h3>
+          <ol>
+            <li><a href="#goodyear"><span class="is-winner">Goodyear</span><span class="is-winner">13</span><span>Me So Heorny</span><span>3</span></a></li>
+            <li><a href="#bb"><span class="is-winner">BB's Bold Team</span><span class="is-winner">11.5</span><span>You Don't Know Bo</span><span>4.5</span></a></li>
+            <li><a href="#gunnarrhea"><span class="is-winner">Gunnarrhea</span><span class="is-winner">8.5</span><span>John's Super Team</span><span>7.5</span></a></li>
+            <li><a href="#mizerable"><span class="is-winner">This is Mizerable</span><span class="is-winner">11</span><span>BTA Boyz</span><span>5</span></a></li>
+            <li><a href="#dixon"><span class="is-winner">Dixon Cider</span><span class="is-winner">10</span><span>Mactown</span><span>6</span></a></li>
+          </ol>
+          <p>Winners in bold. Scores are categories won, out of 16.</p>
+        </aside>
+      </div>
+    </article>
+
+    <p class="np-footer">UTI Fantasy Baseball is powered by Busch Light, Malort, and weekly shots from your weekly losers.</p>
+  </main>
+</body>
+
+</html>
