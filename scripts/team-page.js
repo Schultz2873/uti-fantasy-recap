@@ -257,7 +257,6 @@
       });
       bench.append(heading, ul);
     });
-    document.getElementById("benchDetails").open = window.matchMedia("(min-width: 641px)").matches;
 
     keepChipsInField();
     renderTeamRating(team);
@@ -355,8 +354,10 @@
     const { profile, html } = result;
     const finish = seasonFinish(H, team, Number(profile.season));
     document.getElementById("teamVerdict").textContent = `${profile.verdict} · ${finish || `${profile.season} ${profile.source === "yahoo" ? "Yahoo" : "Fantrax"}`}`;
+    // "More stats" starts closed; once opened it stays open while switching seasons.
+    const moreWasOpen = Boolean(target.querySelector(".pf-more")?.open);
     target.innerHTML = html;
-    target.querySelector(".pf-more")?.setAttribute("open", "");
+    if (moreWasOpen) target.querySelector(".pf-more")?.setAttribute("open", "");
     target.dataset.team = team;
   }
 
