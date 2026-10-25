@@ -18,8 +18,8 @@ window.UTI_SEASON_RESULTS = [
       [4, "Dixon Cider"],
       [5, "Goodyear Gila Monsters"],
       [6, "BB's Bold Team"],
-      [6, "Gunnarrhea"],
-      [7, "This Is Mizerable"],
+      [7, "Gunnarrhea"],
+      [8, "This Is Mizerable"],
       [9, "Pat James's Swell Team"],
       [10, "Me So Heorny"]
     ]
