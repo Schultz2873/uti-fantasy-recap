@@ -56,7 +56,8 @@
 
   // The Show rating for a roster player, or null when the player isn't in the game.
   function ratingFor(player) {
-    const entry = window.UTI_SHOW_RATINGS?.ratings?.[normalizeName(player[2])];
+    // Fantrax splits two-way players into "Name-P" and "Name-H"; The Show has one card.
+    const entry = window.UTI_SHOW_RATINGS?.ratings?.[normalizeName(player[2].replace(/-[PH]$/, ""))];
     if (entry == null) return null;
     if (!Array.isArray(entry)) return entry;
     const team = TEAM_ALIASES[player[3]] || player[3];
