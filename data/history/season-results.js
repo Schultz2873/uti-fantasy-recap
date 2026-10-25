@@ -3,6 +3,13 @@
 
 window.UTI_SEASON_RESULTS = [
   {
+    season: 2023,
+    champion: "Me So Heorny",
+    runnerUp: "Gunnarrhea",
+    thirdPlace: "Goodyear Gila Monsters",
+    regularSeasonFirst: "Me So Heorny"
+  },
+  {
     season: 2024,
     champion: "Goodyear Gila Monsters",
     runnerUp: "John's Super Team",

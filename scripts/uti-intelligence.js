@@ -59,7 +59,7 @@
   const YAHOO_SEASONS = [
     { season: 2025, src: "data/history/2025-yahoo-weekly-team-stats.js", globalName: "UTI_YAHOO_2025_WEEKLY_TEAM_STATS" },
     { season: 2024, src: "data/history/2024-yahoo-weekly-team-stats.js", globalName: "UTI_YAHOO_2024_WEEKLY_TEAM_STATS" },
-    { season: 2023, src: "data/history/2023-yahoo-weekly-team-stats.js?v=2023-week19", globalName: "UTI_YAHOO_2023_WEEKLY_TEAM_STATS" }
+    { season: 2023, src: "data/history/2023-yahoo-weekly-team-stats.js?v=2023-full", globalName: "UTI_YAHOO_2023_WEEKLY_TEAM_STATS" }
   ];
 
   // Old team names that should open the current franchise's profile.
@@ -909,15 +909,11 @@
     },
     2023: {
       idPrefix: "utiHistory2023",
-      rangeText: weeks => weeks.length === 1
-        ? `Week ${weeks[0]} imported · final regular-season standings captured`
-        : `Weeks ${weekSpan(weeks)} imported`,
-      cards: [
-        { kind: "allPlay", icon: "🗃️", eyebrow: "2023 Imported All-Play #1", copy: row => `${formatPct(row.winPct)} in the imported 2023 sample`, tone: "is-history" },
-        { kind: "power", icon: "📼", eyebrow: "2023 Imported Power #1", copy: "Based only on imported 2023 matchup weeks", tone: "is-history" },
-        { kind: "luckiest", icon: "🍀", eyebrow: "2023 Imported Luckiest", copy: "Imported wins above all-play expectation", tone: "is-history" },
-        { kind: "unluckiest", icon: "🪦", eyebrow: "2023 Imported Unluckiest", copy: "Imported wins below all-play expectation", tone: "is-history" }
-      ]
+      rangeText: weeks => {
+        if (yahooAllRows(2023).some(isPlayoffRow)) return `Reg Weeks ${weekSpan(weeks)} · Playoffs complete`;
+        return weeks.length === 1 ? `Week ${weeks[0]}` : `Weeks ${weekSpan(weeks)}`;
+      },
+      cards: yahooSeasonCards(2023)
     }
   };
 
