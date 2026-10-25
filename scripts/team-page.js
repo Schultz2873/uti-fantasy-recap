@@ -188,29 +188,18 @@
     field().appendChild(makeSelectable(chip, player));
   }
 
-  // A box beside the field. "extra" players (e.g. starters on the bench) follow under a divider, dimmed.
-  function sideBox(label, players, side, showSlot, extra = []) {
-    if (!players.length && !extra.length) return;
+  function sideBox(label, players, side, showSlot) {
+    if (!players.length) return;
     const box = document.createElement("div");
     box.className = `side-box ${side}`;
     box.innerHTML = `<i>${label}</i>`;
-    const addRow = (player, benched) => {
+    players.forEach(player => {
       const row = document.createElement("button");
       row.type = "button";
-      if (benched) row.className = "is-benched";
-      const tag = benched ? `<em class="status ${STATUS[player[1]][0]}">${STATUS[player[1]][1]}</em>` : "";
-      row.innerHTML = `${showSlot ? `<small>${escapeHtml(player[0])}</small>` : ""}${headshot(player)}<b>${escapeHtml(shortName(player[2]))}</b>${tag}<span>${escapeHtml(player[3])}</span>${ovrBadge(player)}`;
-      row.setAttribute("aria-label", `${benched ? `${STATUS[player[1]][1]}: ` : `${player[0]}: `}${player[2]}, ${player[3]}`);
+      row.innerHTML = `${showSlot ? `<small>${escapeHtml(player[0])}</small>` : ""}${headshot(player)}<b>${escapeHtml(shortName(player[2]))}</b><span>${escapeHtml(player[3])}</span>${ovrBadge(player)}`;
+      row.setAttribute("aria-label", `${player[0]}: ${player[2]}, ${player[3]}`);
       box.appendChild(makeSelectable(row, player));
-    };
-    players.forEach(player => addRow(player, false));
-    if (extra.length) {
-      const divider = document.createElement("i");
-      divider.className = "side-box-divider";
-      divider.textContent = `Bench (${extra.length})`;
-      box.appendChild(divider);
-      extra.forEach(player => addRow(player, true));
-    }
+    });
     document.getElementById("fieldSides").appendChild(box);
   }
 
@@ -235,21 +224,15 @@
 
     // Boxes beside the diamond: flex spots on the left, the rotation on the right.
     sideBox("Flex", active.filter(p => ["CI", "MI", "UT"].includes(p[0])), "is-left", true);
-    // The whole starting staff: active starters, then starters on the bench or IL (best rating first).
-    // Minor leaguers stay in the bench list.
-    const benchStarters = players
-      .filter(p => (p[1] === "RESERVE" || p[1] === "INJURED_RESERVE") && p[4] === "SP")
-      .sort((a, b) => (ratingFor(b) ?? -1) - (ratingFor(a) ?? -1) || a[2].localeCompare(b[2]));
-    sideBox("Rotation", active.filter(isStarter), "is-right", false, benchStarters);
+    sideBox("Rotation", active.filter(isStarter), "is-right", false);
 
-    // Starters on the bench are listed in the Rotation box instead.
-    const benched = players.filter(p => p[1] !== "ACTIVE" && !benchStarters.includes(p));
+    const benched = players.filter(p => p[1] !== "ACTIVE");
     document.getElementById("benchCount").textContent = `(${benched.length})`;
     // Grouped: position players, pitchers, then minor leaguers. IL players stay in their group with an IL tag.
     const isPitcher = player => ["SP", "RP", "P"].includes(player[4]) || isPitcherSlot(player);
     const groups = [
       ["Position players", benched.filter(p => p[1] !== "MINORS" && !isPitcher(p))],
-      ["Relievers", benched.filter(p => p[1] !== "MINORS" && isPitcher(p))],
+      ["Pitchers", benched.filter(p => p[1] !== "MINORS" && isPitcher(p))],
       ["Minors", benched.filter(p => p[1] === "MINORS")]
     ];
     const bench = document.getElementById("bench");
