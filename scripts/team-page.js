@@ -204,14 +204,31 @@
 
     const benched = players.filter(p => p[1] !== "ACTIVE");
     document.getElementById("benchCount").textContent = `(${benched.length})`;
-    document.getElementById("bench").innerHTML = "";
-    benched.forEach(player => {
-      const [cls, label] = STATUS[player[1]] || ["res", player[1]];
-      const li = document.createElement("li");
-      li.tabIndex = 0;
-      li.innerHTML = `<span class="pos">${escapeHtml(player[0])}</span><b>${escapeHtml(player[2])}</b><span><em class="status ${cls}">${label}</em> ${escapeHtml(player[3])} ${ovrBadge(player)}</span>`;
-      li.addEventListener("keydown", event => { if (event.key === "Enter") selectPlayer(player, li); });
-      document.getElementById("bench").appendChild(makeSelectable(li, player));
+    // Grouped: position players, pitchers, then minor leaguers. IL players stay in their group with an IL tag.
+    const isPitcher = player => ["SP", "RP", "P"].includes(player[4]) || isPitcherSlot(player);
+    const groups = [
+      ["Position players", benched.filter(p => p[1] !== "MINORS" && !isPitcher(p))],
+      ["Pitchers", benched.filter(p => p[1] !== "MINORS" && isPitcher(p))],
+      ["Minors", benched.filter(p => p[1] === "MINORS")]
+    ];
+    const bench = document.getElementById("bench");
+    bench.innerHTML = "";
+    groups.filter(([, list]) => list.length).forEach(([title, list]) => {
+      const heading = document.createElement("h4");
+      heading.textContent = `${title} (${list.length})`;
+      const ul = document.createElement("ul");
+      ul.className = "roster-list";
+      list.forEach(player => {
+        const [cls, label] = STATUS[player[1]] || ["res", player[1]];
+        const li = document.createElement("li");
+        li.tabIndex = 0;
+        // Minors are already labeled by their group; only IL gets a tag elsewhere.
+        const tag = player[1] === "INJURED_RESERVE" ? `<em class="status ${cls}">${label}</em> ` : "";
+        li.innerHTML = `<span class="pos">${escapeHtml(player[0])}</span><b>${escapeHtml(player[2])}</b><span>${tag}${escapeHtml(player[3])} ${ovrBadge(player)}</span>`;
+        li.addEventListener("keydown", event => { if (event.key === "Enter") selectPlayer(player, li); });
+        ul.appendChild(makeSelectable(li, player));
+      });
+      bench.append(heading, ul);
     });
     document.getElementById("benchDetails").open = window.matchMedia("(min-width: 641px)").matches;
 

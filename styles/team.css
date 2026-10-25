@@ -418,10 +418,21 @@
 .bench summary::after { content: " ▸"; color: var(--color-teal); }
 .bench[open] summary::after { content: " ▾"; }
 
+.bench-groups h4 {
+  margin: 14px 0 0;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.bench-groups h4:first-child { margin-top: 10px; }
+
 .roster-list {
   display: grid;
   gap: 2px;
-  margin: 8px 0 0;
+  margin: 4px 0 0;
   padding: 0;
   list-style: none;
 }
