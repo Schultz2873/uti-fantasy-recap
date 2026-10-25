@@ -63,7 +63,27 @@
     }, 0);
   }
 
-  function renderScoreboard(rows) {
+  // The championship result gets a gold spotlight on the champion instead of the plain scoreboard.
+  function renderChampionSpotlight(target, { winner, loser }, hitting, pitching, season) {
+    document.getElementById("featured-recap")?.classList.add("is-championship");
+    // Confetti pieces; their colors, positions, and timing come from the CSS.
+    const confetti = `<span class="home-confetti" aria-hidden="true">${"<i></i>".repeat(18)}</span>`;
+    target.insertAdjacentHTML("beforebegin", confetti);
+
+    target.innerHTML = `
+      <div class="home-champ">
+        <div class="home-champ-photo">
+          ${teamPhoto(winner.team, "home-champ-img")}
+          <span class="home-champ-trophy" aria-hidden="true">🏆</span>
+        </div>
+        <span class="home-champ-kicker">${season ? `${season} ` : ""}UTI Champions</span>
+        <h2>${teamLink(winner.team)}</h2>
+        <p class="home-champ-score"><strong>${winner.score}–${loser.score}</strong> over ${teamLink(loser.team)}</p>
+        <span class="home-score-note">Hitting ${hitting} · Pitching ${pitching}</span>
+      </div>`;
+  }
+
+  function renderScoreboard(rows, season) {
     const target = document.getElementById("homeScoreboard");
     if (!target) return;
 
@@ -73,6 +93,20 @@
     const round = matchups[0]?.round;
 
     const rowFor = team => weekRows.find(row => row.team === team) || {};
+    const scoreNotes = ({ winner, loser }) => {
+      const winnerRow = rowFor(winner.team);
+      const loserRow = rowFor(loser.team);
+      return [
+        `${categoryPoints(winnerRow, loserRow, HITTING_CATEGORIES)}–${categoryPoints(loserRow, winnerRow, HITTING_CATEGORIES)}`,
+        `${categoryPoints(winnerRow, loserRow, PITCHING_CATEGORIES)}–${categoryPoints(loserRow, winnerRow, PITCHING_CATEGORIES)}`
+      ];
+    };
+
+    if (/championship/i.test(round || "") && matchups.length === 1 && !matchups[0].tie) {
+      renderChampionSpotlight(target, matchups[0], ...scoreNotes(matchups[0]), season);
+      return;
+    }
+
     const sideRow = (side, isWinner) => `
       <div class="home-score-row${isWinner ? " is-winner" : ""}">
         ${teamPhoto(side.team)}
@@ -82,11 +116,9 @@
 
     target.innerHTML = `
       <span class="home-score-label">${escapeHtml(round || `Week ${latestWeek}`)} · Final</span>
-      ${matchups.map(({ winner, loser, tie }) => {
-        const winnerRow = rowFor(winner.team);
-        const loserRow = rowFor(loser.team);
-        const hitting = `${categoryPoints(winnerRow, loserRow, HITTING_CATEGORIES)}–${categoryPoints(loserRow, winnerRow, HITTING_CATEGORIES)}`;
-        const pitching = `${categoryPoints(winnerRow, loserRow, PITCHING_CATEGORIES)}–${categoryPoints(loserRow, winnerRow, PITCHING_CATEGORIES)}`;
+      ${matchups.map(matchup => {
+        const { winner, loser, tie } = matchup;
+        const [hitting, pitching] = scoreNotes(matchup);
         return `
           <div class="home-score-matchup">
             ${sideRow(winner, !tie)}
@@ -206,7 +238,8 @@
     if (!Array.isArray(rows) || !rows.length || !window.UTIAnalytics) return;
 
     const summary = window.UTIAnalytics.buildSummary(rows);
-    renderScoreboard(rows);
+    // The season comes from the newest recap's folder, e.g. "2026/week24.html".
+    renderScoreboard(rows, recaps[0]?.href?.match(/^(\d{4})\//)?.[1]);
     renderStandings(summary);
     renderRecordBookLink(rows);
 

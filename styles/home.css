@@ -473,6 +473,169 @@
   color: var(--color-accent);
 }
 
+/* Hero after the championship: gold trim, falling confetti, and a spotlight on the champion */
+.home-hero.is-championship {
+  position: relative;
+  overflow: hidden;
+  border-color: rgb(var(--rgb-gold) / 0.5);
+  background:
+    radial-gradient(60% 80% at 85% 20%, rgb(var(--rgb-gold) / 0.22), transparent 65%),
+    radial-gradient(50% 70% at 0% 100%, rgb(var(--rgb-gold-deep) / 0.2), transparent 70%),
+    var(--gradient-hero);
+  box-shadow: 0 0 0 1px rgb(var(--rgb-gold) / 0.12), 0 20px 60px rgb(var(--rgb-gold) / 0.16);
+}
+
+.home-hero.is-championship > :not(.home-confetti) {
+  position: relative;
+  z-index: 1;
+}
+
+.home-hero.is-championship .ui-kicker {
+  color: var(--color-gold);
+}
+
+.home-hero.is-championship h1 {
+  background: linear-gradient(100deg, var(--color-text) 30%, var(--color-gold) 75%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.home-hero.is-championship .home-button {
+  background: var(--color-gold);
+}
+
+.home-confetti {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.home-confetti i {
+  position: absolute;
+  top: -16px;
+  left: var(--x);
+  width: 7px;
+  height: 12px;
+  border-radius: 2px;
+  background: var(--c, var(--color-gold));
+  opacity: 0.8;
+  animation: home-confetti-fall var(--t, 7s) linear var(--d, 0s) infinite;
+}
+
+.home-confetti i:nth-child(1) { --x: 4%; --d: -1s; --t: 8s; }
+.home-confetti i:nth-child(2) { --x: 10%; --d: -4s; --t: 6.5s; --c: var(--color-accent); }
+.home-confetti i:nth-child(3) { --x: 17%; --d: -2.5s; --t: 9s; --c: var(--color-text); }
+.home-confetti i:nth-child(4) { --x: 23%; --d: -6s; --t: 7s; }
+.home-confetti i:nth-child(5) { --x: 30%; --d: -0.5s; --t: 8.5s; --c: var(--color-accent); }
+.home-confetti i:nth-child(6) { --x: 36%; --d: -5s; --t: 6s; }
+.home-confetti i:nth-child(7) { --x: 42%; --d: -3s; --t: 9.5s; --c: var(--color-text); }
+.home-confetti i:nth-child(8) { --x: 48%; --d: -7s; --t: 7.5s; }
+.home-confetti i:nth-child(9) { --x: 54%; --d: -1.5s; --t: 6.8s; --c: var(--color-accent); }
+.home-confetti i:nth-child(10) { --x: 60%; --d: -4.5s; --t: 8.2s; }
+.home-confetti i:nth-child(11) { --x: 65%; --d: -2s; --t: 7.2s; --c: var(--color-text); }
+.home-confetti i:nth-child(12) { --x: 71%; --d: -6.5s; --t: 9s; }
+.home-confetti i:nth-child(13) { --x: 76%; --d: -3.5s; --t: 6.4s; --c: var(--color-accent); }
+.home-confetti i:nth-child(14) { --x: 81%; --d: -0.8s; --t: 8.8s; }
+.home-confetti i:nth-child(15) { --x: 86%; --d: -5.5s; --t: 7.6s; --c: var(--color-text); }
+.home-confetti i:nth-child(16) { --x: 91%; --d: -2.8s; --t: 6.2s; }
+.home-confetti i:nth-child(17) { --x: 95%; --d: -7.5s; --t: 8.4s; --c: var(--color-accent); }
+.home-confetti i:nth-child(18) { --x: 99%; --d: -4.2s; --t: 7s; }
+
+@keyframes home-confetti-fall {
+  /* top (not translate) so pieces fall the full height on tall phone layouts too */
+  from { top: -16px; transform: rotate(0deg); }
+  to { top: 100%; transform: rotate(540deg); }
+}
+
+.home-champ {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  text-align: center;
+}
+
+.home-champ-photo {
+  position: relative;
+  margin-bottom: 8px;
+}
+
+.home-champ-img {
+  display: block;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--color-gold);
+  box-shadow: 0 0 0 8px rgb(var(--rgb-gold) / 0.16), 0 0 40px rgb(var(--rgb-gold) / 0.45);
+  animation: home-champ-glow 3s ease-in-out infinite;
+}
+
+.home-champ-img.ui-team-initials {
+  display: grid;
+  place-items: center;
+  font-size: 2.2rem;
+}
+
+.home-champ-trophy {
+  position: absolute;
+  right: -8px;
+  bottom: -4px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--color-surface-solid);
+  border: 2px solid var(--color-gold);
+  font-size: 1.35rem;
+}
+
+@keyframes home-champ-glow {
+  50% { box-shadow: 0 0 0 12px rgb(var(--rgb-gold) / 0.1), 0 0 60px rgb(var(--rgb-gold) / 0.6); }
+}
+
+.home-champ-kicker {
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.home-champ h2 {
+  margin: 0;
+  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+  font-weight: 900;
+  font-stretch: var(--font-wide);
+  line-height: 1.05;
+  color: var(--color-text);
+  text-wrap: balance;
+}
+
+.home-champ-score {
+  margin: 2px 0 0;
+  color: var(--color-text-soft);
+}
+
+.home-champ-score strong {
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: var(--color-gold);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-confetti {
+    display: none;
+  }
+
+  .home-champ-img {
+    animation: none;
+  }
+}
+
 /* Standings + side column */
 .home-columns {
   display: grid;
