@@ -10,7 +10,7 @@
   <link href="styles/styles.css?v=theme-1" rel="stylesheet" />
   <link href="styles/intelligence.css?v=team-1" rel="stylesheet" />
   <link href="styles/analytics-pages.css?v=theme-1" rel="stylesheet" />
-  <link href="styles/history.css?v=phone-5" rel="stylesheet" />
+  <link href="styles/history.css?v=champs-6" rel="stylesheet" />
   <link href="styles/theme.css?v=sticky-3" rel="stylesheet" />
 </head>
 
@@ -32,6 +32,7 @@
           <button type="button" data-archive-year="2025" aria-pressed="false">2025</button>
           <button type="button" data-archive-year="2024" aria-pressed="false">2024</button>
           <button type="button" data-archive-year="2023" aria-pressed="false">2023</button>
+          <button type="button" data-archive-year="2022" aria-pressed="false">2022</button>
         </div>
       </div>
 
@@ -165,26 +166,32 @@
           <div class="uti-analytics-table-wrap" id="utiHistory2023StandingsTable"></div>
         </div>
         <div class="hist-board" data-board-panel="power" hidden>
-          <p class="ui-panel-note">Based only on the imported 2023 weeks.</p>
+          <p class="ui-panel-note">50% all-play, 30% category strength, 20% recent form.</p>
           <div class="uti-analytics-table-wrap" id="utiHistory2023PowerTable"></div>
         </div>
         <div class="hist-board" data-board-panel="allPlay" hidden>
-          <p class="ui-panel-note">How each team would have done against the other teams in each imported week.</p>
+          <p class="ui-panel-note">How each team would have done against all nine other teams every week.</p>
           <div class="uti-analytics-table-wrap" id="utiHistory2023AllPlayTable"></div>
         </div>
         <div class="hist-board" data-board-panel="luck" hidden>
-          <p class="ui-panel-note">Actual results compared with the wins expected from all-play, imported weeks only.</p>
+          <p class="ui-panel-note">Actual results compared with the wins expected from all-play.</p>
           <div class="uti-analytics-table-wrap" id="utiHistory2023LuckTable"></div>
         </div>
         <div class="hist-board" data-board-panel="category" hidden>
-          <p class="ui-panel-note">The strongest team in every 2023 scoring category, imported weeks only.</p>
+          <p class="ui-panel-note">The strongest team in every 2023 scoring category.</p>
           <div class="uti-analytics-table-wrap" id="utiHistory2023CategoryTable"></div>
         </div>
 
         <details class="hist-more">
           <summary>About the 2023 data</summary>
-          <p>Only some 2023 weeks are imported, so these leaderboards cover those weeks; regular-season records come from Yahoo's final standings. Old team names are credited to today's teams: Rita's Favorite Team is Gunnarrhea, Me so Randy is Me So Heorny, and Vladdys Hammer is This Is Mizerable. Pat James's Swell Team and the 2023 You Don't Kno Bo stay separate.</p>
+          <p>All 22 regular-season weeks plus every playoff round, pulled from the league's Yahoo pages. These leaderboards use the regular season only. Old team names are credited to today's teams: Rita's Favorite Team is Gunnarrhea, Me so Randy is Me So Heorny, and Vladdys Hammer is This Is Mizerable. Pat James's Swell Team and the 2023 You Don't Kno Bo stay separate.</p>
         </details>
+      </div>
+
+      <!-- 2022: final standings only, from data/history/season-results.js (no weekly stats on record). -->
+      <div class="hist-season" id="season-2022" data-season="2022" hidden>
+        <p class="ui-panel-note">Final standings only. Weekly stats from 2022 aren't on record.</p>
+        <div class="hist-table-wrap" id="utiFinalStandings2022"></div>
       </div>
 
       <details class="hist-more">
@@ -237,9 +244,9 @@
 
   <script src="data/team-logos.js"></script>
   <script src="data/weekly-team-stats.js?v=2026-10-24"></script>
-  <script src="data/history/season-results.js?v=third-1"></script>
+  <script src="data/history/season-results.js?v=2022-results-2"></script>
   <script src="scripts/league-analytics.js?v=2026-week22-r1-fix2"></script>
-  <script src="scripts/uti-intelligence.js?v=team-4"></script>
+  <script src="scripts/uti-intelligence.js?v=2022-results"></script>
 
   <script>
     // Season archive: one season and one leaderboard visible at a time.
