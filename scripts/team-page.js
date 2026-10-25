@@ -54,10 +54,29 @@
       .replace(/\s+(jr|sr|ii|iii|iv)$/i, "").replace(/\s+/g, " ").toLowerCase().trim();
   }
 
+  // Fantrax and The Show sometimes disagree on first names ("Jake Latz" vs "Jacob Latz").
+  const NICKNAMES = [
+    ["jake", "jacob"], ["mike", "michael"], ["matt", "matthew"], ["nick", "nicholas"], ["alex", "alexander"],
+    ["josh", "joshua"], ["zach", "zachary"], ["chris", "christopher"], ["dan", "daniel"], ["danny", "daniel"],
+    ["joe", "joseph"], ["tom", "thomas"], ["will", "william"], ["rob", "robert"], ["sam", "samuel"],
+    ["ben", "benjamin"], ["tony", "anthony"], ["andy", "andrew"], ["drew", "andrew"], ["greg", "gregory"],
+    ["jon", "jonathan"], ["jeff", "jeffrey"], ["ken", "kenneth"], ["cam", "cameron"], ["ed", "edward"],
+    ["eddie", "edward"], ["steve", "steven"], ["dave", "david"], ["jim", "james"], ["pat", "patrick"]
+  ];
+
+  // The normalized name, then the same name with each other form of the first name.
+  function nameVariants(key) {
+    const [first, ...rest] = key.split(" ");
+    const others = NICKNAMES.flatMap(([short, full]) => first === short ? [full] : first === full ? [short] : []);
+    return [key, ...others.map(name => [name, ...rest].join(" "))];
+  }
+
   // The Show rating for a roster player, or null when the player isn't in the game.
   function ratingFor(player) {
+    const ratings = window.UTI_SHOW_RATINGS?.ratings || {};
     // Fantrax splits two-way players into "Name-P" and "Name-H"; The Show has one card.
-    const entry = window.UTI_SHOW_RATINGS?.ratings?.[normalizeName(player[2].replace(/-[PH]$/, ""))];
+    const key = nameVariants(normalizeName(player[2].replace(/-[PH]$/, ""))).find(name => ratings[name] != null);
+    const entry = ratings[key];
     if (entry == null) return null;
     if (!Array.isArray(entry)) return entry;
     const team = TEAM_ALIASES[player[3]] || player[3];
