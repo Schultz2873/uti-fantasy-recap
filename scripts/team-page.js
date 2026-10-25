@@ -352,6 +352,19 @@
       card("playoff", "Playoff victim", playoff, `<b>${playoff?.playoffs.wins}-${playoff?.playoffs.losses}</b> in the playoffs`);
   }
 
+  /* ---------- Season stats (the old profile pop-up) ---------- */
+
+  function renderProfile(H, team, season) {
+    const result = H.profileBody(team, season);
+    const target = document.getElementById("teamProfile");
+    if (!result) { target.innerHTML = ""; return; }
+    const { profile, html } = result;
+    document.getElementById("teamVerdict").textContent = `${profile.verdict} · ${profile.season} ${profile.source === "yahoo" ? "Yahoo" : "Fantrax"}`;
+    target.innerHTML = html;
+    target.querySelector(".pf-more")?.setAttribute("open", "");
+    target.dataset.team = team;
+  }
+
   /* ---------- Page ---------- */
 
   function render(team) {
@@ -360,6 +373,7 @@
     renderHeader(H, team, teams);
     renderFacts(H, team);
     renderLineup(team);
+    renderProfile(H, team, String(H.current?.season || 2026));
     renderSeasons(H, team);
     renderCategories(H, team);
     renderRivals(H, team);
@@ -381,6 +395,14 @@
   }
 
   window.addEventListener("resize", keepChipsInField);
+
+  // Season tabs inside the season stats panel.
+  document.getElementById("teamProfile").addEventListener("click", event => {
+    const button = event.target.closest("[data-profile-season]");
+    if (!button) return;
+    event.stopPropagation();
+    renderProfile(window.UTIHistory, event.currentTarget.dataset.team, button.dataset.profileSeason);
+  });
 
   if (window.UTIHistory) start();
   else document.addEventListener("uti:history-ready", start, { once: true });

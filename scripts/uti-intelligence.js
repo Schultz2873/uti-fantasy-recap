@@ -17,6 +17,9 @@
     9. Loading + startup
 */
 (() => {
+  // Team names link to team.html, resolved from this script's location so it works from any folder.
+  const TEAM_PAGE_URL = new URL("../team.html", document.currentScript?.src || location.href).href;
+  const teamPageUrl = team => `${TEAM_PAGE_URL}?team=${encodeURIComponent(team)}`;
   /* ---------- 1. Config ---------- */
 
   const CURRENT_SEASON = 2026;
@@ -1639,14 +1642,14 @@
     ).join(" ");
   }
 
-  function renderProfileSeasonTabs(team) {
+  function renderProfileSeasonTabs(team, selected = activeProfileSeason) {
     const seasons = ["2026", ...[2025, 2024, 2023].filter(season => yahooAnalytics(season)).map(String)]
       .filter(season => teamHasSeasonData(team, season));
 
     return `
       <div class="pf-seasons" role="group" aria-label="Season">
         ${seasons.map(season => `
-          <button type="button" aria-pressed="${activeProfileSeason === season}" data-profile-season="${season}">${season}</button>
+          <button type="button" aria-pressed="${selected === season}" data-profile-season="${season}">${season}</button>
         `).join("")}
       </div>
     `;
@@ -1697,17 +1700,11 @@
     document.body.classList.remove("uti-profile-open");
   }
 
-  function openTeamProfile(team, season = activeProfileSeason) {
-    if (!team) return;
-
-    const resolvedSeason = preferredSeasonForTeam(team, season);
-    const data = getSeasonData(resolvedSeason);
-    if (!data) return;
-
-    activeProfileTeam = team;
-    activeProfileSeason = String(resolvedSeason);
-    ensureProfileModal();
-
+  // A team's season profile (season tabs, key numbers, weekly finish, more stats).
+  // Used by the profile pop-up and by the team page.
+  function profileBody(team, season) {
+    const data = getSeasonData(season);
+    if (!data) return null;
     const profile = buildTeamProfile(data, team);
     const profileSeason = Number(profile.season);
     const overallRecord = franchiseRecord(team, null, profileSeason, "all");
@@ -1718,17 +1715,8 @@
     const categoryLabel = category => category ? `${category.category} · ${formatPct(category.winPct)}` : "—";
     const note = profileSeasonNote(profile);
 
-    document.getElementById("utiTeamProfileContent").innerHTML = `
-      <div class="pf-top">
-        <img class="pf-photo" src="${logoFor(team)}" alt="">
-        <div>
-          <h2 id="utiProfileTeamName">${escapeHtml(team)}</h2>
-          <p><span class="pf-verdict">${escapeHtml(profile.verdict)}</span> · ${profile.season} ${profile.source === "yahoo" ? "Yahoo" : "Fantrax"}</p>
-          <a class="pf-team-link" href="team.html?team=${encodeURIComponent(team)}">Team page: lineup, seasons, rivals <span aria-hidden="true">→</span></a>
-        </div>
-      </div>
-
-      ${renderProfileSeasonTabs(team)}
+    const html = `
+      ${renderProfileSeasonTabs(team, String(profile.season))}
 
       <div class="pf-keys">
         ${keyStat("Record", formatRecord(overallRecord), recordNote)}
@@ -1761,6 +1749,33 @@
         </dl>
         ${note ? `<p class="pf-note">${note}</p>` : ""}
       </details>
+    `;
+    return { profile, html };
+  }
+
+  function openTeamProfile(team, season = activeProfileSeason) {
+    if (!team) return;
+
+    const resolvedSeason = preferredSeasonForTeam(team, season);
+    const data = getSeasonData(resolvedSeason);
+    if (!data) return;
+
+    activeProfileTeam = team;
+    activeProfileSeason = String(resolvedSeason);
+    ensureProfileModal();
+
+    const { profile, html } = profileBody(team, resolvedSeason);
+
+    document.getElementById("utiTeamProfileContent").innerHTML = `
+      <div class="pf-top">
+        <img class="pf-photo" src="${logoFor(team)}" alt="">
+        <div>
+          <h2 id="utiProfileTeamName">${escapeHtml(team)}</h2>
+          <p><span class="pf-verdict">${escapeHtml(profile.verdict)}</span> · ${profile.season} ${profile.source === "yahoo" ? "Yahoo" : "Fantrax"}</p>
+          <a class="pf-team-link" href="${teamPageUrl(team)}">Team page: lineup, seasons, rivals <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+      ${html}
     `;
 
     document.getElementById("utiTeamProfileModal").hidden = false;
@@ -1863,11 +1878,11 @@
         return;
       }
 
+      // Team names open that team's page (lineup on the field plus the full season profile).
       const trigger = event.target.closest("[data-team-profile]");
       if (trigger) {
         event.preventDefault();
-        const season = trigger.getAttribute("data-profile-open-season") || (isHistoryPage() ? "2025" : "2026");
-        openTeamProfile(trigger.getAttribute("data-team-profile"), season);
+        location.href = teamPageUrl(trigger.getAttribute("data-team-profile"));
       }
     });
 
@@ -1876,8 +1891,7 @@
 
       if ((event.key === "Enter" || event.key === " ") && event.target.matches("[data-team-profile]")) {
         event.preventDefault();
-        const season = event.target.getAttribute("data-profile-open-season") || "2026";
-        openTeamProfile(event.target.getAttribute("data-team-profile"), season);
+        location.href = teamPageUrl(event.target.getAttribute("data-team-profile"));
       }
     });
   }
@@ -2062,7 +2076,8 @@
         franchiseTeams,
         knownSeasonResults,
         trackedHistoryRows,
-        logoFor
+        logoFor,
+        profileBody: (team, season) => profileBody(team, preferredSeasonForTeam(team, season))
       };
       document.dispatchEvent(new CustomEvent("uti:history-ready"));
     } catch (error) {

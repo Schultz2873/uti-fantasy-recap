@@ -481,6 +481,16 @@
 .status.res { background: rgb(var(--rgb-white) / 0.06); color: var(--color-text-soft); }
 .status.minors { background: rgb(var(--rgb-gold) / 0.14); color: var(--color-gold); }
 
+/* ---------- Season stats ---------- */
+
+.team-verdict {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--color-gold);
+}
+
+.team-profile .pf-seasons { margin-top: 0; }
+
 /* ---------- Seasons, categories, rivals ---------- */
 
 .team-two {
