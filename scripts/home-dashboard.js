@@ -206,7 +206,10 @@
         <span class="home-clock-live"><span class="home-clock-dot" aria-hidden="true"></span>Pick 1 · On the clock</span>
         <h3>${teamLink(onTheClock)} are on the clock</h3>
         ${onDeck ? `<p>On deck: ${escapeHtml(onDeck)}</p>` : ""}
+      </div>
+      <div class="home-clock-dates">
         <p class="home-countdown" id="openingDayCountdown" hidden></p>
+        <p class="home-countdown" id="draftDayCountdown" hidden></p>
       </div>`;
 
     list.innerHTML = [onDeck, ...rest].filter(Boolean).map((team, index) => `
@@ -218,11 +221,18 @@
     return true;
   }
 
-  // Live countdown to Opening Day under the draft order; hidden once the day arrives.
-  function renderOpeningDayCountdown(openingDay) {
-    const target = document.getElementById("openingDayCountdown");
-    const start = openingDay ? new Date(`${openingDay}T00:00:00`) : null;
-    if (!target || !start || Number.isNaN(start.getTime())) return;
+  // One row of the on-the-clock banner's date strip: a live countdown to `date` (YYYY-MM-DD),
+  // "TBD" when no date is set, hidden once the day arrives.
+  function renderCountdown(targetId, label, date) {
+    const target = document.getElementById(targetId);
+    if (!target) return;
+
+    const start = date ? new Date(`${date}T00:00:00`) : null;
+    if (!start || Number.isNaN(start.getTime())) {
+      target.innerHTML = `<b>${escapeHtml(label)}</b><span class="home-countdown-time is-tbd">TBD</span>`;
+      target.hidden = false;
+      return;
+    }
 
     const dateLabel = start.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
     const units = [["d", 86400], ["h", 3600], ["m", 60], ["s", 1]];
@@ -239,7 +249,7 @@
         left -= value * seconds;
         return `${unit === "d" ? value : String(value).padStart(2, "0")}${unit}`;
       });
-      target.innerHTML = `<b>Opening Day</b> · ${escapeHtml(dateLabel)} · <span class="home-countdown-time">${parts.join(" ")}</span>`;
+      target.innerHTML = `<b>${escapeHtml(label)}</b><span>${escapeHtml(dateLabel)}</span><span class="home-countdown-time">${parts.join(" ")}</span>`;
       target.hidden = false;
     };
 
@@ -279,7 +289,10 @@
     if (prizeCard) prizeCard.hidden = !inSeason;
 
     const showDraft = !inSeason && renderDraftOrder(window.UTI_DRAFT_ORDER);
-    if (showDraft) renderOpeningDayCountdown(window.UTI_DRAFT_ORDER.openingDay);
+    if (showDraft) {
+      renderCountdown("openingDayCountdown", "Opening Day", window.UTI_DRAFT_ORDER.openingDay);
+      renderCountdown("draftDayCountdown", "Draft Day", window.UTI_DRAFT_ORDER.draftDay);
+    }
     const draftCard = document.getElementById("draft-order");
     const standingsCard = document.getElementById("standings");
     if (draftCard) draftCard.hidden = !showDraft;

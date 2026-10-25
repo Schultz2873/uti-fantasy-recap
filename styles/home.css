@@ -1124,9 +1124,22 @@
   color: var(--color-accent);
 }
 
-/* Opening Day countdown: one line in the on-the-clock banner, under "On deck" */
+/* Opening Day / Draft Day strip across the bottom of the on-the-clock banner */
+.home-clock-dates {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 6px;
+  padding-top: 12px;
+  border-top: 1px solid rgb(var(--rgb-coral) / 0.25);
+}
+
+/* One row: label, date, then the countdown at the right edge */
 .home-clock .home-countdown {
-  margin-top: 4px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: baseline;
+  margin: 0;
   font-size: 0.85rem;
   color: var(--color-text-muted);
 }
@@ -1142,11 +1155,17 @@
 }
 
 .home-countdown-time {
+  grid-column: 3;
   font-weight: 700;
   color: var(--color-coral);
   text-shadow: 0 0 10px rgb(var(--rgb-coral) / 0.45);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
+}
+
+.home-countdown-time.is-tbd {
+  color: var(--color-text-soft);
+  text-shadow: none;
 }
 
 @keyframes home-clock-sweep {
