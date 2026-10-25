@@ -189,6 +189,22 @@
   color: var(--color-text);
 }
 
+/* With four or more seasons the cards get narrow: let long team names wrap instead of
+   running off the card or ending in "…". */
+.hist-champ-who > div {
+  min-width: 0;
+}
+
+.hist-champ .ui-team > :last-child {
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
+}
+
+.hist-champ dd .ui-team {
+  text-align: right;
+}
+
 .hist-champ dl {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
