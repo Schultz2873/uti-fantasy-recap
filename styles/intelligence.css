@@ -1922,6 +1922,19 @@ a.uti-global-team-profile-link:hover,
   color: var(--color-text-muted);
 }
 
+.pf-team-link {
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+.pf-team-link:hover {
+  text-decoration: underline;
+}
+
 .pf-verdict {
   font-weight: 700;
   color: var(--color-accent);

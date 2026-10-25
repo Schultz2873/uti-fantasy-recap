@@ -1,4 +1,4 @@
-name: Import Fantrax Weekly Stats
+name: Import Fantrax Weekly Stats and Rosters
 
 on:
   schedule:
@@ -23,6 +23,20 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: 24
+
+      # Team pages: rosters (Fantrax public API) and MLB The Show ratings. Neither needs a login,
+      # so these are saved and committed first, even if the weekly-stats import below fails.
+      - name: Update rosters for the team pages
+        run: node scripts/update-rosters.js
+
+      - name: Update MLB The Show ratings
+        run: node scripts/update-show-ratings.js
+
+      - name: Commit rosters and ratings
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Update rosters and MLB The Show ratings"
+          file_pattern: data/rosters.js data/show-ratings.js
 
       # Needs the FANTRAX_COOKIE repository secret (Settings → Secrets and variables → Actions).
       # If this step fails with "cookie has expired", paste a fresh cookie into that secret.

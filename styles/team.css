@@ -1,0 +1,651 @@
+/*
+  Team page (team.html): header, quick numbers, the starting lineup on a ballpark,
+  seasons, category fingerprint, and rivalries. Colors come from theme.css tokens.
+*/
+
+.team-page {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 22px;
+  --grass: #12362f;
+  --grass-2: #0f2e28;
+  --dirt: #4a3626;
+  --track: #3a2b1f;
+  --chalk: rgb(var(--rgb-white) / 0.55);
+}
+
+.team-page .ui-panel {
+  margin-bottom: 0;
+  min-width: 0;
+}
+
+.team-panel-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin-bottom: 10px;
+}
+
+.team-panel-head h2 {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 800;
+  font-stretch: 110%;
+  color: var(--color-text);
+}
+
+/* ---------- Header ---------- */
+
+.team-head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  padding-top: 6px;
+}
+
+.team-loading {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.team-photo {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--color-teal);
+  box-shadow: 0 0 0 6px rgb(var(--rgb-teal) / 0.12);
+}
+
+.team-head h1 {
+  margin: 0;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 900;
+  font-stretch: var(--font-wide);
+  line-height: 1.02;
+  color: var(--color-text);
+  text-wrap: balance;
+}
+
+.team-sub {
+  margin: 4px 0 0;
+  font-size: 0.9rem;
+  color: var(--color-text-soft);
+}
+
+.shelf {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--color-navy);
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--color-text-soft);
+}
+
+.chip.gold { background: rgb(var(--rgb-gold) / 0.16); color: var(--color-gold); }
+.chip.silver { background: rgb(200 210 230 / 0.14); color: rgb(213 220 234); }
+.chip.bronze { background: rgb(205 127 50 / 0.2); color: rgb(224 160 102); }
+
+.team-picker {
+  display: grid;
+  gap: 4px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
+
+.team-picker select {
+  padding: 6px 10px;
+  border-radius: var(--radius-md);
+  background: var(--color-navy);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  font-size: 0.85rem;
+}
+
+/* One compact strip of quick numbers, divided by thin lines. */
+.team-facts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  padding: 8px 0;
+  border-radius: var(--radius-md);
+  background: var(--color-surface-solid);
+}
+
+.fact {
+  min-width: 0;
+  padding: 0 14px;
+  border-left: 1px solid var(--color-border);
+}
+
+.fact:first-child { border-left: 0; }
+
+.fact small {
+  display: block;
+  overflow: hidden;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fact strong {
+  display: block;
+  font-size: 1.02rem;
+  font-weight: 800;
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Ratings (MLB The Show card tiers) ---------- */
+
+.ovr {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.6em;
+  padding: 0 3px;
+  border-radius: 4px;
+  font-style: normal;
+  font-size: 0.62rem;
+  font-weight: 900;
+  line-height: 1.5;
+  color: var(--color-bg);
+  font-variant-numeric: tabular-nums;
+  /* Trim the text box to the digits so they center on their own height, not the font's descender space. */
+  text-box: trim-both cap alphabetic;
+}
+
+.ovr.diamond { background: #8fd8ff; }
+.ovr.gold { background: var(--color-gold); }
+.ovr.silver { background: #c9d1df; }
+.ovr.bronze { background: #d39461; }
+.ovr.common { background: #8e97aa; }
+.ovr.none { background: rgb(var(--rgb-white) / 0.1); color: var(--color-text-muted); }
+
+/* Small badges match the position label beside them. The 0.08em top padding is a measured
+   optical correction that leaves equal space above and below the digits. */
+.spot i .ovr,
+.side-box .ovr,
+.roster-list .ovr {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.5em;
+  min-width: 1.9em;
+  padding: 0.08em 0.3em 0;
+  border-radius: 3px;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+.spot i .ovr { font-size: 1em; }
+.side-box .ovr,
+.roster-list .ovr { font-size: 0.6rem; }
+
+.team-rating {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: var(--color-text-soft);
+}
+
+.team-rating .ovr {
+  padding: calc(2px + 0.08em) 8px 2px;
+  border-radius: 8px;
+  font-size: 1.35rem;
+}
+
+.team-rating b { color: var(--color-text); }
+
+.ovr-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+  margin-top: 10px;
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+}
+
+.ovr-legend span { margin-right: 4px; }
+.ovr-legend .ovr { padding: 0.08em 5px 0; }
+
+/* ---------- The ballpark ---------- */
+
+.lineup {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.field-wrap { position: relative; }
+
+.field {
+  position: relative;
+  max-width: 100%;
+  aspect-ratio: 100 / 106;
+}
+
+.field svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.field .pen { fill: var(--grass-2); stroke: var(--chalk); stroke-width: 0.3; stroke-dasharray: 1 0.8; }
+.field .pen-label { font-size: 2.3px; font-weight: 800; letter-spacing: 0.3px; fill: var(--color-text-muted); }
+.field .track { fill: var(--track); }
+.field .grass { fill: var(--grass); }
+.field .grass-stripe { fill: var(--grass-2); opacity: 0.55; }
+.field .dirt { fill: var(--dirt); }
+.field .chalk { fill: none; stroke: var(--chalk); stroke-width: 0.35; }
+.field .base { fill: #fff; }
+
+.spot {
+  position: absolute;
+  display: grid;
+  justify-items: center;
+  gap: 1px;
+  max-width: 30%;
+  padding: 4px 8px;
+  border: 1px solid rgb(var(--rgb-white) / 0.14);
+  border-radius: 10px;
+  background: rgb(var(--rgb-bg) / 0.82);
+  color: var(--color-text);
+  text-align: center;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+
+.spot:hover,
+.spot[aria-pressed="true"] {
+  border-color: var(--color-teal);
+  background: rgb(var(--rgb-bg) / 0.95);
+}
+
+.spot i {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-style: normal;
+  font-size: 0.62rem;
+  font-weight: 800;
+  line-height: 1.5;
+  letter-spacing: 0.06em;
+  color: var(--color-teal);
+}
+
+.spot b {
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+
+.spot span {
+  font-size: 0.64rem;
+  color: var(--color-text-muted);
+}
+
+.spot.is-pen i { color: var(--color-gold); }
+
+/* Flex spots and the rotation sit in a layer over the field, in the lower foul-territory corners. */
+.field-sides {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.field-sides > * { pointer-events: auto; }
+
+.side-box {
+  position: absolute;
+  bottom: 1%;
+  display: grid;
+  gap: 2px;
+  width: max-content;
+  max-width: 30%;
+  padding: 6px 8px;
+  border: 1px dashed rgb(var(--rgb-gold) / 0.55);
+  border-radius: 10px;
+  background: rgb(var(--rgb-bg) / 0.82);
+}
+
+.side-box.is-left { left: 1%; border-color: rgb(var(--rgb-teal) / 0.5); }
+.side-box.is-right { right: 1%; }
+
+.side-box i {
+  margin-bottom: 2px;
+  font-style: normal;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.side-box.is-left i { color: var(--color-teal); }
+
+.side-box button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 2px 0;
+  border: 0;
+  border-top: 1px solid var(--color-border);
+  background: none;
+  color: var(--color-text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.side-box button:first-of-type { border-top: 0; }
+
+.side-box small {
+  min-width: 1.7em;
+  font-size: 0.6rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--color-teal);
+}
+
+.side-box b {
+  flex: 1;
+  overflow: hidden;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.side-box span {
+  font-size: 0.64rem;
+  color: var(--color-text-muted);
+}
+
+.side-box button:hover b,
+.side-box button[aria-pressed="true"] b { color: var(--color-gold); }
+
+.player-card {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  background: var(--color-navy);
+  font-size: 0.85rem;
+  color: var(--color-text-soft);
+}
+
+.player-card strong { color: var(--color-text); }
+
+/* ---------- Bench, IL, minors ---------- */
+
+.bench summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+.bench summary::-webkit-details-marker { display: none; }
+
+.bench h3 {
+  display: inline;
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.bench h3 span { color: var(--color-teal); }
+.bench summary::after { content: " ▸"; color: var(--color-teal); }
+.bench[open] summary::after { content: " ▾"; }
+
+.roster-list {
+  display: grid;
+  gap: 2px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.roster-list li {
+  display: grid;
+  grid-template-columns: 2.4rem minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--color-border);
+  cursor: pointer;
+}
+
+.roster-list li:hover b,
+.roster-list li[aria-pressed="true"] b { color: var(--color-teal); }
+
+.roster-list .pos {
+  font-size: 0.66rem;
+  font-weight: 800;
+  color: var(--color-teal);
+}
+
+.roster-list b {
+  overflow: hidden;
+  font-weight: 600;
+  color: var(--color-text);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.roster-list span {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.status {
+  padding: 1px 7px;
+  border-radius: var(--radius-pill);
+  font-style: normal;
+  font-size: 0.66rem;
+  font-weight: 800;
+}
+
+.status.il { background: rgb(var(--rgb-coral) / 0.14); color: var(--color-coral); }
+.status.res { background: rgb(var(--rgb-white) / 0.06); color: var(--color-text-soft); }
+.status.minors { background: rgb(var(--rgb-gold) / 0.14); color: var(--color-gold); }
+
+/* ---------- Seasons, categories, rivals ---------- */
+
+.team-two {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 22px;
+}
+
+.team-table-wrap { overflow-x: auto; }
+
+.team-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.team-table th {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-align: left;
+}
+
+.team-table td {
+  padding: 9px 8px;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-soft);
+}
+
+.team-table .year { font-weight: 800; color: var(--color-text); }
+.team-table .num { text-align: right; }
+
+.cats {
+  display: grid;
+  gap: 4px;
+}
+
+.cats h3 {
+  margin: 8px 0 0;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.cat {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr) 2.6rem;
+  gap: 10px;
+  align-items: center;
+  font-size: 0.8rem;
+}
+
+.cat b { font-weight: 700; color: var(--color-text); }
+
+.cat .track {
+  position: relative;
+  height: 10px;
+}
+
+.cat .track::before {
+  content: "";
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  left: 50%;
+  border-left: 1px solid rgb(var(--rgb-white) / 0.25);
+}
+
+.cat .bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: 3px;
+}
+
+.cat .bar.up { left: 50%; background: var(--color-teal); }
+.cat .bar.down { right: 50%; background: var(--color-coral); }
+
+.cat em {
+  font-style: normal;
+  text-align: right;
+  color: var(--color-text-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.rivals {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.rival {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+  border-radius: var(--radius-md);
+  background: var(--color-navy);
+}
+
+.rival small {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.rival.owns small { color: var(--color-teal); }
+.rival.owned small { color: var(--color-coral); }
+.rival.playoff small { color: var(--color-gold); }
+
+.rival div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.rival img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.rival strong { font-size: 0.95rem; color: var(--color-text); }
+.rival span { font-size: 0.82rem; color: var(--color-text-soft); }
+.rival b { color: var(--color-text); font-variant-numeric: tabular-nums; }
+
+/* ---------- Phones ---------- */
+
+@media (max-width: 640px) {
+  .team-head { grid-template-columns: auto minmax(0, 1fr); }
+  .team-picker { grid-column: 1 / -1; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 8px; }
+  .team-photo { width: 64px; height: 64px; }
+
+  .fact { padding: 0 8px; }
+  .fact small { font-size: 0.6rem; }
+  .fact strong { font-size: 0.92rem; }
+
+  .lineup,
+  .team-two,
+  .rivals { grid-template-columns: minmax(0, 1fr); }
+
+  .field-wrap { margin-inline: -8px; }
+
+  .spot { gap: 0; max-width: 26%; padding: 2px 4px; border-radius: 7px; }
+  .spot i { gap: 3px; font-size: 0.52rem; }
+  .spot b { font-size: 0.62rem; }
+  .field .spot span { display: none; }
+
+  /* The corners are too small on phones, so the boxes sit side by side under the field. */
+  .field-sides {
+    position: static;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .side-box {
+    position: static;
+    flex: 1 1 0;
+    max-width: none;
+    gap: 2px;
+    padding: 4px 6px;
+    border-radius: 8px;
+  }
+
+  .side-box i { margin-bottom: 0; font-size: 0.52rem; }
+  .side-box button { gap: 4px; padding: 0; border-top: 0; }
+  .side-box b { font-size: 0.62rem; line-height: 1.25; }
+  .side-box small { font-size: 0.52rem; }
+  .side-box span { display: none; }
+  .side-box .ovr { font-size: 0.52rem; }
+}

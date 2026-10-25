@@ -1724,6 +1724,7 @@
         <div>
           <h2 id="utiProfileTeamName">${escapeHtml(team)}</h2>
           <p><span class="pf-verdict">${escapeHtml(profile.verdict)}</span> · ${profile.season} ${profile.source === "yahoo" ? "Yahoo" : "Fantrax"}</p>
+          <a class="pf-team-link" href="team.html?team=${encodeURIComponent(team)}">Team page: lineup, seasons, rivals <span aria-hidden="true">→</span></a>
         </div>
       </div>
 
@@ -2015,9 +2016,11 @@
     );
     // Pages without a board can still ask for team profiles (e.g. the homepage dashboard).
     const needsProfiles = Boolean(document.querySelector("[data-uti-profiles]"));
+    // team.html builds its own page from the shared history below (window.UTIHistory).
+    const needsTeamPage = Boolean(document.querySelector("[data-uti-team-page]"));
 
     if (!window.UTIAnalytics) return;
-    if (!needsCurrentBoard && !needsHistoryBoard && !needsHistoryTeaser && !needsHistoryOverview && !needsHistoryRecords && !needsProfiles) return;
+    if (!needsCurrentBoard && !needsHistoryBoard && !needsHistoryTeaser && !needsHistoryOverview && !needsHistoryRecords && !needsProfiles && !needsTeamPage) return;
 
     try {
       const data = await loadCurrentSeason();
@@ -2025,7 +2028,7 @@
 
       // Team profiles on the homepage also expose the Yahoo season tabs, so load Yahoo
       // history even when the homepage Intelligence section is in preview mode.
-      const needsYahoo = needsCurrentBoard || !isPreview || needsHistoryBoard || needsHistoryTeaser || needsHistoryOverview || needsHistoryRecords;
+      const needsYahoo = needsCurrentBoard || !isPreview || needsHistoryBoard || needsHistoryTeaser || needsHistoryOverview || needsHistoryRecords || needsTeamPage;
       if (needsYahoo) await loadYahooSeasons();
 
       ensureProfileModal();
@@ -2050,6 +2053,18 @@
         if (needsHistoryTeaser) renderHistoryTeaser();
         if (needsHistoryRecords) renderHistoryRecordSections();
       }
+
+      // Shared with the team pages (scripts/team-page.js), which listen for "uti:history-ready".
+      window.UTIHistory = {
+        current: latestAnalytics,
+        seasonData: getSeasonData,
+        franchiseRecord,
+        franchiseTeams,
+        knownSeasonResults,
+        trackedHistoryRows,
+        logoFor
+      };
+      document.dispatchEvent(new CustomEvent("uti:history-ready"));
     } catch (error) {
       console.error("UTI Intelligence failed to load:", error);
       renderLoadError(grid);
