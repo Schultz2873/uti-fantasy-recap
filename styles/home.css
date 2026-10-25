@@ -626,6 +626,38 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* Phones: the spotlight tells the story, so the recap headline and summary give way to just the link */
+@media (max-width: 600px) {
+  .home-hero.is-championship {
+    gap: 18px;
+    padding: 22px 18px;
+  }
+
+  .home-hero.is-championship .home-hero-copy {
+    order: 1;
+  }
+
+  .home-hero.is-championship .home-hero-copy > :not(.home-button) {
+    display: none;
+  }
+
+  .home-hero.is-championship .home-button {
+    display: block;
+    text-align: center;
+  }
+
+  .home-champ-img {
+    width: 96px;
+    height: 96px;
+  }
+
+  .home-champ-trophy {
+    width: 38px;
+    height: 38px;
+    font-size: 1.15rem;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .home-confetti {
     display: none;
