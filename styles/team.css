@@ -192,6 +192,32 @@
 .ovr-legend span { margin-right: 4px; }
 .ovr-legend .ovr { padding: 0.08em 5px 0; }
 
+/* ---------- Player photos (MLB headshots) ---------- */
+
+.player-photo {
+  width: 26px;
+  height: 26px;
+  flex: none;
+  border-radius: 50%;
+  object-fit: cover;
+  background: rgb(var(--rgb-white) / 0.08);
+}
+
+.player-photo.is-initials {
+  display: inline-grid;
+  place-items: center;
+  font-size: 0.6rem;
+  font-weight: 800;
+  color: var(--color-text-muted);
+}
+
+.player-photo.is-large {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
 /* ---------- The ballpark ---------- */
 
 .lineup {
@@ -227,11 +253,11 @@
 
 .spot {
   position: absolute;
-  display: grid;
-  justify-items: center;
-  gap: 1px;
-  max-width: 30%;
-  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 34%;
+  padding: 4px 8px 4px 4px;
   border: 1px solid rgb(var(--rgb-white) / 0.14);
   border-radius: 10px;
   background: rgb(var(--rgb-bg) / 0.82);
@@ -245,6 +271,20 @@
 .spot[aria-pressed="true"] {
   border-color: var(--color-teal);
   background: rgb(var(--rgb-bg) / 0.95);
+}
+
+.spot-text {
+  display: grid;
+  justify-items: start;
+  gap: 1px;
+  min-width: 0;
+  text-align: left;
+}
+
+.spot i span {
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--color-text-muted);
 }
 
 .spot i {
@@ -266,37 +306,29 @@
   white-space: nowrap;
 }
 
-.spot span {
-  font-size: 0.64rem;
-  color: var(--color-text-muted);
-}
-
 .spot.is-pen i { color: var(--color-gold); }
 
-/* Flex spots and the rotation sit in a layer over the field, in the lower foul-territory corners. */
+/* Flex spots (left) and the rotation (right) sit side by side under the field. */
 .field-sides {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 8px;
 }
 
-.field-sides > * { pointer-events: auto; }
-
 .side-box {
-  position: absolute;
-  bottom: 1%;
   display: grid;
+  flex: 1 1 0;
   gap: 2px;
-  width: max-content;
-  max-width: 30%;
+  min-width: 0;
   padding: 6px 8px;
   border: 1px dashed rgb(var(--rgb-gold) / 0.55);
   border-radius: 10px;
   background: rgb(var(--rgb-bg) / 0.82);
 }
 
-.side-box.is-left { left: 1%; border-color: rgb(var(--rgb-teal) / 0.5); }
-.side-box.is-right { right: 1%; }
+.side-box.is-left { border-color: rgb(var(--rgb-teal) / 0.5); }
 
 .side-box i {
   margin-bottom: 2px;
@@ -333,6 +365,8 @@
   line-height: 1;
   color: var(--color-teal);
 }
+
+.side-box .player-photo { width: 20px; height: 20px; }
 
 .side-box b {
   flex: 1;
@@ -416,6 +450,15 @@
 
 .roster-list li:hover b,
 .roster-list li[aria-pressed="true"] b { color: var(--color-teal); }
+
+.bench-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.bench-name .player-photo { width: 24px; height: 24px; }
 
 .roster-list .pos {
   font-size: 0.66rem;
@@ -575,25 +618,17 @@
 
   .field-wrap { margin-inline: -8px; }
 
-  .spot { gap: 0; max-width: 26%; padding: 2px 4px; border-radius: 7px; }
+  /* Fourteen chips with photos don't fit a phone-width field; photos stay in the boxes, bench and details. */
+  .spot { gap: 0; max-width: 28%; padding: 2px 4px; border-radius: 7px; }
+  .spot .player-photo { display: none; }
+  .spot-text { justify-items: center; text-align: center; }
   .spot i { gap: 3px; font-size: 0.52rem; }
-  .spot b { font-size: 0.62rem; }
-  .field .spot span { display: none; }
+  /* Long names ("B. Montgomery", "P. Crow-Armstrong") end with … on phones; tap for the full name. */
+  .spot b { max-width: 60px; overflow: hidden; font-size: 0.62rem; text-overflow: ellipsis; }
 
-  /* The corners are too small on phones, so the boxes sit side by side under the field. */
-  .field-sides {
-    position: static;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 8px;
-    margin-top: 8px;
-  }
+  .field-sides { gap: 8px; }
 
   .side-box {
-    position: static;
-    flex: 1 1 0;
-    max-width: none;
     gap: 2px;
     padding: 4px 6px;
     border-radius: 8px;
@@ -604,5 +639,6 @@
   .side-box b { font-size: 0.62rem; line-height: 1.25; }
   .side-box small { font-size: 0.52rem; }
   .side-box span { display: none; }
+  .side-box .player-photo { width: 16px; height: 16px; }
   .side-box .ovr { font-size: 0.52rem; }
 }

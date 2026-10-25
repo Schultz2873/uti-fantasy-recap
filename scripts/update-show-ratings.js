@@ -25,7 +25,7 @@ async function page(number) {
 function normalizeName(name) {
   return String(name || "")
     .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
+    .replace(/[\u0300-\u036f]/g, "")
     .replace(/[.'’]/g, "")
     .replace(/\s+(jr|sr|ii|iii|iv)$/i, "")
     .replace(/\s+/g, " ")

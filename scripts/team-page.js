@@ -31,11 +31,26 @@
     .replaceAll('"', "&quot;").replaceAll("'", "&#039;");
   const formatRecord = record => record ? `${record.wins}-${record.losses}-${record.ties}` : "—";
   const ordinal = n => n + (["th", "st", "nd", "rd"][(n % 100 - 20) % 10] || ["th", "st", "nd", "rd"][n % 100] || "th");
-  const lastName = name => name.replace(/ (Jr\.|Sr\.|II|III|IV)$/, "").split(" ").slice(-1)[0];
+  // "Ozzie Albies" → "O. Albies", "Elly De La Cruz" → "E. De La Cruz", "Shohei Ohtani-P" → "S. Ohtani".
+  function shortName(name) {
+    const words = name.replace(/-[PH]$/, "").replace(/ (Jr\.|Sr\.|II|III|IV)$/, "").split(" ");
+    return words.length > 1 ? `${words[0][0]}. ${words.slice(1).join(" ")}` : name;
+  }
+
+  // MLB headshot by MLB player ID; MLB's CDN falls back to a generic silhouette. No ID: initials.
+  function headshot(player, className = "player-photo") {
+    const id = player[5];
+    if (!id) {
+      const initials = player[2].split(" ").slice(0, 2).map(word => word[0]).join("");
+      return `<span class="${className} is-initials" aria-hidden="true">${escapeHtml(initials)}</span>`;
+    }
+    const src = `https://img.mlbstatic.com/mlb-photos/image/upload/d_people:generic:headshot:67:current.png/w_96,q_auto:best/v1/people/${id}/headshot/67/current`;
+    return `<img class="${className}" src="${src}" alt="" loading="lazy">`;
+  }
   const tierFor = value => TIERS.find(([, min]) => value >= min)[0];
 
   function normalizeName(name) {
-    return String(name || "").normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[.'’]/g, "")
+    return String(name || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[.'’]/g, "")
       .replace(/\s+(jr|sr|ii|iii|iv)$/i, "").replace(/\s+/g, " ").toLowerCase().trim();
   }
 
@@ -151,7 +166,7 @@
     const [slot, status, name, mlbTeam, position] = player;
     const where = status === "ACTIVE" ? `starting at ${slot}` : `${STATUS[status][1].toLowerCase()} (${slot} slot)`;
     const rating = ratingFor(player);
-    document.getElementById("playerCard").innerHTML =
+    document.getElementById("playerCard").innerHTML = headshot(player, "player-photo is-large") +
       `<strong>${escapeHtml(name)}</strong> · ${escapeHtml(mlbTeam || "—")} · ${escapeHtml(position)} · ${where}` +
       (rating != null ? ` · ${rating} overall in The Show` : " · not in The Show");
   }
@@ -168,7 +183,7 @@
     chip.className = `spot ${extraClass}`.trim();
     chip.style.left = `${x}%`;
     chip.style.top = `${y}%`;
-    chip.innerHTML = `<i>${escapeHtml(player[0])}${ovrBadge(player)}</i><b>${escapeHtml(lastName(player[2]))}</b><span>${escapeHtml(player[3])}</span>`;
+    chip.innerHTML = `${headshot(player)}<span class="spot-text"><i>${escapeHtml(player[0])}${ovrBadge(player)}<span>${escapeHtml(player[3])}</span></i><b>${escapeHtml(shortName(player[2]))}</b></span>`;
     chip.setAttribute("aria-label", `${player[0]}: ${player[2]}, ${player[3]}`);
     field().appendChild(makeSelectable(chip, player));
   }
@@ -181,7 +196,7 @@
     players.forEach(player => {
       const row = document.createElement("button");
       row.type = "button";
-      row.innerHTML = `${showSlot ? `<small>${escapeHtml(player[0])}</small>` : ""}<b>${escapeHtml(lastName(player[2]))}</b><span>${escapeHtml(player[3])}</span>${ovrBadge(player)}`;
+      row.innerHTML = `${showSlot ? `<small>${escapeHtml(player[0])}</small>` : ""}${headshot(player)}<b>${escapeHtml(shortName(player[2]))}</b><span>${escapeHtml(player[3])}</span>${ovrBadge(player)}`;
       row.setAttribute("aria-label", `${player[0]}: ${player[2]}, ${player[3]}`);
       box.appendChild(makeSelectable(row, player));
     });
@@ -236,7 +251,7 @@
         li.tabIndex = 0;
         // Minors are already labeled by their group; only IL gets a tag elsewhere.
         const tag = player[1] === "INJURED_RESERVE" ? `<em class="status ${cls}">${label}</em> ` : "";
-        li.innerHTML = `<span class="pos">${escapeHtml(player[0])}</span><b>${escapeHtml(player[2])}</b><span>${tag}${escapeHtml(player[3])} ${ovrBadge(player)}</span>`;
+        li.innerHTML = `<span class="pos">${escapeHtml(player[0])}</span><span class="bench-name">${headshot(player)}<b>${escapeHtml(shortName(player[2]))}</b></span><span>${tag}${escapeHtml(player[3])} ${ovrBadge(player)}</span>`;
         li.addEventListener("keydown", event => { if (event.key === "Enter") selectPlayer(player, li); });
         ul.appendChild(makeSelectable(li, player));
       });
