@@ -208,8 +208,8 @@
         ${onDeck ? `<p>On deck: ${escapeHtml(onDeck)}</p>` : ""}
       </div>
       <div class="home-clock-dates">
-        <p class="home-countdown" id="openingDayCountdown" hidden></p>
         <p class="home-countdown" id="draftDayCountdown" hidden></p>
+        <p class="home-countdown" id="openingDayCountdown" hidden></p>
       </div>`;
 
     list.innerHTML = [onDeck, ...rest].filter(Boolean).map((team, index) => `
