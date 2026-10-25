@@ -10,7 +10,7 @@
   <link href="styles/styles.css?v=theme-1" rel="stylesheet" />
   <link href="styles/intelligence.css?v=team-1" rel="stylesheet" />
   <link href="styles/analytics-pages.css?v=theme-1" rel="stylesheet" />
-  <link href="styles/history.css?v=champs-wrap" rel="stylesheet" />
+  <link href="styles/history.css?v=champs-6" rel="stylesheet" />
   <link href="styles/theme.css?v=sticky-3" rel="stylesheet" />
 </head>
 
@@ -32,6 +32,7 @@
           <button type="button" data-archive-year="2025" aria-pressed="false">2025</button>
           <button type="button" data-archive-year="2024" aria-pressed="false">2024</button>
           <button type="button" data-archive-year="2023" aria-pressed="false">2023</button>
+          <button type="button" data-archive-year="2022" aria-pressed="false">2022</button>
         </div>
       </div>
 
@@ -187,6 +188,12 @@
         </details>
       </div>
 
+      <!-- 2022: final standings only, from data/history/season-results.js (no weekly stats on record). -->
+      <div class="hist-season" id="season-2022" data-season="2022" hidden>
+        <p class="ui-panel-note">Final standings only. Weekly stats from 2022 aren't on record.</p>
+        <div class="hist-table-wrap" id="utiFinalStandings2022"></div>
+      </div>
+
       <details class="hist-more">
         <summary>2025 → 2026 comparison</summary>
         <p>All-Play and Power Rating for each team in 2025 (Yahoo) and 2026 (Fantrax). Both are on a 0–100 scale, so the change compares fairly even though the category lists differ.</p>
@@ -237,9 +244,9 @@
 
   <script src="data/team-logos.js"></script>
   <script src="data/weekly-team-stats.js?v=2026-10-24"></script>
-  <script src="data/history/season-results.js?v=2023-results"></script>
+  <script src="data/history/season-results.js?v=2022-results"></script>
   <script src="scripts/league-analytics.js?v=2026-week22-r1-fix2"></script>
-  <script src="scripts/uti-intelligence.js?v=2023-full"></script>
+  <script src="scripts/uti-intelligence.js?v=2022-results"></script>
 
   <script>
     // Season archive: one season and one leaderboard visible at a time.

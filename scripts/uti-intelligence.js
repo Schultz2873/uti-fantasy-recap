@@ -1355,6 +1355,27 @@
     `;
   }
 
+  // Seasons with only a final ranking on record (e.g. 2022): place, team, and finish.
+  function renderFinalStandingsOnly() {
+    knownSeasonResults().filter(result => Array.isArray(result.finalStandings)).forEach(result => {
+      const target = document.getElementById(`utiFinalStandings${result.season}`);
+      if (!target) return;
+      const finish = team => team === result.champion ? "🏆" : team === result.runnerUp ? "🥈" : team === result.thirdPlace ? "🥉" : "";
+      target.innerHTML = `
+        <table class="hist-table hist-standings">
+          <thead><tr><th>#</th><th class="hist-col-team">Team</th><th class="hist-place">Finish</th></tr></thead>
+          <tbody>
+            ${result.finalStandings.map(([place, team]) => `
+              <tr>
+                <td class="hist-rank">${place}</td>
+                <td class="hist-col-team">${historyTeamLink(team, String(result.season), true)}</td>
+                <td class="hist-place">${finish(team) || '<span class="hist-dash">—</span>'}</td>
+              </tr>`).join("")}
+          </tbody>
+        </table>`;
+    });
+  }
+
   // Trophy room: one card per completed season, newest first, plus a title count.
   function renderSeasonPlacements() {
     const target = document.getElementById("utiSeasonPlacements");
@@ -1469,6 +1490,7 @@
   function renderHistoryRecordSections() {
     renderFranchiseResume();
     renderSeasonPlacements();
+    renderFinalStandingsOnly();
 
     const recordToggle = document.getElementById("utiRecordTypeToggle");
     if (recordToggle && !recordToggle.dataset.listenerAttached) {
