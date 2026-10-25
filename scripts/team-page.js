@@ -228,12 +228,13 @@
 
     const benched = players.filter(p => p[1] !== "ACTIVE");
     document.getElementById("benchCount").textContent = `(${benched.length})`;
-    // Grouped: position players, pitchers, then minor leaguers. IL players stay in their group with an IL tag.
+    // Grouped: position players, pitchers, the injured list, then minor leaguers.
     const isPitcher = player => ["SP", "RP", "P"].includes(player[4]) || isPitcherSlot(player);
     const groups = [
-      ["Position players", benched.filter(p => p[1] !== "MINORS" && !isPitcher(p))],
-      ["Pitchers", benched.filter(p => p[1] !== "MINORS" && isPitcher(p))],
-      ["Minors", benched.filter(p => p[1] === "MINORS")]
+      ["Position players", benched.filter(p => p[1] === "RESERVE" && !isPitcher(p))],
+      ["Pitchers", benched.filter(p => p[1] === "RESERVE" && isPitcher(p))],
+      ["IL", benched.filter(p => p[1] === "INJURED_RESERVE")],
+      ["Minors", benched.filter(p => !["RESERVE", "INJURED_RESERVE"].includes(p[1]))]
     ];
     const bench = document.getElementById("bench");
     bench.innerHTML = "";
@@ -246,12 +247,9 @@
       const ul = document.createElement("ul");
       ul.className = "roster-list";
       list.forEach(player => {
-        const [cls, label] = STATUS[player[1]] || ["res", player[1]];
         const li = document.createElement("li");
         li.tabIndex = 0;
-        // Minors are already labeled by their group; only IL gets a tag elsewhere.
-        const tag = player[1] === "INJURED_RESERVE" ? `<em class="status ${cls}">${label}</em> ` : "";
-        li.innerHTML = `<span class="pos">${escapeHtml(player[0])}</span><span class="bench-name">${headshot(player)}<b>${escapeHtml(shortName(player[2]))}</b></span><span>${tag}${escapeHtml(player[3])} ${ovrBadge(player)}</span>`;
+        li.innerHTML = `<span class="pos">${escapeHtml(player[0])}</span><span class="bench-name">${headshot(player)}<b>${escapeHtml(shortName(player[2]))}</b></span><span>${escapeHtml(player[3])} ${ovrBadge(player)}</span>`;
         li.addEventListener("keydown", event => { if (event.key === "Enter") selectPlayer(player, li); });
         ul.appendChild(makeSelectable(li, player));
       });
