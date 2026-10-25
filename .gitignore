@@ -1,2 +1,5 @@
 # Fantrax login cookie for the local import script. Never commit.
 .fantrax-cookie
+
+# Yahoo login cookie for the one-time 2023 import. Never commit.
+.yahoo-cookie
