@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>League Contract | Union of Ten Idiots</title>
+  <link href="styles/styles.css?v=theme-3" rel="stylesheet" />
+  <link href="styles/theme.css?v=wordmark-1" rel="stylesheet" />
+  <link href="styles/league-contract.css?v=3" rel="stylesheet" />
+  <script src="scripts/league-contract.js?v=1" defer></script>
+</head>
+<body>
+  <script src="scripts/site-header.js?v=contract-1"></script>
+  <main class="page league-contract">
+    <header class="hero">
+      <p class="contract-status">Draft &middot; Updated October 29, 2026</p>
+      <h1>League Contract</h1>
+      <p>Union of Ten Idiots &mdash; rosters, draft rules, league fees, prize payouts, waivers, and voting.</p>
+      <p>This draft records the league rules so far. Additional rules will be added as they are finalized.</p>
+    </header>
+
+    <div class="contract-tabs" role="tablist" aria-label="Contract categories" hidden>
+      <button type="button" id="tab-money" role="tab" aria-controls="money" aria-selected="true">Money &amp; Payouts</button>
+      <button type="button" id="tab-rosters" role="tab" aria-controls="rosters" aria-selected="false" tabindex="-1">Rosters &amp; Draft</button>
+      <button type="button" id="tab-waivers" role="tab" aria-controls="waivers" aria-selected="false" tabindex="-1">Waivers &amp; Bidding</button>
+      <button type="button" id="tab-voting" role="tab" aria-controls="voting" aria-selected="false" tabindex="-1">Voting &amp; Trades</button>
+    </div>
+
+    <div id="money" class="contract-panel">
+    <section class="contract-section" aria-labelledby="pot-title">
+      <h2 id="pot-title">League prize pot</h2>
+      <p>The following charges fund the league prize pot:</p>
+      <dl class="contract-fees">
+        <div><dt>League buy-in</dt><dd>$100 per team.</dd></div>
+        <div><dt>Waiver wire pickups</dt><dd>$1 per pickup.</dd></div>
+        <div><dt>Additional draft auction funds</dt><dd>Each $10 paid during the draft purchases an additional $50 in auction money. The $10 payment goes into the prize pot; the $50 is draft auction money.</dd></div>
+        <div><dt>Rookie player auctions</dt><dd>Payments made through rookie player auctions go into the prize pot.</dd></div>
+      </dl>
+    </section>
+
+    <section class="contract-section" aria-labelledby="separate-title">
+      <h2 id="separate-title">Separate competition fees</h2>
+      <p>These fees are separate from the league prize pot:</p>
+      <dl class="contract-fees">
+        <div><dt>Weekly category competition</dt><dd>$50 per team.</dd></div>
+        <div><dt>Home run pool <span class="contract-optional">Optional</span></dt><dd>$50 per participating team.</dd></div>
+      </dl>
+    </section>
+
+    <section class="contract-section" aria-labelledby="payout-title">
+      <h2 id="payout-title">Prize payouts</h2>
+      <h3>Third place: league-pot charges waived</h3>
+      <p>The third-place team has all of its league-pot charges waived:</p>
+      <ul>
+        <li>The $100 league buy-in.</li>
+        <li>All waiver wire pickup fees.</li>
+        <li>All payments for additional draft auction funds.</li>
+        <li>All rookie player auction payments.</li>
+      </ul>
+      <h3>First and second place: remaining pot</h3>
+      <p>After accounting for the third-place team's waived charges, the remaining league prize pot is split as follows:</p>
+      <dl class="contract-fees">
+        <div><dt>First place</dt><dd>70% of the remaining pot.</dd></div>
+        <div><dt>Second place</dt><dd>30% of the remaining pot.</dd></div>
+      </dl>
+      <p class="contract-note"><strong>Separate fees remain due.</strong> The third-place waiver does not cover the $50 weekly category competition fee or the optional $50 home run pool fee. The third-place team must still pay both applicable fees.</p>
+    </section>
+    </div>
+    <div id="rosters" class="contract-panel">
+      <section class="contract-section" aria-labelledby="rosters-title">
+        <h2 id="rosters-title">Pre-draft roster cuts</h2>
+        <p>Before draft day, each team must reduce its roster to no more than <strong>30 total players</strong>.</p>
+        <p>The 30-player limit includes all players on the team: <strong>active, injured list (IL), and minor league players</strong>. IL and minor league players do not receive an exemption from this limit.</p>
+        <p>All players released during these pre-draft cuts enter the draft pool and are available to be drafted.</p>
+      </section>
+      <section class="contract-section" aria-labelledby="minor-draft-title">
+        <h2 id="minor-draft-title">First draft: minor league players</h2>
+        <p>The league holds two separate drafts. The first is exclusively for minor league players.</p>
+        <dl class="contract-fees">
+          <div><dt>Draft format</dt><dd>A regular, non-snake draft. The draft order stays the same in every round.</dd></div>
+          <div><dt>Player eligibility</dt><dd>Only players classified by MLB as minor league prospects are eligible for this draft.</dd></div>
+          <div><dt>Ineligible pick penalty</dt><dd>If a team drafts a player in the minor league draft who is not classified by MLB as a minor league prospect, the person making the pick owes a shot.</dd></div>
+          <div><dt>Misspelled name penalty</dt><dd>Anyone who misspells a player's name during the draft owes a shot.</dd></div>
+          <div><dt>Minor league roster spots</dt><dd>Each team has 7 total minor league roster spots. Teams may leave spots empty and are not required to fill all 7.</dd></div>
+        </dl>
+      </section>
+      <section class="contract-section" aria-labelledby="auction-draft-title">
+        <h2 id="auction-draft-title">Second draft: auction draft</h2>
+        <p>The second draft is an auction draft open to all available players, rather than only minor league prospects.</p>
+        <dl class="contract-fees">
+          <div><dt>Starting auction budget</dt><dd>Each team receives $150 in auction money.</dd></div>
+          <div><dt>Additional auction money</dt><dd>Teams may pay $10 in real money for an additional $50 in auction money. The real-money payment goes into the league prize pot.</dd></div>
+          <div><dt>Nomination order</dt><dd>The order is non-snake. After the 10th team nominates a player, the order returns to the first team and repeats in the same order.</dd></div>
+          <div><dt>Tied auction bids</dt><dd>If bids are tied, the team that nominated the player wins the tiebreaker if it is still in the bidding. If the nominating team is no longer in the bidding, priority goes to the first bidder among the tied teams.</dd></div>
+          <div><dt>Auction roster limit</dt><dd>Teams may continue bidding until their active roster reaches 30 players. IL and minor league players do not count toward this 30-player active roster limit.</dd></div>
+        </dl>
+        <p class="contract-note"><strong>Draft auction money is separate from real money.</strong> Players are purchased using the team's auction budget. The $10 payment for extra auction funds is a real-money charge.</p>
+        <p><strong>The two 30-player limits count differently.</strong> The pre-draft cutdown counts every player, including IL and minor league players. The auction limit counts only the active roster, excluding IL and minor league players.</p>
+      </section>
+    </div>
+    <div id="waivers" class="contract-panel">
+    <section class="contract-section" aria-labelledby="waivers-title">
+      <h2 id="waivers-title">Waiver claims &amp; rookie bidding</h2>
+      <h3>1. A player enters the waiver pool</h3>
+      <p>Only players currently on MLB teams appear in the waiver pool. Minor league players and unsigned free agents are excluded.</p>
+      <p>When a player is called up to the majors or an MLB team signs a veteran free agent during the season, that player enters the pool on waivers and becomes available for claims.</p>
+
+      <h3>2. Submit your claim</h3>
+      <p><strong>Waiver bids are for real money.</strong> A rookie waiver bid is a bid in actual dollars, not draft auction money or a virtual budget. Any resulting auction charge is owed in real money and goes into the league prize pot, in addition to the separate $1 pickup fee.</p>
+      <p class="contract-note"><strong>Non-rookie bids above $0 will be canceled.</strong> Fantrax will accept bids above $0 for non-rookies, but league rules do not allow them. The commissioner will cancel any non-rookie waiver claim submitted with a bid above $0. Only rookies may receive bids above $0.</p>
+      <ul>
+        <li><strong>Rookies:</strong> You may place a bid through the rookie player auction process.</li>
+        <li><strong>Non-rookies:</strong> Submit a $0 bid to claim the player. Bids above $0 are not allowed.</li>
+      </ul>
+
+      <h3>3. Make changes before bidding closes</h3>
+      <p>Your initial bid is not locked in. You may raise or lower a rookie bid before the waiver bidding deadline&mdash;for example, from $50 to $10. Non-rookie claims must remain at $0.</p>
+      <p>Review and edit your bid in Fantrax's <strong>Pending Transactions</strong> menu, which also shows the waiver processing date and time. Your final submitted amount at the deadline is the bid that counts.</p>
+
+      <h3>4. Claims are decided</h3>
+      <p><strong>The league uses Vickrey/Proxy (eBay-style) bidding.</strong> The highest bidder wins, but pays the next-highest submitted bid rather than their own maximum bid.</p>
+      <p>For example, if one team bids $10 and another bids $2, the $10 bidder wins and owes $2 in real money for the auction, plus the separate $1 pickup fee&mdash;$3 total.</p>
+      <p>If bids are tied, the team higher in the waiver priority order receives the player. This includes competing $0 claims for a non-rookie.</p>
+      <p><strong>An uncontested bid costs $0.</strong> If you are the only team to submit a bid or claim for a player, the auction charge is $0, regardless of your submitted bid. For example, if you bid $10 on a rookie and no other team submits a bid or claim, you receive the player for $0 rather than $10.</p>
+
+      <h3>5. The pickup fee applies</h3>
+      <p>Each successful waiver wire pickup carries a separate $1 fee. A $0 claim does not waive that fee. Rookie auction payments also go into the league prize pot.</p>
+    </section>
+    </div>
+    <div id="voting" class="contract-panel">
+    <section class="contract-section" aria-labelledby="voting-title">
+      <h2 id="voting-title">League voting &amp; trade vetoes</h2>
+      <dl class="contract-fees">
+        <div><dt>League-wide votes</dt><dd>League-wide proposals require unanimous approval from all teams to pass.</dd></div>
+        <div><dt>Trade vetoes</dt><dd>Trade vetoes are an exception to the unanimity requirement. A trade requires 5 votes in favor of a veto to be vetoed.</dd></div>
+      </dl>
+    </section>
+    </div>
+  </main>
+</body>
+</html>

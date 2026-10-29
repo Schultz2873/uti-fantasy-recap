@@ -1,0 +1,27 @@
+.league-contract { max-width: 900px; margin-inline: auto; }
+.league-contract .hero { margin-bottom: 24px; }
+.contract-tabs:not([hidden]) { display: flex; gap: 6px; padding: 6px; border: 1px solid rgba(128, 150, 160, .25); border-radius: 14px; }
+.contract-tabs button { flex: 1; min-width: 0; padding: 12px 8px; border: 1px solid transparent; border-radius: 9px; background: transparent; color: inherit; font: inherit; font-size: .9rem; font-weight: 700; cursor: pointer; }
+.contract-tabs button:hover { background: rgba(128, 150, 160, .12); }
+.contract-tabs button[aria-selected="true"] { color: var(--color-teal, #63d6bd); background: rgba(99, 214, 189, .1); border-color: rgba(99, 214, 189, .35); }
+.contract-tabs button:focus-visible, .contract-panel:focus-visible { outline: 2px solid var(--color-teal, #63d6bd); outline-offset: 3px; }
+.contract-panel[hidden] { display: none; }
+@media print {
+  .contract-tabs { display: none !important; }
+  .contract-panel[hidden] { display: block; }
+}
+.contract-status { color: var(--color-teal, #63d6bd); font-size: .8rem; font-weight: 700; letter-spacing: .05em; }
+.contract-section { margin-block: 20px; padding: clamp(18px, 4vw, 30px); border: 1px solid rgba(128, 150, 160, .25); border-radius: 14px; background: rgba(128, 150, 160, .04); }
+.contract-section h2 { font-size: 1.3rem; margin: 0 0 16px; }
+.contract-section h3 { font-size: 1.05rem; margin: 24px 0 10px; }
+.contract-section p, .contract-section li, .contract-fees dd { line-height: 1.65; }
+.contract-fees { margin: 0; }
+.contract-fees > div { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 16px; padding-block: 14px; border-bottom: 1px solid rgba(128, 150, 160, .2); }
+.contract-fees > div:last-child { border-bottom: 0; }
+.contract-fees dd { margin: 0; }
+.contract-optional { display: inline-block; font-size: .75rem; font-weight: 400; }
+.contract-note { border-left: 3px solid var(--color-teal, #63d6bd); padding-left: 16px; margin: 24px 0 0; }
+@media (max-width: 540px) {
+  .contract-tabs:not([hidden]) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .contract-fees > div { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+}
