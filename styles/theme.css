@@ -219,7 +219,7 @@ h3 {
   border-bottom-color: var(--color-accent);
 }
 
-/* "Tools" dropdown */
+/* Grouped navigation dropdown */
 .uti-nav-menu {
   position: relative;
 }
@@ -256,6 +256,20 @@ h3 {
   padding: 8px 10px;
   border-bottom: 0;
   border-radius: var(--radius-sm);
+}
+
+.uti-nav-group-label {
+  padding: 8px 10px 4px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.uti-nav-menu-list a + .uti-nav-group-label {
+  margin-top: 6px;
+  border-top: 1px solid var(--color-border);
 }
 
 .uti-nav-menu-list a:hover {
@@ -358,6 +372,7 @@ h3 {
 
 @media (max-width: 600px) {
   .uti-header-bar {
+    position: relative;
     padding-block: 10px 8px;
   }
 
@@ -365,15 +380,31 @@ h3 {
     display: none;
   }
 
-  /* Six short items wrap onto two lines at most; no sideways scrolling, so the Tools menu can open. */
+  /* Keep navigation on one row; narrower phones can swipe to reach every link. */
   .uti-header-nav {
-    gap: 2px 16px;
+    flex-wrap: nowrap;
+    gap: 16px;
     width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  .uti-header-nav > a,
+  .uti-header-nav > .uti-nav-menu {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  /* Anchor the dropdown outside the scrolling row so it isn't clipped. */
+  .uti-nav-menu {
+    position: static;
   }
 
   .uti-nav-menu-list {
-    right: auto;
-    left: 0;
+    top: 100%;
+    right: max(18px, env(safe-area-inset-right, 0px));
+    left: auto;
   }
 }
 

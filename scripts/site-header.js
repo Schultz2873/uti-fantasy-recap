@@ -16,12 +16,15 @@
     { label: "Home", href: "index.html" },
     { label: "Recaps", href: "recaps.html", matches: /\/(recaps\.html|2026\/week\d+\.html)$/ },
     // Standings also covers the old History page, which now redirects here.
-    { label: "Standings", href: "uti-intelligence.html", matches: /\/(uti-intelligence|history)\.html$/ },
+    { label: "Standings", href: "uti-intelligence.html", matches: /\/(uti-intelligence|history)\.html$/ }
+  ];
+
+  const LEAGUE_LINKS = [
     { label: "Record Book", href: "record-book.html" },
     { label: "League Contract", href: "league-contract.html" }
   ];
 
-  // Grouped under one "Tools" menu.
+  // League pages and tools share the compact League Hub menu.
   const TOOL_LINKS = [
     { label: "Home Run Pool", href: "tools/home-run-pool.html" },
     { label: "Trade Analyzer", href: "tools/uti-trade-analyzer.html" },
@@ -63,7 +66,7 @@
   }
 
   function renderHeader() {
-    const onToolPage = TOOL_LINKS.some(isCurrentPage);
+    const onMorePage = [...LEAGUE_LINKS, ...TOOL_LINKS].some(isCurrentPage);
 
     script.insertAdjacentHTML("beforebegin", `
       <header class="uti-header">
@@ -74,8 +77,13 @@
           <nav class="uti-header-nav" aria-label="Site">
             ${NAV_LINKS.map(navLink).join("")}
             <details class="uti-nav-menu">
-              <summary${onToolPage ? ' aria-current="page"' : ""}>Tools</summary>
-              <div class="uti-nav-menu-list">${TOOL_LINKS.map(navLink).join("")}</div>
+              <summary${onMorePage ? ' aria-current="page"' : ""}>League Hub</summary>
+              <div class="uti-nav-menu-list">
+                <span class="uti-nav-group-label">League</span>
+                ${LEAGUE_LINKS.map(navLink).join("")}
+                <span class="uti-nav-group-label">Tools</span>
+                ${TOOL_LINKS.map(navLink).join("")}
+              </div>
             </details>
           </nav>
         </div>
@@ -88,13 +96,16 @@
       </div>
     `);
 
-    // Close the Tools menu when clicking elsewhere or pressing Escape.
+    // Close the League Hub menu when clicking elsewhere or pressing Escape.
     const menu = document.querySelector(".uti-header .uti-nav-menu");
     document.addEventListener("click", event => {
       if (menu.open && !menu.contains(event.target)) menu.open = false;
     });
     document.addEventListener("keydown", event => {
-      if (event.key === "Escape") menu.open = false;
+      if (event.key === "Escape" && menu.open) {
+        menu.open = false;
+        menu.querySelector("summary").focus();
+      }
     });
   }
 
