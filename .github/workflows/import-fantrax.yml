@@ -25,12 +25,14 @@ jobs:
         with:
           node-version: 24
 
-      # Needs the FANTRAX_COOKIE repository secret (Settings → Secrets and variables → Actions).
-      # If this step fails with "cookie has expired", paste a fresh cookie into that secret.
+      - name: Check Fantrax API conversion
+        run: node --test scripts/fantrax-weekly.test.js
+
+      # Documented read-only API; account Secret ID replaces the expiring browser cookie.
       - name: Import weekly stats from Fantrax
         run: node scripts/import-fantrax.js
         env:
-          FANTRAX_COOKIE: ${{ secrets.FANTRAX_COOKIE }}
+          FANTRAX_SECRET_ID: ${{ secrets.FANTRAX_SECRET_ID }}
 
       - name: Commit updated stats
         uses: stefanzweifel/git-auto-commit-action@v5

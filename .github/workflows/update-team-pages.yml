@@ -25,6 +25,8 @@ jobs:
       # Fantrax public API: no login needed.
       - name: Update rosters for the team pages
         run: node scripts/update-rosters.js
+        env:
+          FANTRAX_SECRET_ID: ${{ secrets.FANTRAX_SECRET_ID }}
 
       - name: Update MLB The Show ratings
         run: node scripts/update-show-ratings.js
