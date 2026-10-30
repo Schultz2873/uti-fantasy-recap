@@ -1,0 +1,43 @@
+name: Update FantasyPros Dynasty Rankings
+
+on:
+  schedule:
+    - cron: "0 14 * * 3"
+  workflow_dispatch:
+    inputs:
+      season:
+        description: FantasyPros rankings season (blank uses current year)
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  update-fantasypros:
+    runs-on: ubuntu-latest
+    env:
+      FANTASYPROS_API_KEY: ${{ secrets.FANTASYPROS_API_KEY }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+      - name: Test ranking import
+        run: node --test scripts/fantasypros.test.mjs
+      - name: Import FantasyPros dynasty rankings
+        if: env.FANTASYPROS_API_KEY != ''
+        run: node scripts/update-fantasypros.js
+        env:
+          FANTASYPROS_SEASON: ${{ inputs.season }}
+      - name: Report missing key
+        if: env.FANTASYPROS_API_KEY == ''
+        run: echo "::warning::FantasyPros import skipped. Add FANTASYPROS_API_KEY to activate. Existing estimates kept."
+      - name: Refresh shared player values
+        if: env.FANTASYPROS_API_KEY != ''
+        run: node scripts/update-player-values.js
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        if: env.FANTASYPROS_API_KEY != ''
+        with:
+          commit_message: Update FantasyPros dynasty rankings
+          file_pattern: data/fantasypros-dynasty.js data/player-values.js

@@ -1,0 +1,35 @@
+name: Update MLB Stats-Based Player Values
+
+on:
+  schedule:
+    - cron: "30 12 * * 3"
+  workflow_dispatch:
+    inputs:
+      season:
+        description: Latest MLB regular season (blank selects automatically)
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  update-values:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+      - name: Verify scoring model
+        run: node --test scripts/player-stat-model.test.mjs scripts/player-values.test.mjs
+      - name: Refresh cached MLB stats
+        run: node scripts/update-mlb-stat-values.mjs
+        env:
+          MLB_STATS_SEASON: ${{ inputs.season }}
+      - name: Refresh shared values
+        run: node scripts/update-player-values.js
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: Update MLB stats-based dynasty estimates
+          file_pattern: data/mlb-stat-snapshot.js data/player-values.js

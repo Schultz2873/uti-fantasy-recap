@@ -7,7 +7,7 @@
   <title>UTI Trade Analyzer</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="../styles/styles.css?v=theme-1" rel="stylesheet" />
-  <link href="../styles/trade-analyzer.css?v=sticky-1" rel="stylesheet" />
+  <link href="../styles/trade-analyzer.css?v=opaque-dropdowns-1" rel="stylesheet" />
   <link href="../styles/theme.css?v=wordmark-1" rel="stylesheet" />
 </head>
 
@@ -21,6 +21,12 @@
         Build both sides of a trade and compare dynasty value, category impact, team fit, risk, age window,
         and current UTI ownership.
       </p>
+      <p class="muted" id="ratingsSummary">Loading player rating sources…</p>
+      <details class="rating-method">
+        <summary>How ratings work</summary>
+        <p>Our model compares MLB regular-season production in all 16 league categories. The latest three seasons carry 60%, 30%, and 10% weight. Batting average, ERA, WHIP, and opponent average account for workload; hitter strikeouts reward a lower strikeout rate. Net steals subtract caught stealing, and net saves subtract blown saves.</p>
+        <p>Trade points add modest age and manually maintained upside adjustments. These are production-based estimates, not future projections or expert rankings. Prospects and players without an established MLB sample retain provisional local estimates. Teams' category needs and draft-pick values remain manually maintained.</p>
+      </details>
     </section>
 
     <div id="loadError" class="load-error" hidden>
@@ -171,10 +177,10 @@
 
     // Edit these anytime your standings/team needs change.
     const TEAM_NEEDS = {
-      "Gunnarrhea": ["AVG", "NSB", "SVH_BS"],
+      "Gunnarrhea": ["AVG", "NSB", "NS"],
       "BB's Bold Team": ["K", "ERA", "WHIP", "BAA"],
       "Dixon Cider": ["HR", "RBI", "TB", "K"],
-      "Goodyear Gila Monsters": ["SVH_BS", "ERA", "WHIP"],
+      "Goodyear Gila Monsters": ["NS", "ERA", "WHIP"],
       "John's Super Team": ["R", "HR", "TB", "K"],
       "Mactown MacDaddies": ["ERA", "WHIP", "BAA", "K"],
       "Me So Heorny": ["AVG", "BB", "NSB"],
@@ -209,9 +215,9 @@
     };
 
     const HITTER_DISPLAY_CATEGORIES = ["R", "HR", "RBI", "NSB", "AVG", "TB", "SO", "BB"];
-    const PITCHER_DISPLAY_CATEGORIES = ["W", "L", "QS", "SVH_BS", "K", "ERA", "WHIP", "BAA"];
+    const PITCHER_DISPLAY_CATEGORIES = ["W", "L", "QS", "NS", "K", "ERA", "WHIP", "BAA"];
     const CATEGORY_LABELS = {
-      SVH_BS: "SV+H-BS"
+      NS: "Net Saves"
     };
 
     const state = {
@@ -261,7 +267,6 @@
         .toString()
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
-        .replace(/\s*-\s*[HP]\s*$/i, "")
         .replace(/[^a-zA-Z0-9]/g, "")
         .toLowerCase();
     }
@@ -361,6 +366,7 @@
       const name = typeof player === "string" ? player : player?.name;
       const normalizedName = normalizeName(name);
       return ownerLookup.get(normalizedName)
+        || (typeof player === "object" ? (player.aliases || []).map(alias => ownerLookup.get(normalizeName(alias))).find(Boolean) : "")
         || (normalizedName === "shoheiohtani" ? ownerLookup.get(normalizeName("Shohei Ohtani-H")) || ownerLookup.get(normalizeName("Shohei Ohtani-P")) : "")
         || "Free Agent";
     }
@@ -673,7 +679,9 @@
             <div class="selected-player-top">
               <div>
                 <div class="selected-player-name">${escapeHtml(player.name)}</div>
-                <div class="selected-player-meta">${escapeHtml(player.fantasyTeam)} • ${escapeHtml(formatAssetType(player))} • ${escapeHtml(player.tier)}</div>
+                <div class="selected-player-meta">${escapeHtml(player.fantasyTeam)} • ${escapeHtml(formatAssetType(player))} • ${escapeHtml(player.tier)}${player.needsReview ? ' • Provisional rating' : ''}</div>
+                <div class="muted">${escapeHtml(player.valueSource || 'Local estimate')}${player.dynastyRank ? ` • #${escapeHtml(player.dynastyRank)} • ${escapeHtml(player.rankingUpdated)}` : ''}</div>
+                ${player.modelBreakdown ? `<div class="muted">Production ${escapeHtml(player.modelBreakdown.production)} · Age ${escapeHtml(player.modelBreakdown.age)} · Upside ${escapeHtml(player.modelBreakdown.upside.toFixed(1))} · ${escapeHtml(player.statsConfidence)} · Updated ${escapeHtml(player.rankingUpdated)}</div>` : ''}
               </div>
               <span class="value-badge">${escapeHtml(player.dynastyValue)}</span>
             </div>
@@ -816,7 +824,7 @@
             <td>${escapeHtml(player.fantasyTeam)}</td>
             <td>${escapeHtml(formatAssetType(player))}</td>
             <td>${escapeHtml(player.age)}</td>
-            <td><strong>${escapeHtml(player.dynastyValue)}</strong></td>
+            <td><strong>${escapeHtml(player.dynastyValue)}</strong>${player.needsReview ? '<div class="muted">Provisional</div>' : ''}</td>
             <td>${escapeHtml(player.tier)}</td>
             <td>
               <span class="category-chip">${escapeHtml(player.categoryType || "—")} ${isDraftPick(player) ? "" : escapeHtml(player.categoryFit || "")}</span>
@@ -889,7 +897,7 @@
     }
 
     async function loadPlayersModule() {
-      const cacheBust = "trade-roster-filter-picks-1";
+      const cacheBust = `mlb-stats-${new Date().toISOString().slice(0, 10)}`;
       const primaryUrl = new URL("../data/players.js", window.location.href).href;
       const fallbackUrls = [
         primaryUrl,
@@ -931,6 +939,9 @@
         playerData = [...module.players]
           .map(enrichPlayer)
           .sort((a, b) => b.dynastyValue - a.dynastyValue);
+        const statCount = playerData.filter(player => player.valueSource === 'MLB stats model').length;
+        const summary = document.getElementById('ratingsSummary');
+        summary.textContent = `${statCount} stats-based ratings · ${playerData.length - statCount} provisional local estimates${module.statModelInfo?.updated ? ` · Updated ${module.statModelInfo.updated}` : ''}`;
 
         draftPickData = buildDraftPicks();
         assetData = [...playerData, ...draftPickData].sort((a, b) => b.dynastyValue - a.dynastyValue);
