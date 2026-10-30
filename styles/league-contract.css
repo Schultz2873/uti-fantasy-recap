@@ -1,7 +1,7 @@
 .league-contract { max-width: 900px; margin-inline: auto; }
 .league-contract .hero { margin-bottom: 24px; }
-.contract-tabs:not([hidden]) { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; padding: 6px; border: 1px solid rgba(128, 150, 160, .25); border-radius: 14px; }
-.contract-tabs button { flex: 1; min-width: 0; padding: 12px 8px; border: 1px solid transparent; border-radius: 9px; background: transparent; color: inherit; font: inherit; font-size: .9rem; font-weight: 700; cursor: pointer; }
+.contract-tabs:not([hidden]) { display: flex; flex-wrap: nowrap; gap: 4px; overflow-x: auto; padding: 4px; border: 1px solid rgba(128, 150, 160, .25); border-radius: 10px; }
+.contract-tabs button { flex: 0 0 auto; padding: 7px 10px; white-space: nowrap; border: 1px solid transparent; border-radius: 7px; background: transparent; color: inherit; font: inherit; font-size: .8rem; font-weight: 700; cursor: pointer; }
 .contract-tabs button:hover { background: rgba(128, 150, 160, .12); }
 .contract-tabs button[aria-selected="true"] { color: var(--color-teal, #63d6bd); background: rgba(99, 214, 189, .1); border-color: rgba(99, 214, 189, .35); }
 .contract-tabs button:focus-visible, .contract-panel:focus-visible { outline: 2px solid var(--color-teal, #63d6bd); outline-offset: 3px; }
@@ -22,6 +22,5 @@
 .contract-optional { display: inline-block; font-size: .75rem; font-weight: 400; }
 .contract-note { border-left: 3px solid var(--color-teal, #63d6bd); padding-left: 16px; margin: 24px 0 0; }
 @media (max-width: 540px) {
-  .contract-tabs:not([hidden]) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .contract-fees > div { grid-template-columns: minmax(0, 1fr); gap: 4px; }
 }
