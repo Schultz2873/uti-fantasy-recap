@@ -414,6 +414,41 @@ h3 {
   color: var(--color-accent);
 }
 
+/* Compact page introductions, with more room for content on phones. */
+.page .hero {
+  padding: 24px 20px;
+  border-radius: 18px;
+  margin-bottom: 16px;
+}
+
+.page .hero h1 {
+  font-size: clamp(1.8rem, 3.4vw, 2.6rem);
+  margin-bottom: 8px;
+}
+
+.page .hero p { margin-bottom: 8px; }
+.page .hero p:last-child { margin-bottom: 0; }
+
+@media (max-width: 640px) {
+  .page { padding-top: 10px; }
+  .page .hero { padding: 14px 16px; border-radius: 14px; margin-bottom: 12px; }
+  .page .hero h1,
+  .page .hist-head h1,
+  .page .team-head h1 { font-size: clamp(1.5rem, 6vw, 1.85rem); line-height: 1.12; }
+  .page .hero .deck,
+  .page .hero > p,
+  .page .hist-head > p { font-size: .88rem; line-height: 1.45; }
+  .page .hero .kicker { padding: 3px 8px; margin-bottom: 6px; font-size: .65rem; }
+  .page .rb-hero { gap: 6px; }
+  .page .hist-head { margin-bottom: 12px; padding-block: 0; gap: 6px; }
+  .page .team-head { gap: 10px; padding-top: 0; }
+  .page .team-photo { width: 48px; height: 48px; }
+  .page.team-page { gap: 16px; }
+  .page .home-hero { padding: 16px; gap: 16px; margin-bottom: 16px; }
+  .page .home-hero h1 { font-size: 1.6rem; margin-block: 6px 8px; }
+  .page .home-deck { font-size: .88rem; margin-bottom: 12px; }
+}
+
 /* ---------- 4. Shared components ---------- */
 /* Quiet by default: solid panels, sentence-case labels, color only where it means something
    (teal = win / link, coral = loss). Only hero banners glow. */
