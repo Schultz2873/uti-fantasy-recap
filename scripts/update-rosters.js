@@ -11,6 +11,7 @@
 */
 const fs = require("fs");
 const path = require("path");
+const { fantraxApi } = require("./fantrax-api");
 
 // League IDs live in scripts/fantrax-config.js (Fantrax gives the league a new ID each season).
 const LEAGUE_ID = require("./fantrax-config.js").rosterLeague;
@@ -18,7 +19,7 @@ const ROOT = path.join(__dirname, "..");
 const OUT_FILE = path.join(ROOT, "data/rosters.js");
 
 async function getJson(url) {
-  const response = await fetch(url);
+  const response = await fetch(url, { headers: { "User-Agent": "UTIFantasyRecap/1.0" } });
   if (!response.ok) throw new Error(`${url} returned HTTP ${response.status}`);
   return response.json();
 }
@@ -79,8 +80,8 @@ function displayName(fantraxName = "") {
 
 async function main() {
   const [rosters, players, mlbIds] = await Promise.all([
-    getJson(`https://www.fantrax.com/fxea/general/getTeamRosters?leagueId=${LEAGUE_ID}`),
-    getJson("https://www.fantrax.com/fxea/general/getPlayerIds?sport=MLB"),
+    fantraxApi("getTeamRosters", { leagueId: LEAGUE_ID }),
+    fantraxApi("getPlayerIds", { sport: "MLB" }),
     mlbPlayerIds()
   ]);
 
