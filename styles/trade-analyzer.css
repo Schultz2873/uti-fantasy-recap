@@ -1,5 +1,9 @@
 /* UTI Trade Analyzer (tools/uti-trade-analyzer.html). Moved from an inline <style> block. */
 
+.rating-method { margin-top: 10px; font-size: .85rem; }
+.rating-method summary { cursor: pointer; color: var(--color-text-soft); }
+.rating-method p { max-width: 80ch; margin: 10px 0 0; font-size: .85rem; line-height: 1.5; }
+
 :root {
   --uti-blue: var(--color-teal);
   --uti-dark: var(--color-text);
@@ -134,13 +138,18 @@ body {
   width: 100%;
   border: 1px solid var(--uti-border);
   border-radius: 999px;
-  background: rgb(var(--rgb-white) / 0.05);
+  background: var(--color-surface-solid);
   color: var(--uti-dark);
   padding: 8px 10px;
   font-size: 0.78rem;
   font-weight: 900;
   margin-bottom: 10px;
   cursor: pointer;
+}
+
+.team-fit-select option {
+  background: var(--color-surface-solid);
+  color: var(--color-text);
 }
 
 .player-search-wrap { position: relative; }
@@ -166,7 +175,7 @@ body {
   inset-inline: 0;
   top: calc(100% + 6px);
   z-index: 20;
-  background: rgb(var(--rgb-white) / 0.05);
+  background: var(--color-surface-solid);
   border: 1px solid var(--uti-border);
   border-radius: 16px;
   overflow: hidden;
@@ -181,7 +190,7 @@ body {
 .suggestion-btn {
   width: 100%;
   border: 0;
-  background: rgb(var(--rgb-white) / 0.05);
+  background: var(--color-surface-solid);
   text-align: left;
   padding: 10px 12px;
   display: grid;
@@ -190,7 +199,8 @@ body {
   border-bottom: 1px solid rgb(var(--rgb-white) / 0.1);
 }
 
-.suggestion-btn:hover { background: rgb(var(--rgb-white) / 0.05); }
+.suggestion-btn:hover,
+.suggestion-btn:focus-visible { background: var(--color-surface-raised); }
 
 .suggestion-name {
   font-weight: 950;

@@ -5,8 +5,12 @@
 // Notes:
 // - fantasy ownership is resolved from fantasy-owners.js, not stored here.
 // - currentRank is a value-engine input, not an official single-source rank.
-// - categoryFit is calculated from your categories: R, HR, RBI, NSB, AVG, TB, hitter SO, BB / W, L, QS, SV+H-BS, K, ERA, WHIP, BAA.
-// - All players now have age/currentRank/futureTier/categoryFitTier/riskTier populated and needsReview set to false.
+// - categoryFit is calculated from your categories: R, HR, RBI, NSB, AVG, TB, hitter SO, BB / W, L, QS, Net Saves, K, ERA, WHIP, BAA.
+// - Inputs are manually maintained estimates; needsReview flags incomplete or conflicting inputs.
+
+import { fantasyProsDynasty } from './fantasypros-dynasty.js';
+import { mlbStatSnapshot } from './mlb-stat-snapshot.js';
+import { buildStatRatings, applyStatRating } from '../scripts/player-stat-model.mjs';
 
 export const VALUE_WEIGHTS = Object.freeze({
   currentProduction: 0.28,
@@ -94,7 +98,7 @@ export const PITCHER_CATEGORIES = Object.freeze([
   "W",
   "L",
   "QS",
-  "SVH_BS",
+  "NS",
   "K",
   "ERA",
   "WHIP",
@@ -163,7 +167,7 @@ function buildStarterCategoryScores(player) {
     // Higher L score means fewer harmful losses.
     L: clampScore(base + (isElite ? 8 : isStrong ? 4 : isVolatile ? -8 : 0) + prospectPenalty),
     QS: clampScore(base + (isElite ? 8 : isStrong ? 6 : isVolatile ? -10 : 0) + injuryPenalty + agingPenalty),
-    SVH_BS: 0,
+    NS: 0,
     K: clampScore(base + (isElite ? 12 : isStrong ? 8 : isVolatile ? 4 : 0)),
     ERA: clampScore(base + (isElite ? 10 : isStrong ? 5 : isVolatile ? -12 : 0) + prospectPenalty),
     WHIP: clampScore(base + (isElite ? 10 : isStrong ? 5 : isVolatile ? -12 : 0) + prospectPenalty),
@@ -185,8 +189,8 @@ function buildRelieverCategoryScores(player) {
     // Higher L score means fewer harmful losses.
     L: clampScore(base + (isElite ? 8 : isRisky ? -10 : 0)),
     QS: 0,
-    // Net saves/holds category: SV + H - BS.
-    SVH_BS: clampScore(base + (isElite ? 16 : isUseful ? 8 : isRisky ? -12 : 0) + relieverPenalty + agingPenalty),
+    // Net saves category; these are heuristic role scores, not projected save totals.
+    NS: clampScore(base + (isElite ? 16 : isUseful ? 8 : isRisky ? -12 : 0) + relieverPenalty + agingPenalty),
     K: clampScore(base + (isElite ? 12 : isUseful ? 6 : 0)),
     ERA: clampScore(base + (isElite ? 10 : isRisky ? -12 : 0)),
     WHIP: clampScore(base + (isElite ? 10 : isRisky ? -12 : 0)),
@@ -670,9 +674,8 @@ export const RAW_PLAYERS = [
   { id: 346, name: "Shane Bieber", mlbTeam: "TOR", positions: ["SP"], birthDate: "1995-05-31", age: 31, currentRank: 197, futureTier: "shortTerm", categoryFitTier: "goodStarter", riskTier: "injured", needsReview: false },
   { id: 347, name: "Shane McClanahan", mlbTeam: "TB", positions: ["SP"], birthDate: "1997-04-28", age: 29, currentRank: 142, futureTier: "star", categoryFitTier: "eliteStarter", riskTier: "injured", needsReview: false },
   { id: 348, name: "Shea Langeliers", mlbTeam: "ATH", positions: ["C"], birthDate: "1997-11-18", age: 28, currentRank: 65, futureTier: "solidKeeper", categoryFitTier: "powerOnly", riskTier: "medium", needsReview: false },
-  { id: 349, name: "Shohei Ohtani", mlbTeam: "LAD", positions: ["UTIL", "SP"], birthDate: "1994-07-05", age: 31, currentRank: 1, futureTier: "generational", categoryFitTier: "eliteHitter", riskTier: "medium", needsReview: false },
-  { id: 350, name: "Shohei Ohtani", mlbTeam: "LAD", positions: ["DH"], birthDate: "1994-07-05", age: 31, currentRank: 1, futureTier: "generational", categoryFitTier: "eliteHitter", riskTier: "medium", needsReview: false },
-  { id: 351, name: "Shohei Ohtani", mlbTeam: "LAD", positions: ["SP"], birthDate: "1994-07-05", age: 31, currentRank: 90, futureTier: "star", categoryFitTier: "eliteStarter", riskTier: "injured", needsReview: false },
+  { id: 350, name: "Shohei Ohtani-H", mlbTeam: "LAD", positions: ["DH"], birthDate: "1994-07-05", age: 31, currentRank: 1, futureTier: "generational", categoryFitTier: "eliteHitter", riskTier: "medium", needsReview: false },
+  { id: 351, name: "Shohei Ohtani-P", mlbTeam: "LAD", positions: ["SP"], birthDate: "1994-07-05", age: 31, currentRank: 90, futureTier: "star", categoryFitTier: "eliteStarter", riskTier: "injured", needsReview: false },
   { id: 352, name: "Shota Imanaga", mlbTeam: "CHC", positions: ["SP"], birthDate: "1993-09-01", age: 32, currentRank: 172, futureTier: "strongKeeper", categoryFitTier: "strongStarter", riskTier: "medium", needsReview: false },
   { id: 353, name: "Slade Cecconi", mlbTeam: "CLE", positions: ["SP"], birthDate: "1999-06-24", age: 27, currentRank: 497, futureTier: "depth", categoryFitTier: "volatileStarter", riskTier: "medium", needsReview: false },
   { id: 354, name: "Sonny Gray", mlbTeam: "BOS", positions: ["SP"], birthDate: "1989-11-07", age: 36, currentRank: 200, futureTier: "shortTerm", categoryFitTier: "goodStarter", riskTier: "aging", needsReview: false },
@@ -996,9 +999,51 @@ export const RAW_PLAYERS = [
   { id: 672, name: "Zack Littell", mlbTeam: "FA", positions: ["SP"], birthDate: "1995-10-05", age: 30, currentRank: 650, futureTier: "depth", categoryFitTier: "volatileStarter", riskTier: "high", needsReview: true }
 ];
 
-export const players = RAW_PLAYERS.map(calculateDynastyValue).sort((a, b) => b.dynastyValue - a.dynastyValue);
+// Merge duplicate identities, not separate people who happen to share a name.
+// Prefer reviewed records and specific positions over generic UTIL placeholders.
+export function deduplicatePlayers(rawPlayers) {
+  const groups = new Map();
+  for (const player of rawPlayers) {
+    const identityName = normalizeName(player.name.replace(/\s+(jr\.?|sr\.?|ii|iii|iv)$/i, ""));
+    const key = `${identityName}|${player.birthDate || player.id}`;
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(player);
+  }
+  return [...groups.values()].map(group => {
+    const priority = player => (player.needsReview ? 0 : 10) + (player.positions?.some(p => !["UTIL", "DH"].includes(p)) ? 1 : 0);
+    const preferred = [...group].sort((a, b) => priority(b) - priority(a) || a.id - b.id)[0];
+    const conflicting = group.some(player => ["currentRank", "futureTier", "categoryFitTier", "riskTier"].some(field => player[field] !== preferred[field]));
+    return {
+      ...preferred,
+      aliases: [...new Set(group.flatMap(player => [player.name, ...(player.aliases || [])]))],
+      needsReview: Boolean(preferred.needsReview || conflicting || preferred.currentRank === 650),
+      ratingNote: conflicting ? "Conflicting duplicate inputs; provisional value" : preferred.currentRank === 650 ? "Placeholder rank; provisional value" : ""
+    };
+  });
+}
 
-export const playersByName = new Map(players.map((player) => [normalizeName(player.name), player]));
+// Expert dynasty rankings already reflect age and upside: do not double-count
+// those factors by feeding them into the current-production rank input.
+export function applyFantasyPros(player, snapshot = fantasyProsDynasty) {
+  const matches = snapshot.players.filter(entry => [player.name, ...(player.aliases || [])].some(name => normalizeName(name) === normalizeName(entry.name)));
+  if (matches.length !== 1) return { ...player, valueSource: 'Local estimate' };
+  const entry = matches[0];
+  // Avoid assigning a single combined two-way-player rank to both Fantrax assets.
+  if (/^Shohei Ohtani-[HP]$/.test(player.name) && !/-[HP]$/.test(entry.name)) return { ...player, valueSource: 'Local estimate' };
+  const dynastyValue = Math.max(1, Math.round(100 / Math.sqrt(1 + (entry.rank - 1) / 25)));
+  return { ...player, dynastyValue, tier: getDynastyTier(dynastyValue), dynastyRank: entry.rank,
+    fantasyProsId: entry.id, valueSource: 'FantasyPros rank-derived estimate', rankingUpdated: snapshot.updated };
+}
+
+const statRatings = mlbStatSnapshot.players.length ? buildStatRatings(mlbStatSnapshot) : null;
+export const statModelInfo = { updated: mlbStatSnapshot.updated, seasons: mlbStatSnapshot.seasons };
+export const players = deduplicatePlayers(RAW_PLAYERS).map(calculateDynastyValue).map(player => {
+  // The original stats model is primary; expert imports remain an optional fallback.
+  const rated = statRatings ? applyStatRating(player, mlbStatSnapshot, statRatings) : applyFantasyPros(player);
+  return { ...rated, tier: getDynastyTier(rated.dynastyValue) };
+}).sort((a, b) => b.dynastyValue - a.dynastyValue);
+
+export const playersByName = new Map(players.flatMap(player => [player.name, ...player.aliases].map(name => [normalizeName(name), player])));
 
 export function findPlayerByName(name) {
   return playersByName.get(normalizeName(name));
