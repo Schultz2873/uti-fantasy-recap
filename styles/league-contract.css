@@ -1,9 +1,9 @@
 .league-contract { max-width: 900px; margin-inline: auto; }
 .league-contract .hero { margin-bottom: 24px; }
-.contract-tabs:not([hidden]) { display: flex; flex-wrap: nowrap; gap: 4px; overflow-x: auto; padding: 4px; border: 1px solid rgba(128, 150, 160, .25); border-radius: 10px; }
-.contract-tabs button { flex: 0 0 auto; padding: 7px 10px; white-space: nowrap; border: 1px solid transparent; border-radius: 7px; background: transparent; color: inherit; font: inherit; font-size: .8rem; font-weight: 700; cursor: pointer; }
-.contract-tabs button:hover { background: rgba(128, 150, 160, .12); }
-.contract-tabs button[aria-selected="true"] { color: var(--color-teal, #63d6bd); background: rgba(99, 214, 189, .1); border-color: rgba(99, 214, 189, .35); }
+.contract-tabs:not([hidden]) { display: flex; flex-wrap: nowrap; gap: 20px; overflow-x: auto; padding: 0 2px; border-bottom: 1px solid rgba(128, 150, 160, .25); }
+.contract-tabs button { flex: 0 0 auto; padding: 10px 0; white-space: nowrap; border: 0; border-bottom: 2px solid transparent; border-radius: 0; background: transparent; color: var(--color-text-muted, #a2adb6); font: inherit; font-size: .82rem; font-weight: 600; cursor: pointer; }
+.contract-tabs button:hover { color: var(--color-text); }
+.contract-tabs button[aria-selected="true"] { color: var(--color-teal, #63d6bd); border-bottom-color: var(--color-teal, #63d6bd); }
 .contract-tabs button:focus-visible, .contract-panel:focus-visible { outline: 2px solid var(--color-teal, #63d6bd); outline-offset: 3px; }
 .contract-panel[hidden] { display: none; }
 @media print {
