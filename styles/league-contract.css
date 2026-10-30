@@ -1,6 +1,6 @@
 .league-contract { max-width: 900px; margin-inline: auto; }
 .league-contract .hero { margin-bottom: 24px; }
-.contract-tabs:not([hidden]) { display: flex; gap: 6px; padding: 6px; border: 1px solid rgba(128, 150, 160, .25); border-radius: 14px; }
+.contract-tabs:not([hidden]) { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; padding: 6px; border: 1px solid rgba(128, 150, 160, .25); border-radius: 14px; }
 .contract-tabs button { flex: 1; min-width: 0; padding: 12px 8px; border: 1px solid transparent; border-radius: 9px; background: transparent; color: inherit; font: inherit; font-size: .9rem; font-weight: 700; cursor: pointer; }
 .contract-tabs button:hover { background: rgba(128, 150, 160, .12); }
 .contract-tabs button[aria-selected="true"] { color: var(--color-teal, #63d6bd); background: rgba(99, 214, 189, .1); border-color: rgba(99, 214, 189, .35); }
