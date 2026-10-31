@@ -62,6 +62,12 @@ export const normalizeRankingName = name => String(name).normalize('NFD').replac
   .replace(/-[HP]$/i, '').replace(/\s+(jr\.?|sr\.?|ii|iii|iv)$/i, '').replace(/[^a-z0-9]/gi, '').toLowerCase();
 const teamCode = team => ({ OAK: 'ATH', WAS: 'WSH', ARI: 'AZ', KCR: 'KC', TBR: 'TB', SDP: 'SD', SFG: 'SF' }[team] || team);
 
+export function getRankingTier(rank) {
+  if (!Number.isInteger(rank) || rank < 1) return null;
+  const cutoff = [10, 25, 50, 100, 200, 300, 500].find(limit => rank <= limit);
+  return cutoff ? `Top-${cutoff} dynasty asset` : 'Extended dynasty rankings';
+}
+
 export function applyFantraxHQ(player, snapshot) {
   const names = [player.name, ...(player.aliases || [])].map(normalizeRankingName);
   let matches = snapshot.players.filter(entry => names.includes(normalizeRankingName(entry.name)));
