@@ -7,7 +7,7 @@
   <title>UTI Trade Analyzer</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="../styles/styles.css?v=theme-1" rel="stylesheet" />
-  <link href="../styles/trade-analyzer.css?v=opaque-dropdowns-1" rel="stylesheet" />
+  <link href="../styles/trade-analyzer.css?v=trade-desk-1" rel="stylesheet" />
   <link href="../styles/theme.css?v=wordmark-1" rel="stylesheet" />
 </head>
 
@@ -15,12 +15,9 @@
   <script src="../scripts/site-header.js?v=standings-1"></script>
   <main class="trade-page">
     <section class="trade-hero">
-      <div class="kicker">Dynasty Trade Tool</div>
-      <h1>UTI Trade Analyzer</h1>
-      <p>
-        Build both sides of a trade and compare dynasty value, category impact, team fit, risk, age window,
-        and current UTI ownership.
-      </p>
+      <div class="trade-eyebrow">League Hub <span aria-hidden="true">/</span> Dynasty tools</div>
+      <h1>Trade Analyzer<span class="trade-title-dot" aria-hidden="true">.</span></h1>
+      <p>Compare the deal. Find the fit. See both sides.</p>
       <p class="muted" id="ratingsSummary">Loading player rating sources…</p>
       <details class="rating-method">
         <summary>How ratings work</summary>
@@ -35,28 +32,34 @@
 
     <section class="trade-shell" aria-label="Trade analyzer">
       <div class="trade-card">
+        <div class="builder-heading">
+          <div><h2>Build your trade</h2><p>Choose two teams and add players or picks.</p></div>
+          <button class="reset-btn" id="resetTradeBtn" type="button">Clear trade</button>
+        </div>
         <div class="trade-sides">
           <section class="trade-side" aria-label="Team A sends">
+            <div class="trade-side-kicker"><span class="side-marker" aria-hidden="true">A</span> Sending package</div>
             <div class="trade-side-header">
               <h2 class="trade-side-title" id="sideATitle">Team A Sends</h2>
               <span class="side-total-pill" id="sideATotalPill">0 pts</span>
             </div>
             <select class="team-fit-select" id="sideATeamSelect" aria-label="Team A sending team"></select>
             <div class="player-search-wrap">
-              <input class="player-search" id="sideASearch" type="search" placeholder="Search selected team roster or draft picks..." autocomplete="off" />
+              <input class="player-search" id="sideASearch" aria-label="Search Team A roster and picks" type="search" placeholder="Search selected team roster or draft picks..." autocomplete="off" />
               <div class="suggestions" id="sideASuggestions"></div>
             </div>
             <div class="selected-list" id="sideAList"></div>
           </section>
 
           <section class="trade-side" aria-label="Team B sends">
+            <div class="trade-side-kicker"><span class="side-marker" aria-hidden="true">B</span> Sending package</div>
             <div class="trade-side-header">
               <h2 class="trade-side-title" id="sideBTitle">Team B Sends</h2>
               <span class="side-total-pill" id="sideBTotalPill">0 pts</span>
             </div>
             <select class="team-fit-select" id="sideBTeamSelect" aria-label="Team B sending team"></select>
             <div class="player-search-wrap">
-              <input class="player-search" id="sideBSearch" type="search" placeholder="Search selected team roster or draft picks..." autocomplete="off" />
+              <input class="player-search" id="sideBSearch" aria-label="Search Team B roster and picks" type="search" placeholder="Search selected team roster or draft picks..." autocomplete="off" />
               <div class="suggestions" id="sideBSuggestions"></div>
             </div>
             <div class="selected-list" id="sideBList"></div>
@@ -66,13 +69,14 @@
 
       <aside class="result-card">
         <div>
-          <h2 class="result-title">Trade Verdict</h2>
-          <p class="result-subtitle">Values, category fit, and roster context update automatically.</p>
+          <div class="trade-eyebrow">The breakdown</div>
+          <h2 class="result-title">Deal overview</h2>
+          <p class="result-subtitle">Updates as you build.</p>
         </div>
 
         <div class="winner-box">
-          <div class="winner-label">Winner</div>
-          <div class="winner-value" id="winnerValue">Even</div>
+          <div class="winner-label">Value advantage</div>
+          <div class="winner-value" id="winnerValue" aria-live="polite">Even</div>
         </div>
 
         <div class="result-grid">
@@ -108,22 +112,21 @@
           </div>
         </div>
 
-        <div class="insight-card">
-          <div class="insight-label">Category Impact</div>
+        <details class="insight-card">
+          <summary class="insight-label">Category impact</summary>
           <div class="impact-list" id="categoryImpactList"></div>
           <p class="insight-text" id="categoryImpactText">Add players to see which side gains the better category profile.</p>
-        </div>
+        </details>
 
-        <div class="insight-card">
-          <div class="insight-label">Risk / Window</div>
+        <details class="insight-card">
+          <summary class="insight-label">Risk &amp; dynasty window</summary>
           <p class="insight-text" id="riskWindowText">Risk and dynasty-window notes will appear here.</p>
-        </div>
-
-        <button class="reset-btn" id="resetTradeBtn" type="button">Reset Trade</button>
+        </details>
       </aside>
     </section>
 
-    <section class="player-table-card">
+    <details class="player-table-card">
+      <summary class="roster-summary"><span>Browse both rosters</span><span class="roster-summary-note">Players &amp; draft picks</span></summary>
       <div class="table-toolbar">
         <h2>Selected Team Rosters</h2>
         <input class="table-filter" id="playerTableFilter" type="search" placeholder="Filter selected team rosters or draft picks..." autocomplete="off" />
@@ -150,7 +153,7 @@
           </tbody>
         </table>
       </div>
-    </section>
+    </details>
   </main>
 
   <script src="../data/fantasy-owners.js?v=trade-analyzer-owners-2"></script>
@@ -661,7 +664,8 @@
       if (!selectedPlayers.length) {
         container.innerHTML = `
           <div class="selected-empty">
-            No assets added yet. Search this team's roster/picks above or use the board below.
+            Your package starts here.
+            Search above to add a player or pick.
           </div>
         `;
         return;
@@ -680,12 +684,15 @@
               <div>
                 <div class="selected-player-name">${escapeHtml(player.name)}</div>
                 <div class="selected-player-meta">${escapeHtml(player.fantasyTeam)} • ${escapeHtml(formatAssetType(player))} • ${escapeHtml(player.tier)}${player.needsReview ? ' • Provisional rating' : ''}</div>
-                <div class="muted">${escapeHtml(player.valueSource || 'Local estimate')}${player.dynastyRank ? ` • #${escapeHtml(player.dynastyRank)} • ${escapeHtml(player.rankingUpdated)}` : ''}</div>
-                ${player.modelBreakdown ? `<div class="muted">MLB production ${escapeHtml(player.modelBreakdown.production)} (separate from dynasty points) / ${escapeHtml(player.statsConfidence)} / Updated ${escapeHtml(player.rankingUpdated)}</div>` : ""}
+
               </div>
               <span class="value-badge">${escapeHtml(player.dynastyValue ?? 'Unrated')}</span>
             </div>
             <div class="mini-category-row">${topCategories}</div>
+            <details class="player-rating-details"><summary>Rating details</summary>
+                <div class="muted">${escapeHtml(player.valueSource || 'Local estimate')}${player.dynastyRank ? ` • #${escapeHtml(player.dynastyRank)} • ${escapeHtml(player.rankingUpdated)}` : ''}</div>
+                ${player.modelBreakdown ? `<div class="muted">MLB production ${escapeHtml(player.modelBreakdown.production)} (separate from dynasty points) / ${escapeHtml(player.statsConfidence)} / Updated ${escapeHtml(player.rankingUpdated)}</div>` : ""}
+            </details>
             <button class="remove-player" type="button" data-remove-side="${side}" data-asset-key="${encodeURIComponent(getPlayerKey(player))}">
               Remove
             </button>
@@ -734,6 +741,13 @@
         elements.differenceResult.textContent = '?';
         elements.percentResult.textContent = '?';
         elements.resultNote.textContent = 'At least one player needs a valuation. No winner or fairness verdict is available for this trade.';
+      }
+
+      if (!state.sideA.length || !state.sideB.length) {
+        elements.winnerValue.textContent = 'Build both sides';
+        elements.fairnessPill.textContent = 'Awaiting a package';
+        elements.fairnessPill.className = 'fairness-pill pending';
+        elements.resultNote.textContent = 'Add at least one player or pick to each team to compare the deal.';
       }
 
       elements.sideAFitLabel.textContent = `${state.sideATeam} Receives Fit`;
