@@ -363,7 +363,9 @@
     }
 
     function getFantasyOwner(player) {
-      if (player && typeof player === "object" && player.fantasyTeam && player.fantasyTeam !== "Free Agent") {
+      // Explicit ownership from the current snapshot includes Free Agent.
+      // Never resurrect a dropped player's historical owner from the old lookup.
+      if (player && typeof player === "object" && player.fantasyTeam) {
         return player.fantasyTeam;
       }
 
