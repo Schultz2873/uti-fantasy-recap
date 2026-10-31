@@ -25,7 +25,7 @@
       <details class="rating-method">
         <summary>How ratings work</summary>
         <p>Our model compares MLB regular-season production in all 16 league categories. The latest three seasons carry 60%, 30%, and 10% weight. Batting average, ERA, WHIP, and opponent average account for workload; hitter strikeouts reward a lower strikeout rate. Net steals subtract caught stealing, and net saves subtract blown saves.</p>
-        <p>Trade points add modest age and manually maintained upside adjustments. These are production-based estimates, not future projections or expert rankings. Prospects and players without an established MLB sample retain provisional local estimates. Teams' category needs and draft-pick values remain manually maintained.</p>
+        <p>Dynasty trade points are manually maintained estimates. Observed MLB production updates category profiles and is shown separately; it does not replace a prospect's long-term value. Unrated roster players remain selectable, but prevent a complete trade verdict. Team needs and draft-pick values are also manually maintained.</p>
       </details>
     </section>
 
@@ -154,6 +154,7 @@
   </main>
 
   <script src="../data/fantasy-owners.js?v=trade-analyzer-owners-2"></script>
+  <script src="../data/rosters.js?v=trade-roster-2"></script>
   <script type="module">
     let playerData = [];
     let draftPickData = [];
@@ -639,7 +640,7 @@
 
       container.innerHTML = matches.map(player => `
         <button class="suggestion-btn" type="button" data-add-side="${side}" data-asset-key="${encodeURIComponent(getPlayerKey(player))}">
-          <span class="suggestion-name">${escapeHtml(player.name)} • ${escapeHtml(player.dynastyValue)}</span>
+          <span class="suggestion-name">${escapeHtml(player.name)} • ${escapeHtml(player.dynastyValue ?? 'Unrated')}</span>
           <span class="suggestion-meta">${escapeHtml(player.fantasyTeam)} • ${escapeHtml(formatAssetType(player))} • ${escapeHtml(player.tier)}</span>
         </button>
       `).join("");
@@ -669,7 +670,7 @@
 
       container.innerHTML = selectedPlayers.map(player => {
         const topCategories = isDraftPick(player)
-          ? `<span class="mini-category-chip">Draft Capital ${escapeHtml(player.dynastyValue)}</span>`
+          ? `<span class="mini-category-chip">Draft Capital ${escapeHtml(player.dynastyValue ?? 'Unrated')}</span>`
           : getTopCategories(player, 4).map(item => `
               <span class="mini-category-chip">${escapeHtml(formatCategory(item.category))} ${escapeHtml(item.score)}</span>
             `).join("");
@@ -681,9 +682,9 @@
                 <div class="selected-player-name">${escapeHtml(player.name)}</div>
                 <div class="selected-player-meta">${escapeHtml(player.fantasyTeam)} • ${escapeHtml(formatAssetType(player))} • ${escapeHtml(player.tier)}${player.needsReview ? ' • Provisional rating' : ''}</div>
                 <div class="muted">${escapeHtml(player.valueSource || 'Local estimate')}${player.dynastyRank ? ` • #${escapeHtml(player.dynastyRank)} • ${escapeHtml(player.rankingUpdated)}` : ''}</div>
-                ${player.modelBreakdown ? `<div class="muted">Production ${escapeHtml(player.modelBreakdown.production)} · Age ${escapeHtml(player.modelBreakdown.age)} · Upside ${escapeHtml(player.modelBreakdown.upside.toFixed(1))} · ${escapeHtml(player.statsConfidence)} · Updated ${escapeHtml(player.rankingUpdated)}</div>` : ''}
+                ${player.modelBreakdown ? `<div class="muted">MLB production ${escapeHtml(player.modelBreakdown.production)} (separate from dynasty points) / ${escapeHtml(player.statsConfidence)} / Updated ${escapeHtml(player.rankingUpdated)}</div>` : ""}
               </div>
-              <span class="value-badge">${escapeHtml(player.dynastyValue)}</span>
+              <span class="value-badge">${escapeHtml(player.dynastyValue ?? 'Unrated')}</span>
             </div>
             <div class="mini-category-row">${topCategories}</div>
             <button class="remove-player" type="button" data-remove-side="${side}" data-asset-key="${encodeURIComponent(getPlayerKey(player))}">
@@ -723,6 +724,18 @@
       elements.fairnessPill.textContent = fairness.label;
       elements.fairnessPill.className = `fairness-pill ${fairness.className}`.trim();
       elements.resultNote.textContent = getResultNote(sideATotal, sideBTotal, fairness.label, sideAFitScore, sideBFitScore);
+      if ([...state.sideA, ...state.sideB].some(player => player.dynastyValue == null)) {
+        elements.winnerValue.textContent = 'Incomplete';
+        elements.fairnessPill.textContent = 'Unrated player included';
+        elements.fairnessPill.className = 'fairness-pill';
+        elements.sideATotalPill.textContent = state.sideA.some(p => p.dynastyValue == null) ? 'Incomplete' : sideATotal + ' pts sent';
+        elements.sideBTotalPill.textContent = state.sideB.some(p => p.dynastyValue == null) ? 'Incomplete' : sideBTotal + ' pts sent';
+        elements.sideAResult.textContent = state.sideA.some(p => p.dynastyValue == null) ? '?' : sideATotal;
+        elements.sideBResult.textContent = state.sideB.some(p => p.dynastyValue == null) ? '?' : sideBTotal;
+        elements.differenceResult.textContent = '?';
+        elements.percentResult.textContent = '?';
+        elements.resultNote.textContent = 'At least one player needs a valuation. No winner or fairness verdict is available for this trade.';
+      }
 
       elements.sideAFitLabel.textContent = `${state.sideATeam} Receives Fit`;
       elements.sideBFitLabel.textContent = `${state.sideBTeam} Receives Fit`;
@@ -824,7 +837,7 @@
             <td>${escapeHtml(player.fantasyTeam)}</td>
             <td>${escapeHtml(formatAssetType(player))}</td>
             <td>${escapeHtml(player.age)}</td>
-            <td><strong>${escapeHtml(player.dynastyValue)}</strong>${player.needsReview ? '<div class="muted">Provisional</div>' : ''}</td>
+            <td><strong>${escapeHtml(player.dynastyValue ?? 'Unrated')}</strong>${player.needsReview ? '<div class="muted">Provisional</div>' : ''}</td>
             <td>${escapeHtml(player.tier)}</td>
             <td>
               <span class="category-chip">${escapeHtml(player.categoryType || "—")} ${isDraftPick(player) ? "" : escapeHtml(player.categoryFit || "")}</span>
@@ -897,7 +910,7 @@
     }
 
     async function loadPlayersModule() {
-      const cacheBust = `mlb-stats-${new Date().toISOString().slice(0, 10)}`;
+      const cacheBust = `roster-coverage-${new Date().toISOString().slice(0, 10)}`;
       const primaryUrl = new URL("../data/players.js", window.location.href).href;
       const fallbackUrls = [
         primaryUrl,
@@ -936,12 +949,12 @@
           throw new Error("players.js loaded, but it did not export a players array.");
         }
 
-        playerData = [...module.players]
-          .map(enrichPlayer)
+        const { reconcileRosters } = await import('../scripts/trade-rosters.mjs');
+        playerData = reconcileRosters(module.players, window.UTI_ROSTERS)
           .sort((a, b) => b.dynastyValue - a.dynastyValue);
-        const statCount = playerData.filter(player => player.valueSource === 'MLB stats model').length;
+        const statCount = playerData.filter(player => player.modelBreakdown).length;
         const summary = document.getElementById('ratingsSummary');
-        summary.textContent = `${statCount} stats-based ratings · ${playerData.length - statCount} provisional local estimates${module.statModelInfo?.updated ? ` · Updated ${module.statModelInfo.updated}` : ''}`;
+        summary.textContent = `Dynasty points are local estimates / ${statCount} separate MLB category profiles / Rosters updated ${window.UTI_ROSTERS.updated}`;
 
         draftPickData = buildDraftPicks();
         assetData = [...playerData, ...draftPickData].sort((a, b) => b.dynastyValue - a.dynastyValue);
