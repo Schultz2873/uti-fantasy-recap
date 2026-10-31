@@ -1,12 +1,21 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { parseRankings, parseCsvRankings, applyFantraxHQ, SOURCE_URL } from './fantraxhq-rankings.mjs';
+import { parseRankings, parseCsvRankings, applyFantraxHQ, getRankingTier, SOURCE_URL } from './fantraxhq-rankings.mjs';
 import { players } from '../data/players.js';
 
 function table() {
   return '<script>{"dateModified":"2026-09-08T10:00:00Z"}</script><table><tr><th>Points</th><th>Roto</th><th>Player</th><th>Pos.</th><th>Team</th></tr>'
     + Array.from({ length: 300 }, (_, i) => `<tr><td>${400 - i}</td><td>${i + 1}</td><td>Player ${i + 1}</td><td>SS</td><td>NYY</td></tr>`).join('') + '</table>';
 }
+
+test('source tiers describe rank rather than the estimated trade-point scale', () => {
+  for (const [rank, tier] of [[1, 'Top-10 dynasty asset'], [25, 'Top-25 dynasty asset'], [50, 'Top-50 dynasty asset'], [71, 'Top-100 dynasty asset'], [100, 'Top-100 dynasty asset'], [101, 'Top-200 dynasty asset'], [501, 'Extended dynasty rankings']]) {
+    assert.equal(getRankingTier(rank), tier);
+  }
+  assert.equal(getRankingTier(null), null);
+  const vargas = players.find(player => player.name === 'Miguel Vargas');
+  if (vargas.dynastyRank) assert.equal(vargas.tier, getRankingTier(vargas.dynastyRank));
+});
 
 test('CSV uses Roto regardless of row order and preserves accented and quoted names', () => {
   const rows = Array.from({ length: 300 }, (_, i) => [String(300 - i), String(i + 1), i === 0 ? 'José "Test", Jr.' : `Player ${i + 1}`, 'SS', 'NYY']);
