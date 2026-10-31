@@ -106,17 +106,16 @@ export function applyStatRating(player, snapshot, ratings) {
   const match = matchStatPlayer(player, snapshot.players);
   const rating = match && ratings.get(`${match.id}|${match.role}`);
   if (!rating) return { ...player, valueSource: 'Local estimate — no established MLB sample', needsReview: true };
-  // Modest explicit dynasty adjustments, separate from observed production.
-  const ageAdjustment = player.age <= 23 ? 6 : player.age <= 26 ? 4 : player.age <= 29 ? 2 : player.age <= 32 ? 0 : -Math.min(10, (player.age - 32) * 2);
-  const upsideAdjustment = clamp((player.futureUpside - 60) / 10, -3, 4);
-  const dynastyValue = Math.round(clamp(rating.productionScore + ageAdjustment + upsideAdjustment, 1, 100));
+  // MLB production measures a different thing from dynasty value, especially
+  // for prospects. Keep the dynasty prior and show production independently.
+  const dynastyValue = player.dynastyValue;
   return {
     ...player, mlbId: match.id, categoryType: match.role === 'hitter' ? 'hitter' : rating.stats.gamesStarted >= rating.stats.gamesPitched / 2 ? 'starter' : 'reliever',
     categoryScores: rating.categoryScores,
     categoryFit: Math.round(Object.values(rating.categoryScores).reduce((a, b) => a + b, 0) / 8),
-    currentProduction: rating.productionScore, dynastyValue, valueSource: 'MLB stats model', rankingUpdated: snapshot.updated,
+    currentProduction: rating.productionScore, dynastyValue, valueSource: 'Local dynasty estimate; MLB category stats', rankingUpdated: snapshot.updated,
     statsSeasons: snapshot.seasons, statsConfidence: rating.confidence,
-    modelBreakdown: { production: rating.productionScore, age: ageAdjustment, upside: upsideAdjustment },
+    modelBreakdown: { production: rating.productionScore },
     needsReview: Boolean(player.needsReview || rating.confidence === 'Limited sample')
   };
 }

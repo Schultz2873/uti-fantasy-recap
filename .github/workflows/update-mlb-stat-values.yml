@@ -22,7 +22,7 @@ jobs:
         with:
           node-version: 24
       - name: Verify scoring model
-        run: node --test scripts/player-stat-model.test.mjs scripts/player-values.test.mjs
+        run: node --test scripts/player-stat-model.test.mjs scripts/player-values.test.mjs scripts/trade-rosters.test.mjs
       - name: Refresh cached MLB stats
         run: node scripts/update-mlb-stat-values.mjs
         env:

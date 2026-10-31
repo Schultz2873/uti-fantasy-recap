@@ -1,6 +1,6 @@
 UTI Fantasy Baseball
 
-Stats-based player ratings (primary trade analyzer model):
+Stats-based category profiles (separate from dynasty trade points):
 - `node scripts/update-mlb-stat-values.mjs` reads public MLB regular-season
   statistics and caches `data/mlb-stat-snapshot.js`. No paid rankings or API key.
 - The weekly **Update MLB Stats-Based Player Values** workflow refreshes the
@@ -16,9 +16,12 @@ Stats-based player ratings (primary trade analyzer model):
 - Category contributions become equal-weight z-scores within separate hitter and
   pitcher pools (minimum weighted 100 PA / 20 IP). Z-scores are capped at +/-3.
   Production points = 50 + 15 * mean category z-score, bounded 1–100.
-- Age adjustment: +6 through 23, +4 through 26, +2 through 29, 0 through 32,
-  then -2 per year capped at -10. Manual upside adds (tier value - 60) / 10,
-  capped at -3 to +4. These choices are model assumptions, not validated forecasts.
+- Observed production does not overwrite dynasty points. The dynasty estimates
+  retain their separate manually maintained inputs, including age and upside.
+  Limited MLB samples must not automatically erase a prospect's long-term value.
+- The analyzer reconciles against `data/rosters.js`, not historical owner data.
+  All rostered players remain selectable. Missing valuations show as Unrated
+  and prevent a complete winner/fairness verdict rather than counting as zero.
 - Players match by normalized name plus birth date where available; ambiguous
   matches are excluded. Ohtani hitter/pitcher assets use separate MLB stat groups.
   Verified statistical role overrides a generic position when building categories.
