@@ -44,6 +44,6 @@ test('pitching profiles use net saves and placeholder ranks require review', () 
       assert.ok(Object.hasOwn(player.categoryScores, 'NS'));
       assert.ok(!Object.hasOwn(player.categoryScores, 'SVH_BS'));
     }
-    if (player.currentRank === 650) assert.equal(player.needsReview, true);
+    if (player.currentRank === 650 && !player.dynastyRank) assert.equal(player.needsReview, true);
   }
 });

@@ -22,7 +22,7 @@
       <details class="rating-method">
         <summary>How ratings work</summary>
         <p>Our model compares MLB regular-season production in all 16 league categories. The latest three seasons carry 60%, 30%, and 10% weight. Batting average, ERA, WHIP, and opponent average account for workload; hitter strikeouts reward a lower strikeout rate. Net steals subtract caught stealing, and net saves subtract blown saves.</p>
-        <p>Dynasty trade points are manually maintained estimates. Observed MLB production updates category profiles and is shown separately; it does not replace a prospect's long-term value. Unrated roster players remain selectable, but prevent a complete trade verdict. Team needs and draft-pick values are also manually maintained.</p>
+        <p>Dynasty ranks come from <a href="https://fantraxhq.com/fantasy-baseball-dynasty-rankings/" target="_blank" rel="noopener noreferrer">FantraxHQ's Roto rankings</a>. Trade points use our own rank-to-value curve, not published FantraxHQ prices. These rankings target 15-team roto leagues; our MLB category profiles remain separate. Players outside the source list use provisional local estimates.</p>
       </details>
     </section>
 
@@ -693,7 +693,7 @@
             <div class="mini-category-row">${topCategories}</div>
             <details class="player-rating-details"><summary>Rating details</summary>
                 <div class="muted">${escapeHtml(player.valueSource || 'Local estimate')}${player.dynastyRank ? ` • #${escapeHtml(player.dynastyRank)} • ${escapeHtml(player.rankingUpdated)}` : ''}</div>
-                ${player.modelBreakdown ? `<div class="muted">MLB production ${escapeHtml(player.modelBreakdown.production)} (separate from dynasty points) / ${escapeHtml(player.statsConfidence)} / Updated ${escapeHtml(player.rankingUpdated)}</div>` : ""}
+                ${player.modelBreakdown ? `<div class="muted">MLB production ${escapeHtml(player.modelBreakdown.production)} (separate from dynasty points) / ${escapeHtml(player.statsConfidence)} / Updated ${escapeHtml(player.statsUpdated || player.rankingUpdated)}</div>` : ""}
             </details>
             <button class="remove-player" type="button" data-remove-side="${side}" data-asset-key="${encodeURIComponent(getPlayerKey(player))}">
               Remove
@@ -750,6 +750,10 @@
         elements.fairnessPill.textContent = 'Awaiting a package';
         elements.fairnessPill.className = 'fairness-pill pending';
         elements.resultNote.textContent = 'Add at least one player or pick to each team to compare the deal.';
+      }
+
+      if (state.sideA.length && state.sideB.length && [...state.sideA, ...state.sideB].some(player => !isDraftPick(player) && !player.dynastyRank && player.dynastyValue != null)) {
+        elements.resultNote.textContent += ' Includes local estimates for players outside the FantraxHQ list.';
       }
 
       elements.sideAFitLabel.textContent = `${state.sideATeam} Receives Fit`;
@@ -852,7 +856,7 @@
             <td>${escapeHtml(player.fantasyTeam)}</td>
             <td>${escapeHtml(formatAssetType(player))}</td>
             <td>${escapeHtml(player.age)}</td>
-            <td><strong>${escapeHtml(player.dynastyValue ?? 'Unrated')}</strong>${player.needsReview ? '<div class="muted">Provisional</div>' : ''}</td>
+            <td><strong>${escapeHtml(player.dynastyValue ?? 'Unrated')}</strong>${player.dynastyRank ? `<div class="muted">HQ #${escapeHtml(player.dynastyRank)}</div>` : ""}${player.needsReview ? '<div class="muted">Provisional</div>' : ''}</td>
             <td>${escapeHtml(player.tier)}</td>
             <td>
               <span class="category-chip">${escapeHtml(player.categoryType || "—")} ${isDraftPick(player) ? "" : escapeHtml(player.categoryFit || "")}</span>
@@ -925,7 +929,7 @@
     }
 
     async function loadPlayersModule() {
-      const cacheBust = `roster-coverage-${new Date().toISOString().slice(0, 10)}`;
+      const cacheBust = `fantraxhq-ranks-${new Date().toISOString().slice(0, 10)}`;
       const primaryUrl = new URL("../data/players.js", window.location.href).href;
       const fallbackUrls = [
         primaryUrl,
@@ -969,7 +973,7 @@
           .sort((a, b) => b.dynastyValue - a.dynastyValue);
         const statCount = playerData.filter(player => player.modelBreakdown).length;
         const summary = document.getElementById('ratingsSummary');
-        summary.textContent = `Dynasty points are local estimates / ${statCount} separate MLB category profiles / Rosters updated ${window.UTI_ROSTERS.updated}`;
+        summary.textContent = `FantraxHQ Roto ranks: ${playerData.filter(p => p.dynastyRank).length} matched / Source updated ${module.dynastyRankingInfo?.updated || "unavailable"} / Other values are local estimates / Rosters ${window.UTI_ROSTERS.updated}`;
 
         draftPickData = buildDraftPicks();
         assetData = [...playerData, ...draftPickData].sort((a, b) => b.dynastyValue - a.dynastyValue);

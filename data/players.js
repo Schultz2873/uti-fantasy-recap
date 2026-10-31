@@ -9,6 +9,8 @@
 // - Inputs are manually maintained estimates; needsReview flags incomplete or conflicting inputs.
 
 import { fantasyProsDynasty } from './fantasypros-dynasty.js';
+import { fantraxHQRankings } from './fantraxhq-rankings.js';
+import { applyFantraxHQ, normalizeRankingName } from '../scripts/fantraxhq-rankings.mjs';
 import { mlbStatSnapshot } from './mlb-stat-snapshot.js';
 import { buildStatRatings, applyStatRating } from '../scripts/player-stat-model.mjs';
 
@@ -1037,10 +1039,17 @@ export function applyFantasyPros(player, snapshot = fantasyProsDynasty) {
 
 const statRatings = mlbStatSnapshot.players.length ? buildStatRatings(mlbStatSnapshot) : null;
 export const statModelInfo = { updated: mlbStatSnapshot.updated, seasons: mlbStatSnapshot.seasons };
-export const players = deduplicatePlayers(RAW_PLAYERS).map(calculateDynastyValue).map(player => {
+export const dynastyRankingInfo = { updated: fantraxHQRankings.updated, url: fantraxHQRankings.url, source: 'FantraxHQ Roto' };
+const knownRankingNames = new Set(RAW_PLAYERS.map(player => normalizeRankingName(player.name)));
+const additionalRankedPlayers = fantraxHQRankings.players.filter(entry => !knownRankingNames.has(normalizeRankingName(entry.name))).map(entry => ({
+  id: `fantraxhq-${entry.rank}`, name: entry.name, mlbTeam: entry.team, positions: entry.position.split('/'),
+  currentRank: 999, futureTier: 'depth', categoryFitTier: 'unknown', riskTier: 'medium', needsReview: true
+}));
+export const players = deduplicatePlayers([...RAW_PLAYERS, ...additionalRankedPlayers]).map(calculateDynastyValue).map(player => {
   // The original stats model is primary; expert imports remain an optional fallback.
   const rated = statRatings ? applyStatRating(player, mlbStatSnapshot, statRatings) : applyFantasyPros(player);
-  return { ...rated, tier: getDynastyTier(rated.dynastyValue) };
+  const ranked = fantraxHQRankings.players.length ? applyFantraxHQ(rated, fantraxHQRankings) : rated;
+  return { ...ranked, tier: getDynastyTier(ranked.dynastyValue) };
 }).sort((a, b) => b.dynastyValue - a.dynastyValue);
 
 export const playersByName = new Map(players.flatMap(player => [player.name, ...player.aliases].map(name => [normalizeName(name), player])));

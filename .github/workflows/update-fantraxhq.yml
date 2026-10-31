@@ -1,0 +1,28 @@
+name: Update FantraxHQ Dynasty Rankings
+
+on:
+  schedule:
+    - cron: "0 14 * * 3"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-rankings:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+      - name: Test ranking parser and matching
+        run: node --test scripts/fantraxhq.test.mjs
+      - name: Refresh published Roto rankings
+        run: node scripts/update-fantraxhq.mjs
+      - name: Refresh shared player values
+        run: node scripts/update-player-values.js
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: Update FantraxHQ dynasty ranks
+          file_pattern: data/fantraxhq-rankings.js data/player-values.js

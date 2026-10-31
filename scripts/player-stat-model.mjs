@@ -114,7 +114,7 @@ export function applyStatRating(player, snapshot, ratings) {
     categoryScores: rating.categoryScores,
     categoryFit: Math.round(Object.values(rating.categoryScores).reduce((a, b) => a + b, 0) / 8),
     currentProduction: rating.productionScore, dynastyValue, valueSource: 'Local dynasty estimate; MLB category stats', rankingUpdated: snapshot.updated,
-    statsSeasons: snapshot.seasons, statsConfidence: rating.confidence,
+    statsSeasons: snapshot.seasons, statsUpdated: snapshot.updated, statsConfidence: rating.confidence,
     modelBreakdown: { production: rating.productionScore },
     needsReview: Boolean(player.needsReview || rating.confidence === 'Limited sample')
   };

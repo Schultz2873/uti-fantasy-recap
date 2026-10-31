@@ -33,6 +33,6 @@ test('observed production does not overwrite dynasty estimates for prospects or 
   for (const name of ['Konnor Griffin', 'Roman Anthony', 'Colt Emerson', 'Aaron Judge']) {
     const player = players.find(p => p.name === name);
     assert.ok(player);
-    assert.equal(player.dynastyValue, calculateDynastyValue(player).dynastyValue);
+    assert.equal(player.localDynastyValue ?? player.dynastyValue, calculateDynastyValue(player).dynastyValue);
   }
 });

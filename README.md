@@ -1,5 +1,28 @@
 UTI Fantasy Baseball
 
+FantraxHQ dynasty baseline:
+- To import a downloaded CSV instead of fetching the website:
+  `node scripts/update-fantraxhq.mjs --csv "path/to/rankings.csv" --source-date YYYY-MM-DD`.
+  Use the rankings publication/update date, not the download date. The importer
+  reads the Roto column even when the file is sorted by Points, preserves UTF-8
+  names, and validates the full table before writing. Then regenerate shared
+  values with `node scripts/update-player-values.js`.
+- `node scripts/update-fantraxhq.mjs` reads the public Roto table at
+  https://fantraxhq.com/fantasy-baseball-dynasty-rankings/ and caches numeric ranks,
+  names, positions, teams, and source date in `data/fantraxhq-rankings.js`.
+- The **Update FantraxHQ Dynasty Rankings** workflow checks weekly and can be
+  run manually. Changed columns, invalid ranks, or incomplete tables fail before
+  replacing the cache. No account or key is used; no access blocks are bypassed.
+- The imported source rank replaces the old weighted dynasty formula for matched
+  players. Source date and attribution appear in the analyzer. Extended-rank gaps
+  are preserved, and missing players keep separately labeled local estimates.
+- Trade points use the site's curve `round(100 / sqrt(1 + (rank - 1) / 25))`.
+  Those points are not source-published prices or calibrated trade market values.
+- MLB production/category profiles remain independent. The source targets
+  15-team roto, while UTI's category analysis uses its own league format.
+- The source's DH-only Ohtani entry applies to the hitter asset, not the pitcher.
+- Tests: `node --test scripts/fantraxhq.test.mjs`.
+
 Stats-based category profiles (separate from dynasty trade points):
 - `node scripts/update-mlb-stat-values.mjs` reads public MLB regular-season
   statistics and caches `data/mlb-stat-snapshot.js`. No paid rankings or API key.
