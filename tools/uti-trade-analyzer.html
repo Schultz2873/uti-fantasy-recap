@@ -620,8 +620,7 @@
             ...getTopCategories(player).map(item => item.category)
           ].join(" ");
           return normalizeName(haystack).includes(normalizedQuery);
-        })
-        .slice(0, 12);
+        });
     }
 
     function renderSuggestions(query, side, container) {
