@@ -80,6 +80,16 @@
 .winner-value { margin-top: 7px; color: var(--color-teal); font-size: 1.4rem; font-weight: 800; line-height: 1.2; overflow-wrap: anywhere; }
 .result-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 .result-stat-value { font-size: 1.3rem; font-weight: 750; font-variant-numeric: tabular-nums; margin-top: 4px; }
+.received-grid { gap: 10px; }
+.received-grid .result-stat { padding: 14px; border: 1px solid var(--color-border); border-radius: 10px; min-width: 0; }
+.received-grid .result-stat-label { font-size: .8rem; overflow-wrap: anywhere; }
+.received-grid .result-stat-value { font-size: clamp(1.8rem, 5vw, 2.5rem); line-height: 1.25; }
+.received-a .result-stat-value { color: var(--color-teal); }
+.received-b .result-stat-value { color: #c4a5ff; }
+.score-unit { color: var(--color-text-muted); font-size: .72rem; margin-top: 4px; }
+.calculation-gap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; margin: 14px 0; font-size: .8rem; }
+.calculation-details label, .calculation-details p { font-size: .78rem; line-height: 1.6; }
+.calculation-details input { accent-color: var(--color-teal); }
 .fairness-pill { justify-self: start; padding: 5px 9px; border-radius: 5px; font-size: .68rem; font-weight: 700; background: rgb(var(--rgb-green) / .12); color: var(--color-green); }
 .fairness-pill.slight { background: rgb(var(--rgb-orange) / .12); color: var(--color-orange); }
 .fairness-pill.pending { background: rgb(var(--rgb-white) / .05); color: var(--color-text-muted); }
