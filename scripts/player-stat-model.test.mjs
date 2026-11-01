@@ -1,12 +1,24 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { inningsToOuts, combineSeasons, categoryContributions, buildStatRatings, matchStatPlayer, applyStatRating } from './player-stat-model.mjs';
+import { inningsToOuts, combineSeasons, categoryContributions, buildStatRatings, matchStatPlayer, applyStatRating, applyLeagueScoring } from './player-stat-model.mjs';
 import { seasonRows } from './update-mlb-stat-values.mjs';
 
 test('innings use baseball outs and reject invalid decimal fractions', () => {
   assert.equal(inningsToOuts('51.2'), 155);
   assert.equal(inningsToOuts('0.1'), 1);
   assert.throws(() => inningsToOuts('51.5'));
+});
+
+test('league fit adjusts points within a cap without changing the source rank', () => {
+  const base = { dynastyValue: 60, dynastyRank: 50, statsConfidence: 'Established sample', modelBreakdown: { leagueFitDelta: 1 } };
+  assert.equal(applyLeagueScoring(base).dynastyValue, 66);
+  assert.equal(applyLeagueScoring({ ...base, modelBreakdown: { leagueFitDelta: -1 } }).dynastyValue, 54);
+  assert.equal(applyLeagueScoring({ ...base, modelBreakdown: { leagueFitDelta: 100 } }).leagueAdjustmentPercent, 15);
+  assert.equal(applyLeagueScoring(base).dynastyRank, 50);
+  for (const changed of [{ riskTier: 'prospectHitter' }, { statsConfidence: 'Limited sample' }, { dynastyRank: null }, { modelBreakdown: {} }]) {
+    assert.equal(applyLeagueScoring({ ...base, ...changed }).dynastyValue, 60);
+    assert.equal(applyLeagueScoring({ ...base, ...changed }).leagueAdjustmentApplied, false);
+  }
 });
 
 test('correct category directions, net statistics and workload-based rate contributions', () => {

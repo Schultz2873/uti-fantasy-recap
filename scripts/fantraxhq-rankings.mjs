@@ -4,7 +4,7 @@ const decode = text => text.replace(/&#x([0-9a-f]+);/gi, (_, n) => String.fromCo
   .replace(/&amp;/g, '&').replace(/&nbsp;/g, ' ').replace(/&quot;/g, '"').replace(/&apos;|&#039;/g, "'");
 const text = html => decode(html.replace(/<[^>]*>/g, '')).trim();
 
-export function parseCsvRankings(csv, updated) {
+export function readCsvRows(csv) {
   const rows = [];
   let row = [], field = '', quoted = false;
   const input = csv.replace(/^\uFEFF/, '');
@@ -24,6 +24,11 @@ export function parseCsvRankings(csv, updated) {
   if (quoted) throw new Error('Unclosed quoted CSV field');
   row.push(field);
   if (row.some(cell => cell.trim())) rows.push(row);
+  return rows;
+}
+
+export function parseCsvRankings(csv, updated) {
+  const rows = readCsvRows(csv);
   const headers = rows.shift()?.map(cell => cell.trim()) || [];
   const indexes = ['Roto', 'Player', 'Pos.', 'Team'].map(header => headers.indexOf(header));
   if (indexes.includes(-1)) throw new Error('CSV must include Roto, Player, Pos., and Team columns');

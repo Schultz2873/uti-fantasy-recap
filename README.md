@@ -1,6 +1,63 @@
 UTI Fantasy Baseball
 
+Trade package comparison:
+- The optional extra-player-slot adjustment deducts a replacement score for each
+  extra player in the larger package. Picks do not consume player slots. Equal
+  player counts keep their original totals. Adjusted totals cannot fall below zero.
+- Replacement score is the median of the ten highest rated current free agents
+  (or all rated free agents if fewer than ten). It follows the selected score mode.
+  If none are rated, comparison uses raw totals. This assumes comparable roster
+  slots; actual cuts, position needs, minors, and IL capacity may differ.
+- The analyzer displays raw totals, deductions, and the baseline and offers a
+  checkbox to disable the adjustment. Individual ratings remain unchanged.
+- Run `node scripts/audit-dynasty-ratings.mjs` to regenerate
+  `exports/dynasty-ratings-audit.md`. This checks model consistency and highlights
+  assumptions; it does not validate future performance or trade market prices.
+- Tests: `node --test scripts/trade-package-values.test.mjs`.
+
+Dynasty outlook and performance views:
+- `scripts/dynasty-outlook.mjs` combines the unadjusted FantraxHQ rank-derived
+  baseline with user-exported 2024?2026 actual Fantrax scores, weighted 60% for
+  2026, 30% for 2025, and 10% for 2024. Each season is also weighted by workload;
+  missing seasons retain their share in the expert baseline. Full-sample weights
+  are 70% baseline / 30% actual production. No additional age or scarcity bonuses.
+- Production weight shrinks linearly with workload, reaching 30% at 500 AB,
+  150 IP for starters, or 60 IP for relievers. A missing score contributes no
+  production weight; a prospect with an expert baseline keeps that baseline.
+- These weights and thresholds are provisional assumptions, not a fitted or
+  validated dynasty forecast. The source ranking already supplies long-term judgment.
+- No expert baseline means no dynasty score; an actual performance score alone
+  is not used to invent future upside. Draft-pick estimates stay manual.
+- The analyzer defaults to Dynasty outlook and offers 2026 league performance
+  separately. Changing the view preserves both trade packages and raw scores.
+- Tests: `node --test scripts/dynasty-outlook.test.mjs`.
+
+Fantrax actual-season player scores (trade analyzer display):
+- The analyzer's main score now uses the user-confirmed 2026 actual-stat exports,
+  cached in `data/fantrax-player-scores.js`, with full precision preserved.
+- Refresh with `node scripts/import-fantrax-player-scores.mjs --season 2026 --hitters "hitters.csv" --pitchers "pitchers.csv"`.
+  It validates both files before replacing the cache. This is a manual CSV update;
+  roster and MLB-stat jobs do not refresh these exported scores.
+- Score is copied directly, without the model's rank curve or scoring adjustment.
+  Empty overall ranks are unrated even if the CSV's Score cell says zero.
+- Current ownership remains sourced from `data/rosters.js`. Export Status values
+  are never used for ownership. Hitter/pitcher Ohtani entries remain separate.
+- Dynasty estimates stay separate in Rating details; source performance scores
+  do not replace the shared dynasty values used for title odds.
+- A performance comparison cannot determine dynasty trade fairness. Prospects
+  without a ranked actual score and draft picks prevent a complete verdict.
+- Tests: `node --test scripts/fantrax-player-scores.test.mjs`.
+
 FantraxHQ dynasty baseline:
+- League scoring adjustment: source ranks stay unchanged. For established MLB
+  samples, estimated points compare the mean z-score in UTI's 8 hitting or 8
+  pitching categories against a conventional 5x5 benchmark (R/HR/RBI/SB/AVG;
+  W/SV/K/ERA/WHIP). This is a benchmark, not a claim about FantraxHQ's exact model.
+  Each z-score of difference changes baseline points by 10%, capped at +/-15%
+  before rounding. This is a bounded modeling assumption, not a validated forecast.
+  Prospect labels, limited samples, and missing expert ranks receive no adjustment.
+  The player details show baseline points and the league adjustment separately.
+  This step does not estimate 10-team replacement levels or positional scarcity.
 - To import a downloaded CSV instead of fetching the website:
   `node scripts/update-fantraxhq.mjs --csv "path/to/rankings.csv" --source-date YYYY-MM-DD`.
   Use the rankings publication/update date, not the download date. The importer

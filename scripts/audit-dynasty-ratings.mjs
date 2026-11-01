@@ -1,0 +1,15 @@
+import fs from 'node:fs';
+import { players } from '../data/players.js';
+import { fantraxPlayerScores } from '../data/fantrax-player-scores.js';
+import { applyExportScore } from './fantrax-player-scores.mjs';
+import { buildDynastyOutlook } from './dynasty-outlook.mjs';
+const rated = players.map(p => buildDynastyOutlook(applyExportScore(p, fantraxPlayerScores)));
+const invalid = rated.filter(p => p.dynastyOutlook != null && (!Number.isFinite(p.dynastyOutlook) || p.dynastyOutlook < 0 || p.dynastyOutlook > 100));
+if (invalid.length) throw Error('Invalid scores: ' + invalid.map(p => p.name));
+const wanted = ['Juan Soto', 'Bobby Witt Jr.', 'Miguel Vargas', 'Jac Caglianone', 'George Lombard Jr.', 'Paul Skenes', 'Jacob Misiorowski', 'Cam Schlittler', 'Aaron Judge', 'Chris Sale', 'Emmanuel Clase', 'Shohei Ohtani-H', 'Shohei Ohtani-P'];
+const sample = rated.filter(p => wanted.includes(p.name));
+const shifted = rated.filter(p => p.dynastyOutlook != null).sort((a,b) => Math.abs(b.dynastyOutlook-b.dynastyBreakdown.baseline)-Math.abs(a.dynastyOutlook-a.dynastyBreakdown.baseline)).slice(0,15);
+const table = list => '| Player | Dynasty | Expert baseline | Production blend | Production weight |\n|---|---:|---:|---:|---:|\n' + list.map(p => `| ${p.name} | ${p.dynastyOutlook ?? 'Unrated'} | ${p.dynastyBreakdown.baseline ?? 'None'} | ${p.dynastyBreakdown.productionScore?.toFixed(2) ?? 'None'} | ${(p.dynastyBreakdown.productionWeight*100).toFixed(1)}% |`).join('\n');
+const report = `# Dynasty ratings audit\n\nChecked ${rated.length} players. Invalid scores: ${invalid.length}. No expert baseline: ${rated.filter(p=>p.dynastyOutlook==null).length}.\n\nThis is a model consistency review, not validation of market prices or future accuracy. Expert source rankings remain the main driver. Fantrax scores are season-relative; averaging them is a provisional heuristic, not a projection of raw category production.\n\n## Player sample\n\n${table(sample)}\n\n## Largest changes from the expert baseline\n\n${table(shifted)}\n\n## Remaining limits\n\n- No independent future projections or prospect scouting model.\n- High source ranks can keep young pitchers high despite limited MLB history.\n- No expert baseline leaves a player unrated, even with strong production.\n- Missing seasons reduce production weight rather than counting as zero performance.\n- The slot adjustment assumes available players can fill extra roster slots; actual owner cuts, positions, IL, and minors capacity can differ.\n- Pick values remain manual estimates.\n`;
+fs.writeFileSync(new URL('../exports/dynasty-ratings-audit.md', import.meta.url), report);
+console.log(report);
