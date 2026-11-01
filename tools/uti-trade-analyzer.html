@@ -75,34 +75,31 @@
           <p class="result-subtitle">Updates as you build.</p>
         </div>
 
+        <div class="fairness-pill" id="fairnessPill">Build both sides</div>
+        <div class="result-grid received-grid" aria-live="polite">
+          <div class="result-stat received-a">
+            <div class="result-stat-label" id="sideAResultLabel">Team A receives</div>
+            <div class="result-stat-value" id="sideAResult">0.0</div>
+            <div class="score-unit">package points</div>
+          </div>
+          <div class="result-stat received-b">
+            <div class="result-stat-label" id="sideBResultLabel">Team B receives</div>
+            <div class="result-stat-value" id="sideBResult">0.0</div>
+            <div class="score-unit">package points</div>
+          </div>
+        </div>
         <div class="winner-box">
-          <div class="winner-label">Score advantage</div>
-          <div class="winner-value" id="winnerValue" aria-live="polite">Even</div>
+          <div class="winner-label">More value received</div>
+          <div class="winner-value" id="winnerValue">Build both sides</div>
         </div>
-
-        <div class="result-grid">
-          <div class="result-stat">
-            <div class="result-stat-label" id="sideAResultLabel">Team A Sends</div>
-            <div class="result-stat-value" id="sideAResult">0</div>
-          </div>
-          <div class="result-stat">
-            <div class="result-stat-label" id="sideBResultLabel">Team B Sends</div>
-            <div class="result-stat-value" id="sideBResult">0</div>
-          </div>
-          <div class="result-stat">
-            <div class="result-stat-label">Difference</div>
-            <div class="result-stat-value" id="differenceResult">0</div>
-          </div>
-          <div class="result-stat">
-            <div class="result-stat-label">Gap</div>
-            <div class="result-stat-value" id="percentResult">0%</div>
-          </div>
-        </div>
-
-        <label><input type="checkbox" id="rosterAdjustment" checked> Account for extra player slots</label>
-        <p class="muted" id="rosterAdjustmentNote"></p>
-        <div class="fairness-pill" id="fairnessPill">Similar score totals</div>
-        <p class="result-note" id="resultNote">Add players to both sides to see who is getting cooked.</p>
+        <p class="result-note" id="resultNote">Add a package for each team to compare.</p>
+        <p class="result-subtitle">Higher points mean more estimated value. Package totals can exceed 100. Use alongside your team's goals.</p>
+        <details class="insight-card calculation-details">
+          <summary class="insight-label">Score calculation &amp; roster space</summary>
+          <div class="calculation-gap"><span>Value difference <strong id="differenceResult">0.0</strong> pts</span><span id="percentResult">0%</span></div>
+          <label><input type="checkbox" id="rosterAdjustment" checked> Account for extra player slots</label>
+          <p class="muted" id="rosterAdjustmentNote"></p>
+        </details>
 
         <div class="fit-grid">
           <div class="fit-stat">
@@ -544,11 +541,11 @@
 
     function getResultNote(teamASendsTotal, teamBSendsTotal) {
       const basis = scoreMode === 'dynasty' ? 'provisional dynasty outlook' : '2026 actual performance';
-      const difference = Math.round(Math.abs(teamASendsTotal - teamBSendsTotal) * 100) / 100;
+      const difference = Math.abs(teamASendsTotal - teamBSendsTotal);
       const receiver = teamBSendsTotal > teamASendsTotal ? state.sideATeam : state.sideBTeam;
       return difference === 0
         ? 'The packages have equal summed ' + basis + ' scores. Scores are estimates, not an objective trade price.'
-        : receiver + ' receives ' + difference + ' more points of ' + basis + '. Consider roster space, risk, and future upside before trading.';
+        : receiver + ' receives about ' + difference.toFixed(1) + ' more points. Based on ' + basis + (document.getElementById('rosterAdjustment').checked ? ' with the roster-space setting enabled.' : '.');
     }
 
     function renderTeamSelects() {
@@ -563,8 +560,8 @@
     function updateSideLabels() {
       if (elements.sideATitle) elements.sideATitle.textContent = `${state.sideATeam} Sends`;
       if (elements.sideBTitle) elements.sideBTitle.textContent = `${state.sideBTeam} Sends`;
-      if (elements.sideAResultLabel) elements.sideAResultLabel.textContent = `${state.sideATeam} Sends`;
-      if (elements.sideBResultLabel) elements.sideBResultLabel.textContent = `${state.sideBTeam} Sends`;
+      if (elements.sideAResultLabel) elements.sideAResultLabel.textContent = `${state.sideATeam} receives`;
+      if (elements.sideBResultLabel) elements.sideBResultLabel.textContent = `${state.sideBTeam} receives`;
       elements.sideASearch.placeholder = `Search ${state.sideATeam} roster...`;
       elements.sideBSearch.placeholder = `Search ${state.sideBTeam} roster...`;
     }
@@ -704,7 +701,7 @@
       const sideATotal = comparison.a;
       const sideBTotal = comparison.b;
       document.getElementById('rosterAdjustmentNote').textContent = comparison.active
-        ? 'Raw totals: ' + comparison.rawA + ' / ' + comparison.rawB + '. Slot deductions: ' + comparison.deductionA + ' / ' + comparison.deductionB + '. Each extra player assumes a slot worth ' + comparison.replacement + ' points, based on rated free agents. Actual cuts and minors slots may differ.'
+        ? 'Packages sent: ' + state.sideATeam + ' ' + comparison.rawA + ' points (deduction ' + comparison.deductionA + '); ' + state.sideBTeam + ' ' + comparison.rawB + ' points (deduction ' + comparison.deductionB + '). Each extra player assumes a slot worth ' + comparison.replacement + ' points, based on rated free agents. Actual cuts and minors slots may differ.'
         : 'Raw score totals. Slot adjustment is disabled or no rated free-agent baseline is available.';
       const difference = Math.round(Math.abs(sideATotal - sideBTotal) * 100) / 100;
       const maxTotal = Math.max(sideATotal, sideBTotal, 1);
@@ -718,9 +715,9 @@
       updateSideLabels();
       elements.sideATotalPill.textContent = `${sideATotal} pts sent`;
       elements.sideBTotalPill.textContent = `${sideBTotal} pts sent`;
-      elements.sideAResult.textContent = sideATotal;
-      elements.sideBResult.textContent = sideBTotal;
-      elements.differenceResult.textContent = difference;
+      elements.sideAResult.textContent = sideBTotal.toFixed(1);
+      elements.sideBResult.textContent = sideATotal.toFixed(1);
+      elements.differenceResult.textContent = difference.toFixed(1);
       elements.percentResult.textContent = `${percentDifference}%`;
       elements.winnerValue.textContent = teamAReceivesTotal === teamBReceivesTotal ? "Even" : teamAReceivesTotal > teamBReceivesTotal ? state.sideATeam : state.sideBTeam;
       elements.fairnessPill.textContent = fairness.label;
@@ -732,8 +729,8 @@
         elements.fairnessPill.className = 'fairness-pill';
         elements.sideATotalPill.textContent = state.sideA.some(p => p.dynastyValue == null) ? 'Incomplete' : sideATotal + ' pts sent';
         elements.sideBTotalPill.textContent = state.sideB.some(p => p.dynastyValue == null) ? 'Incomplete' : sideBTotal + ' pts sent';
-        elements.sideAResult.textContent = state.sideA.some(p => p.dynastyValue == null) ? '?' : sideATotal;
-        elements.sideBResult.textContent = state.sideB.some(p => p.dynastyValue == null) ? '?' : sideBTotal;
+        elements.sideAResult.textContent = state.sideB.some(p => p.dynastyValue == null || (scoreMode === 'performance' && isDraftPick(p))) ? 'Unrated' : sideBTotal.toFixed(1);
+        elements.sideBResult.textContent = state.sideA.some(p => p.dynastyValue == null || (scoreMode === 'performance' && isDraftPick(p))) ? 'Unrated' : sideATotal.toFixed(1);
         elements.differenceResult.textContent = '?';
         elements.percentResult.textContent = '?';
         elements.resultNote.textContent = 'A selected asset has no score for this view. Draft picks are supported only in dynasty mode.';
