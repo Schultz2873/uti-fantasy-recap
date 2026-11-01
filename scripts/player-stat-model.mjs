@@ -62,9 +62,12 @@ export function buildStatRatings(snapshot) {
     const baseline = role === 'hitter'
       ? { avg: sum('hits') / sum('atBats'), strikeoutRate: sum('strikeOuts') / sum('plateAppearances') }
       : { era: sum('earnedRuns') * 27 / sum('outs'), whip: (sum('hits') + sum('baseOnBalls')) * 3 / sum('outs'), baa: sum('hits') / sum('atBats') };
-    const contributions = pool.map(p => categoryContributions(p, baseline));
+    const contribution = p => ({ ...categoryContributions(p, baseline), SB: p.stats.stolenBases || 0, SV: p.stats.saves || 0 });
+    const contributions = pool.map(contribution);
     const keys = role === 'hitter' ? HITTER_KEYS : PITCHER_KEYS;
-    const distributions = Object.fromEntries(keys.map(key => {
+    const standardKeys = role === 'hitter' ? ['R', 'HR', 'RBI', 'SB', 'AVG'] : ['W', 'SV', 'K', 'ERA', 'WHIP'];
+    const allKeys = [...new Set([...keys, ...standardKeys])];
+    const distributions = Object.fromEntries(allKeys.map(key => {
       const mean = contributions.reduce((sum, row) => sum + row[key], 0) / pool.length;
       const sd = Math.sqrt(contributions.reduce((sum, row) => sum + (row[key] - mean) ** 2, 0) / pool.length);
       return [key, { mean, sd }];
@@ -72,15 +75,17 @@ export function buildStatRatings(snapshot) {
     for (const player of snapshot.players.filter(p => p.role === role)) {
       const exposure = role === 'hitter' ? player.stats.plateAppearances : player.stats.outs;
       if (exposure < (role === 'hitter' ? 100 : 60)) continue;
-      const values = categoryContributions(player, baseline);
-      const z = Object.fromEntries(keys.map(key => {
+      const values = contribution(player);
+      const z = Object.fromEntries(allKeys.map(key => {
         const { mean, sd } = distributions[key];
         return [key, sd > 0 ? clamp((values[key] - mean) / sd, -3, 3) : 0];
       }));
       const averageZ = keys.reduce((sum, key) => sum + z[key], 0) / keys.length;
+      const standardZ = standardKeys.reduce((sum, key) => sum + z[key], 0) / standardKeys.length;
       ratings.set(`${player.id}|${role}`, {
         ...player,
         productionScore: Math.round(clamp(50 + 15 * averageZ, 1, 100)),
+        leagueFitDelta: averageZ - standardZ,
         categoryScores: Object.fromEntries(keys.map(key => [key, Math.round(clamp(50 + 15 * z[key], 1, 100))])),
         confidence: exposure >= (role === 'hitter' ? 300 : 180) && player.stats.latestExposure > 0 ? 'Established sample' : 'Limited sample'
       });
@@ -115,7 +120,23 @@ export function applyStatRating(player, snapshot, ratings) {
     categoryFit: Math.round(Object.values(rating.categoryScores).reduce((a, b) => a + b, 0) / 8),
     currentProduction: rating.productionScore, dynastyValue, valueSource: 'Local dynasty estimate; MLB category stats', rankingUpdated: snapshot.updated,
     statsSeasons: snapshot.seasons, statsUpdated: snapshot.updated, statsConfidence: rating.confidence,
-    modelBreakdown: { production: rating.productionScore },
+    modelBreakdown: { production: rating.productionScore, leagueFitDelta: rating.leagueFitDelta },
     needsReview: Boolean(player.needsReview || rating.confidence === 'Limited sample')
   };
+}
+
+export function applyLeagueScoring(player) {
+  const base = player.dynastyValue;
+  // Adjust expert-derived points only. Do not turn limited MLB samples into
+  // dynasty judgments about prospects or assign unsupported scores to unranked players.
+  const eligible = Boolean(player.dynastyRank && player.statsConfidence === 'Established sample'
+    && !String(player.riskTier || '').startsWith('prospect')
+    && Number.isFinite(player.modelBreakdown?.leagueFitDelta));
+  const percent = eligible ? clamp(player.modelBreakdown.leagueFitDelta * .1, -.15, .15) : 0;
+  const value = eligible ? Math.round(clamp(base * (1 + percent), 1, 100)) : base;
+  return { ...player, dynastyValue: value, leagueBaseValue: base,
+    leagueAdjustment: value - base, leagueAdjustmentPercent: Math.round(percent * 1000) / 10,
+    leagueAdjustmentApplied: eligible,
+    leagueAdjustmentReason: eligible ? '16-category fit versus standard 5x5 benchmark'
+      : 'No adjustment: prospect, limited sample, or no source rank' };
 }

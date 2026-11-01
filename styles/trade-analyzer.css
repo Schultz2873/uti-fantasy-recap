@@ -27,6 +27,8 @@
 .builder-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
 .builder-heading h2 { font-size: 1rem; margin: 0 0 4px; }
 .builder-heading p { font-size: .78rem; color: var(--color-text-muted); margin: 0; }
+.score-mode { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; color: var(--color-text-muted); font-size: .75rem; }
+.score-mode select { max-width: 100%; background: var(--color-surface-solid); color: var(--color-text); border: 1px solid var(--color-border); border-radius: 6px; padding: 8px; font: inherit; }
 .reset-btn { flex: none; border: 1px solid var(--color-border); border-radius: 7px; padding: 8px 12px; font-size: .72rem; font-weight: 600; color: var(--color-text-soft); background: transparent; cursor: pointer; }
 .reset-btn:hover { border-color: var(--color-text-muted); color: var(--color-text); }
 .trade-sides { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
@@ -61,7 +63,7 @@
 .value-badge { display: grid; gap: 2px; text-align: right; font-size: 1.05rem; }
 .value-badge small { font-size: .58rem; font-weight: 500; color: var(--color-text-soft); }
 .value-badge .trade-point-note { margin-top: 3px; font-size: .62rem; font-weight: 500; color: var(--color-text-muted); }
-.source-rank { color: var(--color-teal); font-size: 1rem; }
+.league-score { color: var(--color-teal); font-size: 1rem; }
 .mini-category-row, .impact-list { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 9px; }
 .mini-category-chip, .category-chip, .impact-chip { display: inline-flex; padding: 3px 6px; border: 1px solid var(--color-border); border-radius: 4px; font-size: .62rem; font-weight: 600; color: var(--color-text-soft); white-space: nowrap; }
 .player-rating-details { margin-top: 8px; }

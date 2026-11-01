@@ -12,7 +12,7 @@ import { fantasyProsDynasty } from './fantasypros-dynasty.js';
 import { fantraxHQRankings } from './fantraxhq-rankings.js';
 import { applyFantraxHQ, normalizeRankingName, getRankingTier } from '../scripts/fantraxhq-rankings.mjs';
 import { mlbStatSnapshot } from './mlb-stat-snapshot.js';
-import { buildStatRatings, applyStatRating } from '../scripts/player-stat-model.mjs';
+import { buildStatRatings, applyStatRating, applyLeagueScoring } from '../scripts/player-stat-model.mjs';
 
 export const VALUE_WEIGHTS = Object.freeze({
   currentProduction: 0.28,
@@ -1049,7 +1049,8 @@ export const players = deduplicatePlayers([...RAW_PLAYERS, ...additionalRankedPl
   // The original stats model is primary; expert imports remain an optional fallback.
   const rated = statRatings ? applyStatRating(player, mlbStatSnapshot, statRatings) : applyFantasyPros(player);
   const ranked = fantraxHQRankings.players.length ? applyFantraxHQ(rated, fantraxHQRankings) : rated;
-  return { ...ranked, tier: ranked.dynastyRank ? getRankingTier(ranked.dynastyRank) : getDynastyTier(ranked.dynastyValue) };
+  const adjusted = applyLeagueScoring(ranked);
+  return { ...adjusted, tier: adjusted.dynastyRank ? getRankingTier(adjusted.dynastyRank) : getDynastyTier(adjusted.dynastyValue) };
 }).sort((a, b) => b.dynastyValue - a.dynastyValue);
 
 export const playersByName = new Map(players.flatMap(player => [player.name, ...player.aliases].map(name => [normalizeName(name), player])));
