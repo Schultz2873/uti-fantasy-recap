@@ -4,8 +4,7 @@ export const fantraxHQRankings = {
   "url": "https://fantraxhq.com/fantasy-baseball-dynasty-rankings/",
   "format": "Roto",
   "updated": "2026-09-08",
-  "fetched": "2026-10-31T16:56:38.475Z",
-  "importedFrom": "User-provided CSV",
+  "fetched": "2026-11-04T20:40:57.947Z",
   "players": [
     {
       "rank": 1,
