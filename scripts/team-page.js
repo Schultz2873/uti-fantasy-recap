@@ -17,10 +17,10 @@
     "2B": [[63, 51]],
     SS: [[37, 51]],
     "3B": [[23, 62]],
-    OF: [[11, 43], [28, 30], [50, 22.5], [72, 30], [89, 43]]
+    OF: [[18, 43], [28, 30], [50, 28], [72, 30], [82, 43]]
   };
-  const PEN_SPOTS = [[12, 11.5], [66, 11.5], [34, 11.5], [88, 11.5]]; // left pen, right pen, left, right
-  const PEN_SPOTS_FEW = [[23, 11.5], [77, 11.5]];
+  const PEN_SPOTS = [[12, 9], [66, 9], [34, 9], [88, 9]]; // left pen, right pen, left, right
+  const PEN_SPOTS_FEW = [[23, 9], [77, 9]];
   const STATUS = { RESERVE: ["res", "Bench"], INJURED_RESERVE: ["il", "IL"], MINORS: ["minors", "Minors"] };
   const TIERS = [["diamond", 85, "85+"], ["gold", 80, "80–84"], ["silver", 75, "75–79"], ["bronze", 65, "65–74"], ["common", 0, "≤64"]];
   // Fantrax and The Show abbreviate a few MLB teams differently; used only to tell same-named players apart.
@@ -122,31 +122,31 @@
   }
 
   function renderHeader(H, team, teams) {
+    document.getElementById("teamHead").dataset.team = team;
     const seasons = seasonsPlayed(H, team);
     const results = H.knownSeasonResults();
-    const chips = [];
-    results.forEach(result => {
-      if (result.champion === team) chips.push(`<span class="chip gold">🏆 ${result.season} Champion</span>`);
-      if (result.runnerUp === team) chips.push(`<span class="chip silver">🥈 ${result.season} Runner-up</span>`);
-      if (result.thirdPlace === team) chips.push(`<span class="chip bronze">🥉 ${result.season} Third</span>`);
-      if (result.regularSeasonFirst === team) chips.push(`<span class="chip">👑 ${result.season} Best record</span>`);
-    });
-    const playoffYears = seasons.filter(season => H.franchiseRecord(team, null, season, "playoffs").games > 0);
-    if (playoffYears.length) chips.push(`<span class="chip">Playoffs ${playoffYears.join(" · ")}</span>`);
-
     document.getElementById("teamHead").innerHTML = `
       <img class="team-photo" src="${escapeHtml(H.logoFor(team))}" alt="">
-      <div class="team-head-copy">
-        <h1>${escapeHtml(team)}</h1>
-        <p class="team-sub">${seasons.length ? `In the league since ${seasons[0]} · ` : ""}${formatRecord(H.franchiseRecord(team))} all-time</p>
-        ${chips.length ? `<div class="shelf">${chips.join("")}</div>` : ""}
-        <div class="shelf">${nextSeasonChips(H, team)}</div>
-      </div>
-      <label class="team-picker">
-        <span>Team</span>
-        <select id="teamSelect">${teams.map(name => `<option${name === team ? " selected" : ""}>${escapeHtml(name)}</option>`).join("")}</select>
-      </label>`;
+      <div class="team-head-copy team-title-row"><h1 class="team-title-picker"><select id="teamSelect" aria-label="Select team">${teams.map(name => `<option${name === team ? " selected" : ""}>${escapeHtml(name)}</option>`).join("")}</select><span aria-hidden="true">⌄</span></h1><button type="button" class="team-trophy-button" id="teamTrophyButton" aria-label="View ${escapeHtml(team)} accolades and history" aria-haspopup="dialog" aria-controls="teamHonorsDialog"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 3h8v5a4 4 0 0 1-8 0V3Z"/><path d="M8 5H5v2a4 4 0 0 0 4 4m7-6h3v2a4 4 0 0 1-4 4M12 12v5m-4 4v-2a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2H8Z"/></svg></button></div>
+`;
+    document.getElementById("teamAccolades").innerHTML = honorsMarkup(H, team, seasons, results);
     document.title = `${team} | Union of Ten Idiots`;
+  }
+
+  function honorsMarkup(H, team, seasons, results) {
+    const record = H.franchiseRecord(team);
+    const championships = results.filter(r => r.champion === team).map(r => Number(r.season)).sort((a,b) => b-a);
+    const playoffs = seasons.filter(year => H.franchiseRecord(team, null, year, 'playoffs').games > 0);
+    const awards = results.map(r => ({ year: r.season, honors: [
+      r.champion === team ? ['gold', '&#127942;', 'League champion'] : null,
+      r.runnerUp === team ? ['silver', '&#129352;', 'Runner-up'] : null,
+      r.thirdPlace === team ? ['bronze', '&#129353;', 'Third place'] : null,
+      r.regularSeasonFirst === team ? ['teal', '&#128081;', 'Best regular-season record'] : null
+    ].filter(Boolean) })).filter(r => r.honors.length).sort((a,b) => b.year-a.year);
+    return `<div class="honors-spotlight"><div class="honors-trophy" aria-hidden="true">&#127942;</div><div><span class="honors-kicker">The trophy room</span><strong>${championships.length ? championships.length + (championships.length === 1 ? ' championship' : ' championships') : 'The next chapter awaits'}</strong><span>${championships.length ? championships.join(' &middot; ') : 'Building toward the first league title'}</span></div></div>
+      <div class="honors-numbers"><div><span>All-time record</span><strong>${escapeHtml(formatRecord(record))}</strong><small>${seasons.length ? 'Member since ' + seasons[0] : 'League history'}</small></div><div><span>Playoff appearances</span><strong>${playoffs.length}</strong><small>${playoffs.length ? playoffs.join(' &middot; ') : 'First appearance still ahead'}</small></div></div>
+      <section class="honors-section"><h3>Honors by season</h3>${awards.length ? '<ol class="honors-timeline">' + awards.map(row => '<li><span class="honors-year">' + escapeHtml(row.year) + '</span><div>' + row.honors.map(([tone, icon, label]) => '<div class="honors-award is-' + tone + '"><span aria-hidden="true">' + icon + '</span><strong>' + label + '</strong></div>').join('') + '</div></li>').join('') + '</ol>' : '<p class="honors-empty">No podium finishes yet. There is room on the shelf.</p>'}</section>
+      <section class="honors-section"><h3>Next season</h3><div class="honors-outlook">${nextSeasonChips(H, team) || '<p class="honors-empty">Season outlook is not available yet.</p>'}</div></section>`;
   }
 
   // Next season's title odds and draft pick: the only numbers not shown elsewhere on the page.
@@ -158,8 +158,8 @@
     const draft = window.UTI_DRAFT_ORDER;
     const pick = draft?.picks?.indexOf(team) ?? -1;
     return [
-      line ? `<span class="chip next">${next} odds <b>${escapeHtml(line)}</b></span>` : "",
-      pick >= 0 ? `<span class="chip next">${draft.season || next} pick <b>#${pick + 1}</b></span>` : ""
+      line ? `<div class="honors-outlook-card"><span>${next} title odds</span><strong>${escapeHtml(line)}</strong></div>` : "",
+      pick >= 0 ? `<div class="honors-outlook-card"><span>${draft.season || next} draft pick</span><strong>#${pick + 1}</strong></div>` : ""
     ].join("");
   }
 
@@ -186,9 +186,11 @@
     const [slot, status, name, mlbTeam, position] = player;
     const where = status === "ACTIVE" ? `starting at ${slot}` : `${STATUS[status][1].toLowerCase()} (${slot} slot)`;
     const rating = ratingFor(player);
-    document.getElementById("playerCard").innerHTML = headshot(player, "player-photo is-large") +
-      `<strong>${escapeHtml(name)}</strong> · ${escapeHtml(mlbTeam || "—")} · ${escapeHtml(position)} · ${where}` +
-      (rating != null ? ` · ${rating} overall in The Show` : " · not in The Show");
+    document.getElementById("playerCard").innerHTML = `${headshot(player, "player-photo is-large")}
+      <div class="selected-player-copy"><span class="selected-player-label">Player details</span>
+      <strong>${escapeHtml(name)}</strong>
+      <span>${escapeHtml(mlbTeam || "—")} · ${escapeHtml(position)} · ${escapeHtml(where)}</span></div>
+      <div class="selected-player-rating">${ovrBadge(player)}<span>The Show</span></div>`;
   }
 
   function makeSelectable(element, player) {
@@ -389,8 +391,19 @@
     renderProfile(H, team, String(H.current?.season || 2026));
     renderCategories(H, team);
     renderRivals(H, team);
+    const honorsDialog = document.getElementById('teamHonorsDialog');
+    if (honorsDialog.open) honorsDialog.close();
+    document.getElementById('teamHonorsTitle').textContent = `${team} accolades & history`;
+    document.getElementById('teamHonorsBody').innerHTML = document.getElementById('teamAccolades').innerHTML;
+    document.getElementById('teamTrophyButton').addEventListener('click', event => {
+      const rect = event.currentTarget.getBoundingClientRect();
+      honorsDialog.style.left = `${Math.max(12, Math.min(rect.left, window.innerWidth - 432))}px`;
+      honorsDialog.style.top = `${Math.max(12, Math.min(rect.bottom + 10, window.innerHeight - 330))}px`;
+      honorsDialog.showModal();
+    });
+    document.dispatchEvent(new CustomEvent('uti:team-selected', { detail: { team } }));
 
-    document.getElementById("teamSelect").addEventListener("change", event => {
+    document.getElementById("teamSelect")?.addEventListener("change", event => {
       const next = event.target.value;
       history.replaceState(null, "", `?team=${encodeURIComponent(next)}`);
       render(next);
@@ -407,6 +420,11 @@
   }
 
   window.addEventListener("resize", keepChipsInField);
+  document.getElementById('teamHonorsDialog').addEventListener('click', event => {
+    const dialog = event.currentTarget;
+    const bounds = dialog.getBoundingClientRect();
+    if (event.target === dialog && (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom)) dialog.close();
+  });
 
   // Season tabs inside the season stats panel.
   document.getElementById("teamProfile").addEventListener("click", event => {

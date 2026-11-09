@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <linearGradient id="silver" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#edf8ff"/><stop offset=".5" stop-color="#678ba9"/><stop offset="1" stop-color="#d8e9f3"/></linearGradient>
+    <radialGradient id="light"><stop stop-color="#d8f2ff" stop-opacity=".65"/><stop offset=".2" stop-color="#92cfff" stop-opacity=".15"/><stop offset="1" stop-color="#92cfff" stop-opacity="0"/></radialGradient>
+    <linearGradient id="inside" x2="0" y2="1"><stop stop-color="#153059" stop-opacity=".8"/><stop offset="1" stop-color="#081628" stop-opacity=".1"/></linearGradient>
+  </defs>
+  <ellipse cx="130" cy="36" rx="160" ry="110" fill="url(#light)"/>
+  <ellipse cx="1070" cy="36" rx="160" ry="110" fill="url(#light)"/>
+  <!-- Wide graphic diamond frames a three-player composition. -->
+  <path d="M600 14 1128 200 600 386 72 200Z" fill="url(#inside)" stroke="url(#silver)" stroke-width="2"/>
+  <path d="M600 36 1064 200 600 364 136 200Z" fill="none" stroke="#3886c5" stroke-width="1" opacity=".65"/>
+  <path d="M600 52 1018 200 600 348 182 200Z" fill="none" stroke="#c19669" stroke-width="1" opacity=".5"/>
+  <path d="M600 14 1128 200 600 386 72 200Z" fill="none" stroke="#d8f2ff" stroke-width="8" opacity=".035"/>
+  <g fill="#d9edfa" stroke="#182d47" stroke-width="1">
+    <path d="m600 8 8 6-8 6-8-6z"/>
+    <path d="m1128 193 9 7-9 7-9-7z"/>
+    <path d="m72 193 9 7-9 7-9-7z"/>
+    <path d="m593 380 14 0 0 6-7 7-7-7z"/>
+  </g>
+  <g fill="#d9efff" opacity=".7">
+    <circle cx="95" cy="42" r="2.5"/><circle cx="108" cy="45" r="2.5"/><circle cx="121" cy="48" r="2.5"/><circle cx="134" cy="51" r="2.5"/>
+    <circle cx="1105" cy="42" r="2.5"/><circle cx="1092" cy="45" r="2.5"/><circle cx="1079" cy="48" r="2.5"/><circle cx="1066" cy="51" r="2.5"/>
+  </g>
+</svg>
