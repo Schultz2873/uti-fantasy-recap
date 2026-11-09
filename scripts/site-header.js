@@ -11,6 +11,14 @@
 (() => {
   const script = document.currentScript;
   const siteRoot = new URL("../", script.src);
+  // Shared motion loads through the header on root pages and nested tools alike.
+  const motionStyles = document.createElement('link');
+  motionStyles.rel = 'stylesheet';
+  motionStyles.href = new URL('styles/site-motion.css?v=1', siteRoot).href;
+  document.head.appendChild(motionStyles);
+  const motionScript = document.createElement('script');
+  motionScript.src = new URL('scripts/site-motion.js?v=1', siteRoot).href;
+  document.head.appendChild(motionScript);
 
   const NAV_LINKS = [
     { label: "Home", href: "index.html" },

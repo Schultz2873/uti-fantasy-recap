@@ -1,0 +1,15 @@
+/* Motion remains optional and does not hide content before JavaScript loads. */
+@media (prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine) {
+  :where(.uti-intel-card, .uti-history-teaser-card.is-link, .ui-panel, .recap-card) {
+    transition: translate 180ms ease, box-shadow 180ms ease;
+  }
+  :where(.uti-intel-card, .uti-history-teaser-card.is-link, .ui-panel, .recap-card):hover {
+    translate: 0 -3px;
+    box-shadow: 0 8px 22px rgb(0 0 0 / .16);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  :where(.uti-intel-card, .uti-history-teaser-card.is-link, .recap-card):active {
+    translate: 0 1px;
+  }
+}
