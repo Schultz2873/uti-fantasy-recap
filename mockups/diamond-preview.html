@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head><base href="../">
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Team | Union of Ten Idiots</title>
+  <link href="styles/styles.css?v=theme-1" rel="stylesheet" />
+  <link href="styles/intelligence.css?v=team-1" rel="stylesheet" />
+  <link href="styles/team.css?v=reference-field-67" rel="stylesheet" />
+  <link href="styles/theme.css?v=wordmark-1" rel="stylesheet" />
+</head>
+
+<body>
+  <script src="scripts/site-header.js?v=standings-1"></script>
+  <!-- Filled by scripts/team-page.js. Pick a team with team.html?team=Team%20Name. -->
+  <main class="page team-page" data-uti-team-page data-uti-profiles>
+    <header class="team-head" id="teamHead">
+      <p class="team-loading">Loading team…</p>
+    </header>
+    <section class="team-hero" aria-label="Team overview">
+    <section class="cornerstones" id="teamCornerstones" aria-label="Team cornerstones"><p class="team-loading">Loading team cornerstones…</p></section>
+    </section>
+    <!-- Extra team history, accolades, odds, and team picker are hidden for now. -->
+    <section class="team-accolades" id="teamAccolades" aria-label="Team history and outlook" hidden></section>
+    <section class="ui-panel" aria-labelledby="lineupTitle">
+      <div class="team-panel-head">
+        <h2 id="lineupTitle">Starting lineup</h2>
+        <div class="team-rating" id="teamRating"></div>
+      </div>
+      <div class="lineup">
+        <div>
+          <div class="field-wrap">
+            <div class="field" id="field">
+              <img class="field-surface" src="assets/baseball-field-sky-view.png" alt="" aria-hidden="true" decoding="async" />
+              <div class="field-bullpens" aria-hidden="true"><span>Relief pitching</span><span>Relief pitching</span></div>
+            </div>
+            <!-- Flex spots and rotation: in the foul-territory corners on wide screens, under the field on phones. -->
+            <div class="field-sides" id="fieldSides"></div>
+          </div>
+          <div class="ovr-legend" id="ovrLegend"></div>
+          <div class="player-card" id="playerCard">Tap a player to see their details.</div>
+        </div>
+
+        <details class="bench" id="benchDetails" open>
+          <summary><h3>Bench, IL and minors <span id="benchCount"></span></h3></summary>
+          <div class="bench-groups" id="bench"></div>
+        </details>
+      </div>
+    </section>
+
+    <!-- Same season profile as the old pop-up: season tabs, key numbers, weekly finish, more stats. -->
+    <section class="ui-panel" aria-labelledby="profileTitle">
+      <div class="team-panel-head">
+        <h2 id="profileTitle">Season stats</h2>
+        <span class="team-verdict" id="teamVerdict"></span>
+      </div>
+      <div class="team-profile" id="teamProfile"></div>
+    </section>
+
+    <div class="team-two">
+      <section class="ui-panel" aria-labelledby="catsTitle">
+        <div class="team-panel-head"><h2 id="catsTitle">Category fingerprint</h2></div>
+        <p class="ui-panel-note" id="catsNote">Share of each category won. The line is 50%; teal is a strength, coral a weakness.</p>
+        <div class="cats" id="teamCats"></div>
+      </section>
+
+      <section class="ui-panel" aria-labelledby="rivalsTitle">
+        <div class="team-panel-head"><h2 id="rivalsTitle">Rivalries</h2></div>
+        <p class="ui-panel-note">All-time head-to-head.</p>
+        <div class="rivals" id="teamRivals"></div>
+      </section>
+    </div>
+  </main>
+
+  <dialog class="team-honors-dialog" id="teamHonorsDialog" aria-labelledby="teamHonorsTitle">
+    <div class="team-honors-heading"><h2 id="teamHonorsTitle">Accolades &amp; history</h2><form method="dialog"><button type="submit" aria-label="Close accolades">✕</button></form></div>
+    <div class="team-honors-body" id="teamHonorsBody"></div>
+  </dialog>
+  <script src="data/team-logos.js"></script>
+  <script src="data/fantasy-owners.js?v=owners-updated-shohei-latz"></script>
+  <script src="data/player-values.js"></script>
+  <script src="data/draft-order.js?v=draft-1"></script>
+  <script src="data/weekly-team-stats.js?v=2026-10-24"></script>
+  <script src="data/history/season-results.js?v=2022-results-2"></script>
+  <script src="data/rosters.js?v=2027-league"></script>
+  <script src="data/show-ratings.js?v=team-1"></script>
+  <script src="scripts/league-analytics.js?v=2026-week22-r1-fix2"></script>
+  <script src="scripts/title-odds.js?v=team-1"></script>
+  <script src="scripts/uti-intelligence.js?v=2022-results"></script>
+  <script src="scripts/team-page.js?v=sky-view-field-31"></script>
+  <script src="data/cornerstone-scores.js?v=1"></script>
+<script src="scripts/team-cornerstones.js?v=dixon-no-haze-47"></script>
+<script>
+if(location.search.includes('mobile'))document.body.style.width='390px';
+window.addEventListener('load',()=>{
+ const field=document.getElementById('field');const surface=field.querySelector('.field-surface');const chip=field.querySelector('.spot');
+ const errors=[];if(!surface.complete||!surface.naturalWidth)errors.push('field image failed to load');
+ if(!chip)errors.push('roster markers missing');else{chip.click();if(chip.getAttribute('aria-pressed')!=='true'||!document.querySelector('#playerCard strong'))errors.push('player selection failed');}
+ const bounds=field.getBoundingClientRect();for(const spot of field.querySelectorAll('.spot')){const r=spot.getBoundingClientRect();if(r.left<bounds.left-1||r.right>bounds.right+1||r.bottom>bounds.bottom+1)errors.push('marker outside field');}
+ const spots=[...field.querySelectorAll('.spot')];for(let i=0;i<spots.length;i++)for(let j=i+1;j<spots.length;j++){const a=spots[i].getBoundingClientRect(),b=spots[j].getBoundingClientRect();if(Math.min(a.right,b.right)-Math.max(a.left,b.left)>2&&Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top)>2)errors.push('overlap: '+spots[i].getAttribute('aria-label')+' / '+spots[j].getAttribute('aria-label'));} const photo=surface.getBoundingClientRect();const logo={left:photo.left+photo.width*.435,right:photo.left+photo.width*.565,top:photo.top+photo.height*.24,bottom:photo.top+photo.height*.325};for(const spot of field.querySelectorAll('.spot')){const r=spot.getBoundingClientRect();if(Math.min(r.right,logo.right)-Math.max(r.left,logo.left)>1&&Math.min(r.bottom,logo.bottom)-Math.max(r.top,logo.top)>1)errors.push('UTI covered: '+spot.getAttribute('aria-label'));} const result=document.createElement('p');result.style='position:fixed;bottom:0;left:0;z-index:9999;background:#101b27;color:#36d6bd;margin:0;padding:8px;font:12px Arial';result.textContent=errors.length?errors.join('; '):'PASS: field image loaded; player selection works; markers stay within field; UTI stays visible';document.body.append(result);
+});
+</script></body>
+
+</html>

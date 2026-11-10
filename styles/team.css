@@ -235,21 +235,7 @@
   aspect-ratio: 100 / 106;
 }
 
-.field svg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
 
-.field .pen { fill: var(--grass-2); stroke: var(--chalk); stroke-width: 0.3; stroke-dasharray: 1 0.8; }
-.field .pen-label { font-size: 2.3px; font-weight: 800; letter-spacing: 0.3px; fill: var(--color-text-muted); }
-.field .track { fill: var(--track); }
-.field .grass { fill: var(--grass); }
-.field .grass-stripe { fill: var(--grass-2); opacity: 0.55; }
-.field .dirt { fill: var(--dirt); }
-.field .chalk { fill: none; stroke: var(--chalk); stroke-width: 0.35; }
-.field .base { fill: #fff; }
 
 .spot {
   position: absolute;
@@ -654,15 +640,55 @@
   background-image: linear-gradient(rgb(183 225 215 / .025) 1px, transparent 1px), linear-gradient(90deg, rgb(183 225 215 / .025) 1px, transparent 1px);
   background-size: 24px 24px;
 }
-.field .pen { fill: #15272c; stroke: #395953; stroke-dasharray: none; }
-.field .pen-label { fill: #8fafaa; letter-spacing: .65px; font-size: 1.8px; }
-.field .chalk { stroke-width: .25; stroke-linecap: round; }
-.field .base { fill: #dcece6; }
-.field .park-bowl { fill: #12252b; stroke: #46645d; stroke-width: .4; }
-.field .park-warning { fill: #736354; }
-.field .park-wall { fill: none; stroke: #7fa69a; stroke-width: .65; }
-.field .park-infield { fill: #90745b; }
-.field .park-basepath { fill: none; stroke: #d0ba9b; stroke-width: .25; opacity: .65; }
+/* Photographic playing surface with live roster controls above it. */
+.team-page .field-wrap {
+  border-color: rgb(117 174 184 / .16);
+  background: radial-gradient(ellipse at 50% 55%, rgb(33 72 77 / .18), transparent 68%), #101b27;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / .025);
+}
+.team-page .field { background-image: none; aspect-ratio: 16 / 11; }
+.field-surface {
+  position: absolute;
+  inset: 18% 0 0;
+  width: 100%;
+  height: 82%;
+  object-fit: fill;
+  border-radius: 10px;
+  filter: brightness(.88) saturate(.92);
+  pointer-events: none;
+}
+.field-bullpens {
+  position: absolute;
+  inset: 1% 1% auto;
+  height: 14.5%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10%;
+  pointer-events: none;
+}
+.field-bullpens > span {
+  padding-top: 4px;
+  border: 1px solid #2d4650;
+  border-radius: 10px;
+  background: #12232f;
+  color: #819ca8;
+  text-align: center;
+  font-size: clamp(.45rem, 1vw, .65rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.team-page .field .spot { z-index: 1; }
+@media (max-width: 640px) {
+  .field-bullpens > span { padding-top: 3px; font-size: .4rem; line-height: 1.1; letter-spacing: .08em; }
+  .field-bullpens { height: 16%; }
+  .team-page .field .spot { min-height: 22px; padding: 1px 3px; max-width: 27%; gap: 0; }
+  .team-page .field .spot i { font-size: .43rem; line-height: 1.05; gap: 2px; }
+  .team-page .field .spot b { font-size: .52rem; line-height: 1.1; max-width: 60px; }
+  .team-page .field .spot i .ovr { height: 1.1em; min-width: 1.65em; padding: 0 .2em; }
+  .team-page .field .spot.is-pen { margin-top: 4px; }
+}
 .team-page .spot {
   border-color: #38534f;
   border-radius: 8px;

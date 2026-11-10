@@ -10,14 +10,15 @@
   const HITTING = ["R", "HR", "RBI", "BB", "SO", "NSB", "AVG", "TB"];
   const PITCHING = ["W", "L", "QS", "K", "ERA", "WHIP", "NS", "BAA"];
   
-  // Field spots in percent of the field box (100 wide x 106 tall; the pens use the top 16).
+  // Field spots follow the wide stadium reference; bullpens occupy the top 16%.
   const FIELD_SPOTS = {
-    C: [[50, 92.5]],
-    "1B": [[77, 62]],
-    "2B": [[63, 51]],
-    SS: [[37, 51]],
-    "3B": [[23, 62]],
-    OF: [[18, 43], [28, 30], [50, 28], [72, 30], [82, 43]]
+    C: [[50, 94]],
+    "1B": [[65, 73]],
+    "2B": [[60, 61]],
+    SS: [[40, 61]],
+    "3B": [[35, 73]],
+    // Leave the central UTI mowing design visible even with five outfielders.
+    OF: [[25, 50], [27, 37], [50, 32], [73, 37], [75, 50]]
   };
   const PEN_SPOTS = [[12, 9], [66, 9], [34, 9], [88, 9]]; // left pen, right pen, left, right
   const PEN_SPOTS_FEW = [[23, 9], [77, 9]];
