@@ -1,5 +1,27 @@
 UTI Fantasy Baseball
 
+Draft Night:
+- The navy/teal dashboard shows Best Available, the full round-by-round board,
+  and the latest six picks together. Full board expands the table; selection
+  filters show prospects, auction, or both. Scroll to inspect all teams/rounds.
+- Auction board rounds follow nomination turns; multiple wins by the same team
+  in a nomination round stack in that team's cell. Passes remain in the history.
+- Open `draft-night.html` through the website (ES modules require HTTP hosting).
+- Verify roster counts after cuts under Commissioner desk before drafting.
+- The prospect stage repeats the draft order; confirm Fantrax minor eligibility
+  for each selection. Pass skips a turn. Switch to Auction draft for sales.
+- Auction sales use whole dollars, with a provisional $1 minimum. Record the
+  final winner after live bidding; apply handbook tie rules in the room.
+- Additional fund purchases add $50 of auction funds per $10 real-money purchase.
+- Open the big-screen link in the same browser on the commissioner computer.
+  Both tabs must use the same site origin and browser profile. Other devices
+  do not synchronize. This is a local workstation, not authenticated multiuser access.
+- State persists in localStorage. Export JSON backups; restore replaces the
+  current session after confirmation and can be undone during that session.
+- Picks do not write to Fantrax. Available rankings exclude cached rostered
+  players; refresh the roster cache after cuts. Rankings do not verify eligibility.
+- Draft Night is linked from the homepage draft card and League Hub menu.
+
 Trade package comparison:
 - The optional extra-player-slot adjustment deducts a replacement score for each
   extra player in the larger package. Picks do not consume player slots. Equal

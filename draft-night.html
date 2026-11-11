@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Draft Night | UTI</title><link rel="stylesheet" href="styles/styles.css"><link rel="stylesheet" href="styles/theme.css"><link rel="stylesheet" href="styles/draft-night.css?v=mockup-3"></head>
+<body>
+<script src="scripts/site-header.js"></script>
+<main class="draft-night">
+<header class="draft-heading"><div><p class="eyebrow"><span id="season"></span> · Live draft</p><h1>Draft Night</h1></div><div class="actions"><a href="draft-night.html?display=1" target="_blank" rel="noopener">Open big screen</a><button id="fullBoard">Full board</button><button id="fullscreen">Fullscreen</button><a href="league-contract.html#rosters">Draft rules</a></div></header>
+
+<section class="stage" aria-label="Draft spotlight"><div class="stage-team"><p class="eyebrow" id="clockLabel">On the clock</p><h2 id="spotlight"></h2><p id="phaseLabel"></p></div><p id="stageDetail"></p><div class="timer"><output id="clock">02:00</output></div></section>
+<p id="message" role="status" aria-live="polite"></p>
+<div class="draft-layout">
+<section class="panel available-panel"><h2>Best Available</h2><p>Available players · Dynasty ranks</p><label class="search-label"><span class="sr-only">Search players</span><input id="search" placeholder="Player, position or MLB team" type="search"></label><div id="players" class="player-list"></div><details class="ranking-details"><summary>Ranking source &amp; eligibility</summary><p id="source"></p><p class="eligibility-note">Dynasty ranks, not a verified prospect pool. Cached rostered players and tonight’s picks are hidden. Confirm minor eligibility in Fantrax.</p></details></section>
+<section class="panel board-panel"><div class="section-heading"><h2>Draft Board</h2><label>Selections <select id="boardPhase"><option value="all">Both drafts</option><option value="minor" selected>Prospects</option><option value="auction">Auction</option></select></label></div><div id="board" class="board" tabindex="0" role="region" aria-label="Full draft board, scroll to see all teams and rounds"></div><p id="pickCount"></p></section>
+<section class="panel recent-panel"><h2>Recent Picks</h2><p>Latest selections · both drafts</p><ol id="recent"></ol></section>
+</div>
+<details class="controls panel commissioner"><summary>Commissioner desk</summary><p class="notice">Commissioner workstation · Saves in this browser. The big-screen tab syncs on this computer using the same website address. Picks are not sent to Fantrax. Export a backup after your session.</p><div class="clock-controls actions"><button id="startClock">Start / pause clock</button><button id="resetClock">Reset clock</button><label>Seconds <input id="seconds" type="number" min="10" max="3600" value="120"></label></div><div class="actions"><label>Stage <select id="phase"><option value="minor">Minor league draft</option><option value="auction">Auction draft</option></select></label><button id="pass">Pass / next team</button><button id="undo">Undo last action</button><button id="export">Export backup</button></div>
+<p><label>Restore exported backup <input id="restore" type="file" accept="application/json,.json"></label></p>
+<form id="pickForm"><label>Player <input id="player" list="playerOptions" required maxlength="120" placeholder="Search rankings or enter a player"><datalist id="playerOptions"></datalist></label><label>Team <select id="winner"></select></label><label class="auction">Auction price $ <input id="price" type="number" min="1" step="1" value="1"></label><label class="minor"><input id="eligible" type="checkbox"> Fantrax minor eligibility verified</label><button type="submit" id="record">Announce selection</button></form>
+<p>For an in-person auction, call bids in the room and record the final winner here. Apply the handbook’s nomination / first-bidder tiebreaker before recording a sale.</p>
+<details><summary>Roster counts & auction funds</summary><p>Set draft-day counts after cuts. Counts below start from the cached Fantrax rosters; verify them before drafting. Active count includes reserve players and excludes IL/minors. Pre-draft cuts must leave at most 30 total players.</p><div id="setup"></div></details></details>
+<details class="panel feed-panel"><summary>Complete draft feed · selections and passes</summary><ol id="feed"></ol></details>
+</main><dialog id="reveal"><p class="eyebrow">The pick is in</p><h2 id="revealPlayer"></h2><p id="revealTeam"></p><button id="closeReveal">Back to the board</button></dialog>
+<script src="data/draft-order.js"></script><script src="data/team-logos.js"></script><script src="data/rosters.js"></script><script type="module" src="scripts/draft-night.js?v=mockup-3"></script>
+</body></html>
