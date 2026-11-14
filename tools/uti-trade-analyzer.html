@@ -7,7 +7,7 @@
   <title>UTI Trade Analyzer</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="../styles/styles.css?v=theme-1" rel="stylesheet" />
-  <link href="../styles/trade-analyzer.css?v=rank-labels-1" rel="stylesheet" />
+  <link href="../styles/trade-analyzer.css?v=baseball-tiers-1" rel="stylesheet" />
   <link href="../styles/theme.css?v=wordmark-1" rel="stylesheet" />
 </head>
 
@@ -19,11 +19,10 @@
       <h1>Trade Analyzer<span class="trade-title-dot" aria-hidden="true">.</span></h1>
       <p>Compare dynasty outlook and actual league performance, side by side.</p>
       <p class="muted" id="ratingsSummary">Loading player rating sources…</p>
-      <details class="rating-method">
-        <summary>How ratings work</summary>
-        <p>Our model compares MLB regular-season production in all 16 league categories. The latest three seasons carry 60%, 30%, and 10% weight. Batting average, ERA, WHIP, and opponent average account for workload; hitter strikeouts reward a lower strikeout rate. Net steals subtract caught stealing, and net saves subtract blown saves.</p>
-        <p>Dynasty outlook starts with the FantraxHQ rank-derived baseline and blends in up to 30% actual league production across 2026, 2025, and 2024 (60%, 30%, and 10% recency weights). Production weight increases with sample size: 500 at-bats for hitters, 150 innings for starters, or 60 innings for relievers. The rest stays with the expert baseline. No extra age or position bonuses are added. These weights are provisional model choices, not validated trade prices.</p><p>Category-fit badges use the separate MLB model described above. FantraxHQ dynasty information remains available in Rating details. The 2026 performance view shows the exported scores unchanged. Draft picks use manual estimates only in dynasty mode. Players with no expert baseline remain unrated in dynasty mode.</p>
-      </details>
+      <details class="rating-method"><summary>How baseball tiers work</summary>
+<p>Dynasty tiers use FantraxHQ overall dynasty ranks: Franchise Player (1–25), All-Star (26–75), Core Starter (76–175), Role Player (176–350), Depth Piece (351+). These are local fantasy labels, not MLB honors.</p>
+<p>Explicit prospect profiles use Blue-Chip Prospect (1–75), Strong Prospect (76–175), or Developmental Prospect (176+) on that same overall list. Missing ranks stay Unrated. Picks retain their year and round.</p>
+<p>Performance tiers use the same cutoffs with actual Fantrax season ranks. Trade assessments retain the provisional valuation model and optional roster-space adjustment; tiers are not added together.</p></details>
     </section>
 
     <div id="loadError" class="load-error" hidden>
@@ -42,7 +41,7 @@
             <div class="trade-side-kicker"><span class="side-marker" aria-hidden="true">A</span> Sending package</div>
             <div class="trade-side-header">
               <h2 class="trade-side-title" id="sideATitle">Team A Sends</h2>
-              <span class="side-total-pill" id="sideATotalPill">0 pts</span>
+              <span class="side-total-pill" id="sideATotalPill">No assets</span>
             </div>
             <select class="team-fit-select" id="sideATeamSelect" aria-label="Team A sending team"></select>
             <div class="player-search-wrap">
@@ -56,7 +55,7 @@
             <div class="trade-side-kicker"><span class="side-marker" aria-hidden="true">B</span> Sending package</div>
             <div class="trade-side-header">
               <h2 class="trade-side-title" id="sideBTitle">Team B Sends</h2>
-              <span class="side-total-pill" id="sideBTotalPill">0 pts</span>
+              <span class="side-total-pill" id="sideBTotalPill">No assets</span>
             </div>
             <select class="team-fit-select" id="sideBTeamSelect" aria-label="Team B sending team"></select>
             <div class="player-search-wrap">
@@ -80,23 +79,23 @@
           <div class="result-stat received-a">
             <div class="result-stat-label" id="sideAResultLabel">Team A receives</div>
             <div class="result-stat-value" id="sideAResult">0.0</div>
-            <div class="score-unit">package points</div>
+            <div class="score-unit">package composition</div>
           </div>
           <div class="result-stat received-b">
             <div class="result-stat-label" id="sideBResultLabel">Team B receives</div>
             <div class="result-stat-value" id="sideBResult">0.0</div>
-            <div class="score-unit">package points</div>
+            <div class="score-unit">package composition</div>
           </div>
         </div>
         <div class="winner-box">
-          <div class="winner-label">More value received</div>
+          <div class="winner-label">Model favors</div>
           <div class="winner-value" id="winnerValue">Build both sides</div>
         </div>
         <p class="result-note" id="resultNote">Add a package for each team to compare.</p>
-        <p class="result-subtitle">Higher points mean more estimated value. Package totals can exceed 100. Use alongside your team's goals.</p>
+        <p class="result-subtitle">Tiers describe individual assets. Several depth pieces do not automatically equal a franchise player.</p>
         <details class="insight-card calculation-details">
-          <summary class="insight-label">Score calculation &amp; roster space</summary>
-          <div class="calculation-gap"><span>Value difference <strong id="differenceResult">0.0</strong> pts</span><span id="percentResult">0%</span></div>
+          <summary class="insight-label">Trade assessment &amp; roster space</summary>
+          <div class="calculation-gap"><span>Model assessment <strong id="differenceResult">Pending</strong></span><span id="percentResult"></span></div>
           <label><input type="checkbox" id="rosterAdjustment" checked> Account for extra player slots</label>
           <p class="muted" id="rosterAdjustmentNote"></p>
         </details>
@@ -140,8 +139,8 @@
               <th>Owner</th>
               <th>Pos</th>
               <th>Age</th>
-              <th>League score</th>
-              <th>Tier</th>
+              <th>Baseball tier</th>
+              <th>Rating basis</th>
               <th>Category</th>
               <th>Add</th>
             </tr>
@@ -159,6 +158,7 @@
   <script src="../data/fantasy-owners.js?v=trade-analyzer-owners-2"></script>
   <script src="../data/rosters.js?v=trade-roster-2"></script>
   <script type="module">
+    import { baseballTier, packageTiers } from '../scripts/baseball-tiers.mjs';
     let scoreMode = 'dynasty';
     let playerData = [];
     let draftPickData = [];
@@ -431,11 +431,11 @@
       const maxTotal = Math.max(sideATotal, sideBTotal, 1);
       const percentDifference = difference / maxTotal;
 
-      if (percentDifference > 0.22) return { label: "Large score gap", className: "robbery" };
-      if (percentDifference > 0.12) return { label: "Clear score gap", className: "clear" };
-      if (percentDifference > 0.05) return { label: "Small score gap", className: "slight" };
+      if (percentDifference > 0.22) return { label: "Large value gap", className: "robbery" };
+      if (percentDifference > 0.12) return { label: "Clear value gap", className: "clear" };
+      if (percentDifference > 0.05) return { label: "Small value gap", className: "slight" };
 
-      return { label: "Similar score totals", className: "" };
+      return { label: "Similar estimated value", className: "" };
     }
 
     function getTopCategories(player, limit = 3) {
@@ -539,15 +539,6 @@
       return getRiskSummaryForPlayers(state[side]);
     }
 
-    function getResultNote(teamASendsTotal, teamBSendsTotal) {
-      const basis = scoreMode === 'dynasty' ? 'provisional dynasty outlook' : '2026 actual performance';
-      const difference = Math.abs(teamASendsTotal - teamBSendsTotal);
-      const receiver = teamBSendsTotal > teamASendsTotal ? state.sideATeam : state.sideBTeam;
-      return difference === 0
-        ? 'The packages have equal summed ' + basis + ' scores. Scores are estimates, not an objective trade price.'
-        : receiver + ' receives about ' + difference.toFixed(1) + ' more points. Based on ' + basis + (document.getElementById('rosterAdjustment').checked ? ' with the roster-space setting enabled.' : '.');
-    }
-
     function renderTeamSelects() {
       const options = TEAM_NAMES.map(team => `<option value="${escapeHtml(team)}">${escapeHtml(team)}</option>`).join("");
       elements.sideATeamSelect.innerHTML = options;
@@ -627,8 +618,8 @@
       container.innerHTML = matches.map(player => `
         <button class="suggestion-btn" type="button" data-add-side="${side}" data-asset-key="${encodeURIComponent(getPlayerKey(player))}">
           <span class="suggestion-name">${escapeHtml(player.name)}</span>
-          <span class="suggestion-meta">${player.dynastyValue == null ? 'Unrated' : isDraftPick(player) ? `${escapeHtml(player.dynastyValue)} pick points` : `League score: ${escapeHtml(player.dynastyValue)} / 100`}</span>
-          <span class="suggestion-meta">${escapeHtml(player.fantasyTeam)} • ${escapeHtml(formatAssetType(player))} • ${escapeHtml(player.tier)}</span>
+          <span class="suggestion-meta">${escapeHtml(baseballTier(player, scoreMode))}</span>
+          <span class="suggestion-meta">${escapeHtml(player.fantasyTeam)} • ${escapeHtml(formatAssetType(player))}</span>
         </button>
       `).join("");
 
@@ -658,9 +649,9 @@
 
       container.innerHTML = selectedPlayers.map(player => {
         const topCategories = isDraftPick(player)
-          ? `<span class="mini-category-chip">Draft Capital ${escapeHtml(player.dynastyValue ?? 'Unrated')}</span>`
+          ? `<span class="mini-category-chip">${escapeHtml(player.draftYear)} Round ${escapeHtml(player.draftRound)}</span>`
           : getTopCategories(player, 4).map(item => `
-              <span class="mini-category-chip">${escapeHtml(formatCategory(item.category))} ${escapeHtml(item.score)}</span>
+              <span class="mini-category-chip">${escapeHtml(formatCategory(item.category))}</span>
             `).join("");
 
         return `
@@ -668,19 +659,16 @@
             <div class="selected-player-top">
               <div>
                 <div class="selected-player-name">${escapeHtml(player.name)}</div>
-                <div class="selected-player-meta">${escapeHtml(player.fantasyTeam)} • ${escapeHtml(formatAssetType(player))} • ${escapeHtml(player.tier)}${player.needsReview ? ' • Provisional rating' : ''}</div>
+                <div class="selected-player-meta">${escapeHtml(player.fantasyTeam)} • ${escapeHtml(formatAssetType(player))} • ${escapeHtml(baseballTier(player, scoreMode))}${player.needsReview ? ' • Provisional rating' : ''}</div>
 
               </div>
-              <span class="value-badge">${escapeHtml(player.dynastyValue ?? 'Unrated')}${player.dynastyValue == null ? '' : isDraftPick(player) ? '<small>pick points</small>' : '<small>league score / 100</small>'}</span>
+              <span class="value-badge">${escapeHtml(baseballTier(player, scoreMode))}</span>
             </div>
             <div class="mini-category-row">${topCategories}</div>
             <details class="player-rating-details"><summary>Rating details</summary>
                 <div class="muted">${player.performanceRank ? `Fantrax ${escapeHtml(player.performanceSeason)} overall rank #${escapeHtml(player.performanceRank)}` : `No ranked ${escapeHtml(player.performanceSeason)} actual score`}</div>
                 ${player.performanceStats ? `<div class="muted">2026 actual stats: ${Object.entries(player.performanceStats).map(([key, value]) => `${escapeHtml(key)} ${escapeHtml(value)}`).join(" / ")}</div>` : ""}
-                ${player.dynastyBreakdown ? `<div class="muted">Expert baseline ${escapeHtml(player.dynastyBreakdown.baseline ?? "unavailable")} / 2026 score ${escapeHtml(player.performanceScore ?? "unrated")} / Three-season production ${escapeHtml(player.dynastyBreakdown.productionScore?.toFixed(2) ?? "unrated")} / Production weight ${Math.round(player.dynastyBreakdown.productionWeight * 100)}% / ${escapeHtml(player.dynastyConfidence)}</div>` : ""}
-                ${player.leagueBaseValue != null ? `<div class="muted">Baseline ${escapeHtml(player.leagueBaseValue)} pts / League adjustment ${player.leagueAdjustment > 0 ? "+" : ""}${escapeHtml(player.leagueAdjustment)} pts / ${escapeHtml(player.leagueAdjustmentReason)}</div>` : ""}
-                <div class="muted">${escapeHtml(player.valueSource || 'Local estimate')}${player.dynastyRank ? ` • #${escapeHtml(player.dynastyRank)} • ${escapeHtml(player.rankingUpdated)}` : ''}</div>
-                ${player.modelBreakdown ? `<div class="muted">MLB production ${escapeHtml(player.modelBreakdown.production)} (separate from dynasty points) / ${escapeHtml(player.statsConfidence)} / Updated ${escapeHtml(player.statsUpdated || player.rankingUpdated)}</div>` : ""}
+                <div class="muted">Dynasty rank: ${player.dynastyRank ? "#" + escapeHtml(player.dynastyRank) : "Unrated"}. ${escapeHtml(player.dynastyConfidence || "")}</div>
             </details>
             <button class="remove-player" type="button" data-remove-side="${side}" data-asset-key="${encodeURIComponent(getPlayerKey(player))}">
               Remove
@@ -700,9 +688,7 @@
       const comparison = packageModel.comparePackages(state.sideA, state.sideB, packageModel.replacementScore(playerData), document.getElementById('rosterAdjustment').checked);
       const sideATotal = comparison.a;
       const sideBTotal = comparison.b;
-      document.getElementById('rosterAdjustmentNote').textContent = comparison.active
-        ? 'Packages sent: ' + state.sideATeam + ' ' + comparison.rawA + ' points (deduction ' + comparison.deductionA + '); ' + state.sideBTeam + ' ' + comparison.rawB + ' points (deduction ' + comparison.deductionB + '). Each extra player assumes a slot worth ' + comparison.replacement + ' points, based on rated free agents. Actual cuts and minors slots may differ.'
-        : 'Raw score totals. Slot adjustment is disabled or no rated free-agent baseline is available.';
+      document.getElementById('rosterAdjustmentNote').textContent = comparison.active ? 'The model accounts for extra player slots using rated free-agent replacement value. Actual cuts may differ.' : 'The model uses unadjusted package values. Slot adjustment is disabled or unavailable.';
       const difference = Math.round(Math.abs(sideATotal - sideBTotal) * 100) / 100;
       const maxTotal = Math.max(sideATotal, sideBTotal, 1);
       const percentDifference = Number(((difference / maxTotal) * 100).toFixed(1));
@@ -713,30 +699,31 @@
       const teamBReceivesTotal = sideATotal;
 
       updateSideLabels();
-      elements.sideATotalPill.textContent = `${sideATotal} pts sent`;
-      elements.sideBTotalPill.textContent = `${sideBTotal} pts sent`;
-      elements.sideAResult.textContent = sideBTotal.toFixed(1);
-      elements.sideBResult.textContent = sideATotal.toFixed(1);
-      elements.differenceResult.textContent = difference.toFixed(1);
-      elements.percentResult.textContent = `${percentDifference}%`;
+      elements.sideATotalPill.textContent = packageTiers(state.sideA, scoreMode);
+      elements.sideBTotalPill.textContent = packageTiers(state.sideB, scoreMode);
+      elements.sideAResult.textContent = packageTiers(state.sideB, scoreMode);
+      elements.sideBResult.textContent = packageTiers(state.sideA, scoreMode);
+      elements.differenceResult.textContent = fairness.label;
+      elements.percentResult.textContent = "";
       elements.winnerValue.textContent = teamAReceivesTotal === teamBReceivesTotal ? "Even" : teamAReceivesTotal > teamBReceivesTotal ? state.sideATeam : state.sideBTeam;
       elements.fairnessPill.textContent = fairness.label;
       elements.fairnessPill.className = `fairness-pill ${fairness.className}`.trim();
-      elements.resultNote.textContent = getResultNote(sideATotal, sideBTotal, fairness.label, sideAFitScore, sideBFitScore);
+      elements.resultNote.textContent = 'Assessment uses the underlying valuation model. Review category fit, roster space, and prospect risk alongside the tiers.';
       if ([...state.sideA, ...state.sideB].some(player => player.dynastyValue == null || (scoreMode === 'performance' && isDraftPick(player)))) {
         elements.winnerValue.textContent = 'Incomplete';
         elements.fairnessPill.textContent = 'Incomplete comparison';
         elements.fairnessPill.className = 'fairness-pill';
-        elements.sideATotalPill.textContent = state.sideA.some(p => p.dynastyValue == null) ? 'Incomplete' : sideATotal + ' pts sent';
-        elements.sideBTotalPill.textContent = state.sideB.some(p => p.dynastyValue == null) ? 'Incomplete' : sideBTotal + ' pts sent';
-        elements.sideAResult.textContent = state.sideB.some(p => p.dynastyValue == null || (scoreMode === 'performance' && isDraftPick(p))) ? 'Unrated' : sideBTotal.toFixed(1);
-        elements.sideBResult.textContent = state.sideA.some(p => p.dynastyValue == null || (scoreMode === 'performance' && isDraftPick(p))) ? 'Unrated' : sideATotal.toFixed(1);
+        elements.sideATotalPill.textContent = state.sideA.some(p => p.dynastyValue == null) ? 'Incomplete' : packageTiers(state.sideA, scoreMode);
+        elements.sideBTotalPill.textContent = state.sideB.some(p => p.dynastyValue == null) ? 'Incomplete' : packageTiers(state.sideB, scoreMode);
+        elements.sideAResult.textContent = state.sideB.some(p => p.dynastyValue == null || (scoreMode === 'performance' && isDraftPick(p))) ? 'Unrated' : packageTiers(state.sideB, scoreMode);
+        elements.sideBResult.textContent = state.sideA.some(p => p.dynastyValue == null || (scoreMode === 'performance' && isDraftPick(p))) ? 'Unrated' : packageTiers(state.sideA, scoreMode);
         elements.differenceResult.textContent = '?';
-        elements.percentResult.textContent = '?';
-        elements.resultNote.textContent = 'A selected asset has no score for this view. Draft picks are supported only in dynasty mode.';
+        elements.percentResult.textContent = "";
+        elements.resultNote.textContent = 'A selected asset lacks a model valuation for this view. Draft picks are supported only in dynasty mode.';
       }
 
       if (!state.sideA.length || !state.sideB.length) {
+        elements.differenceResult.textContent = 'Pending';
         elements.winnerValue.textContent = 'Build both sides';
         elements.fairnessPill.textContent = 'Awaiting a package';
         elements.fairnessPill.className = 'fairness-pill pending';
@@ -833,9 +820,9 @@
 
       elements.playersTableBody.innerHTML = visiblePlayers.map(player => {
         const topCategoryText = isDraftPick(player)
-          ? `${player.draftYear} • Round ${player.draftRound} • projected value ${player.dynastyValue}`
+          ? `${player.draftYear} • Round ${player.draftRound}`
           : getTopCategories(player, 3)
-              .map(item => `${formatCategory(item.category)} ${item.score}`)
+              .map(item => `${formatCategory(item.category)}`)
               .join(" · ");
 
         return `
@@ -847,10 +834,10 @@
             <td>${escapeHtml(player.fantasyTeam)}</td>
             <td>${escapeHtml(formatAssetType(player))}</td>
             <td>${escapeHtml(player.age)}</td>
-            <td><strong class="league-score">${escapeHtml(player.dynastyValue ?? 'Unrated')}</strong>${player.dynastyValue == null ? '' : isDraftPick(player) ? '<div class="muted">Pick points</div>' : '<div class="muted">Score / 100</div>'}${player.needsReview ? '<div class="muted">Provisional</div>' : ''}</td>
-            <td>${escapeHtml(player.tier)}</td>
+            <td><strong class="league-score">${escapeHtml(baseballTier(player, scoreMode))}</strong></td>
+            <td>${isDraftPick(player) ? "Draft capital" : scoreMode === "dynasty" ? "Dynasty outlook" : "Season performance"}</td>
             <td>
-              <span class="category-chip">${escapeHtml(player.categoryType || "—")} ${isDraftPick(player) ? "" : escapeHtml(player.categoryFit || "")}</span>
+              <span class="category-chip">${escapeHtml(player.categoryType || "—")} ${isDraftPick(player) ? "" : ""}</span>
               <div class="muted">${escapeHtml(topCategoryText)}</div>
             </td>
             <td>
@@ -884,6 +871,15 @@
     }
 
     function setupEvents() {
+      document.getElementById('scoreMode').addEventListener('change', async event => {
+        scoreMode = event.target.value;
+        const { withScoreMode } = await import('../scripts/dynasty-outlook.mjs');
+        playerData = playerData.map(player => withScoreMode(player, scoreMode));
+        assetData = [...playerData, ...draftPickData];
+        for (const side of ['sideA', 'sideB']) state[side] = state[side].map(asset => assetData.find(player => getPlayerKey(player) === getPlayerKey(asset)) || asset);
+        closeSuggestions();
+        renderAll();
+      });
       document.getElementById('rosterAdjustment').addEventListener('change', renderResult);
       setupSearch(elements.sideASearch, "sideA", elements.sideASuggestions);
       setupSearch(elements.sideBSearch, "sideB", elements.sideBSuggestions);

@@ -157,3 +157,8 @@
   .trade-side-header { min-height: 0; }
   .suggestions { width: 100%; }
 }
+
+/* Package composition uses words rather than numeric totals. */
+.trade-page .side-total-pill { white-space: normal; max-width: 55%; text-align: right; line-height: 1.5; }
+.trade-page .received-grid .result-stat-value { font-size: 1rem; line-height: 1.6; overflow-wrap: anywhere; }
+.trade-page .value-badge { font-size: .8rem; max-width: 45%; line-height: 1.5; }
