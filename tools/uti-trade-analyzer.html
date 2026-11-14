@@ -21,7 +21,7 @@
       <p class="muted" id="ratingsSummary">Loading player rating sources…</p>
       <details class="rating-method"><summary>How baseball tiers work</summary>
 <p>Dynasty tiers use FantraxHQ overall dynasty ranks: Franchise Player (1–25), All-Star (26–75), Core Starter (76–175), Role Player (176–350), Depth Piece (351+). These are local fantasy labels, not MLB honors.</p>
-<p>Explicit prospect profiles use Blue-Chip Prospect (1–75), Strong Prospect (76–175), or Developmental Prospect (176+) on that same overall list. Missing ranks stay Unrated. Picks retain their year and round.</p>
+<p>Only players on the site's MLB Top 100 prospect list qualify for prospect tiers. Those players use Blue-Chip Prospect (1–75), Strong Prospect (76–175), or Developmental Prospect (176+) on that same overall list. Missing ranks stay Unrated. Picks retain their year and round.</p>
 <p>Performance tiers use the same cutoffs with actual Fantrax season ranks. Trade assessments retain the provisional valuation model and optional roster-space adjustment; tiers are not added together.</p></details>
     </section>
 
@@ -157,8 +157,9 @@
 
   <script src="../data/fantasy-owners.js?v=trade-analyzer-owners-2"></script>
   <script src="../data/rosters.js?v=trade-roster-2"></script>
+  <script src="players-data.js?v=2026-10-24"></script>
   <script type="module">
-    import { baseballTier, packageTiers } from '../scripts/baseball-tiers.mjs';
+    import { baseballTier, packageTiers, isTop100Prospect } from '../scripts/baseball-tiers.mjs';
     let scoreMode = 'dynasty';
     let playerData = [];
     let draftPickData = [];
@@ -520,7 +521,7 @@
       if (!players.length) return { risk: 0, age: 0, prospects: 0, pitchers: 0, risky: 0, picks: 0 };
 
       const nonPickPlayers = players.filter(player => !isDraftPick(player));
-      const prospects = nonPickPlayers.filter(player => String(player.riskTier || "").includes("prospect") || String(player.futureTier || "").includes("prospect")).length;
+      const prospects = nonPickPlayers.filter(player => isTop100Prospect(player)).length;
       const pitchers = nonPickPlayers.filter(player => (player.positions || []).some(pos => ["SP", "RP", "P"].includes(pos))).length;
       const risky = nonPickPlayers.filter(player => ["high", "veryHigh", "injured", "prospectPitcher", "reliever", "aging"].includes(player.riskTier)).length;
       const picks = players.filter(isDraftPick).length;

@@ -175,6 +175,6 @@ are written, preserving the saved data for review.
 Trade analyzer baseball tiers:
 - Player cards, search, rosters, and package summaries display baseball tiers instead of point totals.
 - Dynasty labels follow overall FantraxHQ ranks: 1-25 Franchise Player, 26-75 All-Star, 76-175 Core Starter, 176-350 Role Player, 351+ Depth Piece. Missing ranks remain Unrated.
-- Explicit prospect profiles use Blue-Chip (1-75), Strong (76-175), and Developmental (176+) Prospect labels on the same overall list. Performance mode instead uses actual-season overall ranks and regular player labels.
+- Only members of the shared MLB Top 100 list in tools/players-data.js qualify as prospects; old risk/future flags are ignored for membership. These players use Blue-Chip (1-75), Strong (76-175), and Developmental (176+) Prospect labels on the same overall list. Performance mode instead uses actual-season overall ranks and regular player labels.
 - Picks retain year and round. Package tiers are counted, never summed. The trade assessment retains the existing provisional valuation model and roster-space adjustment.
 - Tests: `node --test scripts/baseball-tiers.test.mjs`.
