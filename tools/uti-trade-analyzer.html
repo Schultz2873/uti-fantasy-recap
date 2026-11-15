@@ -159,7 +159,7 @@
   <script src="../data/rosters.js?v=trade-roster-2"></script>
   <script src="players-data.js?v=2026-10-24"></script>
   <script type="module">
-    import { baseballTier, packageTiers, isTop100Prospect } from '../scripts/baseball-tiers.mjs';
+    let baseballTier, packageTiers, isTop100Prospect;
     let scoreMode = 'dynasty';
     let playerData = [];
     let draftPickData = [];
@@ -951,6 +951,10 @@
       try {
         ownerLookup = buildOwnerLookup();
         renderTeamSelects();
+
+        // Initialize team choices before loading optional rating dependencies.
+        // Version the module because its exported interface changed with Top 100 membership.
+        ({ baseballTier, packageTiers, isTop100Prospect } = await import('../scripts/baseball-tiers.mjs?v=top100-membership-1'));
 
         const module = await loadPlayersModule();
         if (!module.players || !Array.isArray(module.players)) {
