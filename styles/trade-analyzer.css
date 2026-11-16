@@ -162,3 +162,10 @@
 .trade-page .side-total-pill { white-space: normal; max-width: 55%; text-align: right; line-height: 1.5; }
 .trade-page .received-grid .result-stat-value { font-size: 1rem; line-height: 1.6; overflow-wrap: anywhere; }
 .trade-page .value-badge { font-size: .8rem; max-width: 45%; line-height: 1.5; }
+
+/* Keep the trade builder and verdict prominent; reveal context on demand. */
+.trade-more > summary { cursor: pointer; color: var(--color-text-soft); font-size: .8rem; padding: 6px 0; }
+.trade-more > .received-grid { margin-top: 12px; }
+.trade-more .insight-card { margin-top: 12px; }
+.trade-options > .score-mode, .trade-options > .muted, .trade-options > .rating-method { margin: 16px 20px; }
+.trade-page [hidden] { display: none !important; }
