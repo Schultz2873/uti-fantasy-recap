@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Robot Locker | UTI</title>
+  <link rel="preload" as="image" type="image/webp" href="assets/robots/slugger-fitted-bat-v1.webp" fetchpriority="high">
+  <link rel="stylesheet" href="styles/theme.css?v=wordmark-1">
+  <link rel="stylesheet" href="styles/robot-locker.css?v=slugger-fit-1">
+</head>
+<body>
+  <script src="scripts/site-header.js?v=robots-1"></script>
+  <main class="locker-page">
+    <header class="locker-heading"><div><p class="eyebrow">THE CLUBHOUSE</p><h1>Your robot. Your look.</h1><p>Meet Slugger. Build his look, one achievement at a time.</p></div><span class="preview-label">Locker preview</span></header>
+    <p class="preview-notice">Gear is your trophy case. Earn it through league accomplishments, then choose what to wear. Progress below uses the 2026 archive; outfits save on this browser.</p>
+    <div class="locker-layout">
+      <section class="robot-stage" aria-label="Your robot preview">
+        <div class="stage-toolbar"><label for="lockerTeam">Team</label><select id="lockerTeam"></select></div>
+        <div id="robotPreview" class="robot-art"></div>
+        <div class="stage-caption"><span class="eyebrow">READY FOR THE MATCHUP</span><h2 id="robotName">Slugger</h2><p id="outfitDescription"></p></div>
+        <fieldset class="color-choices"><legend>Team color</legend><div id="colorChoices"></div></fieldset>
+      </section>
+      <section class="gear-panel" aria-labelledby="gearTitle">
+        <div class="gear-heading"><div><p class="eyebrow">MAKE IT YOURS</p><h2 id="gearTitle">Your locker</h2></div><button id="resetLook" class="quiet-button" type="button">Reset look</button></div>
+        <div class="gear-tabs" role="group" aria-label="Gear slot"><button type="button" data-slot="hat" aria-pressed="true">Headwear</button><button type="button" data-slot="jersey" aria-pressed="false">Jerseys</button><button type="button" data-slot="accessory" aria-pressed="false">Hands</button><button type="button" data-slot="eyes" aria-pressed="false">Visors</button><button type="button" data-slot="shoulders" aria-pressed="false">Shoulders</button><button type="button" data-slot="chest" aria-pressed="false">Power cores</button><button type="button" data-slot="back" aria-pressed="false">Back</button><button type="button" data-slot="feet" aria-pressed="false">Cleats</button><button type="button" data-slot="companion" aria-pressed="false">Companions</button></div>
+        <div class="inventory-toolbar"><p class="gear-hint">Equip the achievements you want to show off.</p><label>Show <select id="inventoryFilter"><option value="all">All gear</option><option value="unlocked">Unlocked</option><option value="equipped">Equipped</option><option value="locked">Locked</option></select></label></div>
+        <div id="gearGrid" class="gear-grid"></div>
+        <p id="lockerStatus" class="save-status" role="status" aria-live="polite"></p>
+        <details class="reward-details"><summary>What is equipped?</summary><div id="equipmentSlots" class="equipment-slots"></div></details><details class="reward-details"><summary>How rewards work</summary><p>Starter gear is free to wear. Other items unlock from matching official scores, category results, or recorded season finishes. A tied category does not count as a win. League-leading HR ties share the reward. Gear never changes fantasy scoring.</p><p>These are proposed achievement rules applied to the 2026 archive, not official league awards. Accounts and server-verified ownership are not connected. Player-inspired gear is a tribute design, not an affiliation or replica of memorabilia.</p></details>
+      </section>
+    </div>
+    <section class="achievement-panel" aria-labelledby="achievementTitle"><p class="eyebrow">A TROPHY CASE YOU CAN WEAR</p><h2 id="achievementTitle">Chase the next piece.</h2><p id="achievementSummary"></p><details><summary>View achievement list and progress</summary><div id="achievementList"></div></details></section>
+    <section class="matchup-section" aria-labelledby="matchupTitle"><div><p class="eyebrow">ON THE FIELD</p><h2 id="matchupTitle">A little more personality on game day.</h2><p>Your equipped look follows you into matchups.</p></div><div class="robot-matchup"><div class="matchup-owner"><div id="matchupRobot"></div><span id="matchupTeam"></span></div><div class="matchup-vs"><span>VS</span><small>Matchup preview</small></div><div class="matchup-owner"><div id="opponentRobot"></div><span>The opposition</span></div></div></section>
+  </main>
+  <script src="data/rosters.js"></script>
+  <script src="data/weekly-team-stats.js"></script>
+  <script src="data/history/season-results.js"></script>
+  <script src="scripts/robot-rewards.js?v=optic-visors-1"></script>
+  <script src="scripts/robot-locker.js?v=webp-1"></script>
+</body>
+</html>

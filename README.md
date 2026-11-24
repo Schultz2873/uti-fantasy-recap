@@ -1,5 +1,17 @@
 UTI Fantasy Baseball
 
+Robot Locker preview:
+- Open `robot-locker.html` or choose Robot Locker in League Hub.
+- The locker currently focuses on Slugger only, with explicit body, face, torso, hand, and foot anchors for equipment. Existing outfits saved on other robot bodies migrate to Slugger while retaining eligible gear. Select a team, color, and available gear; the matchup preview updates immediately. Team colors tint the home jersey and cap; the robot's original metal finish stays intact.
+- The cap, home/away jerseys, bat, and mitt use complete fitted character renders. `assets/robots/slugger-fitted-bat-v1.png` has Slugger gripping the bat; `slugger-fitted-mitt-v2.png` uses a smaller glove resting at the hip with a visible forearm/wrist connection. Each atlas has four 627px cells for home/away and cap/bare head. Source `slugger-fitted-outfits-v1.png` remains as the clothing-only reference. Gold/team colors and earned equipment finishes affect only selected regions. Other gear remains prototype art and needs an equivalent fitted artwork pass.
+- The batting helmet uses `assets/robots/slugger-fitted-helmet-v1.png`, with home/away columns and bat/mitt rows. It is rendered directly around Slugger's head and ears; no separate helmet overlay remains. Other headwear still selects the earlier cap/bare-head outfit atlases.
+- Eye gear now uses `assets/robots/slugger-optic-visors-v1.png`: Cyclops-style single red optic slit in gold or gunmetal housing, painted into complete head renders. Atlas columns are cap/helmet/bare head; rows are the Rare/Epic visor designs. Existing `clean` and `precision` item IDs and achievement requirements are retained. Unequipping restores the original eyes. Cap colors affect only cap fabric, not the red lens.
+- Gear is a wearable achievement collection: 21 items across headwear, jerseys, hands, visors, shoulders, power cores, back, cleats, and companions. Common starter gear is included; Rare, Epic, and Legendary gear follows proposed achievement rules.
+- `scripts/robot-rewards.js` derives preview unlocks and progress from the 2026 weekly archive and recorded 2026 season finishes. Paired official 16-category scores must agree; missing or duplicate rows are excluded. Matchup/category ties do not count as wins; weekly HR-lead ties share the reward and require all ten teams. Unavailable sources and commissioner awards stay unverified.
+- This is a browser-local prototype, not authenticated ownership. Each team's selected outfit persists separately in localStorage; unlocked inventory is recomputed from source data, not trusted from local storage. The page explicitly uses the 2026 archive; update its snapshot binding before connecting another season's weekly dataset.
+- Account linking, shared outfits across devices, and server-verified unlocks require the future backend. Saved local data is validated for rendering but is not a security boundary.
+- Checks: `node --test scripts/robot-locker.test.mjs scripts/robot-rewards.test.mjs`. See `docs/robot-achievements.md` for the achievement catalog and backend plan.
+
 Draft Night:
 - The navy/teal dashboard shows Best Available, the full round-by-round board,
   and the latest six picks together. Full board expands the table; selection

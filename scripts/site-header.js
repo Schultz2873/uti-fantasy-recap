@@ -34,6 +34,7 @@
 
   // League pages and tools share the compact League Hub menu.
   const TOOL_LINKS = [
+    { label: "Robot Locker", href: "robot-locker.html" },
     { label: "Draft Night", href: "draft-night.html" },
     { label: "Home Run Pool", href: "tools/home-run-pool.html" },
     { label: "Trade Analyzer", href: "tools/uti-trade-analyzer.html" },
